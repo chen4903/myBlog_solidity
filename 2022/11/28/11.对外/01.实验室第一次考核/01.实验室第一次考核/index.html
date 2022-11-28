@@ -1,0 +1,381 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>01.实验室第一次考核 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="考点汇总 call、callcode和delegatecall create和create2 插槽 合约数据查看 msg.sende和tx.origin abi编码  1.call、callcode和delegatecall在以太坊中，若需要合约与合约之间的调用，则可以使用call、callcode和delegatecall方法，它们之间的联系如下:  下面用例子具体说明演示 1.1总览这里以合约">
+<meta property="og:type" content="article">
+<meta property="og:title" content="01.实验室第一次考核">
+<meta property="og:url" content="http://example.com/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="考点汇总 call、callcode和delegatecall create和create2 插槽 合约数据查看 msg.sende和tx.origin abi编码  1.call、callcode和delegatecall在以太坊中，若需要合约与合约之间的调用，则可以使用call、callcode和delegatecall方法，它们之间的联系如下:  下面用例子具体说明演示 1.1总览这里以合约">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9">
+<meta property="article:published_time" content="2022-11-28T00:50:56.220Z">
+<meta property="article:modified_time" content="2022-11-28T00:52:02.764Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '01.实验室第一次考核',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-28 08:52:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">01.实验室第一次考核</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-28T00:50:56.220Z" title="发表于 2022-11-28 08:50:56">2022-11-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-28T00:52:02.764Z" title="更新于 2022-11-28 08:52:02">2022-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/11-%E5%AF%B9%E5%A4%96/">11.对外</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="01.实验室第一次考核"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="考点汇总"><a href="#考点汇总" class="headerlink" title="考点汇总"></a>考点汇总</h1><ul>
+<li>call、callcode和delegatecall</li>
+<li>create和create2</li>
+<li>插槽</li>
+<li>合约数据查看</li>
+<li>msg.sende和tx.origin</li>
+<li>abi编码</li>
+</ul>
+<h2 id="1-call、callcode和delegatecall"><a href="#1-call、callcode和delegatecall" class="headerlink" title="1.call、callcode和delegatecall"></a>1.call、callcode和delegatecall</h2><p>在以太坊中，若需要合约与合约之间的调用，则可以使用call、callcode和delegatecall方法，它们之间的联系如下:</p>
+<p><img src="https://img-blog.csdnimg.cn/29d87a3e9a0c46358bd8729cf394c18c.png" alt="img"></p>
+<p>下面用例子具体说明演示</p>
+<h3 id="1-1总览"><a href="#1-1总览" class="headerlink" title="1.1总览"></a>1.1总览</h3><p>这里以合约EthAlice调用合约EthBob为例，进行说明，其执行流程如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/14dc5d5500c34314971a8a141cd4ef28.png" alt="img"></p>
+<ul>
+<li>调用者EthAlice</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.18;</span><br><span class="line"></span><br><span class="line">contract EthAlice &#123;</span><br><span class="line">    uint    public num;</span><br><span class="line">    address public addr;</span><br><span class="line">    function callSetNum(address ads, uint value) public returns(uint) &#123;</span><br><span class="line">        require(ads.call(bytes4(keccak256(&quot;SetNum(uint256)&quot;)), value));</span><br><span class="line">        return value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function callcodeSetNum(address ads, uint value) public returns(uint) &#123;</span><br><span class="line">        require(ads.callcode(bytes4(keccak256(&quot;SetNum(uint256)&quot;)), value));</span><br><span class="line">        return value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function delegatecallSetNum(address ads, uint value) public returns(uint) &#123;</span><br><span class="line">        require(ads.delegatecall(bytes4(keccak256(&quot;SetNum(uint256)&quot;)), value));</span><br><span class="line">        return value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>被调用者EthBob</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.18;</span><br><span class="line"></span><br><span class="line">contract EthBob &#123;</span><br><span class="line">    uint    public num;</span><br><span class="line">    address public addr;</span><br><span class="line"></span><br><span class="line">    event sendAddr(address);</span><br><span class="line">    function SetNum(uint _num) public &#123;</span><br><span class="line">        num = _num;</span><br><span class="line">        addr = msg.sender;</span><br><span class="line">        emit sendAddr(msg.sender);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2部署合约"><a href="#1-2部署合约" class="headerlink" title="1.2部署合约"></a>1.2部署合约</h3><ul>
+<li><p>在MetaMask里选择一个Rinkeby测试网账户：<code>0x6026DfB9816D22F65F1011639B207B1c3A2C2e84</code></p>
+</li>
+<li><p>然后在Remix上部署EthAlice和EthBob合约，得到如下:</p>
+<ul>
+<li>EthAlice合约地址：<code>0xeb0282Dcd268afCFeAFA84ea2260edC2c7747381</code></li>
+<li>EthBob合约地址： <code>0xe981880Ac36360A1bF4F8F2a369877dbE29Aa8d4</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3call调用"><a href="#1-3call调用" class="headerlink" title="1.3call调用"></a>1.3call调用</h3><p><img src="https://img-blog.csdnimg.cn/20210303144153868.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhbnFpbWE=,size_16,color_FFFFFF,t_70" alt="img"></p>
+<h3 id="1-4callcode调用"><a href="#1-4callcode调用" class="headerlink" title="1.4callcode调用"></a>1.4callcode调用</h3><p><img src="https://img-blog.csdnimg.cn/20210303151254410.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhbnFpbWE=,size_16,color_FFFFFF,t_70" alt="img"></p>
+<h3 id="1-5delegatecall调用"><a href="#1-5delegatecall调用" class="headerlink" title="1.5delegatecall调用"></a>1.5delegatecall调用</h3><p><img src="https://img-blog.csdnimg.cn/20210303150733618.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NhbnFpbWE=,size_16,color_FFFFFF,t_70" alt="img"></p>
+<h3 id="1-6综合项目"><a href="#1-6综合项目" class="headerlink" title="1.6综合项目"></a>1.6综合项目</h3><p>关于delegatecall，他可用于我们升级合约</p>
+<ul>
+<li>如果没有delegatecall方法调用合约B的setNum方法，那么合约A的num只能+1</li>
+<li>但是如果通过bSetNumDelegateCall，那么合约A的num就可以+2</li>
+<li>因此，delegatecall可用于升级现有的合约</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.7.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract A &#123;</span><br><span class="line"></span><br><span class="line">    uint private num;</span><br><span class="line"></span><br><span class="line">    function setNum(uint _num) public &#123;</span><br><span class="line">        num = _num + 1;</span><br><span class="line">    &#125;</span><br><span class="line">    function getNum() public view returns(uint) &#123;</span><br><span class="line">        return num;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function bSetNum(address _bAddress,uint _num) public &#123;</span><br><span class="line">        B b = B(_bAddress);</span><br><span class="line">        b.setNum(_num);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function bSetNumCall(address _bAddress,uint _num) public &#123;</span><br><span class="line">        (bool res,) = _bAddress.call(abi.encodeWithSignature(&quot;setNum(uint256)&quot;,_num));</span><br><span class="line">        if(!res) revert();</span><br><span class="line">    &#125;</span><br><span class="line">    function bSetNumDelegateCall(address _bAddress,uint _num) public &#123;</span><br><span class="line">        (bool res,) = _bAddress.delegatecall(abi.encodeWithSignature(&quot;setNum(uint256)&quot;,_num));</span><br><span class="line">        if(!res) revert();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract B &#123;</span><br><span class="line">    uint private num;</span><br><span class="line">    function setNum(uint _num) public &#123;</span><br><span class="line">         num = _num + 2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-create和create2"><a href="#2-create和create2" class="headerlink" title="2.create和create2"></a>2.create和create2</h2><h3 id="2-1create"><a href="#2-1create" class="headerlink" title="2.1create"></a>2.1create</h3><p>计算原理：sender 和 nonce 进行 RLP 编码，然后用 Keccak256 进行 hash 计算。我们通常创建合约都是通过这个操作码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keccak256(rlp.encode(deployingAddress, nonce))</span><br></pre></td></tr></table></figure>
+
+<p>msg.sender不会变，但是nonce可能会随事件变化，不好预测</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// New 创建方式,它的底层还是使用CREATE操作码</span><br><span class="line">token = new Token();</span><br><span class="line"></span><br><span class="line">// CREATE创建方式     </span><br><span class="line">bytes memory byteCode = type(Token).creationCode;//获取合约的bytecode</span><br><span class="line">	assembly &#123;</span><br><span class="line">	//第一个参数0：传给合约Token的ETH，如果要传，则必须在Token的constructor加上payable</span><br><span class="line">	//第二个参数：获取bytecode在内存中的起始偏移量</span><br><span class="line">	//第三个参数：加载bytecode</span><br><span class="line">	addr:= create(0,add(byteCode,32),mload(byteCode))</span><br><span class="line">		if iszero(extcodesize(addr)) &#123;</span><br><span class="line">			revert(0, 0)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	token = Token(addr);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2create2"><a href="#2-2create2" class="headerlink" title="2.2create2"></a>2.2create2</h3><p>CREATE2 操作码使我们在智能合约部署在以太坊网络之前就能预测合约的地址。Uniswap 创建 Pair 合约用的就是 CREATE2。</p>
+<h4 id="2-2-1create2-如何计算地址"><a href="#2-2-1create2-如何计算地址" class="headerlink" title="2.2.1create2 如何计算地址"></a>2.2.1create2 如何计算地址</h4><p>create2的目的是为了让合约地址独立于未来的事件。不管未来区块链上发生了什么，你都可以把合约部署在事先计算好的地址上。create2操作码使我们在智能合约部署在以太坊网络之前就能预测合约的地址。</p>
+<p>计算原理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">address = keccak256(“0xff”,msg.sender,salt,keccak256(bytecode))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>0xff：一个常数，避免和create冲突。</p>
+<ul>
+<li>为什么是0xff，官方解释：as 0xff can only be a starting byte for RLP for data many petabytes long（因为0xff只能是RLP的起始字节，对于许多pb长的数据。）</li>
+<li>eip1014 ，这么定义的而已，如果当时定义成0xfedc 也没毛病</li>
+</ul>
+</li>
+<li><p>msg.sender：创建者地址</p>
+</li>
+<li><p>salt：一个创建者给定的数值</p>
+</li>
+<li><p>keccak256(bytecode)：待部署合约的字节码（bytecode）的哈希值</p>
+</li>
+</ul>
+<p>create2保证：如果创建者使用create2和提供的 salt 部署给定的合约bytecode，它将存储在 新地址中。并且一个salt只可以使用一次，再次使用相同的salt会报错。</p>
+<p>注意：keccak256也可以写成hash，原理是SHA3</p>
+<h4 id="2-2-2使用方法"><a href="#2-2-2使用方法" class="headerlink" title="2.2.2使用方法"></a>2.2.2使用方法</h4><p>非内联汇编部署方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Contract x = new Contract&#123;salt:_salt,value:_value&#125;(params)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>Contract：创建的合约名</li>
+<li>x：合约对象（地址）</li>
+<li>_salt：指定的盐</li>
+<li>_value：如果构造函数是 payable，可以创建时转入_value 数量的 ETH（wei）</li>
+<li>params：新合约构造函数的参数</li>
+</ol>
+<p>内联汇编部署方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assembly &#123;</span><br><span class="line">addr := create2(0, add(bytecode, 0x20), mload(bytecode), salt)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>发送给新合约的wei数(msg.value).</li>
+<li>跳过bytecode前面32个字节长度的数据</li>
+<li>获取bytecode的长度</li>
+<li>salt ，我们将它作为可控参数，可以在计算后再提供，是一个随机数nonce</li>
+</ol>
+<p>解释：bytecode的前32个字节存储的是这个bytecode的总长度，32个字节后面的数据才是bytecode真正的数据</p>
+<h4 id="2-2-3加盐得到目标地址"><a href="#2-2-3加盐得到目标地址" class="headerlink" title="2.2.3加盐得到目标地址"></a>2.2.3加盐得到目标地址</h4><p>根据create2的原理，用python写一个算法：加盐得到一个拥有指定字符的地址。这里目标是生成一个包含<code>5a54</code>字符的地址</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//使用python，引入web3库</span><br><span class="line"><span class="keyword">from</span> web3 <span class="keyword">import</span> Web3</span><br><span class="line">//s1是<span class="number">0xff</span> + msg.sender</span><br><span class="line">s1 = <span class="string">&#x27;0xff406187E1b3366B5da3539D99C4E88E42FC60De50&#x27;</span></span><br><span class="line">//s3：keccak256(bytecode)</span><br><span class="line">s3= <span class="string">&#x27;da647010355608442b3eab68e7dcc6d5b836f2628d2366ff8ae853413a643965&#x27;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">    salt = <span class="built_in">hex</span>(i)[<span class="number">2</span>:].rjust(<span class="number">64</span>,<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    s = s1+salt+s3</span><br><span class="line">    hashed = Web3.sha3(hexstr=s)</span><br><span class="line">    hashed_str = <span class="string">&#x27;&#x27;</span>.join([<span class="string">&#x27;%02x&#x27;</span> % b <span class="keyword">for</span> b <span class="keyword">in</span> hashed])</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;5a54&#x27;</span> <span class="keyword">in</span> hashed_str[<span class="number">26</span>:]:</span><br><span class="line">        <span class="built_in">print</span>(salt,hashed_str)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(salt)</span><br><span class="line">//输出结果：</span><br><span class="line">//salt:0000000000000000000000000000000000000000000000000000000000000314 //hashed_str:ed2bb3003f33323b6ab51649857345a545213f2cf30379035ce2d922d1bf1f9d</span><br></pre></td></tr></table></figure>
+
+<p>为什么<code>hashed_str[26:]</code>这样子设计呢？原因：这个脚本返回的第二个字符串是一个六十四位的数据，我们只需要后面的四十位作为地址，又因为题目合约的限定需要从第三位开始满足拥有“5a54”，因此我们需要从第二十六位之后的三十八位中含有”5a54”</p>
+<p>注意：我们create2生成的地址是hashed_str后面的40位。即<code>857345a545213f2cf30379035ce2d922d1bf1f9d</code>。原因：判断5a54的时候是从第二十六位开始的，地址只需要四十位。</p>
+<h2 id="3-插槽"><a href="#3-插槽" class="headerlink" title="3.插槽"></a>3.插槽</h2><h3 id="3-1插槽简介"><a href="#3-1插槽简介" class="headerlink" title="3.1插槽简介"></a>3.1插槽简介</h3><p>在solidity中，delegatecall方式调用其他合约的方法来修改本合约的状态变量，是根据插槽对应位置而非状态变量的名字。比如：A合约的变量a所在插槽为0，那么B合约调用A合约的setA()，就算B合约有个相同的变量a（不在第0插槽位置），也只会修改B合约插槽0的变量而不修改变量a</p>
+<p>一个插槽满了32字节，或者剩余位置放不下这个状态变量，才会放到下一个插槽。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//插槽对比</span><br><span class="line">contract Launcher&#123;</span><br><span class="line">    uint256 public deadline;//slot[0]</span><br><span class="line">    </span><br><span class="line">    constructor() public &#123;</span><br><span class="line">        deadline = block.number + 100;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function changedeadline(uint256 _deadline) public &#123;</span><br><span class="line">        deadline = _deadline;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Defuse&#123;</span><br><span class="line">    bool public Explode = false;//slot[0]</span><br><span class="line">    address public launcherAddress;//slot[0]</span><br><span class="line">    bytes32 private password;//slot[1]</span><br><span class="line">    bool public powerState = true;//slot[2]</span><br><span class="line">    </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Launcher<ul>
+<li>uint256为32字节，占满32个字节，也就是第一个插槽满了</li>
+</ul>
+</li>
+<li>Defuse<ul>
+<li>slot[0]:Explode(1字节)，launcherAddress(20字节)。slot[0]剩余11字节</li>
+<li>slot[1]:passowrd(32字节)。slot[1]剩余0字节</li>
+<li>slot[2]:powerState(1字节)。slot[2]剩余31字节</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/slot.jpg"></p>
+<h3 id="3-2插槽字节存放"><a href="#3-2插槽字节存放" class="headerlink" title="3.2插槽字节存放"></a>3.2插槽字节存放</h3><p>在每一个插槽里面，数据是如何存放的呢？这里将用回上面的例子进行说明</p>
+<p>我们使用Defuse合约使用delegatecall方式，调用Launcher的changedeadline方法进行修改数据，修改的是slot0，在slot0中数据的存放数据如下说明。</p>
+<ul>
+<li>我们调用changedeadline时传入以下参数：<ul>
+<li>0x000000000000000000000085A33A74098A4Fc235c4225417745805129e16b100</li>
+<li>85A33A74098A4Fc235c4225417745805129e16b1：是修改的launcherAddress地址</li>
+</ul>
+</li>
+<li>但为什么参数是前面后面有0？<ul>
+<li>后面的两个00是Explode,1个字节8bit，即占2位</li>
+<li>launcherAddress是address为20字节，即40位</li>
+<li>前面的一大串0即插槽0剩余的11个字节位置</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-合约数据查看"><a href="#4-合约数据查看" class="headerlink" title="4.合约数据查看"></a>4.合约数据查看</h2><p>我们知道，区块链是公开透明的，那么合约中的任何数据都是可以查询的，即使他是private，这里用一个例子说明如何查询一个合约中的private属性。我们的目标：查询private属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">contract Defuse&#123;</span><br><span class="line">    bool public Explode = false;//slot0</span><br><span class="line">    address public launcherAddress;//slot0</span><br><span class="line">    bytes32 private password;//slot1</span><br><span class="line">    bool public powerState = true;</span><br><span class="line">    bytes4 constant launcher_start_function_hash = bytes4(keccak256(&quot;changedeadline(uint256)&quot;));</span><br><span class="line">    Launcher launcher;</span><br><span class="line">    </span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>使用hardhat进行查询</p>
+</li>
+<li><p>在hardhat.config.js输入配置信息：goerli测试网络</p>
+<ul>
+<li><p>&#96;&#96;&#96;js<br>const GOERLI_API_URL &#x3D; “<a target="_blank" rel="noopener" href="https://eth-goerli.g.alchemy.com/v2/AaEomr1g_2UC3GX_7J4XbxvvjKtn6UAi&quot;">https://eth-goerli.g.alchemy.com/v2/AaEomr1g_2UC3GX_7J4XbxvvjKtn6UAi&quot;</a>;<br>const PRIVATE_KEY &#x3D; “??????????????????????????????????????????????”;</p>
+<p>module.exports &#x3D; {<br>  solidity: “0.8.9”,<br>  networks: {<br>goerli: {<br>  url: <code>$&#123;GOERLI_API_URL&#125;</code>,<br>  accounts: [<code>$&#123;PRIVATE_KEY&#125;</code>]<br>}<br>  },<br>};</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  - 使用alchemy的服务商来设置goerli网络</span><br><span class="line"></span><br><span class="line">- 命令行输入以下内容查询</span><br><span class="line"></span><br><span class="line">  - npx hardhat</span><br><span class="line">  - npx hardhat console --network goerli</span><br><span class="line">  - await ethers.provider.getStorageAt(&#x27;0x2fcBD94F43B7795583E36a79883f9D83E39FcBe3&#x27;,0)</span><br><span class="line">  - await ethers.provider.getStorageAt(&#x27;0x2fcBD94F43B7795583E36a79883f9D83E39FcBe3&#x27;,1)</span><br><span class="line"></span><br><span class="line">- 参数0:slot0，参数1:slot1，即password的值</span><br><span class="line"></span><br><span class="line">- ![](01.实验室第一次考核/查询.jpg)</span><br><span class="line"></span><br><span class="line">## 5.msg.sende和tx.origin</span><br><span class="line"></span><br><span class="line">- **msg.sender:** 指直接调用智能合约功能的帐户或智能合约的地址</span><br><span class="line">- **tx.origin:** 指调用智能合约功能的账户地址，只有账户地址可以是tx.origin</span><br><span class="line"></span><br><span class="line">![](01.实验室第一次考核/msg.sender&amp;tx.origin.jpg)</span><br><span class="line"></span><br><span class="line">## 6.abi编码</span><br><span class="line"></span><br><span class="line">下面的这个代码属于abi编码范畴，涉及数据的存放方式，截断方式</span><br><span class="line"></span><br><span class="line">```solidity</span><br><span class="line">    bytes20 internal appearance = bytes20(bytes32(&quot;ZT&quot;))&gt;&gt;144;</span><br><span class="line">    bytes20 internal maskcode = bytes20(uint160(0xffff));</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>abi编码对数字、字符的处理方式不一样</p>
+<ul>
+<li>数字uint256等：数据从低位放起，高位补0，数据位过多则从低位(右边)开始数，够位数则截断</li>
+<li>字符bytes20等：数据从高位放起，低位补0，数据位过多则从高位(左边)开始数，够位数则截断</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">bytes20 public a = bytes20(bytes32(&quot;ZT&quot;));//从高位放起，低位补0</span><br><span class="line">//a:0x5a54000000000000000000000000000000000000</span><br><span class="line">bytes32 public a_ = bytes32(bytes32(&quot;ZT&quot;));//从高位放起，低位补0</span><br><span class="line">//a_:0x5a54000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">address public b = address(uint160(uint256(0x5a54)));//从低位放起，高位补0</span><br><span class="line">//b:0x0000000000000000000000000000000000005a54</span><br><span class="line"></span><br><span class="line">bytes32 public x = 0x111122223333444455556666777788889999aaaabbbbccccddddeeeeffffcccc;</span><br><span class="line">address public c = address(uint160(uint256(x)));//数据位过多则从低位(右边)开始数，够位数则截断</span><br><span class="line">//c:0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc</span><br><span class="line">address public d = address(uint160(bytes20(x)));//数据位过多则从高位(左边)开始数，够位数则截断</span><br><span class="line">//d:0x111122223333444455556666777788889999aAaa</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/">http://example.com/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/02.%E7%9C%81gas%E6%AD%A5%E9%AA%A4/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">02.省gas步骤</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/28/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/01.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">01.内联汇编</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/chen4903" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%80%83%E7%82%B9%E6%B1%87%E6%80%BB"><span class="toc-number">1.</span> <span class="toc-text">考点汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-call%E3%80%81callcode%E5%92%8Cdelegatecall"><span class="toc-number">1.1.</span> <span class="toc-text">1.call、callcode和delegatecall</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1%E6%80%BB%E8%A7%88"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1总览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2%E9%83%A8%E7%BD%B2%E5%90%88%E7%BA%A6"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2部署合约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3call%E8%B0%83%E7%94%A8"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3call调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4callcode%E8%B0%83%E7%94%A8"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4callcode调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5delegatecall%E8%B0%83%E7%94%A8"><span class="toc-number">1.1.5.</span> <span class="toc-text">1.5delegatecall调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.1.6.</span> <span class="toc-text">1.6综合项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-create%E5%92%8Ccreate2"><span class="toc-number">1.2.</span> <span class="toc-text">2.create和create2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1create"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1create</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2create2"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2create2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1create2-%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E5%9C%B0%E5%9D%80"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">2.2.1create2 如何计算地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">2.2.2使用方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-3%E5%8A%A0%E7%9B%90%E5%BE%97%E5%88%B0%E7%9B%AE%E6%A0%87%E5%9C%B0%E5%9D%80"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">2.2.3加盐得到目标地址</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8F%92%E6%A7%BD"><span class="toc-number">1.3.</span> <span class="toc-text">3.插槽</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E6%8F%92%E6%A7%BD%E7%AE%80%E4%BB%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1插槽简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2%E6%8F%92%E6%A7%BD%E5%AD%97%E8%8A%82%E5%AD%98%E6%94%BE"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2插槽字节存放</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%90%88%E7%BA%A6%E6%95%B0%E6%8D%AE%E6%9F%A5%E7%9C%8B"><span class="toc-number">1.4.</span> <span class="toc-text">4.合约数据查看</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/01.gas%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E7%9A%84%EF%BC%9F/" title="01.gas是如何计算的？"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.gas是如何计算的？"/></a><div class="content"><a class="title" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/01.gas%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E7%9A%84%EF%BC%9F/" title="01.gas是如何计算的？">01.gas是如何计算的？</a><time datetime="2022-11-28T00:52:49.177Z" title="发表于 2022-11-28 08:52:49">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/03.%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3gas%E7%9A%84%E8%AE%A1%E7%AE%97/" title="03.深入了解gas的计算"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.深入了解gas的计算"/></a><div class="content"><a class="title" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/03.%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3gas%E7%9A%84%E8%AE%A1%E7%AE%97/" title="03.深入了解gas的计算">03.深入了解gas的计算</a><time datetime="2022-11-28T00:52:49.175Z" title="发表于 2022-11-28 08:52:49">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/02.%E7%9C%81gas%E6%AD%A5%E9%AA%A4/" title="02.省gas步骤"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.省gas步骤"/></a><div class="content"><a class="title" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/02.%E7%9C%81gas%E6%AD%A5%E9%AA%A4/" title="02.省gas步骤">02.省gas步骤</a><time datetime="2022-11-28T00:52:49.162Z" title="发表于 2022-11-28 08:52:49">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/" title="01.实验室第一次考核"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.实验室第一次考核"/></a><div class="content"><a class="title" href="/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/" title="01.实验室第一次考核">01.实验室第一次考核</a><time datetime="2022-11-28T00:50:56.220Z" title="发表于 2022-11-28 08:50:56">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/01.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="01.内联汇编"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.内联汇编"/></a><div class="content"><a class="title" href="/2022/11/28/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/01.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="01.内联汇编">01.内联汇编</a><time datetime="2022-11-28T00:48:40.540Z" title="发表于 2022-11-28 08:48:40">2022-11-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

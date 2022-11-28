@@ -1,0 +1,341 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>42.ABI编解码 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="ABI编解码在以太坊中，数据必须编码成字节码才能和智能合约交互。 ABI (Application Binary Interface，应用二进制接口)是与以太坊智能合约交互的标准。数据基于他们的类型编码；并且由于编码后不包含类型信息，解码时需要注明它们的类型。 Solidity中，ABI编码有4个函数：abi.encode, abi.encodePacked, abi.encodeWithSign">
+<meta property="og:type" content="article">
+<meta property="og:title" content="42.ABI编解码">
+<meta property="og:url" content="http://example.com/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="ABI编解码在以太坊中，数据必须编码成字节码才能和智能合约交互。 ABI (Application Binary Interface，应用二进制接口)是与以太坊智能合约交互的标准。数据基于他们的类型编码；并且由于编码后不包含类型信息，解码时需要注明它们的类型。 Solidity中，ABI编码有4个函数：abi.encode, abi.encodePacked, abi.encodeWithSign">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9">
+<meta property="article:published_time" content="2022-11-27T14:23:20.305Z">
+<meta property="article:modified_time" content="2022-11-27T15:20:55.052Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '42.ABI编解码',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-27 23:20:55'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">42.ABI编解码</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-27T14:23:20.305Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-27T15:20:55.052Z" title="更新于 2022-11-27 23:20:55">2022-11-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="42.ABI编解码"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="ABI编解码"><a href="#ABI编解码" class="headerlink" title="ABI编解码"></a>ABI编解码</h1><p>在以太坊中，数据必须编码成字节码才能和智能合约交互。</p>
+<p><code>ABI</code> (Application Binary Interface，应用二进制接口)是与以太坊智能合约交互的标准。数据基于他们的类型编码；并且由于编码后不包含类型信息，解码时需要注明它们的类型。</p>
+<p><code>Solidity</code>中，<code>ABI编码</code>有4个函数：<code>abi.encode</code>, <code>abi.encodePacked</code>, <code>abi.encodeWithSignature</code>, <code>abi.encodeWithSelector</code>。而<code>ABI解码</code>有1个函数：<code>abi.decode</code>，用于解码<code>abi.encode</code>的数据。这一讲，我们将学习如何使用这些函数。</p>
+<p>我们将用编码4个变量，他们的类型分别是<code>uint256</code>, <code>address</code>, <code>string</code>, <code>uint256[2]</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">uint x = 10;</span><br><span class="line">address addr = 0x7A58c0Be72BE218B41C608b7Fe7C5bB630736C71;</span><br><span class="line">string name = &quot;0xAA&quot;;</span><br><span class="line">uint[2] array = [5, 6]; </span><br></pre></td></tr></table></figure>
+
+<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><h3 id="abi-encode"><a href="#abi-encode" class="headerlink" title="abi.encode"></a>abi.encode</h3><p>将给定参数利用<a target="_blank" rel="noopener" href="https://learnblockchain.cn/docs/solidity/abi-spec.html">ABI规则</a>编码。<code>ABI</code>被设计出来跟智能合约交互，他将每个参数填充为32字节的数据，并拼接在一起。如果你要和合约交互，你要用的就是<code>abi.encode</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function encode() public view returns(bytes memory result) &#123;</span><br><span class="line">    result = abi.encode(x, addr, name, array);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编码的结果为：<code>0x000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000007a58c0be72be218b41c608b7fe7c5bb630736c7100000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000005000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000043078414100000000000000000000000000000000000000000000000000000000</code>，由于<code>abi.encode</code>将每个数据都填充为32字节(256位)，中间有很多<code>0</code>。即：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0x000000000000000000000000000000000000000000000000000000000000000a //10</span><br><span class="line">0x0000000000000000000000007a58c0be72be218b41c608b7fe7c5bb630736c71 //addr</span><br><span class="line">0x00000000000000000000000000000000000000000000000000000000000000a0 //??</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000005 //array[0]</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000006 //array[1]</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000004 //??</span><br><span class="line">0x3078414100000000000000000000000000000000000000000000000000000000 //0xAA本体</span><br><span class="line">//十六进制的41转二进制为65，对应的ASCII码值为A</span><br></pre></td></tr></table></figure>
+
+<h3 id="abi-encodePacked"><a href="#abi-encodePacked" class="headerlink" title="abi.encodePacked"></a>abi.encodePacked</h3><p>将给定参数根据其所需最低空间编码。它类似 <code>abi.encode</code>，但是会把其中填充的很多<code>0</code>省略。比如，只用1字节来编码<code>uint</code>类型。当你想省空间，<em>并且不与合约交互的时候</em>，可以使用<code>abi.encodePacked</code>，例如算一些数据的<code>hash</code>时。因此它的返回值不可能当作调用智能合约的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function encodePacked() public view returns(bytes memory result) &#123;</span><br><span class="line">    result = abi.encodePacked(x, addr, name, array);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编码的结果为<code>0x000000000000000000000000000000000000000000000000000000000000000a7a58c0be72be218b41c608b7fe7c5bb630736c713078414100000000000000000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000006</code>，由于<code>abi.encodePacked</code>对编码进行了压缩，长度比<code>abi.encode</code>短很多。即：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0x000000000000000000000000000000000000000000000000000000000000000a //10</span><br><span class="line">0x7a58c0be72be218b41c608b7fe7c5bb630736c71                         //addr</span><br><span class="line">0x30784141                                                         //0xAA本体</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000005 //array[0]</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000006 //array[1]</span><br></pre></td></tr></table></figure>
+
+<h3 id="abi-encodeWithSignature"><a href="#abi-encodeWithSignature" class="headerlink" title="abi.encodeWithSignature"></a>abi.encodeWithSignature</h3><p>与<code>abi.encode</code>功能类似，只不过第一个参数为<code>函数签名</code>，比如<code>&quot;foo(uint256,address)&quot;</code>。当调用其他合约的时候可以使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function encodeWithSignature() public view returns(bytes memory result) &#123;</span><br><span class="line">    result = abi.encodeWithSignature(&quot;foo(uint256,address,string,uint256[2])&quot;, x, addr, name, array);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编码的结果为<code>0xe87082f1000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000007a58c0be72be218b41c608b7fe7c5bb630736c7100000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000005000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000043078414100000000000000000000000000000000000000000000000000000000</code>，等同于在<code>abi.encode</code>编码结果前加上了4字节的<code>函数选择器</code><a target="_blank" rel="noopener" href="https://wtf.academy/solidity-advanced/ABIEncode#fn-%E8%AF%B4%E6%98%8E">说明</a>。即：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0xe87082f1														   //函数选择器</span><br><span class="line">0x000000000000000000000000000000000000000000000000000000000000000a //函数选择器</span><br><span class="line">0x0000000000000000000000007a58c0be72be218b41c608b7fe7c5bb630736c71 //addr</span><br><span class="line">0x00000000000000000000000000000000000000000000000000000000000000a0 //??</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000005 //array[0]</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000006 //array[1]</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000004 //??</span><br><span class="line">0x3078414100000000000000000000000000000000000000000000000000000000 //0xAA本体</span><br></pre></td></tr></table></figure>
+
+<p> <a target="_blank" rel="noopener" href="https://wtf.academy/solidity-advanced/ABIEncode#fn-%E8%AF%B4%E6%98%8E">说明</a>: 函数选择器就是通过函数名和参数进行签名处理(Keccak–Sha3)来标识函数，可以用于不同合约之间的函数调用</p>
+<h3 id="abi-encodeWithSelector"><a href="#abi-encodeWithSelector" class="headerlink" title="abi.encodeWithSelector"></a>abi.encodeWithSelector</h3><p>与<code>abi.encodeWithSignature</code>功能类似，只不过第一个参数为<code>函数选择器</code>，为<code>函数签名</code>Keccak哈希的前4个字节。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function encodeWithSelector() public view returns(bytes memory result) &#123;</span><br><span class="line">    result = abi.encodeWithSelector(bytes4(keccak256(&quot;foo(uint256,address,string,uint256[2])&quot;)), x, addr, name, array);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编码的结果为<code>0xe87082f1000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000007a58c0be72be218b41c608b7fe7c5bb630736c7100000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000005000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000043078414100000000000000000000000000000000000000000000000000000000</code>，与<code>abi.encodeWithSignature</code>结果一样。即：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0xe87082f1														   //函数选择器</span><br><span class="line">0x000000000000000000000000000000000000000000000000000000000000000a //函数选择器</span><br><span class="line">0x0000000000000000000000007a58c0be72be218b41c608b7fe7c5bb630736c71 //addr</span><br><span class="line">0x00000000000000000000000000000000000000000000000000000000000000a0 //??</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000005 //array[0]</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000006 //array[1]</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000004 //??</span><br><span class="line">0x3078414100000000000000000000000000000000000000000000000000000000 //0xAA本体</span><br></pre></td></tr></table></figure>
+
+<h3 id="编码方式"><a href="#编码方式" class="headerlink" title="编码方式"></a>编码方式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bytes20 internal appearance = bytes20(bytes32(&quot;ZT&quot;))&gt;&gt;144;</span><br><span class="line">bytes20 internal maskcode = bytes20(uint160(0xffff));</span><br></pre></td></tr></table></figure>
+
+<p>abi编码对数字、字符的处理方式不一样</p>
+<ul>
+<li>数字uint256等：数据从低位放起，高位补0，数据位过多则从低位(右边)开始数，够位数则截断</li>
+<li>字符bytes20等：数据从高位放起，低位补0，数据位过多则从高位(左边)开始数，够位数则截断</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">bytes20 public a = bytes20(bytes32(&quot;ZT&quot;));//从高位放起，低位补0</span><br><span class="line">//a:0x5a54000000000000000000000000000000000000</span><br><span class="line">bytes32 public a_ = bytes32(bytes32(&quot;ZT&quot;));//从高位放起，低位补0</span><br><span class="line">//a_:0x5a54000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">address public b = address(uint160(uint256(0x5a54)));//从低位放起，高位补0</span><br><span class="line">//b:0x0000000000000000000000000000000000005a54</span><br><span class="line"></span><br><span class="line">bytes32 public x = 0x111122223333444455556666777788889999aaaabbbbccccddddeeeeffffcccc;</span><br><span class="line">address public c = address(uint160(uint256(x)));//数据位过多则从低位(右边)开始数，够位数则截断</span><br><span class="line">//c:0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc</span><br><span class="line">address public d = address(uint160(bytes20(x)));//数据位过多则从高位(左边)开始数，够位数则截断</span><br><span class="line">//d:0x111122223333444455556666777788889999aAaa</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数选择器"><a href="#函数选择器" class="headerlink" title="函数选择器"></a>函数选择器</h3><p><strong>例子1</strong></p>
+<p>当我们调用智能合约时，传递给合约的数据的前若干个字节被称为“函数选择器 (Selector)”，它告诉合约我们想要调用哪个函数。假设我们想要调用的函数在智能合约中定义声明如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function foo(uint256 n, address sender, string s) public view returns(bool b)</span><br></pre></td></tr></table></figure>
+
+<p>那么该函数对应的函数选择器为：</p>
+<p><code>bytes4(keccak256(&quot;foo(uint256,address,string)&quot;))</code></p>
+<p><strong>例子2</strong></p>
+<p>已知函数foo在智能合约中定义声明如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function foo(uint256 a) public view</span><br></pre></td></tr></table></figure>
+
+<p>而字符串”foo(uint256)”的keccak256哈希值为：<code>0x2fbebd3821c4e005fbe0a9002cc1bd25dc266d788dba1dbcb39cc66a07e7b38b</code></p>
+<p>那么，当我们希望调用函数foo()时，正确且最节省gas的方式是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abi.encodeWithSelector(bytes4(0x2fbebd38), a)</span><br></pre></td></tr></table></figure>
+
+<h2 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h2><h3 id="abi-decode"><a href="#abi-decode" class="headerlink" title="abi.decode"></a>abi.decode</h3><p><code>abi.decode</code>用于解码<code>abi.encode</code>生成的二进制编码，将它还原成原本的参数。它的逆向操作是abi.encode</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function decode(bytes memory data) public pure returns(uint dx, address daddr, string memory dname, uint[2] memory darray) &#123;</span><br><span class="line">    (dx, daddr, dname, darray) = abi.decode(data, (uint, address, string, uint[2]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们将<code>abi.encode</code>的二进制编码输入给<code>decode</code>，将解码出原来的参数：</p>
+<p><img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/42.1.png"></p>
+<h2 id="在Remix上验证"><a href="#在Remix上验证" class="headerlink" title="在Remix上验证"></a>在Remix上验证</h2><ul>
+<li>部署合约查看abi.encode方法的编码结果<img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/42.2.png"></li>
+<li>对比验证四种编码方法的异同点<img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/42.3.png"></li>
+<li>查看abi.decode方法的解码结果<img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/42.4.png"></li>
+</ul>
+<h2 id="ABI的使用场景"><a href="#ABI的使用场景" class="headerlink" title="ABI的使用场景"></a>ABI的使用场景</h2><ol>
+<li><p>在合约开发中，ABI常配合call来实现对合约的底层调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bytes4 selector = contract.getValue.selector;</span><br><span class="line">   </span><br><span class="line">bytes memory data = abi.encodeWithSelector(selector, _x);</span><br><span class="line">(bool success, bytes memory returnedData) = address(contract).staticcall(data);</span><br><span class="line">require(success);</span><br><span class="line">   </span><br><span class="line">return abi.decode(returnedData, (uint256));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ethers.js中常用ABI实现合约的导入和函数调用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> wavePortalContract = <span class="keyword">new</span> ethers.<span class="title class_">Contract</span>(contractAddress, contractABI, signer);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    * Call the getAllWaves method from your Smart Contract</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line"><span class="keyword">const</span> waves = <span class="keyword">await</span> wavePortalContract.<span class="title function_">getAllWaves</span>();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对不开源合约进行反编译后，某些函数无法查到函数签名，可通过ABI进行调用。</p>
+<ul>
+<li><p>0x533ba33a() 是一个反编译后显示的函数，只有函数编码后的结果，并且无法查到函数签名 <img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/42.5.png"><img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/42.6.png"></p>
+</li>
+<li><p>这种情况无法通过构造interface接口或contract来进行调用<img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/42.7.png">这种情况下，就可以通过ABI函数选择器来调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bytes memory data = abi.encodeWithSelector(bytes4(0x533ba33a));</span><br><span class="line">     </span><br><span class="line">(bool success, bytes memory returnedData) = address(contract).staticcall(data);</span><br><span class="line">require(success);</span><br><span class="line">     </span><br><span class="line">return abi.decode(returnedData, (uint256));</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h2 id="encodePacked和encode比较"><a href="#encodePacked和encode比较" class="headerlink" title="encodePacked和encode比较"></a>encodePacked和encode比较</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p><code>abi.encodePacked</code>函数旨在更简单、更紧凑地编码数据。<code>abi.encode</code>函数在防止散列函数中的冲突时很有用。</p>
+<p>当两个不同的输入产生相同的输出时，就会发生冲突。这听起来不可能，但它可能以最意想不到的方式发生。以以下输入为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(AAA, BBB) -&gt; AAABBB          </span><br><span class="line">(AA, ABBB) -&gt; AAABBB</span><br></pre></td></tr></table></figure>
+
+<p>它们应该彼此不同，但是当连接为单个字符串时，它们实际上会产生相同的输出。</p>
+<p>使用<strong>abi.encode</strong>，对字符串进行编码会导致：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">abi.encode(&quot;AAAA&quot;)</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000020 </span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000004 </span><br><span class="line">0x4141414100000000000000000000000000000000000000000000000000000000</span><br></pre></td></tr></table></figure>
+
+<p><strong>例子说明abi.encode和abi.encodePacked的区别</strong></p>
+<p>首先我们使用abi.encodePacked</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function collisionExample(string memory _string1, string memory _string2)</span><br><span class="line">public pure returns (bytes32) &#123;</span><br><span class="line">     return keccak256(abi.encodePacked(_string1, _string2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当参数为：_string1&#x3D;AAA, _string2&#x3D;BBB<ul>
+<li>结果为：0xf6568e65381c5fc6a447ddf0dcb848248282b798b2121d9944a87599b7921358</li>
+</ul>
+</li>
+<li>当参数为：_string1&#x3D;AA, _string2&#x3D;ABBB<ul>
+<li>结果为：0xf6568e65381c5fc6a447ddf0dcb848248282b798b2121d9944a87599b7921358</li>
+</ul>
+</li>
+</ul>
+<p>我们得到相同的结果。原因：当连接字符串时，它们会产生完全相同的字符串：AAABBB。因此，如果参数分别为A、AABBB，结果仍然相同</p>
+<p>如果换用abi.encode</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function collisionExample2(string memory _string1, string memory _string2)</span><br><span class="line">public pure returns (bytes32) &#123;</span><br><span class="line">     return keccak256(abi.encode(_string1, _string2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当参数为：_string1&#x3D;AAA, _string2&#x3D;BBB<ul>
+<li>结果为：0xd6da8b03238087e6936e7b951b58424ff2783accb08af423b2b9a71cb02bd18b</li>
+</ul>
+</li>
+<li>当参数为：_string1&#x3D;AA, _string2&#x3D;ABBB<ul>
+<li>结果为：0x54bc5894818c61a0ab427d51905bc936ae11a8111a8b373e53c8a34720957abb</li>
+</ul>
+</li>
+</ul>
+<p>因此，我们得到一个完全不同的输出来防止碰撞的发生。如果输入可能导致输出导致冲突，建议使用<code>abi.encode</code>而不是<code>abi.encodePacked</code>。开发人员还可以使用其他技术（例如，在连接的字符串中添加随机值），但这是最常见的一种。</p>
+<h3 id="深入理解"><a href="#深入理解" class="headerlink" title="深入理解"></a>深入理解</h3><ul>
+<li>encodePacked方法能省Gas</li>
+<li>encodePacked建议不要使用动态变量类型传参,例如bytes、string或数组。可以使用uint和address传参</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">编码返回得到结果是一串十六进制数字，下面把这一串数字分割成几段进行分析</span><br><span class="line"></span><br><span class="line">abi.encode(hello)</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000020    hello的偏移量</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000005	  hello的长度</span><br><span class="line">0x68656c6c6f000000000000000000000000000000000000000000000000000000    hello本体</span><br><span class="line"></span><br><span class="line">abi.encode(uint256(1),hello)</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000001    1</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000040	  hello的偏移量</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000005	  hello的长度</span><br><span class="line">0x68656c6c6f000000000000000000000000000000000000000000000000000000	  hello本体</span><br><span class="line"></span><br><span class="line">abi.encode(uint256(1), _message,&quot;world&quot;)</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000001    1</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000060	  hello的偏移量</span><br><span class="line">0x00000000000000000000000000000000000000000000000000000000000000a0	  world的偏移量</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000005	  hello的长度</span><br><span class="line">0x68656c6c6f000000000000000000000000000000000000000000000000000000	  hello本体</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000005	  world的长度</span><br><span class="line">0x776f726c64000000000000000000000000000000000000000000000000000000	  world本体</span><br><span class="line"></span><br><span class="line">====================================================================================</span><br><span class="line"></span><br><span class="line">abi.encodePacked(hello)</span><br><span class="line">0x68656c6c6f</span><br><span class="line">使用encodePacked就会节省很多gas，因为0x68656c6c6f后面的0都省略了</span><br><span class="line"></span><br><span class="line">abi.encodePacked(uint256(1),hello)</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000001</span><br><span class="line">0x68656c6c6f</span><br><span class="line"></span><br><span class="line">abi.encodePacked(uint256(1),&quot;hello&quot;,&quot;world&quot;)</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000001    1</span><br><span class="line">0x68656c6c6f</span><br><span class="line">0x776f726c64</span><br><span class="line"></span><br><span class="line">abi.encodePacked(uint256(1),&quot;hellow&quot;,&quot;orld&quot;)</span><br><span class="line">0x0000000000000000000000000000000000000000000000000000000000000001    1</span><br><span class="line">0x68656c6c6f</span><br><span class="line">0x776f726c64</span><br><span class="line">结果发现和上一组一模一样，就无法区分输入的是&quot;hello&quot;,&quot;world&quot;还是&quot;hellow&quot;,&quot;orld&quot;</span><br><span class="line">因此我们输入参数的时候，不要这么输入，</span><br><span class="line">有关字符串、数组、字节的输入一定要非常谨慎，系统会将它们拼接在一起</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line"></span><br><span class="line">pragma solidity &gt;=0.7.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract A &#123;</span><br><span class="line"></span><br><span class="line">    function callBFuncton(address _bAddress, uint256 _num,address _message) public  returns(bool)&#123;</span><br><span class="line">        //2、encodePacked</span><br><span class="line">        bytes4 sig = bytes4(keccak256(&quot;bFunction(uint256,address)&quot;));</span><br><span class="line">        bytes memory _bNum = abi.encode(_num);</span><br><span class="line">        bytes memory _bMessage = abi.encode(_message);</span><br><span class="line">        (bool success, ) = _bAddress.call(</span><br><span class="line">            abi.encodePacked(sig, _bNum,_bMessage)</span><br><span class="line">        );</span><br><span class="line">        return success; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function encode(string memory _message) public pure returns(bytes memory message)&#123;</span><br><span class="line">    	//return abi.encode(_message); (**)</span><br><span class="line">        return abi.encode(uint256(1), _message,&quot;world&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function encodePacked(string memory _message) public pure returns(bytes memory message)&#123;</span><br><span class="line">        return abi.encodePacked(uint256(1),abi.encode(_message),abi.encode(&quot;world&quot;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function encodePacked() public pure returns(bytes memory message)&#123;</span><br><span class="line">        return abi.encodePacked(uint256(1),&quot;hellow&quot;,&quot;orld&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract B &#123;</span><br><span class="line">    uint256 public num;</span><br><span class="line">    address public message;</span><br><span class="line">    event ReceiveMessage(uint256 num,address message);</span><br><span class="line"></span><br><span class="line">    function bFunction(uint256 _num, address _message) public returns(uint256 ,address )&#123;</span><br><span class="line">        emit ReceiveMessage(_num,_message);</span><br><span class="line">        num = _num;</span><br><span class="line">        message = _message;</span><br><span class="line">        return (num, message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/">http://example.com/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/43.Hash/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">43.Hash</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/41.selfdestruct%E5%88%A0%E9%99%A4%E5%90%88%E7%BA%A6/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">41.selfdestruct删除合约</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/chen4903" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ABI%E7%BC%96%E8%A7%A3%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">ABI编解码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81"><span class="toc-number">1.1.</span> <span class="toc-text">编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#abi-encode"><span class="toc-number">1.1.1.</span> <span class="toc-text">abi.encode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#abi-encodePacked"><span class="toc-number">1.1.2.</span> <span class="toc-text">abi.encodePacked</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#abi-encodeWithSignature"><span class="toc-number">1.1.3.</span> <span class="toc-text">abi.encodeWithSignature</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#abi-encodeWithSelector"><span class="toc-number">1.1.4.</span> <span class="toc-text">abi.encodeWithSelector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.5.</span> <span class="toc-text">编码方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E9%80%89%E6%8B%A9%E5%99%A8"><span class="toc-number">1.1.6.</span> <span class="toc-text">函数选择器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E7%A0%81"><span class="toc-number">1.2.</span> <span class="toc-text">解码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#abi-decode"><span class="toc-number">1.2.1.</span> <span class="toc-text">abi.decode</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8Remix%E4%B8%8A%E9%AA%8C%E8%AF%81"><span class="toc-number">1.3.</span> <span class="toc-text">在Remix上验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ABI%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.4.</span> <span class="toc-text">ABI的使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#encodePacked%E5%92%8Cencode%E6%AF%94%E8%BE%83"><span class="toc-number">1.5.</span> <span class="toc-text">encodePacked和encode比较</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0"><span class="toc-number">1.5.1.</span> <span class="toc-text">简述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3"><span class="toc-number">1.5.2.</span> <span class="toc-text">深入理解</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/01.gas%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E7%9A%84%EF%BC%9F/" title="01.gas是如何计算的？"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.gas是如何计算的？"/></a><div class="content"><a class="title" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/01.gas%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E7%9A%84%EF%BC%9F/" title="01.gas是如何计算的？">01.gas是如何计算的？</a><time datetime="2022-11-28T00:52:49.177Z" title="发表于 2022-11-28 08:52:49">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/03.%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3gas%E7%9A%84%E8%AE%A1%E7%AE%97/" title="03.深入了解gas的计算"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.深入了解gas的计算"/></a><div class="content"><a class="title" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/03.%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3gas%E7%9A%84%E8%AE%A1%E7%AE%97/" title="03.深入了解gas的计算">03.深入了解gas的计算</a><time datetime="2022-11-28T00:52:49.175Z" title="发表于 2022-11-28 08:52:49">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/02.%E7%9C%81gas%E6%AD%A5%E9%AA%A4/" title="02.省gas步骤"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.省gas步骤"/></a><div class="content"><a class="title" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/02.%E7%9C%81gas%E6%AD%A5%E9%AA%A4/" title="02.省gas步骤">02.省gas步骤</a><time datetime="2022-11-28T00:52:49.162Z" title="发表于 2022-11-28 08:52:49">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/" title="01.实验室第一次考核"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.实验室第一次考核"/></a><div class="content"><a class="title" href="/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/" title="01.实验室第一次考核">01.实验室第一次考核</a><time datetime="2022-11-28T00:50:56.220Z" title="发表于 2022-11-28 08:50:56">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/01.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="01.内联汇编"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.内联汇编"/></a><div class="content"><a class="title" href="/2022/11/28/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/01.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="01.内联汇编">01.内联汇编</a><time datetime="2022-11-28T00:48:40.540Z" title="发表于 2022-11-28 08:48:40">2022-11-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

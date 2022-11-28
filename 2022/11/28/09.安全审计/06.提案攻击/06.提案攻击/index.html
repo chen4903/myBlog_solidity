@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>06.提案攻击 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="提案攻击简介什么是提案？ 提案攻击：DAO governance attacks 在去中心化自治组织 （DAO）中，参与者会提出关于未来协议升级、资金管理等一些提案。为了让提案生效，需要对其进行投票。在DAO中，参与者要想参与提案投票，需要持有对应的治理代币。拥有治理代币的持有者，可以进行发起提案、投票、执行提案一系列活动。 虽然提案治理有利于建设去中心化的未来，但是也存在一些缺陷。治理代币持有比">
+<meta property="og:type" content="article">
+<meta property="og:title" content="06.提案攻击">
+<meta property="og:url" content="http://example.com/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="提案攻击简介什么是提案？ 提案攻击：DAO governance attacks 在去中心化自治组织 （DAO）中，参与者会提出关于未来协议升级、资金管理等一些提案。为了让提案生效，需要对其进行投票。在DAO中，参与者要想参与提案投票，需要持有对应的治理代币。拥有治理代币的持有者，可以进行发起提案、投票、执行提案一系列活动。 虽然提案治理有利于建设去中心化的未来，但是也存在一些缺陷。治理代币持有比">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9">
+<meta property="article:published_time" content="2022-11-28T00:30:12.839Z">
+<meta property="article:modified_time" content="2022-11-28T00:38:51.937Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '06.提案攻击',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-28 08:38:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">06.提案攻击</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-28T00:30:12.839Z" title="发表于 2022-11-28 08:30:12">2022-11-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-28T00:38:51.937Z" title="更新于 2022-11-28 08:38:51">2022-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="06.提案攻击"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="提案攻击"><a href="#提案攻击" class="headerlink" title="提案攻击"></a>提案攻击</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>什么是提案？</strong></p>
+<p>提案攻击：DAO governance attacks</p>
+<p>在去中心化自治组织 （DAO）中，参与者会提出关于未来协议升级、资金管理等一些提案。为了让提案生效，需要对其进行投票。在DAO中，参与者要想参与提案投票，需要持有对应的治理代币。拥有治理代币的持有者，可以进行发起提案、投票、执行提案一系列活动。</p>
+<p>虽然提案治理有利于建设去中心化的未来，但是也存在一些缺陷。治理代币持有比例较小的用户对参与治理采取理性冷漠态度，这进一步导致 DAO 当中投票权的中心化，转而服务于少数人利益。持有较多治理代币的用户，拥有过多的投票权。</p>
+<p>目前 <code>DAO</code>已经成为常见的 <code>dapp</code>协议的治理模式，在 <code>DAO</code>模式下，协议的资金管理、重要参数的修改、协议升级都通过 <code>DAO</code>合约进行管理。而治理代币的持有者可以向 <code>DAO</code>合约发起提案、投票、执行提案。</p>
+<p><img src="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/1.jpg"></p>
+<p>相应地，基于 <code>DAO</code>提案的攻击也成为了黑客的“新潮流”</p>
+<p><strong>提案常常存在以下风险：</strong></p>
+<ul>
+<li>决策影响：很多因素很容易影响持有人。这可以通过付费公关活动、影响者营销，甚至通过贿赂人们对提案发表有偏见的意见来实现。</li>
+<li>垃圾提案：任何人都可以通过存入一定数量的该链代币来提出治理建议。这可能会导致垃圾邮件提案。它主要发生在代币价格下跌时，提出一个提案只需要几美元。</li>
+<li>参与度低：持币者有时候不能理解过强的技术性提案，例如升级软件版本的链式升级提议。因此做出不了正确的理解和参与治理的决定</li>
+<li>高投票权：拥有大量代币的持有者比拥有更少代币的持有者拥有更多的投票权。这意味着如果一个人拥有超过通过提案所需的代币数量，他们可以单独地为协议做出任何决定。</li>
+</ul>
+<p><strong>如何进行攻击？</strong></p>
+<p>攻击者通过获得足够的投票权来重塑规则，或者影响足够的代币持有者，对提案进行有偏见的投票。这样的行为，我们称之为提案攻击。</p>
+<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>暂无</p>
+<h2 id="相关案例"><a href="#相关案例" class="headerlink" title="相关案例"></a>相关案例</h2><ol>
+<li>2022年4月17日，算法稳定币项目Beanstalk Farms遭黑客攻击。我们经过分析发现，投票合约中的票数是由账户中的BEAN3CRV-f代币持有量计算得到的。攻击者利用了该漏洞，通过闪电贷获得大量代币，将这些代币投入到矿池中，临时获得大量的BEAN3CRV-f代币，从而获得了绝对的票数优势，使得自己的提案可以由自己决定，而不需要其他人的投票。最终盗取了大量的Token。</li>
+<li>2022年5月9日，Fortress Loans遭到黑客攻击。本次提案攻击发生的根本原因有两个：（1）价格预言机计算价格的数据来源Chain合约缺少签名地址的验证以及power的验证；（2）治理合约中，受到FTS价格影响，提案投票的最低支持票数（FTS数量）的总价值低，使得提案可以在付出较小的代价下通过并执行。</li>
+<li>2022&#x2F;7&#x2F;24，据成都链安“链必应-区块链安全态势感知平台”安全舆情监控数据显示，Audius项目遭受恶意提案攻击。成都链安安全团队简析如下：攻击者先部署恶意合约并在Audius: Community Treasury 合约中调用initialize将自己设置为治理合约的监护地址，随后攻击者调用ProposalSubmitted 提交恶意85号提案并被通过，该提案允许向攻击合约转账1,856w个AudiusToken，随后攻击者将获得的AudiusToken兑换为ETH，总共获利约108W美元，目前获利资金仍然存放于攻击者地址上（<code>0xa0c7BD318D69424603CBf91e9969870F21B8ab4c</code>）。</li>
+<li>区块链音乐平台Audius遭黑客以恶意提案攻击，705ETH已转入混币协议。Audius 受害金额达六百万美金价值的AUDIO 代币，已换成705 个ETH。攻击者变更了Audius 治理合约的参数，并执行恶意提案，导致1850 万个AUDIO 代币遭转出。黑客呼叫在治理合约中的initialize 功能已改变参数，像是投票期间、延迟执行与监护地址等; 接着攻击者提交了恶意提案ID 85。攻击者向恶意提案投票，并执行其内容，得到了AUDIO 代币并脱手获利。截稿前，黑客已将全数ETH 转入混币协议<a target="_blank" rel="noopener" href="https://www.wwsww.cn/xinbi/8656.html">Tornado Cash</a>。</li>
+</ol>
+<h3 id="Beanstalk-Farms"><a href="#Beanstalk-Farms" class="headerlink" title="Beanstalk Farms"></a>Beanstalk Farms</h3><p>在这次攻击事件中，攻击者创建了一个恶意提案，通过闪电贷获得了足够多的投票，并执行了该提案，从而从协议中窃取了资产，总共获利差不多8000万美金</p>
+<p><strong>攻击流程</strong></p>
+<p><img src="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/1.svg"></p>
+<blockquote>
+<ol>
+<li>从跨链桥获取初始资金：<a target="_blank" rel="noopener" href="https://etherscan.io/tx/0x1fb73ec5ed8c25b9ca7c9c3c465ab4bbca8554927094f939d96600271475e101">https://etherscan.io/tx/0x1fb73ec5ed8c25b9ca7c9c3c465ab4bbca8554927094f939d96600271475e101</a></li>
+<li>创建并提交提案<ol>
+<li>恶意提案：<a target="_blank" rel="noopener" href="https://etherscan.io/address/0xe5ecf73603d98a0128f05ed30506ac7a663dbb69">https://etherscan.io/address/0xe5ecf73603d98a0128f05ed30506ac7a663dbb69</a></li>
+<li>创建：<a target="_blank" rel="noopener" href="https://etherscan.io/tx/0x677660ce489935b94bf5ac32c494669a71ee76913ffabe623e82a7de8226b460">https://etherscan.io/tx/0x677660ce489935b94bf5ac32c494669a71ee76913ffabe623e82a7de8226b460</a></li>
+<li>提交：<a target="_blank" rel="noopener" href="https://etherscan.io/tx/0x68cdec0ac76454c3b0f7af0b8a3895db00adf6daaf3b50a99716858c4fa54c6f">https://etherscan.io/tx/0x68cdec0ac76454c3b0f7af0b8a3895db00adf6daaf3b50a99716858c4fa54c6f</a></li>
+</ol>
+</li>
+<li>发起攻击：<a target="_blank" rel="noopener" href="https://etherscan.io/tx/0xcd314668aaa9bbfebaf1a0bd2b6553d01dd58899c508d4729fa7311dc5d33ad7">https://etherscan.io/tx/0xcd314668aaa9bbfebaf1a0bd2b6553d01dd58899c508d4729fa7311dc5d33ad7</a></li>
+</ol>
+</blockquote>
+<p><strong>黑客使用的一些欺骗手法</strong></p>
+<p>在Beanstalk的治理合约中提供了emergencyCommit方法执行提案</p>
+<p><img src="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/2.webp"></p>
+<p>提案从提交到执行，需要超过2&#x2F;3的投票以及24小时的窗口期。一方面，黑客通过闪电贷获取足够的投票权；另一方面，黑客为了更好的的隐藏自己，使用了一些方法：</p>
+<ol>
+<li>黑客的初始资金来自跨链桥，而不是混币器，可以在一定程度上躲避安全公司的监控，目前的混币器资金出入基本受到了各安全公司的监控</li>
+<li>黑客还创建了一个正常的提案 <a target="_blank" rel="noopener" href="https://etherscan.io/address/0x259a2795624b8a17bc7eb312a94504ad0f615d1e">IniBip18</a> ，用来混淆视线</li>
+</ol>
+<p><img src="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/4.svg"></p>
+<p><strong>提交恶意提案的交易</strong></p>
+<p><a target="_blank" rel="noopener" href="https://etherscan.io/tx/0x68cdec0ac76454c3b0f7af0b8a3895db00adf6daaf3b50a99716858c4fa54c6f">链接</a></p>
+<p><img src="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/5.webp"></p>
+<p><strong>提交伪装的正常提案的交易</strong></p>
+<p><a target="_blank" rel="noopener" href="https://etherscan.io/tx/0x9575e478d7c542558ecca52b27072fa1f1ec70679106bdbd62f3bb4d6c87a80d">链接</a></p>
+<p><img src="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/6.webp"></p>
+<p><strong>执行恶意提案</strong></p>
+<p><a target="_blank" rel="noopener" href="https://etherscan.io/tx/0xcd314668aaa9bbfebaf1a0bd2b6553d01dd58899c508d4729fa7311dc5d33ad7">链接</a></p>
+<p><img src="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/7.webp"></p>
+<p>附：对本次攻击更加详细的解读：<a target="_blank" rel="noopener" href="http://www.hackdig.com/04/hack-644767.htm">链接1</a>。<a target="_blank" rel="noopener" href="https://learnblockchain.cn/article/4999">链接2</a></p>
+<h3 id="Fortress-Loans"><a href="#Fortress-Loans" class="headerlink" title="Fortress Loans"></a>Fortress Loans</h3><p>Fortress Loans协议是一个借贷协议，且通过 <code>DAO</code>治理，<code>FTS</code>是其治理代币，该协议在代码层面和经济层面都存在一些问题，最终被黑客利用，耗干了流动性。黑客获利接近300万美金。</p>
+<p><strong>攻击流程</strong></p>
+<p><img src="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/8.svg"></p>
+<blockquote>
+<ol>
+<li>缺陷合约<ol>
+<li>治理合约，通过提案的阈值太低：<a target="_blank" rel="noopener" href="https://bscscan.com/address/0xe79ecdb7fedd413e697f083982bac29e93d86b2e#code">https://bscscan.com/address/0xe79ecdb7fedd413e697f083982bac29e93d86b2e#code</a></li>
+<li>价格预言机，对FTS价格获取专门处理：<a target="_blank" rel="noopener" href="https://bscscan.com/address/0x00fcf33bfa9e3ff791b2b819ab2446861a318285#code">https://bscscan.com/address/0x00fcf33bfa9e3ff791b2b819ab2446861a318285#code</a></li>
+<li>可修改FTS价格：<a target="_blank" rel="noopener" href="https://bscscan.com/address/0xc11b687cd6061a6516e23769e4657b6efa25d78e#code">https://bscscan.com/address/0xc11b687cd6061a6516e23769e4657b6efa25d78e#code</a></li>
+</ol>
+</li>
+<li>攻击交易：<a target="_blank" rel="noopener" href="https://bscscan.com/tx/0x13d19809b19ac512da6d110764caee75e2157ea62cb70937c8d9471afcb061bf">https://bscscan.com/tx/0x13d19809b19ac512da6d110764caee75e2157ea62cb70937c8d9471afcb061bf</a></li>
+</ol>
+</blockquote>
+<p><strong>黑客攻击的成本</strong></p>
+<p>这是一起针对借贷协议的攻击，没有用到闪电贷，攻击成本主要体现在让恶意提案通过的投票成本，约为11个ETH，但最终获利1000多个ETH，可以说相对获利可忽略不计。</p>
+<h2 id="预防措施"><a href="#预防措施" class="headerlink" title="预防措施"></a>预防措施</h2><p>在DAO中，治理代币分配的市场机制无法区分想要为项目做出宝贵贡献的用户和高度重视破坏或以其他方式控制项目的攻击者，这两个群体都是愿意高价格购买大量的治理代币。</p>
+<p>这种不可区分性问题意味着去中心化治理不是免费的。相反，协议设计者面临着在公开去中心化治理和保护他们的系统免受试图利用治理机制的攻击者之间的根本权衡。越多的社区成员可以自由地获得治理权和影响协议，攻击者就越容易使用相同的机制进行恶意更改。 </p>
+<p>评估攻击的公式：</p>
+<p><code>攻击所得利益=攻击将会得到的价值-获得投票权的成本-执行攻击的成本</code></p>
+<p>以下做法来进行预防：</p>
+<ul>
+<li><p><strong>降低攻击将会得到的价值</strong></p>
+<ul>
+<li>项目越大越成功，它的价值越高，越容易成为黑客的攻击目标。为了在不破坏自身项目情况下，降低攻击的价值，相关设计人员可以限制提案治理范围来限制攻击的价值，比如限制提案中的更改协议参数的权限。</li>
+</ul>
+</li>
+<li><p><strong>增加获得投票权的成本</strong></p>
+<ul>
+<li><p>一个项目还可以采取措施，使其更难获得攻击所需的投票权。代币的流动性越强，就越容易获得投票权——所以几乎自相矛盾的是，项目可能希望为了保护治理而减少流动性。人们可以尝试直接降低代币的短期可交易性，但这在技术上可能是不可行的。 </p>
+<p>为了间接减少流动性，项目可以提供激励措施，使个人代币持有者不太愿意出售。这可以通过激励质押或赋予代币超越纯粹治理的独立价值来实现。代币持有者获得的价值越多，他们与项目的成功就越一致。 </p>
+<p>独立代币的好处可能包括参加面对面的活动或社交体验。至关重要的是，像这样的好处对与项目保持一致的个人来说是高价值的，但对攻击者来说毫无用处。提供这些好处会提高攻击者在获取代币时面临的有效价格：由于独立的好处，当前持有者将不太愿意出售，这应该会提高市场价格；然而，虽然攻击者必须支付更高的价格，但独立功能的存在并没有提高攻击者获取token的价值。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>增加执行攻击的成本</strong></p>
+<ul>
+<li>引入摩擦，使攻击者即使在获得代币后也更难行使投票权。例如，设计师可能需要某种用户身份验证才能参与投票，例如 KYC（了解您的客户）检查或信誉评分阈值。人们甚至可以首先限制未经身份验证的参与者获取投票代币的能力，可能需要一些现有的验证者来证明新政党的合法性。</li>
+</ul>
+</li>
+</ul>
+<p>另外的一些措施</p>
+<ul>
+<li><strong>将投票和执行分离</strong><ul>
+<li>保证投票和执行不在同一个区块时间，即不能在同一笔交易内同时完成投票和执行，这样也可以避免闪电贷带来的风险。</li>
+</ul>
+</li>
+<li><strong>增加权限</strong><ul>
+<li>禁止合约投票，只能够通过EOA账户来投票，这样就可以规避闪电贷带来的影响。</li>
+</ul>
+</li>
+<li><strong>关注提案</strong><ul>
+<li>项目方以及社区成员应高度关注所有提案，对于有风险的提案， 应及时做出反应以及通知，尽可能的杜绝恶意提案的执行。</li>
+</ul>
+</li>
+<li><strong>合约审计</strong><ul>
+<li>在项目上线运行前，可以进行多次全面的合约审计，尽可能的保证合约的安全性。通付盾链上安全团队（SharkTeam）是领先的区块链安全服务团队，精通区块链和智能合约底层原理，为开发者提供合约审计和应急响应服务，合约审计包含近200项审计内容，覆盖高级语言层、虚拟机层、区块链层和业务逻辑层，全面保障智能合约安全。</li>
+</ul>
+</li>
+<li><strong>防止垃圾邮件提案</strong><ul>
+<li>当代币价格低且任何人都能负担得起提出提案所需的代币数量时，请确保将提交提案所需的存款金额增加到一个重要值，以防止垃圾邮件提案。</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/9.svg"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/">http://example.com/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/05.%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/05.%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">05.整数溢出</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/03.delegatecall%E6%BC%8F%E6%B4%9E/03.delegate%E6%BC%8F%E6%B4%9E/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">03.delegate漏洞</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/chen4903" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">提案攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A1%88%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text">相关案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Beanstalk-Farms"><span class="toc-number">1.3.1.</span> <span class="toc-text">Beanstalk Farms</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fortress-Loans"><span class="toc-number">1.3.2.</span> <span class="toc-text">Fortress Loans</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E9%98%B2%E6%8E%AA%E6%96%BD"><span class="toc-number">1.4.</span> <span class="toc-text">预防措施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/01.gas%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E7%9A%84%EF%BC%9F/" title="01.gas是如何计算的？"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.gas是如何计算的？"/></a><div class="content"><a class="title" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/01.gas%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E7%9A%84%EF%BC%9F/" title="01.gas是如何计算的？">01.gas是如何计算的？</a><time datetime="2022-11-28T00:52:49.177Z" title="发表于 2022-11-28 08:52:49">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/03.%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3gas%E7%9A%84%E8%AE%A1%E7%AE%97/" title="03.深入了解gas的计算"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.深入了解gas的计算"/></a><div class="content"><a class="title" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/03.%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3gas%E7%9A%84%E8%AE%A1%E7%AE%97/" title="03.深入了解gas的计算">03.深入了解gas的计算</a><time datetime="2022-11-28T00:52:49.175Z" title="发表于 2022-11-28 08:52:49">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/02.%E7%9C%81gas%E6%AD%A5%E9%AA%A4/" title="02.省gas步骤"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.省gas步骤"/></a><div class="content"><a class="title" href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/02.%E7%9C%81gas%E6%AD%A5%E9%AA%A4/" title="02.省gas步骤">02.省gas步骤</a><time datetime="2022-11-28T00:52:49.162Z" title="发表于 2022-11-28 08:52:49">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/" title="01.实验室第一次考核"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.实验室第一次考核"/></a><div class="content"><a class="title" href="/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/" title="01.实验室第一次考核">01.实验室第一次考核</a><time datetime="2022-11-28T00:50:56.220Z" title="发表于 2022-11-28 08:50:56">2022-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/28/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/01.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="01.内联汇编"><img src="https://s1.vika.cn/space/2022/11/27/9f9d4d1e5c4a4cb5ba03b0421d0270d9" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.内联汇编"/></a><div class="content"><a class="title" href="/2022/11/28/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/01.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="01.内联汇编">01.内联汇编</a><time datetime="2022-11-28T00:48:40.540Z" title="发表于 2022-11-28 08:48:40">2022-11-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
