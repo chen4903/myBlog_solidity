@@ -1,0 +1,330 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>03.深入Solidity数据存储位置 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="深入Solidity数据存储位置文章较长，内容很详细、很深入。但是不要吓到，坐下来，喝杯咖啡或你最喜欢的饮料，慢慢体会。 我们来探索Solidity的一个新的和必不可少的部分：数据存储位置。具有挑战性的话题。非常底层，因为它与以太坊虚拟机（EVM）的架构有关。 但通过类比，我们总是可以更好地理解复杂的编程概念、架构、智能合约和一般的区块链。 在这篇文章中，我们将通过类比EVM如果是一个 “巨大的工">
+<meta property="og:type" content="article">
+<meta property="og:title" content="03.深入Solidity数据存储位置">
+<meta property="og:url" content="http://example.com/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="深入Solidity数据存储位置文章较长，内容很详细、很深入。但是不要吓到，坐下来，喝杯咖啡或你最喜欢的饮料，慢慢体会。 我们来探索Solidity的一个新的和必不可少的部分：数据存储位置。具有挑战性的话题。非常底层，因为它与以太坊虚拟机（EVM）的架构有关。 但通过类比，我们总是可以更好地理解复杂的编程概念、架构、智能合约和一般的区块链。 在这篇文章中，我们将通过类比EVM如果是一个 “巨大的工">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2022-12-18T09:53:19.338Z">
+<meta property="article:modified_time" content="2022-12-18T14:56:37.131Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '03.深入Solidity数据存储位置',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-18 22:56:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">109</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">03.深入Solidity数据存储位置</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-18T09:53:19.338Z" title="发表于 2022-12-18 17:53:19">2022-12-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-12-18T14:56:37.131Z" title="更新于 2022-12-18 22:56:37">2022-12-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/">03.solidity进阶</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="深入Solidity数据存储位置"><a href="#深入Solidity数据存储位置" class="headerlink" title="深入Solidity数据存储位置"></a>深入Solidity数据存储位置</h1><p>文章较长，内容很详细、很深入。但是不要吓到，坐下来，喝杯咖啡或你最喜欢的饮料，慢慢体会。</p>
+<p>我们来探索Solidity的一个新的和必不可少的部分：数据存储位置。具有挑战性的话题。非常底层，因为它与以太坊虚拟机（EVM）的架构有关。</p>
+<p>但通过类比，我们总是可以更好地理解复杂的编程概念、架构、智能合约和一般的区块链。</p>
+<p>在这篇文章中，我们将通过类比EVM如果是一个 “巨大的工业工厂 “来学习每个数据位置（我希望能帮助你理解）。</p>
+<p>然后我们将进入Solidity代码，学习每个数据位置的参考类型的规则和行为。所有这些都有图画、架构图、代码片段以及你可能知道的流行项目的源代码例子来学习。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>作为一个对自己事业充满热情的人，一个工业炉的建造者和翻新者，我的父亲决定把我送到工业工厂去工作。</p>
+<p>非常大的工厂! 熔化和制造钢铁和铝的工厂（Arcelor Mittal和Constellium）。</p>
+<p>你需要一辆车在工业工厂的不同部门之间来回穿梭，比如钢铁厂和轧钢厂。</p>
+<p>下图是以太坊和EVM架构代表图</p>
+<p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/afWDt.jpg" alt="img"></p>
+<p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/16di35QHcPQwQC4QryDT6TA.png" alt="img"></p>
+<p>和EVM架构图一样，安赛乐米塔尔工业厂房的道路规划图一开始也是很难理解的!</p>
+<p>我还记得的是我第一次进入包含轧机的机库工业炉是如此巨大，从这头走到那头需要几分钟时间！</p>
+<p>机库里挤满了其他建筑工人、砌砖工人、电工，叉车在四周移动和行驶，还有人控制着机器用巨大的机械臂把东西搬进和搬出炉子。</p>
+<p>就像我父亲一样，我是一个不同类型的建设者，也就是人们在web3中所说的 “建设者”。但当我回头看这个工业工厂时，我发现它的内部与EVM的内部有很多共同之处。</p>
+<p>材料被储存在许多不同的地方，从架子上拿出来，放在炉子和其他随机的机器里。它们会被熔化、加工或处理。</p>
+<h2 id="EVM是一个工业工厂"><a href="#EVM是一个工业工厂" class="headerlink" title="EVM是一个工业工厂"></a>EVM是一个工业工厂</h2><p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/0TYrySnXlyW6CwoKH.jpeg" alt="img"></p>
+<p>我说过，”智能合约是非常放松的小生命”。</p>
+<p>但是，一旦智能合约被调用，它们就会变得非常活跃! 他们的底层逻辑作为字节码运行并被执行。而这多亏了EVM。</p>
+<p>EVM从未放松过。它不断地在运行软件客户端的每台机器上重复运行。这是为了更新区块链的状态，让每个人都保持同步。</p>
+<p>一个大的工业工厂也是如此。它一直在运行。门口总是有人，夜班工人在机库里整理东西，卡车进进出出，机器和熔炉在熔化、燃烧和加工更多材料。</p>
+<p>当你调用一个智能合约时，EVM会运行并执行其字节码中的一组指令（&#x3D;操作码）。其中一些操作码指示EVM从&#x2F;向不同的位置读写数据。EVM需要这些多个数据位置来正确完成其工作。</p>
+<p>在一个工厂里，操作工作和材料可以在多个地方找到。</p>
+<ul>
+<li>叉车从位于工厂专用储存区的大而高的货架上抓取托盘上的材料。(又称<strong>存储Storage</strong>)</li>
+<li>操作员从控制室控制机器和机器人，将无法通过炉门的大块钢铁&#x2F;铝材分解成小块。(又称<strong>内存</strong>)</li>
+<li>要加工的材料通过承运人（卡车或轮船）运送，装在密封的容器中，你只能知道&#x2F;看到其中的内容，但不能触摸它。(又称<strong>calldata</strong>)</li>
+<li>由于传送带的存在，更多的材料被加工并通过工厂运送。(又称<strong>栈</strong>)</li>
+<li>最后，工厂有自己的道路交通规则。里面到处都是路标! (a.k.a <strong>代码</strong>)</li>
+</ul>
+<p>你明白了，就像工厂一样，<strong>EVM使用很多不同的区域来计算和做处理工作</strong>。</p>
+<h2 id="为什么要在-Solidity-中理解-Evm-数据位置？"><a href="#为什么要在-Solidity-中理解-Evm-数据位置？" class="headerlink" title="为什么要在 Solidity 中理解 Evm 数据位置？"></a>为什么要在 Solidity 中理解 Evm 数据位置？</h2><p>学习每个数据位置是如何工作的，需要学习很多东西，比如 “存储”、”内存 “和 “calldata”的结构和布局，或者 “什么内容可以存储在哪里”。</p>
+<p>但最重要的是，它教会了你与它们每一个相关的（Gas）成本，以及我所说的可变性&#x2F;安全性的权衡。</p>
+<p>作为一个Solidity开发者，对EVM中的数据位置以及如何充分使用它们的良好理解将使你能够：</p>
+<ol>
+<li>提高你的智能合约的性能。</li>
+<li>最小化其执行成本（调用其公共或内部函数时使用的Gas差异）。</li>
+<li>强化安全性，防止潜在的错误。</li>
+</ol>
+<h2 id="数据位置-概述"><a href="#数据位置-概述" class="headerlink" title="数据位置  - 概述"></a>数据位置  - 概述</h2><p>本文旨在对这些不同的数据位置做一个很好的概述，数据可以被写入和读出。我们将看到，有些位置是只读的，不能写入，而其他位置是可变的，里面存储的值可以被编辑。</p>
+<p>EVM有五个主要的数据位置：</p>
+<ul>
+<li>存储（Storage）</li>
+<li>内存（Memory）</li>
+<li>调用数据（Calldata）</li>
+<li>堆栈（Stack）</li>
+<li>代码（Code）</li>
+</ul>
+<p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/1ArLLYlT2O3haZtvvyx4Rcw.png" alt="img"></p>
+<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><blockquote>
+<p>智能合约的存储相当于工业机库上的存储架单元</p>
+</blockquote>
+<p>在以太坊中，每个特定地址的智能合约都有自己的 “存储”，由一个键值存储组成，将256位映射到256位。存储中的数据在函数调用和交易之间持续存在。</p>
+<p>存储是所有合约状态变量所在的地方。每个合约都有自己的存储。存储中的变量在函数调用之间持续存在。然而，存储空间的使用是相当昂贵的。</p>
+<p>由于存储指的是合约存储，它指的是永久存储在区块链上的数据。</p>
+<p>你可以从&#x2F;向合约存储中读取和写入。在低层，用于这样做的EVM操作码是<code>SSTORE</code>和<code>SLOAD</code>。</p>
+<h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><p>EVM <code>内存</code>是用来保存临时值的，在外部函数调用之间被擦除。然而，它的使用成本比较低。</p>
+<p>在EVM中，内存是易失性的，是特定合约（环境）的上下文。这意味着，当执行环境从一个合约变为另一个合约时，“白板&#x2F;写字板”被清除。在每一个新的消息调用中，都会获得一个新的被清除的内存实例。</p>
+<p>因此，内存变量是暂时的。它们在对其他合约的外部函数调用之间被擦除。</p>
+<p>你可以从&#x2F;到EVM内存中读取和写入。在低层，用于从&#x2F;向内存读写的EVM操作码是<code>MLOAD</code>, <code>MSTORE</code>, 和<code>MSTORE8</code>。</p>
+<p>某些EVM操作码，如 “<code>CALL</code>“、”<code>DELEGATECALL</code> “或 “<code>STATICCALL</code>“ 从EVM内存中消耗其参数。</p>
+<h3 id="Calldata"><a href="#Calldata" class="headerlink" title="Calldata"></a>Calldata</h3><p><code>calldata</code>相当于从船上或卡车上取出的一个集装箱。这些集装箱包含送到工厂进行加工的材料。Calldata是只读的。</p>
+<p><code>calldata</code>是交易的数据或外部函数调用的参数所在的位置。它是一个只读的数据位置。你不能写到它。</p>
+<p>Calldata的行为主要类似于内存，是一个可由字节编址的空间。你必须为你想读取的字节数指定一个准确的字节偏移。</p>
+<p>在低层，可用于从calldata读取的EVM操作码是<code>CALLDATALOAD</code>, <code>CALLDATASIZE</code>和<code>CALLDATACOPY</code>。</p>
+<h3 id="堆栈（Stack）"><a href="#堆栈（Stack）" class="headerlink" title="堆栈（Stack）"></a>堆栈（Stack）</h3><p>堆栈是用来存放小型局部变量的。它的使用几乎是免费的（用Gas很低），但大小有限，能容纳的项目数量也有限。</p>
+<p>堆栈是大多数在函数内部创建的局部变量所在的地方。它是EVM的一个重要部分。</p>
+<p>在低层，可以用来对堆栈进行操作的EVM操作码，包括<code>PUSH</code>、<code>POP</code>、<code>SWAP</code>和<code>DUP</code>指令。大多数其他的EVM操作码从堆栈中消耗数据（通过从堆栈中取出），并将结果推回堆栈中。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>代码指的是合约的字节码。你只能从合约字节码中读取，而不能写到它。通常是你在Solidity中定义为 <code>constant</code>的变量。大多数的EVM操作码从堆栈中消耗它们的参数。</p>
+<p>字节码包含了很多关于合约的信息和逻辑，包括调度器，以及合约元数据。</p>
+<p>在低层，从智能合约的代码中读取的EVM操作码是<code>CODESIZE</code>和<code>CODECOPY</code>及操作码<code>EXTERNALCODESIZE</code>和<code>EXTERNALCODECOPY</code>。</p>
+<p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/1oeSfgoTY45GbyFfhur3PBw.png" alt="img"></p>
+<h2 id="数据位置-规则"><a href="#数据位置-规则" class="headerlink" title="数据位置 - 规则"></a>数据位置 - 规则</h2><h3 id="变量的默认位置"><a href="#变量的默认位置" class="headerlink" title="变量的默认位置"></a><strong>变量的默认位置</strong></h3><p>Solidity语言定义了一些默认的规则，围绕着一些变量的默认位置，取决于它们被定义的位置。</p>
+<ul>
+<li>定义为 <code>constant</code>的变量 &#x3D; 合约代码(&#x3D;bytecode)。</li>
+</ul>
+<p>这些变量是不可改变的，一旦合约被部署就不能改变。它们是只读的，可以被内联使用。</p>
+<ul>
+<li>状态变量（在函数之外声明） &#x3D; 默认情况下在存储中。</li>
+</ul>
+<p>这些被称为状态变量，因为它们是合约状态的一部分，反过来也是区块链全局状态的一部分（&#x3D;以太坊中所有智能合约的状态）。这些变量被永久地写入区块链。</p>
+<ul>
+<li>本地变量（在函数体内声明）&#x3D; 在堆栈中。</li>
+</ul>
+<p>值类型的变量（例如，<code>uint256</code>, <code>bytes8</code> , <code>address</code>）驻留在堆栈中。</p>
+<p>大多数时候，你不需要使用数据位置关键字（<code>storage</code>，<code>memory</code>，或<code>calldata</code>），因为Solidity通过上面解释的默认规则处理数据的位置。</p>
+<p>然而，有时你确实需要使用这些关键字并指定数据位置，即在处理复杂类型的变量时，如函数内的结构体和数组。</p>
+<h3 id="参考类型"><a href="#参考类型" class="headerlink" title="参考类型"></a>参考类型</h3><p>对于数组(固定或动态大小的数组, 如<code>uint256[]</code>), <code>bytes</code>, <code>string</code>, 结构体和映射, 你必须明确提供存储值的数据区域. 这可以是<code>storage</code>，<code>memory</code>或<code>calldata</code>。</p>
+<p>通过使用这些关键字，你可以创建一个 “引用” 类型的变量。这种类型必须比值类型更仔细地处理。</p>
+<p>下一个问题自然就出现了：</p>
+<blockquote>
+<p>什么时候使用关键字存储（storage），内存（memory），和calldata？</p>
+</blockquote>
+<p>你只能在函数中的3个地方指定引用一个变量的数据位置。</p>
+<ul>
+<li>对于参数（&#x3D;函数定义）</li>
+<li>对于函数内部的局部变量（&#x3D;函数主体）</li>
+<li>返回值总是在内存中（&#x3D;函数定义）。</li>
+</ul>
+<blockquote>
+<p>备注： 在Solidity 0.5.0之前，当一个复杂类型的变量（例如，动态大小的数组）被作为一个函数参数传递时，可以不指定这个变量的数据位置。</p>
+</blockquote>
+<h3 id="在函数参数上的规则"><a href="#在函数参数上的规则" class="headerlink" title="在函数参数上的规则"></a>在函数参数上的规则</h3><p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/125008Ad5Igy4wtOccnpxdA.png" alt="img"></p>
+<p>当<code>storage</code>被用作一个函数参数的引用时，它是一个指向合约存储的指针。</p>
+<p>对于<code>memory</code>和<code>calldata</code>也是如此。这样的关键字指向EVM内存中的某个位置或从交易中进来的输入数据（&#x3D;calldata）的指针。</p>
+<h3 id="在函数体内的规则"><a href="#在函数体内的规则" class="headerlink" title="在函数体内的规则"></a>在函数体内的规则</h3><p>在函数内部，无论函数的可见性如何，都可以指定所有三个数据位置:</p>
+<p>然而，引用类型之间的赋值是受特定规则约束的。</p>
+<ul>
+<li><code>storage</code> 引用：总是可以直接从合约存储中（&#x3D;状态变量）或通过另一个 “存储” 引用 给一些变量赋值，但它们不能赋值一个 “内存 “或 “calldata “引用。</li>
+<li><code>memory</code>引用：可以被分赋值任何东西（直接的状态变量，或<code>storage</code>、<code>memory</code>或<code>calldata</code>引用）。它总是创建一个副本。</li>
+<li><code>calldata</code>引用：总是可以直接从calldata（&#x3D; tx&#x2F;message调用的输入），或通过另一个<code>calldata</code>引用赋值，但它们不能从<code>storage</code>或<code>memory</code>引用赋值。</li>
+</ul>
+<p>为了更简单地描述它。</p>
+<blockquote>
+<p>对于memory &#x3D;总是可以复制内存中的任何数据（无论它来自合约的存储还是calldata）。</p>
+<p>对于存储和calldata &#x3D; 我们只能分配来自指定数据位置的值（无论是直接类型还是通过相同类型的引用）。</p>
+</blockquote>
+<h2 id="数据位置-行为"><a href="#数据位置-行为" class="headerlink" title="数据位置 - 行为"></a>数据位置 - 行为</h2><p>Solidity文档中提到了以下内容：”数据位置不仅与数据的持久性有关，而且还与赋值的语义有关”。</p>
+<p>让我们用一个简单的合约作为例子来更好地理解。这个合约在存储中持有一个结构体的映射。为了比较每个数据位置的行为，我们将使用不同的函数，使用不同的数据位置关键字。</p>
+<ul>
+<li>使用存储 “storage”的getter。</li>
+<li>使用内存 “memory”的getter。</li>
+<li>使用存储 “storage”的setter。</li>
+<li>使用内存 “memory”的setter。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: Apache-2.0  </span><br><span class="line">pragma solidity ^ 0.8 .0;</span><br><span class="line"></span><br><span class="line">contract Garage &#123;</span><br><span class="line">  struct Item &#123;</span><br><span class="line">    uint256 units;</span><br><span class="line">  &#125;</span><br><span class="line">  mapping(uint256 =&gt; Item) items;</span><br><span class="line"></span><br><span class="line">  // gas (view): 24,025  </span><br><span class="line">  function getItemUnitsStorage(uint _itemIndex) public view returns(uint) &#123;</span><br><span class="line">    Item storage item = items[_itemIndex];</span><br><span class="line">    return item.units;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // gas (view): 24,055  </span><br><span class="line">  function getItemUnitsMemory(uint _itemIndex) public view returns(uint) &#123;</span><br><span class="line">    Item memory item = items[_itemIndex];</span><br><span class="line">    return item.units;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // gas: 50,755 (1st storage write)  </span><br><span class="line">  function setItemUnitsStorage(uint256 _id, uint256 _units) public &#123;</span><br><span class="line">    Item storage item = items[_id];</span><br><span class="line">    item.units = _units;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // gas: 27,871  </span><br><span class="line">  function setItemUnitsMemory(uint256 _id, uint256 _units) public &#123;</span><br><span class="line">    Item memory item = items[_id];</span><br><span class="line">    item.units = _units;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用存储的Getter-与-内存的Getter-对比"><a href="#使用存储的Getter-与-内存的Getter-对比" class="headerlink" title="使用存储的Getter 与 内存的Getter 对比"></a>使用存储的Getter 与 内存的Getter 对比</h3><p>我们要问自己的第一个问题是：使用内存的getter还是使用存储的getter更便宜？它们各自是如何工作的？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// gas (view): 24,025  </span><br><span class="line">function getItemUnitsStorage(uint _itemIndex) public view returns(uint) &#123;</span><br><span class="line">  Item storage item = items[_itemIndex];</span><br><span class="line">  return item.units;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// gas (view): 24,055  </span><br><span class="line">function getItemUnitsMemory(uint _itemIndex) public view returns(uint) &#123;</span><br><span class="line">  Item memory item = items[_itemIndex];</span><br><span class="line">  return item.units;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 “storage “的getter比使用 “memory “的getter稍微便宜一些，因为它充当了一个存储指针。</p>
+<p>使用<code>memory</code>的getter更贵，花费更多的Gas，因为要创建一个新的变量。在上面的例子中，除了读取存储映射<code>items[_itemIndex]</code>里面的值之外，它还会复制内存中的值。</p>
+<p>让我们确保理解这里到底发生了什么。根据关键字 “storage “或 “memory”，EVM在幕后做了什么？</p>
+<p>我在下面列出了两种获取器类型的操作码序列（为了清晰和简洁，左边没有写程序计数器）。你可以通过在Remix中调试代码来查看它们。</p>
+<p>如果我们比较两个getter函数的操作码，我们会发现，与使用内存的getter（45条指令）相比，使用存储的getter包含更少的操作码（30条指令）。</p>
+<blockquote>
+<p>建议：我强烈建议使用evm.codes网站来测试这两个函数，并分析操作码和存储&#x2F;内存中一个又一个操作码的变化。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">; getItemUnitsStorage = 30 instructions</span><br><span class="line">PUSH1 00   ; 1) manipulate + prepare the stack</span><br><span class="line">DUP1</span><br><span class="line">PUSH1 00   </span><br><span class="line">DUP1</span><br><span class="line">DUP5       </span><br><span class="line">DUP2</span><br><span class="line">MSTORE     ; 2.1) prepare the memory for hashing (1)</span><br><span class="line">PUSH1 20   </span><br><span class="line">ADD    </span><br><span class="line">SWAP1</span><br><span class="line">DUP2 </span><br><span class="line">MSTORE     ; 2.2) prepare the memory for hashing (2)</span><br><span class="line">PUSH1 20</span><br><span class="line">ADD</span><br><span class="line">PUSH1 00</span><br><span class="line">SHA3       ; 3) compute the storage number to load via hashing</span><br><span class="line">SWAP1</span><br><span class="line">POP</span><br><span class="line">DUP1</span><br><span class="line">PUSH1 00</span><br><span class="line">ADD</span><br><span class="line">SLOAD      ; 4) load mapping value from storage</span><br><span class="line">SWAP2    </span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line">SWAP2</span><br><span class="line">SWAP1</span><br><span class="line">POP</span><br><span class="line">JUMP</span><br><span class="line">JUMPDEST</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">; getItemUnitsMemory = 47 instructions</span><br><span class="line">PUSH1 00</span><br><span class="line">DUP1</span><br><span class="line">PUSH1 00</span><br><span class="line">DUP1</span><br><span class="line">DUP5</span><br><span class="line">DUP2</span><br><span class="line">MSTORE</span><br><span class="line">PUSH1 20</span><br><span class="line">ADD</span><br><span class="line">SWAP1</span><br><span class="line">DUP2</span><br><span class="line">MSTORE</span><br><span class="line">PUSH1 20</span><br><span class="line">ADD</span><br><span class="line">PUSH1 00</span><br><span class="line">SHA3</span><br><span class="line">PUSH1 40  ; &lt;------ additional opcodes start here</span><br><span class="line">MLOAD     ; 1) load the free memory pointer</span><br><span class="line">DUP1      ; 2) reserve the free memory pointer by duplicating it</span><br><span class="line">PUSH1 20</span><br><span class="line">ADD       ; 3) compute the new free memory pointer</span><br><span class="line">PUSH1 40</span><br><span class="line">MSTORE    ; 4) store the new free memory pointer</span><br><span class="line">SWAP1</span><br><span class="line">DUP2</span><br><span class="line">PUSH1 00</span><br><span class="line">DUP3</span><br><span class="line">ADD</span><br><span class="line">SLOAD     ; 5) load mapping value from storage</span><br><span class="line">DUP2</span><br><span class="line">MSTORE    ; 6) store mapping value retrieved from storage in memory</span><br><span class="line">POP</span><br><span class="line">POP ; &lt;------------ additional opcodes end here</span><br><span class="line">SWAP1</span><br><span class="line">POP</span><br><span class="line">DUP1</span><br><span class="line">PUSH1 00</span><br><span class="line">ADD</span><br><span class="line">MLOAD</span><br><span class="line">SWAP2</span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line">SWAP2</span><br><span class="line">SWAP1</span><br><span class="line">POP</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在底层，EVM对一个使用<code>storage</code>的getter执行以下步骤。</p>
+<ol>
+<li>操作 + 准备堆栈</li>
+<li>为 hash准备内存（（1）和（2））。</li>
+<li>计算要通过hash和<code>SHA3</code>加载的值的存储槽</li>
+<li>通过<code>SLOAD</code>从存储空间加载值。</li>
+</ol>
+<p>你可以在<a target="_blank" rel="noopener" href="https://github.com/CJ42/All-About-Solidity/blob/1d25ade27299aac229e5413830a5d5aef3f160dd/articles/data-locations/getter-storage.asm">这里</a>看到存储版本的getter函数堆栈的所有细节说明 。</p>
+<p>然后出现的下一个问题是： 为什么内存的getter函数底层字节码指令中多了17条？</p>
+<p>答案就在上面的汇编代码的描述注释中。这17条额外的EVM指令执行以下内容：</p>
+<ol>
+<li>它在内存中预留了一些空间用于存储数值，方法是：1.1）加载空闲内存指针，1.2）预留，1.3）计算内存中下一个空闲空间，4）更新新的空闲内存指针。(<code>mload</code> + <code>mstore</code>)</li>
+<li>一旦数值通过<code>SLOAD</code>从合约存储中加载，然后通过<code>MSTORE</code>写入内存。</li>
+</ol>
+<p>你可以在<a target="_blank" rel="noopener" href="https://github.com/CJ42/All-About-Solidity/blob/master/articles/data-locations/getter-memory.asm">这里</a>看到内存版的getter堆栈的所有细节的说明。</p>
+<h3 id="使用storage-与memory的-Setter-函数对比"><a href="#使用storage-与memory的-Setter-函数对比" class="headerlink" title="使用storage 与memory的 Setter 函数对比"></a>使用storage 与memory的 Setter 函数对比</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// gas: 50,755 (1st storage write)  </span><br><span class="line">function setItemUnitsStorage(uint256 _id, uint256 _units) public &#123;</span><br><span class="line">  Item storage item = items[_id];</span><br><span class="line">  item.units = _units;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// gas: 27,871  </span><br><span class="line">function setItemUnitsMemory(uint256 _id, uint256 _units) public &#123;</span><br><span class="line">  Item memory item = items[_id];</span><br><span class="line">  item.units = _units;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当为一个变量指定<code>storage</code>并设置其值时，它将修改状态变量并覆盖合约存储。这将使用<code>SSTORE</code>操作码。</p>
+<p>相反，如果使用关键字<code>memory</code>，它将仅仅覆盖本地变量，而不覆盖合约存储。这将使用<code>MSTORE</code>操作码。</p>
+<p>当涉及到EVM指令集时，我们可以从下面的片段中看到，使用<code>storage</code>产生的指令要少很多（<code>storage</code>产生28条，而<code>memory</code>产生48条）。然而，使用<code>storage</code>将花费更多的Gas，因为存储读&#x2F;写是EVM中最昂贵的操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">; setItemUnitsStorage = 28 instructions</span><br><span class="line">PUSH1 00</span><br><span class="line">DUP1</span><br><span class="line">PUSH1 00</span><br><span class="line">DUP5</span><br><span class="line">DUP2</span><br><span class="line">MSTORE</span><br><span class="line">PUSH1 20</span><br><span class="line">ADD</span><br><span class="line">SWAP1</span><br><span class="line">DUP2</span><br><span class="line">MSTORE</span><br><span class="line">PUSH1 20</span><br><span class="line">ADD</span><br><span class="line">PUSH1 00</span><br><span class="line">SHA3</span><br><span class="line">SWAP1</span><br><span class="line">POP</span><br><span class="line">DUP2</span><br><span class="line">DUP2</span><br><span class="line">PUSH1 00</span><br><span class="line">ADD</span><br><span class="line">DUP2</span><br><span class="line">SWAP1</span><br><span class="line">SSTORE</span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">; setItemUnitsMemory = 46 instructions</span><br><span class="line">PUSH1 00</span><br><span class="line">DUP1</span><br><span class="line">PUSH1 00</span><br><span class="line">DUP5</span><br><span class="line">DUP2</span><br><span class="line">MSTORE</span><br><span class="line">PUSH1 20</span><br><span class="line">ADD</span><br><span class="line">SWAP1</span><br><span class="line">DUP2</span><br><span class="line">MSTORE</span><br><span class="line">PUSH1 20</span><br><span class="line">ADD</span><br><span class="line">PUSH1 00</span><br><span class="line">SHA3</span><br><span class="line">PUSH1 40</span><br><span class="line">MLOAD</span><br><span class="line">DUP1</span><br><span class="line">PUSH1 20</span><br><span class="line">ADD</span><br><span class="line">PUSH1 40</span><br><span class="line">MSTORE</span><br><span class="line">SWAP1</span><br><span class="line">DUP2</span><br><span class="line">PUSH1 00</span><br><span class="line">DUP3</span><br><span class="line">ADD</span><br><span class="line">SLOAD</span><br><span class="line">DUP2</span><br><span class="line">MSTORE</span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line">SWAP1</span><br><span class="line">POP</span><br><span class="line">DUP2</span><br><span class="line">DUP2</span><br><span class="line">PUSH1 00</span><br><span class="line">ADD</span><br><span class="line">DUP2</span><br><span class="line">DUP2</span><br><span class="line">MSTORE</span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line">POP</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="映射的（边缘）情况"><a href="#映射的（边缘）情况" class="headerlink" title="映射的（边缘）情况"></a>映射的（边缘）情况</h2><p><code>映射</code>可以作为参数传递给函数或定义在函数体内。然而，它们是一个边缘案例，有两个特定的规则：</p>
+<ul>
+<li>它们只能被分配到<code>storage</code>数据位置，作为对已经存在于合约存储中的映射的引用。</li>
+<li>它们必须被初始化为一个值。</li>
+</ul>
+<p>这是因为映射不能被动态地创建。它们只能被定义在函数体内，作为对已经作为状态变量存在的映射的引用。</p>
+<p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/18TYUVxoHXwrHvuuV4mRd4g.png" alt="img"></p>
+<p>如果你在Remix中这样写…</p>
+<p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/1SlRsvuA7AoHiqm3lNECIYA.png" alt="img"></p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>你应该使用<code>storage</code>, <code>memory</code>, 还是<code>calldata</code>取决于你在合约中试图做什么。</p>
+<p>对于某些数据类型，如果数据很大，把它们从存储空间复制到内存中可能会很昂贵。</p>
+<p>然而，在某些情况下，如果你想在函数中覆盖变量，而不把结果传播到合约存储中，这可能是必要的。</p>
+<p>另一方面，<code>calldata</code>提供了比内存更多的好处：</p>
+<ol>
+<li>节省Gas&#x3D;通过避免将数据复制到<code>内存</code>中（从而在之后不得不从内存中加载）。</li>
+<li>更安全（在某些情况下） &#x3D; 因为<code>calldata</code>是一个只读的数据位置，它可以确保数据不能被修改。这可能会增加安全性，特别是当传递给函数的参数代表 <code>敏感 </code>数据（例如64字节的签名）时。</li>
+</ol>
+<p><code>calldata</code>在 Solidity 文档中确实被推荐：</p>
+<p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/1-kpkw3ncQWUo2t87IkP3mw.png" alt="img"></p>
+<p>然而，在某些情况下，使用<code>memory</code>而不是<code>calldata</code>可以提高可组合性</p>
+<p>最后，请注意，在你的函数中不使用适当的数据位置会导致潜在的错误和漏洞。一个现实世界的例子是对Cover协议的无限铸币攻击。</p>
+<p>看看这个来自Cover协议的<code>Blacksmith.sol</code>合约的代码片断：</p>
+<p><img src="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/1vgHlD53CCtpInT7yNJWb7w.png" alt="img"></p>
+<p>对池变量所做的任何改变都是在内存中进行的，而不是传回合约存储。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/">http://example.com/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/11.%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">11.拒绝服务攻击</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/17/22.web3js%E7%B3%BB%E5%88%97/12.Infura&amp;websjs%E4%B8%8E%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E4%BA%92/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">12.Infura&amp;websjs与以太坊交互</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">109</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">深入Solidity数据存储位置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EVM%E6%98%AF%E4%B8%80%E4%B8%AA%E5%B7%A5%E4%B8%9A%E5%B7%A5%E5%8E%82"><span class="toc-number">1.2.</span> <span class="toc-text">EVM是一个工业工厂</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%9C%A8-Solidity-%E4%B8%AD%E7%90%86%E8%A7%A3-Evm-%E6%95%B0%E6%8D%AE%E4%BD%8D%E7%BD%AE%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">为什么要在 Solidity 中理解 Evm 数据位置？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BD%8D%E7%BD%AE-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.4.</span> <span class="toc-text">数据位置  - 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8"><span class="toc-number">1.4.1.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98"><span class="toc-number">1.4.2.</span> <span class="toc-text">内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Calldata"><span class="toc-number">1.4.3.</span> <span class="toc-text">Calldata</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E6%A0%88%EF%BC%88Stack%EF%BC%89"><span class="toc-number">1.4.4.</span> <span class="toc-text">堆栈（Stack）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">1.4.5.</span> <span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BD%8D%E7%BD%AE-%E8%A7%84%E5%88%99"><span class="toc-number">1.5.</span> <span class="toc-text">数据位置 - 规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E9%BB%98%E8%AE%A4%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.5.1.</span> <span class="toc-text">变量的默认位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text">参考类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%B8%8A%E7%9A%84%E8%A7%84%E5%88%99"><span class="toc-number">1.5.3.</span> <span class="toc-text">在函数参数上的规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E5%87%BD%E6%95%B0%E4%BD%93%E5%86%85%E7%9A%84%E8%A7%84%E5%88%99"><span class="toc-number">1.5.4.</span> <span class="toc-text">在函数体内的规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BD%8D%E7%BD%AE-%E8%A1%8C%E4%B8%BA"><span class="toc-number">1.6.</span> <span class="toc-text">数据位置 - 行为</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%98%E5%82%A8%E7%9A%84Getter-%E4%B8%8E-%E5%86%85%E5%AD%98%E7%9A%84Getter-%E5%AF%B9%E6%AF%94"><span class="toc-number">1.6.1.</span> <span class="toc-text">使用存储的Getter 与 内存的Getter 对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8storage-%E4%B8%8Ememory%E7%9A%84-Setter-%E5%87%BD%E6%95%B0%E5%AF%B9%E6%AF%94"><span class="toc-number">1.6.2.</span> <span class="toc-text">使用storage 与memory的 Setter 函数对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%A0%E5%B0%84%E7%9A%84%EF%BC%88%E8%BE%B9%E7%BC%98%EF%BC%89%E6%83%85%E5%86%B5"><span class="toc-number">1.7.</span> <span class="toc-text">映射的（边缘）情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">1.8.</span> <span class="toc-text">结论</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/04.%E6%8F%92%E6%A7%BD&amp;%E6%9F%A5%E8%AF%A2%E9%93%BE%E4%B8%8A%E6%95%B0%E6%8D%AE/" title="04.插槽&amp;查询链上数据"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.插槽&amp;查询链上数据"/></a><div class="content"><a class="title" href="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/04.%E6%8F%92%E6%A7%BD&amp;%E6%9F%A5%E8%AF%A2%E9%93%BE%E4%B8%8A%E6%95%B0%E6%8D%AE/" title="04.插槽&amp;查询链上数据">04.插槽&amp;查询链上数据</a><time datetime="2022-12-18T14:56:14.388Z" title="发表于 2022-12-18 22:56:14">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/" title="16.访问私有数据攻击"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="16.访问私有数据攻击"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/" title="16.访问私有数据攻击">16.访问私有数据攻击</a><time datetime="2022-12-18T12:24:47.266Z" title="发表于 2022-12-18 20:24:47">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/15.delegatecall%E6%BC%8F%E6%B4%9E_3/" title="15.delegatecall漏洞_3"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="15.delegatecall漏洞_3"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/15.delegatecall%E6%BC%8F%E6%B4%9E_3/" title="15.delegatecall漏洞_3">15.delegatecall漏洞_3</a><time datetime="2022-12-18T12:11:24.128Z" title="发表于 2022-12-18 20:11:24">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/14.delegatecall%E6%BC%8F%E6%B4%9E_2/" title="14.delegatecall漏洞_2"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="14.delegatecall漏洞_2"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/14.delegatecall%E6%BC%8F%E6%B4%9E_2/" title="14.delegatecall漏洞_2">14.delegatecall漏洞_2</a><time datetime="2022-12-18T11:57:34.434Z" title="发表于 2022-12-18 19:57:34">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/13.%E5%9F%BA%E4%BA%8Etx.origin%E7%9A%84%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB/" title="13.基于tx.origin的钓鱼攻击"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="13.基于tx.origin的钓鱼攻击"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/13.%E5%9F%BA%E4%BA%8Etx.origin%E7%9A%84%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB/" title="13.基于tx.origin的钓鱼攻击">13.基于tx.origin的钓鱼攻击</a><time datetime="2022-12-18T11:44:01.293Z" title="发表于 2022-12-18 19:44:01">2022-12-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>16.访问私有数据攻击 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="访问私有数据攻击前置知识我们先来了解一下 solidity 中的三种数据存储方式： storage（存储） storage 中的数据被永久存储。其以键值对的形式存储在 slot 插槽中。 storage 中的数据会被写在区块链中（因此它们会更改状态），这就是为什么使用存储非常昂贵的原因。 占用 256 位插槽的 gas 成本为 20,000 gas。 修改 storage 的值将花费 5,000">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16.访问私有数据攻击">
+<meta property="og:url" content="http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="访问私有数据攻击前置知识我们先来了解一下 solidity 中的三种数据存储方式： storage（存储） storage 中的数据被永久存储。其以键值对的形式存储在 slot 插槽中。 storage 中的数据会被写在区块链中（因此它们会更改状态），这就是为什么使用存储非常昂贵的原因。 占用 256 位插槽的 gas 成本为 20,000 gas。 修改 storage 的值将花费 5,000">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2022-12-18T12:24:47.266Z">
+<meta property="article:modified_time" content="2022-12-18T14:52:56.387Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '16.访问私有数据攻击',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-18 22:52:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">109</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">16.访问私有数据攻击</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-18T12:24:47.266Z" title="发表于 2022-12-18 20:24:47">2022-12-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-12-18T14:52:56.387Z" title="更新于 2022-12-18 22:52:56">2022-12-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="访问私有数据攻击"><a href="#访问私有数据攻击" class="headerlink" title="访问私有数据攻击"></a>访问私有数据攻击</h1><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>我们先来了解一下 solidity 中的三种数据存储方式：</p>
+<h3 id="storage（存储）"><a href="#storage（存储）" class="headerlink" title="storage（存储）"></a>storage（存储）</h3><ul>
+<li>storage 中的数据被永久存储。其以键值对的形式存储在 slot 插槽中。</li>
+<li>storage 中的数据会被写在区块链中（因此它们会更改状态），这就是为什么使用存储非常昂贵的原因。</li>
+<li>占用 256 位插槽的 gas 成本为 20,000 gas。</li>
+<li>修改 storage 的值将花费 5,000 gas 。</li>
+<li>清理存储插槽时（即将非零字节设置为零），将退还一定量的 gas 。</li>
+<li>storage 共有 2^256 个插槽，每个插槽 32 个字节数据按声明顺序依次存储，数据将会从每个插槽的右边开始存储，如果相邻变量适合单个 32 字节，然后它们被打包到同一个插槽中否则将会启用新的插槽来存储。</li>
+</ul>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640.png" alt="图片"></p>
+<ul>
+<li>storage 中的数组的存储方式就比较独特了，首先，solidity 中的数组分为两种：</li>
+</ul>
+<p>定长数组（长度固定）：定长数组中的每个元素都会有一个独立的插槽来存储。以一个含有三个 uint64 元素的定长数组为例，下图可以清楚的看出其存储方式：</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-16713664971613.png" alt="图片"></p>
+<p>变长数组（长度随元素的数量而改变）：</p>
+<p>变长数组的存储方式就很奇特，在遇到变长数组时，会先启用一个新的插槽 slotA 用来存储数组的长度，其数据存储在另外的编号为 slotV 的插槽中。slotA 表示变长数组声明的位置，用 length 表示变长数组的长度，用 slotV 表示变长数组数据存储的位置，用 value 表示变长数组某个数据的值，用 index 表示 value 对应的索引下标，则</p>
+<p>length &#x3D; sload(slotA)</p>
+<p>slotV &#x3D; keccak256(slotA) + index</p>
+<p>value &#x3D; sload(slotV)</p>
+<p>变长数组在编译期间无法知道数组的长度，没办法提前预留存储空间，所以 Solidity 就用 slotA 位置存储了变长数组的长度。</p>
+<p>我们写一个简单的例子来验证上面描述的变长数组的存储方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract haha&#123;</span><br><span class="line">  </span><br><span class="line">  uint[] user;</span><br><span class="line"></span><br><span class="line">  function addUser(uint a) public returns (bytes memory)&#123;</span><br><span class="line">    user.push(a);</span><br><span class="line">    return abi.encode(user);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>部署这个合约后调用 addUser 函数并传入参数 a &#x3D; 998，debug 后可以看出变长数组的存储方式：</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-16713667370826.png" alt="图片"></p>
+<p>其中第一个插槽为（这里存储的是变长数组的长度）：<code>0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563</code>,这个值等于：<code>sha3(&quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;)</code>，key &#x3D; 0 这是当前插槽的编号，value &#x3D; 1 这说明变长数组 user[] 中只有一条数据也就是数组长度为 1 ;</p>
+<p>第二个插槽为（这里存储的是变长数组中的数据）：<code>0x510e4e770828ddbf7f7b00ab00a9f6adaf81c0dc9cc85f1f8249c256942d61d9</code>，这个值等于：<code>sha3(&quot;0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563&quot;)</code>，插槽编号为：<code>key=0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563</code>，这个值等于：<code>sha3(&quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;)+0</code>，插槽中存储的数据为：<code>value=0x00000000000000000000000000000000000000000000000000000000000003e6</code>，也就是 16 进制表示的 998 ，也就是我们传入的 a 的值。</p>
+<p>为了更准确的验证我们再调用一次 addUser 函数并传入 a&#x3D;999 可以得到下面的结果：</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-16713669562959.png" alt="图片"></p>
+<p>这里我们可以看到新的插槽为：<code>0x6c13d8c1c5df666ea9ca2a428504a3776c8ca01021c3a1524ca7d765f600979a</code>，这个值等于：<code>sha3(&quot;0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e564&quot;)</code>，插槽编号为：<code>key=0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e564</code>，这个值等于：<code>sha3(&quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;)+1</code>，插槽中的存储数据为：<code>value=0x00000000000000000000000000000000000000000000000000000000000003e7</code>，这个值就是 16 进制表示的 999 也就是我们刚刚调用 addUser 函数传入的 a 的值。</p>
+<p>通过上面的例子应该可以大致理解变长数组的存储方式了。</p>
+<h3 id="memory（内存）"><a href="#memory（内存）" class="headerlink" title="memory（内存）"></a>memory（内存）</h3><ul>
+<li>memory 是一个字节数组，其插槽大小为 256 位（32 个字节）。数据仅在函数执行期间存储，执行完之后，将会被删除。它们不会保存到区块链中。</li>
+<li>读或写一个字节（256 位）需要 3 gas 。</li>
+<li>为了避免给矿工带来太多工作，在进行 22 次读写操作后，之后的读写成本开始上升。</li>
+</ul>
+<h3 id="calldata（调用数据）"><a href="#calldata（调用数据）" class="headerlink" title="calldata（调用数据）"></a>calldata（调用数据）</h3><ul>
+<li>calldata 是一个不可修改的，非持久性的区域，用于存储函数参数，并且其行为基本上类似于 memory。</li>
+<li>调用外部函数的参数需要 calldata，也可用于其他变量。</li>
+<li>它避免了复制，并确保了数据不能被修改。</li>
+<li>带有 calldata 数据位置的数组和结构体也可以从函数中返回，但是不可以为这种类型赋值。</li>
+</ul>
+<h2 id="漏洞示例"><a href="#漏洞示例" class="headerlink" title="漏洞示例"></a>漏洞示例</h2><p>这次我们的目标合约是部署在 Ropsten 上的一个合约。合约地址：<code>0x3505a02BCDFbb225988161a95528bfDb279faD6b</code>。<a target="_blank" rel="noopener" href="https://ropsten.etherscan.io/address/0x3505a02BCDFbb225988161a95528bfDb279faD6b#code">链接</a>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">contract Vault &#123;</span><br><span class="line">    uint public count = 123;</span><br><span class="line">    address public owner = msg.sender;</span><br><span class="line">    bool public isTrue = true;</span><br><span class="line">    uint16 public u16 = 31;</span><br><span class="line">    bytes32 private password;</span><br><span class="line">    uint public constant someConst = 123;</span><br><span class="line">    bytes32[3] public data;</span><br><span class="line"></span><br><span class="line">    struct User &#123;</span><br><span class="line">        uint id;</span><br><span class="line">        bytes32 password;</span><br><span class="line">    &#125;</span><br><span class="line">    User[] private users;</span><br><span class="line">    mapping(uint =&gt; User) private idToUser;</span><br><span class="line"></span><br><span class="line">    constructor(bytes32 _password) &#123;</span><br><span class="line">        password = _password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function addUser(bytes32 _password) public &#123;</span><br><span class="line">        User memory user = User(&#123;id: users.length, password: _password&#125;);</span><br><span class="line"></span><br><span class="line">        users.push(user);</span><br><span class="line">        idToUser[user.id] = user;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getArrayLocation(</span><br><span class="line">        uint slot,</span><br><span class="line">        uint index,</span><br><span class="line">        uint elementSize</span><br><span class="line">) public pure returns (uint) &#123;</span><br><span class="line">        return uint(keccak256(abi.encodePacked(slot))) + (index * elementSize);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getMapLocation(uint slot, uint key) public pure returns (uint) &#123;</span><br><span class="line">        return uint(keccak256(abi.encodePacked(key, slot)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>由上面的合约代码我们可以看到，Vault 合约将用户的用户名和密码这样的敏感数据记录在了合约中，由前置知识中我们可以了解到，合约中修饰变量的关键字仅限制其调用范围，这也就间接证明了合约中的数据均是公开的，可任意读取的，将敏感数据记录在合约中是不安全的。</p>
+<h2 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h2><p>下面我们就带大家来读取这个合约中的数据。首先我们先看 slot0 中的数据：由合约中可以看到 slot0 中只存储了一个 uint 类型的数据，我们读取出来看一下：</p>
+<p>我这里使用 Web3.py 取得数据</p>
+<p>首先写好程序</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136760869112.png" alt="图片"></p>
+<p>运行后得到</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136762301915.png" alt="图片"></p>
+<p>我们使用进制转换器转换一下</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136763046018.png" alt="图片"></p>
+<p>这里我们就成功的去到了合约中的第一个插槽 slot0 中存储的 uint 类型的变量 count&#x3D;123 ，下面我们继续：</p>
+<p>slot1 中存储三个变量：u16, isTrue, owner</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136766128721.png" alt="图片"></p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136766863724.png" alt="图片"></p>
+<p>从右往左依次为</p>
+<ul>
+<li>owner &#x3D; f36467c4e023c355026066b8dc51456e7b791d99</li>
+<li>isTrue &#x3D; 01 &#x3D; true</li>
+<li>u16 &#x3D; 1f &#x3D; 31</li>
+</ul>
+<p>slot2 中就存储着私有变量 password 我们读取看看</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136771006427.png" alt="图片"></p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136771613030.png" alt="图片"></p>
+<p>无法查询 <code>uint public constant someConst = 123;</code>，因为他被标注为了constant，写进了字节码</p>
+<p>slot 3, 4, 5 中存储着定长数组中的三个元素</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136801204833.png" alt="图片"></p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136803025839.png" alt="图片"></p>
+<p>slot6 中存储着变长数组的长度</p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136805547642.png" alt="图片"></p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136805992645.png" alt="图片"></p>
+<p>在合约中，结构体User中又id和password，在动态数组users中，是按照顺序存储的。例如：用户1的id，用户1的password，用户2的id，用户2的password……。下面我们来读取两个用户的 id 和 password：</p>
+<p><strong>user1</strong></p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136807319848.png" alt="图片"></p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136807657851.png" alt="图片"></p>
+<p><strong>user2</strong></p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136808542154.png" alt="图片"></p>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136808780257.png" alt="图片"></p>
+<blockquote>
+<p>0xf652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f是如何计算出来的呢？</p>
+<p>keccak256(bytes32(slot))来算出。本处的动态数组users所在的插槽是slot6，则：keccak256(abi.encode(0x0000000000000000000000000000000000000000000000000000000000000006))。下图是remix验证的结果：</p>
+</blockquote>
+<p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/image-20221218225210864.png" alt="image-20221218225210864"></p>
+<p>我们发现：键值对是按照顺序一个一个排列的3f-40-41-42</p>
+<p>好了，这里我们就成功的将合约中的所有数据读取完成，现在大家应该都能得出一个结论：合约中的私有数据也是可以读取的。</p>
+<h2 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h2><p><strong>作为开发者</strong></p>
+<p>不要将任何敏感数据存放在合约中，因为合约中的任何数据都可被读取。</p>
+<p><strong>作为审计者</strong></p>
+<p>在审计过程中应当注意合约中是否存在敏感数据，例如：秘钥，游戏通关口令等。</p>
+<p>引用：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/_DV6UaRdA_6pUFXt-EnTtA">慢雾科技</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/">http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/04.%E6%8F%92%E6%A7%BD&amp;%E6%9F%A5%E8%AF%A2%E9%93%BE%E4%B8%8A%E6%95%B0%E6%8D%AE/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">04.插槽&amp;查询链上数据</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/15.delegatecall%E6%BC%8F%E6%B4%9E_3/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">15.delegatecall漏洞_3</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">109</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">24</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">访问私有数据攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text">前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#storage%EF%BC%88%E5%AD%98%E5%82%A8%EF%BC%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">storage（存储）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#memory%EF%BC%88%E5%86%85%E5%AD%98%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">memory（内存）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#calldata%EF%BC%88%E8%B0%83%E7%94%A8%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">calldata（调用数据）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.</span> <span class="toc-text">漏洞示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-number">1.3.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">1.4.</span> <span class="toc-text">读取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.5.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/04.%E6%8F%92%E6%A7%BD&amp;%E6%9F%A5%E8%AF%A2%E9%93%BE%E4%B8%8A%E6%95%B0%E6%8D%AE/" title="04.插槽&amp;查询链上数据"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.插槽&amp;查询链上数据"/></a><div class="content"><a class="title" href="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/04.%E6%8F%92%E6%A7%BD&amp;%E6%9F%A5%E8%AF%A2%E9%93%BE%E4%B8%8A%E6%95%B0%E6%8D%AE/" title="04.插槽&amp;查询链上数据">04.插槽&amp;查询链上数据</a><time datetime="2022-12-18T14:56:14.388Z" title="发表于 2022-12-18 22:56:14">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/" title="16.访问私有数据攻击"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="16.访问私有数据攻击"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/" title="16.访问私有数据攻击">16.访问私有数据攻击</a><time datetime="2022-12-18T12:24:47.266Z" title="发表于 2022-12-18 20:24:47">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/15.delegatecall%E6%BC%8F%E6%B4%9E_3/" title="15.delegatecall漏洞_3"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="15.delegatecall漏洞_3"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/15.delegatecall%E6%BC%8F%E6%B4%9E_3/" title="15.delegatecall漏洞_3">15.delegatecall漏洞_3</a><time datetime="2022-12-18T12:11:24.128Z" title="发表于 2022-12-18 20:11:24">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/14.delegatecall%E6%BC%8F%E6%B4%9E_2/" title="14.delegatecall漏洞_2"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="14.delegatecall漏洞_2"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/14.delegatecall%E6%BC%8F%E6%B4%9E_2/" title="14.delegatecall漏洞_2">14.delegatecall漏洞_2</a><time datetime="2022-12-18T11:57:34.434Z" title="发表于 2022-12-18 19:57:34">2022-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/13.%E5%9F%BA%E4%BA%8Etx.origin%E7%9A%84%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB/" title="13.基于tx.origin的钓鱼攻击"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="13.基于tx.origin的钓鱼攻击"/></a><div class="content"><a class="title" href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/13.%E5%9F%BA%E4%BA%8Etx.origin%E7%9A%84%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB/" title="13.基于tx.origin的钓鱼攻击">13.基于tx.origin的钓鱼攻击</a><time datetime="2022-12-18T11:44:01.293Z" title="发表于 2022-12-18 19:44:01">2022-12-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
