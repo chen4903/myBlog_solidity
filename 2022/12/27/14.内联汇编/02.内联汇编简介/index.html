@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>02.内联汇编简介 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="内联汇编简介随着我们深入编写智能合约，我们会遇到诸如“PUSH1”、“SSTORE”、“CALLVALUE”等术语。它们是什么？ 简介以太坊虚拟机EVM有自己的汇编指令集，该指令集中目前包含了 144个操作码，详情参考。这些指令被Solidity语言抽象之后，用来编写智能合约，但是Solidity 也支持使用内联汇编。格式如下： 1234567contract Assembler &amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="02.内联汇编简介">
+<meta property="og:url" content="http://example.com/2022/12/27/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/02.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E7%AE%80%E4%BB%8B/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="内联汇编简介随着我们深入编写智能合约，我们会遇到诸如“PUSH1”、“SSTORE”、“CALLVALUE”等术语。它们是什么？ 简介以太坊虚拟机EVM有自己的汇编指令集，该指令集中目前包含了 144个操作码，详情参考。这些指令被Solidity语言抽象之后，用来编写智能合约，但是Solidity 也支持使用内联汇编。格式如下： 1234567contract Assembler &amp;#123;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2022-12-27T14:23:04.579Z">
+<meta property="article:modified_time" content="2022-12-27T15:09:40.193Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2022/12/27/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/02.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E7%AE%80%E4%BB%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '02.内联汇编简介',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-27 23:09:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">155</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">29</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">02.内联汇编简介</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-27T14:23:04.579Z" title="发表于 2022-12-27 22:23:04">2022-12-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-12-27T15:09:40.193Z" title="更新于 2022-12-27 23:09:40">2022-12-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/14-%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/">14.内联汇编</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="内联汇编简介"><a href="#内联汇编简介" class="headerlink" title="内联汇编简介"></a>内联汇编简介</h1><p>随着我们深入编写智能合约，我们会遇到诸如“PUSH1”、“SSTORE”、“CALLVALUE”等术语。它们是什么？</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>以太坊虚拟机EVM有自己的汇编指令集，该指令集中目前包含了 144个操作码，<a target="_blank" rel="noopener" href="https://github.com/ethereum/go-ethereum/blob/15d09038a6b1d533bc78662f2f0b77ccf03aaab0/core/vm/opcodes.go#L223-L388">详情参考</a>。这些指令被Solidity语言抽象之后，用来编写智能合约，但是Solidity 也支持使用内联汇编。格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">contract Assembler &#123; </span><br><span class="line">	function do_something_cpu() public &#123;</span><br><span class="line">		assembly &#123;</span><br><span class="line">		// start writing evm assembler language</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>assembly</code>块内的代码开发语言被称为Yul，为了简化我们称其为内联汇编</p>
+<h2 id="EVM堆栈"><a href="#EVM堆栈" class="headerlink" title="EVM堆栈"></a>EVM堆栈</h2><p>EVM也是一个基于堆栈运行的机器。比如：10 + 2 * 2。它按照LIFO的原理工作：2 2 * 10 +</p>
+<p>这意味着，先将“2”放入堆栈，然后再放入另一个“2”，然后再进行乘法操作。结果是“4”位于堆栈顶部。现在在“4”之上添加一个数字“10”，最终将这两个数字相加。堆栈的最终值变为 14。这种算法称为 Postfix Notation 或<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">Reverse Polish Notation</a>。</p>
+<p>将数据放入堆栈的行为称为“PUSH”指令，而从堆栈中删除数据的行为称为“POP”指令。很明显，我们在上面的示例中看到的最常见的操作码是“PUSH1”，这意味着将 1 个字节的数据放入堆栈。</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><h3 id="更多操作"><a href="#更多操作" class="headerlink" title="更多操作"></a>更多操作</h3><p>可以做更多solidity高级语言无法做到的操作，比如：</p>
+<ul>
+<li>内联汇编允许您在单个操作中从<code>string</code>和<code>bytes</code>等数据类型中读取整个字（256 位） 。Solidity-stringutils uses that to do very fast string comparisons by doing subtraction on 32-byte chunks of the two strings being compared。如果没有汇编，您必须逐字节执行此操作。</li>
+<li>某些操作未在 Solidity中公开。例如，<code>sha3</code>的操作码在内存中进行字节范围哈希处理，而同名的 Solidity 函数采用字符串。因此，solidity方式需要对字符串复制，然后再哈希处理，复制操作消耗了更多的gas。使用内联汇编，您可以传入一个字符串并只哈希您关心的bit。</li>
+<li>如果没有内联汇编，有些事情是完全不可能的。Solidity不支持从一个external的函数返回动态数组，但如果您知道动态数组的长度，则可以使用内联汇编调用它们。</li>
+</ul>
+<p>有的开发人员重用内联汇编，比如：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Arachnid/solidity-stringutils/blob/master/src/strings.sol">String Utils</a> by <a target="_blank" rel="noopener" href="https://github.com/Arachnid">Nick Johnson</a> (Ethereum Foundation开发)</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/GNSPS/solidity-bytes-utils/blob/master/contracts/BytesLib.sol">Bytes Utils</a> by <a target="_blank" rel="noopener" href="https://github.com/GNSPS">Gonçalo Sá</a> (Consensys开发)</li>
+</ul>
+<h3 id="节省gas"><a href="#节省gas" class="headerlink" title="节省gas"></a>节省gas</h3><p>举个例子：使用solidity高级语言和仅用内联汇编编写相同功能的合约</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//transaction cost = 21996 gas</span><br><span class="line">//execution cost = 340 gas</span><br><span class="line">function addSolidity(uint x, uint y) public pure returns (uint) &#123;</span><br><span class="line">	return x + y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//transaction cost = 21610 gas</span><br><span class="line">//execution cost = 254 gas</span><br><span class="line">function addAssembly(uint x, uint y) public pure returns (uint) &#123;</span><br><span class="line">	assembly &#123;</span><br><span class="line">		// Add some code here</span><br><span class="line">		let result := add(x, y)</span><br><span class="line">		mstore(0x0, result)</span><br><span class="line">		return(0x0, 32)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，使用内联汇编节省了340-254&#x3D;86 gas</p>
+<p>第三方库：<a target="_blank" rel="noopener" href="https://github.com/Arachnid/solidity-stringutils">利用切片实现字符串从而节省gas</a></p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function addition(uint x, uint y) public pure returns (uint) &#123; </span><br><span class="line"> assembly &#123; </span><br><span class="line">     // 创建一个新的变量result</span><br><span class="line">     //     -&gt; 使用add操作码计算x+y</span><br><span class="line">     //     -&gt; 将计算结果赋值给变量result </span><br><span class="line">     let result := add(x, y)   // x + y </span><br><span class="line">      </span><br><span class="line">     // 使用mstore操作码</span><br><span class="line">     //     -&gt; 将result变量的值存入内存</span><br><span class="line">     //     -&gt; 指定内存地址 0x0 </span><br><span class="line">     mstore(0x0, result)       // 将结果存入内存</span><br><span class="line">      </span><br><span class="line">     // 从内存地址0x0返回32字节</span><br><span class="line">     return(0x0, 32) </span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在EVM的内部，<code>let</code>指令执行如下任务：</p>
+<ul>
+<li>创建一个新的堆栈槽位</li>
+<li>为变量保留该槽位</li>
+<li>当到达代码块结束时自动销毁该槽位</li>
+</ul>
+<p>因此，使用let指令在汇编代码块中定义的变量，在该代码块 外部是无法访问的。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/27/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/02.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E7%AE%80%E4%BB%8B/">http://example.com/2022/12/27/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/02.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E7%AE%80%E4%BB%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/27/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A&amp;%E8%99%9A%E6%8B%9F%E6%9C%BA/03.%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E8%99%9A%E6%8B%9F%E6%9C%BA/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">03.深入浅出虚拟机</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/27/02.solidity%E8%AF%AD%E6%B3%95/45.bytes%E6%95%B0%E7%BB%84/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">45.bytes数组</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">155</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">29</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">内联汇编简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EVM%E5%A0%86%E6%A0%88"><span class="toc-number">1.2.</span> <span class="toc-text">EVM堆栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">优点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E6%93%8D%E4%BD%9C"><span class="toc-number">1.3.1.</span> <span class="toc-text">更多操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%82%E7%9C%81gas"><span class="toc-number">1.3.2.</span> <span class="toc-text">节省gas</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">1.4.</span> <span class="toc-text">例子</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/12/28/21.Ethernaut%E9%9D%B6%E5%9C%BA/19.Alien%20Codex/" title="19.Alien Codex"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="19.Alien Codex"/></a><div class="content"><a class="title" href="/2022/12/28/21.Ethernaut%E9%9D%B6%E5%9C%BA/19.Alien%20Codex/" title="19.Alien Codex">19.Alien Codex</a><time datetime="2022-12-28T08:43:33.912Z" title="发表于 2022-12-28 16:43:33">2022-12-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/27/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A&amp;%E8%99%9A%E6%8B%9F%E6%9C%BA/03.%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="03.深入浅出虚拟机"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.深入浅出虚拟机"/></a><div class="content"><a class="title" href="/2022/12/27/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A&amp;%E8%99%9A%E6%8B%9F%E6%9C%BA/03.%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="03.深入浅出虚拟机">03.深入浅出虚拟机</a><time datetime="2022-12-27T15:13:11.689Z" title="发表于 2022-12-27 23:13:11">2022-12-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/27/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/02.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E7%AE%80%E4%BB%8B/" title="02.内联汇编简介"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.内联汇编简介"/></a><div class="content"><a class="title" href="/2022/12/27/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/02.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96%E7%AE%80%E4%BB%8B/" title="02.内联汇编简介">02.内联汇编简介</a><time datetime="2022-12-27T14:23:04.579Z" title="发表于 2022-12-27 22:23:04">2022-12-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/27/02.solidity%E8%AF%AD%E6%B3%95/45.bytes%E6%95%B0%E7%BB%84/" title="45.bytes数组"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="45.bytes数组"/></a><div class="content"><a class="title" href="/2022/12/27/02.solidity%E8%AF%AD%E6%B3%95/45.bytes%E6%95%B0%E7%BB%84/" title="45.bytes数组">45.bytes数组</a><time datetime="2022-12-27T12:48:47.981Z" title="发表于 2022-12-27 20:48:47">2022-12-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/26/21.Ethernaut%E9%9D%B6%E5%9C%BA/18.MagicNumber/" title="18.MagicNumber"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="18.MagicNumber"/></a><div class="content"><a class="title" href="/2022/12/26/21.Ethernaut%E9%9D%B6%E5%9C%BA/18.MagicNumber/" title="18.MagicNumber">18.MagicNumber</a><time datetime="2022-12-26T13:16:14.954Z" title="发表于 2022-12-26 21:16:14">2022-12-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
