@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>02.EVM in solidity doc | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="EVM in solidity docOverviewIt is not only sandboxed but actually completely isolated, which means that code running inside the EVM has no access to network, filesystem or other processes. Smart contra">
+<meta property="og:type" content="article">
+<meta property="og:title" content="02.EVM in solidity doc">
+<meta property="og:url" content="http://example.com/2022/12/30/04.EVM/02.EVM%20in%20solidity%20doc/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="EVM in solidity docOverviewIt is not only sandboxed but actually completely isolated, which means that code running inside the EVM has no access to network, filesystem or other processes. Smart contra">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2022-12-30T08:25:12.202Z">
+<meta property="article:modified_time" content="2023-01-01T05:26:31.866Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2022/12/30/04.EVM/02.EVM%20in%20solidity%20doc/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '02.EVM in solidity doc',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-01 13:26:31'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">165</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">30</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">02.EVM in solidity doc</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-30T08:25:12.202Z" title="发表于 2022-12-30 16:25:12">2022-12-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-01T05:26:31.866Z" title="更新于 2023-01-01 13:26:31">2023-01-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/01-EVM/">01.EVM</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="EVM-in-solidity-doc"><a href="#EVM-in-solidity-doc" class="headerlink" title="EVM in solidity doc"></a>EVM in solidity doc</h1><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>It is not only sandboxed but actually completely isolated, which means that code running inside the EVM has no access to network, filesystem or other processes. Smart contracts even have limited access to other smart contracts.</p>
+<h2 id="Accounts"><a href="#Accounts" class="headerlink" title="Accounts"></a>Accounts</h2><p>There are two kinds of accounts in Ethereum which share the same address space: <strong>External accounts</strong> that are controlled by public-private key pairs (i.e. humans) and <strong>contract accounts</strong> which are controlled by the code stored together with the account.</p>
+<p>The address of an external account is determined from the public key while the address of a contract is determined at the time the contract is created (it is derived from the creator address and the number of transactions sent from that address, the so-called “nonce”).这里可以参考我的<a target="_blank" rel="noopener" href="https://www.levi104.com/2022/12/24/03.solidity%E8%BF%9B%E9%98%B6/08.create%E5%90%88%E7%BA%A6%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97/">文章</a>create新建合约</p>
+<p>Regardless of whether or not the account stores code, the two types are treated equally by the EVM.</p>
+<p>Every account has a persistent key-value store mapping 256-bit words to 256-bit words called <strong>storage</strong>.</p>
+<p>Furthermore, every account has a <strong>balance</strong> in Ether (in “Wei” to be exact, <code>1 ether</code> is <code>10**18 wei</code>) which can be modified by sending transactions that include Ether.</p>
+<h2 id="Transactions"><a href="#Transactions" class="headerlink" title="Transactions"></a>Transactions</h2><p>A transaction is a message that is sent from one account to another account (which might be the same or empty, see below). It can include binary data (which is called “payload”) and Ether.</p>
+<p>If the target account contains code, that code is executed and the payload is provided as input data.</p>
+<p>If the target account is not set (the transaction does not have a recipient or the recipient is set to <code>null</code>), the transaction creates a <strong>new contract</strong>. As already mentioned, the address of that contract is not the zero address but an address derived from the sender and its number of transactions sent (the “nonce”). The payload of such a contract creation transaction is taken to be EVM bytecode and executed. The output data of this execution is permanently stored as the code of the contract. This means that in order to create a contract, you do not send the actual code of the contract, but in fact code that returns that code when executed.</p>
+<blockquote>
+<p>note</p>
+<p>While a contract is being created, its code is still empty. Because of that, you should not call back into the contract under construction until its constructor has finished executing.</p>
+<p>我们只是不可以调用本合约中的函数，但是我们可以在构造器中调用其他合约的函数，有些攻击就是写在了构造器当中，比如要满足excode操作码等于0</p>
+</blockquote>
+<h2 id="Gas"><a href="#Gas" class="headerlink" title="Gas"></a>Gas</h2><p>Upon creation, each transaction is charged with a certain amount of <strong>gas</strong> that has to be paid for by the originator of the transaction (<code>tx.origin</code>). While the EVM executes the transaction, the gas is gradually depleted according to specific rules. If the gas is used up at any point (i.e. it would be negative), an out-of-gas exception is triggered, which ends execution and reverts all modifications made to the state in the current call frame.</p>
+<p>This mechanism incentivizes economical use of EVM execution time and also compensates EVM executors (i.e. miners &#x2F; stakers) for their work. Since each block has a maximum amount of gas, it also limits the amount of work needed to validate a block.</p>
+<p>The <strong>gas price</strong> is a value set by the originator of the transaction, who has to pay <code>gas_price * gas</code> up front to the EVM executor. If some gas is left after execution, it is refunded to the transaction originator. In case of an exception that reverts changes, already used up gas is not refunded.</p>
+<p>Since EVM executors can choose to include a transaction or not, transaction senders cannot abuse the system by setting a low gas price.</p>
+<h2 id="Storage-Memory-and-the-Stack"><a href="#Storage-Memory-and-the-Stack" class="headerlink" title="Storage, Memory and the Stack"></a>Storage, Memory and the Stack</h2><p>The Ethereum Virtual Machine has three areas where it can store data: storage, memory and the stack.</p>
+<p>Each account has a data area called <strong>storage</strong>, which is persistent between function calls and transactions. Storage is a key-value store that maps 256-bit words to 256-bit words. It is not possible to enumerate storage from within a contract, it is comparatively costly to read, and even more to initialise and modify storage. Because of this cost, you should minimize what you store in persistent storage to what the contract needs to run. Store data like derived calculations, caching, and aggregates outside of the contract. A contract can neither read nor write to any storage apart from its own.</p>
+<p>The second data area is called <strong>memory</strong>, of which a contract obtains a freshly cleared instance for each message call. Memory is linear and can be addressed at byte level, but reads are limited to a width of 256 bits, while writes can be either 8 bits or 256 bits wide. Memory is expanded by a word (256-bit), when accessing (either reading or writing) a previously untouched memory word (i.e. any offset within a word). At the time of expansion, the cost in gas must be paid. Memory is more costly the larger it grows (it scales quadratically).</p>
+<p>The EVM is not a register machine but a stack machine, so all computations are performed on a data area called the <strong>stack</strong>. It has a maximum size of 1024 elements and every element contains words of 256 bits. Access to the stack is limited to the top end in the following way: It is possible to copy one of the topmost 16 elements to the top of the stack or swap the topmost element with one of the 16 elements below it. All other operations take the topmost two (or one, or more, depending on the operation) elements from the stack and push the result onto the stack. Of course it is possible to move stack elements to storage or memory in order to get deeper access to the stack, but it is not possible to just access arbitrary elements deeper in the stack without first removing the top of the stack.</p>
+<h2 id="Instruction-Set"><a href="#Instruction-Set" class="headerlink" title="Instruction Set"></a>Instruction Set</h2><p>The instruction set of the EVM is kept minimal in order to avoid incorrect or inconsistent implementations which could cause consensus problems. All instructions operate on the basic data type, 256-bit words or on slices of memory (or other byte arrays). The usual arithmetic, bit, logical and comparison operations are present. Conditional and unconditional jumps are possible. Furthermore, contracts can access relevant properties of the current block like its number and timestamp.</p>
+<p>For a complete list, please see the <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/v0.8.17/yul.html#opcodes">list of opcodes</a> as part of the inline assembly documentation.</p>
+<h2 id="Message-Calls"><a href="#Message-Calls" class="headerlink" title="Message Calls"></a>Message Calls</h2><p>Contracts can call other contracts or send Ether to non-contract accounts by the means of message calls. Message calls are similar to transactions, in that they have a source, a target, data payload, Ether, gas and return data. In fact, every transaction consists of a top-level message call which in turn can create further message calls.</p>
+<p>A contract can decide how much of its remaining <strong>gas</strong> should be sent with the inner message call and how much it wants to retain. If an out-of-gas exception happens in the inner call (or any other exception), this will be signaled by an error value put onto the stack. In this case, only the gas sent together with the call is used up. In Solidity, the calling contract causes a manual exception by default in such situations, so that exceptions “bubble up” the call stack.【因为error被push进了stack中，因此方法调用的时候error会被pop出来】</p>
+<p>As already said, the called contract (which can be the same as the caller) will receive a freshly cleared instance of memory and has access to the call payload - which will be provided in a separate area called the <strong>calldata</strong>. After it has finished execution, it can return data which will be stored at a location in the caller’s memory preallocated by the caller. All such calls are fully synchronous.</p>
+<p>Calls are <strong>limited</strong> to a depth of 1024, which means that for more complex operations, loops should be preferred over recursive calls. Furthermore, only 63&#x2F;64th of the gas can be forwarded in a message call, which causes a depth limit of a little less than 1000 in practice.</p>
+<h2 id="Delegatecall-and-Libraries"><a href="#Delegatecall-and-Libraries" class="headerlink" title="Delegatecall and Libraries"></a>Delegatecall and Libraries</h2><p>There exists a special variant of a message call, named <strong>delegatecall</strong> which is identical to a message call apart from the fact that the code at the target address is executed in the context (i.e. at the address) of the calling contract and <code>msg.sender</code> and <code>msg.value</code> do not change their values.</p>
+<p>This means that a contract can dynamically load code from a different address at runtime. Storage, current address and balance still refer to the calling contract, only the code is taken from the called address.</p>
+<p>This makes it possible to implement the “library” feature in Solidity: Reusable library code that can be applied to a contract’s storage, e.g. in order to implement a complex data structure.</p>
+<h2 id="Logs"><a href="#Logs" class="headerlink" title="Logs"></a>Logs</h2><p>It is possible to store data in a specially indexed data structure that maps all the way up to the block level. This feature called <strong>logs</strong> is used by Solidity in order to implement <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#events">events</a>. Contracts cannot access log data after it has been created, but they can be efficiently accessed from outside the blockchain. Since some part of the log data is stored in <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bloom_filter">bloom filters</a>, it is possible to search for this data in an efficient and cryptographically secure way, so network peers that do not download the whole blockchain (so-called “light clients”) can still find these logs.</p>
+<h2 id="Create"><a href="#Create" class="headerlink" title="Create"></a>Create</h2><p>Contracts can even create other contracts using a special opcode (i.e. they do not simply call the zero address as a transaction would). The only difference between these <strong>create calls</strong> and normal message calls is that the payload data is executed and the result stored as code and the caller &#x2F; creator receives the address of the new contract on the stack.</p>
+<h2 id="Deactivate-and-Self-destruct"><a href="#Deactivate-and-Self-destruct" class="headerlink" title="Deactivate and Self-destruct"></a>Deactivate and Self-destruct</h2><p>The only way to remove code from the blockchain is when a contract at that address performs the <code>selfdestruct</code> operation. The remaining Ether stored at that address is sent to a designated target and then the storage and code is removed from the state. Removing the contract in theory sounds like a good idea, but it is potentially dangerous, as if someone sends Ether to removed contracts, the Ether is forever lost.</p>
+<blockquote>
+<p>Warning</p>
+<p>Even if a contract is removed by <code>selfdestruct</code>, it is still part of the history of the blockchain and probably retained by most Ethereum nodes. So using <code>selfdestruct</code> is not the same as deleting data from a hard disk.</p>
+</blockquote>
+<blockquote>
+<p>Note</p>
+<p>Even if a contract’s code does not contain a call to <code>selfdestruct</code>, it can still perform that operation using <code>delegatecall</code> or <code>callcode</code>.</p>
+</blockquote>
+<h2 id="Precompiled-Contracts"><a href="#Precompiled-Contracts" class="headerlink" title="Precompiled Contracts"></a>Precompiled Contracts</h2><p>There is a small set of contract addresses that are special: The address range between <code>1</code> and (including) <code>8</code> contains “precompiled contracts” that can be called as any other contract but their behaviour (and their gas consumption) is not defined by EVM code stored at that address (they do not contain code) but instead is implemented in the EVM execution environment itself.</p>
+<p>Different EVM-compatible chains might use a different set of precompiled contracts. It might also be possible that new precompiled contracts are added to the Ethereum main chain in the future, but you can reasonably expect them to always be in the range between <code>1</code> and <code>0xffff</code> (inclusive).</p>
+<p><a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/introduction-to-smart-contracts.html">doc</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/30/04.EVM/02.EVM%20in%20solidity%20doc/">http://example.com/2022/12/30/04.EVM/02.EVM%20in%20solidity%20doc/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/31/03.solidity%E8%BF%9B%E9%98%B6/12.stack%201024%20level/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">12.stack 1024 level</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/30/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&amp;%E6%9D%82%E7%AC%94%E8%AE%B0/04.%E8%8B%B1%E6%96%87/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">04.英文</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">165</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">30</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#EVM-in-solidity-doc"><span class="toc-number">1.</span> <span class="toc-text">EVM in solidity doc</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Overview"><span class="toc-number">1.1.</span> <span class="toc-text">Overview</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Accounts"><span class="toc-number">1.2.</span> <span class="toc-text">Accounts</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Transactions"><span class="toc-number">1.3.</span> <span class="toc-text">Transactions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gas"><span class="toc-number">1.4.</span> <span class="toc-text">Gas</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Storage-Memory-and-the-Stack"><span class="toc-number">1.5.</span> <span class="toc-text">Storage, Memory and the Stack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Instruction-Set"><span class="toc-number">1.6.</span> <span class="toc-text">Instruction Set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Message-Calls"><span class="toc-number">1.7.</span> <span class="toc-text">Message Calls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Delegatecall-and-Libraries"><span class="toc-number">1.8.</span> <span class="toc-text">Delegatecall and Libraries</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Logs"><span class="toc-number">1.9.</span> <span class="toc-text">Logs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Create"><span class="toc-number">1.10.</span> <span class="toc-text">Create</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deactivate-and-Self-destruct"><span class="toc-number">1.11.</span> <span class="toc-text">Deactivate and Self-destruct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Precompiled-Contracts"><span class="toc-number">1.12.</span> <span class="toc-text">Precompiled Contracts</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/01/02.solidity%E8%AF%AD%E6%B3%95/46.SPDX%20License%20Identifier/" title="46.SPDX License Identifier"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="46.SPDX License Identifier"/></a><div class="content"><a class="title" href="/2023/01/01/02.solidity%E8%AF%AD%E6%B3%95/46.SPDX%20License%20Identifier/" title="46.SPDX License Identifier">46.SPDX License Identifier</a><time datetime="2023-01-01T05:29:39.975Z" title="发表于 2023-01-01 13:29:39">2023-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/01/13.%E5%85%B3%E4%BA%8Egas/05.rules/" title="05.rules"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.rules"/></a><div class="content"><a class="title" href="/2023/01/01/13.%E5%85%B3%E4%BA%8Egas/05.rules/" title="05.rules">05.rules</a><time datetime="2023-01-01T05:23:25.974Z" title="发表于 2023-01-01 13:23:25">2023-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/31/12.EIP/01.eip-114/" title="01.eip-114"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.eip-114"/></a><div class="content"><a class="title" href="/2022/12/31/12.EIP/01.eip-114/" title="01.eip-114">01.eip-114</a><time datetime="2022-12-31T04:42:12.948Z" title="发表于 2022-12-31 12:42:12">2022-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/31/12.EIP/01.eip-90/" title="01.eip-90"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.eip-90"/></a><div class="content"><a class="title" href="/2022/12/31/12.EIP/01.eip-90/" title="01.eip-90">01.eip-90</a><time datetime="2022-12-31T04:42:12.634Z" title="发表于 2022-12-31 12:42:12">2022-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/31/03.solidity%E8%BF%9B%E9%98%B6/12.stack%201024%20level/" title="12.stack 1024 level"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="12.stack 1024 level"/></a><div class="content"><a class="title" href="/2022/12/31/03.solidity%E8%BF%9B%E9%98%B6/12.stack%201024%20level/" title="12.stack 1024 level">12.stack 1024 level</a><time datetime="2022-12-30T17:23:29.270Z" title="发表于 2022-12-31 01:23:29">2022-12-31</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
