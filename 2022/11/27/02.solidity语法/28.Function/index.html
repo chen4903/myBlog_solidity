@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>28.Function | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="FunctiondegestFunction types are the types of functions. Variables of function type can be assigned from functions and function parameters of function type can be used to pass functions to and return">
+<meta property="og:type" content="article">
+<meta property="og:title" content="28.Function">
+<meta property="og:url" content="http://example.com/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/28.Function/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="FunctiondegestFunction types are the types of functions. Variables of function type can be assigned from functions and function parameters of function type can be used to pass functions to and return">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2022-11-27T14:23:20.281Z">
+<meta property="article:modified_time" content="2023-01-02T05:28:41.006Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/28.Function/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '28.Function',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-02 13:28:41'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">172</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">30</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">28.Function</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-27T14:23:20.281Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-02T05:28:41.006Z" title="更新于 2023-01-02 13:28:41">2023-01-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h1><h2 id="degest"><a href="#degest" class="headerlink" title="degest"></a>degest</h2><p>Function types are the types of functions. Variables of function type can be assigned from functions and function parameters of function type can be used to pass functions to and return functions from function calls. Function types come in two flavours - <em>internal</em> and <em>external</em> functions:</p>
+<ul>
+<li>Internal functions can only be called inside the current contract (more specifically, inside the current code unit, which also includes internal library functions and inherited functions) because they cannot be executed outside of the context of the current contract. Calling an internal function is realized by jumping to its entry label, just like when calling a function of the current contract internally.</li>
+<li>External functions consist of an address and a function signature and they can be passed via and returned from external function calls.</li>
+</ul>
+<h2 id="syntax"><a href="#syntax" class="headerlink" title="syntax"></a>syntax</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function &lt;function name&gt; (&lt;parameter types&gt;) &#123;internal|external|public|private&#125; [pure|view|payable] [returns (&lt;return types&gt;)]</span><br></pre></td></tr></table></figure>
+
+<h3 id="public"><a href="#public" class="headerlink" title="public"></a>public</h3><p><code>public</code>: 内部外部均可见。(也可用于修饰状态变量，public变量会自动生成 <code>getter</code>函数，用于查询数值).</p>
+<ul>
+<li>状态变量：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function minter() external view returns (address) &#123; return minter; &#125; </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>mapping：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function balances(address account) external view returns (uint) &#123;</span><br><span class="line">    return balances[account];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="internal"><a href="#internal" class="headerlink" title="internal"></a>internal</h3><p><code>internal</code>: 只能从合约内部访问，继承的合约可以用（也可用于修饰状态变量）。是默认值</p>
+<h3 id="private"><a href="#private" class="headerlink" title="private"></a>private</h3><p><code>private</code>: 只能从本合约内部访问，继承的合约也不能用（也可用于修饰状态变量）。</p>
+<p>Example that shows how to use internal function types:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.4.16 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">library ArrayUtils &#123;</span><br><span class="line">    // internal functions can be used in internal library functions because</span><br><span class="line">    // they will be part of the same code context</span><br><span class="line">    function map(uint[] memory self, function (uint) pure returns (uint) f)</span><br><span class="line">        internal</span><br><span class="line">        pure</span><br><span class="line">        returns (uint[] memory r)</span><br><span class="line">    &#123;</span><br><span class="line">        r = new uint[](self.length);</span><br><span class="line">        for (uint i = 0; i &lt; self.length; i++) &#123;</span><br><span class="line">            r[i] = f(self[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function reduce(</span><br><span class="line">        uint[] memory self,</span><br><span class="line">        function (uint, uint) pure returns (uint) f</span><br><span class="line">    )</span><br><span class="line">        internal</span><br><span class="line">        pure</span><br><span class="line">        returns (uint r)</span><br><span class="line">    &#123;</span><br><span class="line">        r = self[0];</span><br><span class="line">        for (uint i = 1; i &lt; self.length; i++) &#123;</span><br><span class="line">            r = f(r, self[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function range(uint length) internal pure returns (uint[] memory r) &#123;</span><br><span class="line">        r = new uint[](length);</span><br><span class="line">        for (uint i = 0; i &lt; r.length; i++) &#123;</span><br><span class="line">            r[i] = i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">contract Pyramid &#123;</span><br><span class="line">    using ArrayUtils for *;</span><br><span class="line"></span><br><span class="line">    function pyramid(uint l) public pure returns (uint) &#123;</span><br><span class="line">        return ArrayUtils.range(l).map(square).reduce(sum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function square(uint x) internal pure returns (uint) &#123;</span><br><span class="line">        return x * x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function sum(uint x, uint y) internal pure returns (uint) &#123;</span><br><span class="line">        return x + y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="external"><a href="#external" class="headerlink" title="external"></a>external</h3><p><code>external</code>: 只能从合约外部访问（但是可以用<code>this.f()</code>来调用，<code>f</code>是函数名）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.4.22 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract Oracle &#123;</span><br><span class="line">    struct Request &#123;</span><br><span class="line">        bytes data;</span><br><span class="line">        function(uint) external callback;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Request[] private requests;</span><br><span class="line">    event NewRequest(uint);</span><br><span class="line"></span><br><span class="line">    function query(bytes memory data, function(uint) external callback) public &#123;</span><br><span class="line">        requests.push(Request(data, callback));</span><br><span class="line">        emit NewRequest(requests.length - 1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function reply(uint requestID, uint response) public &#123;</span><br><span class="line">        // Here goes the check that the reply comes from a trusted source</span><br><span class="line">        requests[requestID].callback(response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">contract OracleUser &#123;</span><br><span class="line">    Oracle constant private ORACLE_CONST = Oracle(address(0x00000000219ab540356cBB839Cbe05303d7705Fa)); // known contract</span><br><span class="line">    uint private exchangeRate;</span><br><span class="line"></span><br><span class="line">    function buySomething() public &#123;</span><br><span class="line">        ORACLE_CONST.query(&quot;USD&quot;, this.oracleResponse);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function oracleResponse(uint response) public &#123;</span><br><span class="line">        require(</span><br><span class="line">            msg.sender == address(ORACLE_CONST),</span><br><span class="line">            &quot;Only oracle can call this.&quot;</span><br><span class="line">        );</span><br><span class="line">        exchangeRate = response;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="pure-amp-view"><a href="#pure-amp-view" class="headerlink" title="pure&amp;view"></a>pure&amp;view</h3><p><code>solidity</code>加入这两个关键字，我认为是因为<code>gas fee</code>。合约的状态变量存储在链上，<code>gas fee</code>很贵，如果不改变链上状态，就不用付<code>gas</code>。包含<code>pure</code>跟<code>view</code>关键字的函数是不改写链上状态的，因此用户直接调用他们是不需要付gas的（合约中非<code>pure</code>&#x2F;<code>view</code>函数调用它们则会改写链上状态，需要付gas）。</p>
+<ul>
+<li>写入状态变量。</li>
+<li>释放事件。</li>
+<li>创建其他合同。</li>
+<li>使用<code>selfdestruct</code>.</li>
+<li>通过调用发送以太币。</li>
+<li>调用任何未标记<code>view</code>或<code>pure</code>的函数。</li>
+<li>使用低级调用（low-level calls）。</li>
+<li>使用包含某些操作码的内联汇编。</li>
+</ul>
+<p>0xAA画了一个马里奥插画，帮助大家理解。在插画里，我把合约中的状态变量（存储在链上）比作碧池公主，三种不同的角色代表不同的关键字。</p>
+<p><img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/28.Function/28.jpg"></p>
+<ul>
+<li><code>pure</code>，中文意思是“纯”，在<code>solidity</code>里理解为“纯纯牛马”。包含<code>pure</code>关键字的函数，不能读取也不能写入存储在链上的状态变量。就像小怪一样，看不到也摸不到碧池公主。</li>
+<li><code>view</code>，“看”，在<code>solidity</code>里理解为“看客”。包含<code>view</code>关键字的函数，能读取但也不能写入状态变量。类似马里奥，能看到碧池，但终究是看客，不能入洞房。</li>
+<li>不写<code>pure</code>也不写<code>view</code>，函数既可以读取也可以写入状态变量。类似马里奥里的<code>boss</code>，可以对碧池公主为所欲为🐶。</li>
+</ul>
+<h3 id="Comparation"><a href="#Comparation" class="headerlink" title="Comparation"></a>Comparation</h3><h4 id="public-amp-external"><a href="#public-amp-external" class="headerlink" title="public&amp;external"></a>public&amp;external</h4><p>External (or public) functions have the following members:</p>
+<ul>
+<li><code>.address</code> returns the address of the contract of the function.</li>
+<li><code>.selector</code> returns the <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/abi-spec.html#abi-function-selector">ABI function selector</a></li>
+</ul>
+<blockquote>
+<p>note</p>
+<p>External (or public) functions used to have the additional members <code>.gas(uint)</code> and <code>.value(uint)</code>. These were deprecated in Solidity 0.6.2 and removed in Solidity 0.7.0. Instead use <code>&#123;gas: ...&#125;</code> and <code>&#123;value: ...&#125;</code> to specify the amount of gas or the amount of wei sent to a function, respectively. See <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/control-structures.html#external-function-calls">External Function Calls</a> for more information.</p>
+</blockquote>
+<p>Example that shows how to use the members:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.6.4 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract Example &#123;</span><br><span class="line">    function f() public payable returns (bytes4) &#123;</span><br><span class="line">        assert(this.f.address == address(this));</span><br><span class="line">        return this.f.selector;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function g() public &#123;</span><br><span class="line">        this.f&#123;gas: 10, value: 800&#125;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Note</p>
+<p>External (or public) functions used to have the additional members <code>.gas(uint)</code> and <code>.value(uint)</code>. These were deprecated in Solidity 0.6.2 and removed in Solidity 0.7.0. Instead use <code>&#123;gas: ...&#125;</code> and <code>&#123;value: ...&#125;</code> to specify the amount of gas or the amount of wei sent to a function, respectively. See <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/control-structures.html#external-function-calls">External Function Calls</a> for more information.</p>
+</blockquote>
+<h4 id="pure-amp-view-1"><a href="#pure-amp-view-1" class="headerlink" title="pure&amp;view"></a>pure&amp;view</h4><p>我们在合约里定义一个状态变量 <code>number = 5</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.4;</span><br><span class="line">contract FunctionTypes&#123;</span><br><span class="line">    uint256 public number = 5;</span><br></pre></td></tr></table></figure>
+
+<p>定义一个<code>add()</code>函数，每次调用，每次给<code>number + 1</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 默认</span><br><span class="line">function add() external&#123;</span><br><span class="line">    number = number + 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果<code>add()</code>包含了<code>pure</code>关键字，例如 <code>function add() pure external</code>，就会报错。因为<code>pure</code>（纯纯牛马）是不配读取合约里的状态变量的，更不配改写。那<code>pure</code>函数能做些什么？举个例子，你可以给函数传递一个参数 <code>_number</code>，然后让他返回 <code>_number+1</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// pure: 纯纯牛马</span><br><span class="line">function addPure(uint256 _number) external pure returns(uint256 new_number)&#123;</span><br><span class="line">    new_number = _number+1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/28.Function/28.2.png"></p>
+<p>如果<code>add()</code>包含<code>view</code>，比如<code>function add() view external</code>，也会报错。因为<code>view</code>能读取，但不能够改写状态变量。可以稍微改写下方程，让他不改写<code>number</code>，而是返回一个新的变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// view: 看客</span><br><span class="line">function addView() external view returns(uint256 new_number) &#123;</span><br><span class="line">    new_number = number + 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/28.Function/28.3.png"></p>
+<h4 id="internal-amp-external"><a href="#internal-amp-external" class="headerlink" title="internal&amp;external"></a>internal&amp;external</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// internal: 内部</span><br><span class="line">    function minus() internal &#123;</span><br><span class="line">        number = number - 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 合约内的函数可以调用内部函数</span><br><span class="line">    function minusCall() external &#123;</span><br><span class="line">        minus();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们定义一个<code>internal</code>的<code>minus()</code>函数，每次调用使得<code>number</code>变量减1。由于是<code>internal</code>，只能由合约内部调用，而外部不能。因此，我们必须再定义一个<code>external</code>的<code>minusCall()</code>函数，来间接调用内部的<code>minus()</code>。</p>
+<p><img src="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/28.Function/28.4.png"></p>
+<h4 id="payable"><a href="#payable" class="headerlink" title="payable"></a>payable</h4><ul>
+<li><code>payable</code> functions can be converted to <code>non-payable</code> functions</li>
+</ul>
+<p>The rule about <code>payable</code> and <code>non-payable</code> might be a little confusing, but in essence, if a function is <code>payable</code>, this means that it also accepts a payment of zero Ether, so it also is <code>non-payable</code>. On the other hand, a <code>non-payable</code> function will reject Ether sent to it, so <code>non-payable</code> functions cannot be converted to <code>payable</code> functions. To clarify, rejecting ether is more restrictive than not rejecting ether. This means you can override a payable function with a non-payable but not the other way around.</p>
+<p>Additionally, When you define a <code>non-payable</code> function pointer, the compiler does not enforce that the pointed function will actually reject ether. Instead, it enforces that the function pointer is never used to send ether. Which makes it possible to assign a <code>payable</code> function pointer to a <code>non-payable</code> function pointer ensuring both types behave the same way, i.e, both cannot be used to send ether.</p>
+<h2 id="feature"><a href="#feature" class="headerlink" title="feature"></a>feature</h2><ul>
+<li>If a function type variable is not initialised, calling it results in a <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/control-structures.html#assert-and-require">Panic error</a>. The same happens if you call a function after using <code>delete</code> on it.</li>
+<li>If external function types are used outside of the context of Solidity, they are treated as the <code>function</code> type, which encodes the address followed by the function identifier together in a single <code>bytes24</code> type.</li>
+<li>Note that public functions of the current contract can be used both as an internal and as an external function. To use <code>f</code> as an internal function, just use <code>f</code>, if you want to use its external form, use <code>this.f</code>.</li>
+<li>A function of an internal type can be assigned to a variable of an internal function type regardless of where it is defined. This includes private, internal and public functions of both contracts and libraries as well as free functions. External function types, on the other hand, are only compatible with public and external contract functions.</li>
+<li>External functions with <code>calldata</code> parameters are incompatible with external function types with <code>calldata</code> parameters. They are compatible with the corresponding types with <code>memory</code> parameters instead. For example, there is no function that can be pointed at by a value of type <code>function (string calldata) external</code> while <code>function (string memory) external</code> can point at both <code>function f(string memory) external &#123;&#125;</code> and <code>function g(string calldata) external &#123;&#125;</code>. This is because for both locations the arguments are passed to the function in the same way. The caller cannot pass its calldata directly to an external function and always ABI-encodes the arguments into memory. Marking the parameters as <code>calldata</code> only affects the implementation of the external function and is meaningless in a function pointer on the caller’s side.</li>
+<li>Libraries are excluded because they require a <code>delegatecall</code> and use <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#library-selectors">a different ABI convention for their selectors</a>. Functions declared in interfaces do not have definitions so pointing at them does not make sense either.</li>
+</ul>
+<h2 id="conversions"><a href="#conversions" class="headerlink" title="conversions"></a>conversions</h2><p>A function type <code>A</code> is implicitly convertible to a function type <code>B</code> if and only if their parameter types are identical, their return types are identical, their internal&#x2F;external property is identical and the state mutability of <code>A</code> is more restrictive than the state mutability of <code>B</code>. In particular:</p>
+<ul>
+<li><code>pure</code> functions can be converted to <code>view</code> and <code>non-payable</code> functions</li>
+<li><code>view</code> functions can be converted to <code>non-payable</code> functions</li>
+<li><code>payable</code> functions can be converted to <code>non-payable</code> functions</li>
+</ul>
+<p>No other conversions between function types are possible.</p>
+<h2 id="other"><a href="#other" class="headerlink" title="other"></a>other</h2><p>Functions are the executable units of code. Functions are usually defined inside a contract, but they can also be defined outside of contracts.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.7.1 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract SimpleAuction &#123;</span><br><span class="line">    function bid() public payable &#123; // Function</span><br><span class="line">        // ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Helper function defined outside of a contract</span><br><span class="line">function helper(uint x) pure returns (uint) &#123;</span><br><span class="line">    return x * 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/control-structures.html#function-calls">Function Calls</a> can happen internally or externally and have different levels of <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#visibility-and-getters">visibility</a> towards other contracts. <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#functions">Functions</a> accept <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#function-parameters-return-variables">parameters and return variables</a> to pass parameters and values between them.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/28.Function/">http://example.com/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/28.Function/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/29.stack/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">29.stack</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/27.Keccak256/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">27.Keccak256</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">172</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">30</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Function"><span class="toc-number">1.</span> <span class="toc-text">Function</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#degest"><span class="toc-number">1.1.</span> <span class="toc-text">degest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#syntax"><span class="toc-number">1.2.</span> <span class="toc-text">syntax</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#public"><span class="toc-number">1.2.1.</span> <span class="toc-text">public</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#internal"><span class="toc-number">1.2.2.</span> <span class="toc-text">internal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#private"><span class="toc-number">1.2.3.</span> <span class="toc-text">private</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#external"><span class="toc-number">1.2.4.</span> <span class="toc-text">external</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pure-amp-view"><span class="toc-number">1.2.5.</span> <span class="toc-text">pure&amp;view</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Comparation"><span class="toc-number">1.2.6.</span> <span class="toc-text">Comparation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#public-amp-external"><span class="toc-number">1.2.6.1.</span> <span class="toc-text">public&amp;external</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pure-amp-view-1"><span class="toc-number">1.2.6.2.</span> <span class="toc-text">pure&amp;view</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#internal-amp-external"><span class="toc-number">1.2.6.3.</span> <span class="toc-text">internal&amp;external</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#payable"><span class="toc-number">1.2.6.4.</span> <span class="toc-text">payable</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#feature"><span class="toc-number">1.3.</span> <span class="toc-text">feature</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#conversions"><span class="toc-number">1.4.</span> <span class="toc-text">conversions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#other"><span class="toc-number">1.5.</span> <span class="toc-text">other</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/06/13.%E5%85%B3%E4%BA%8Egas/06.the%20way%20to%20save%20gas/" title="06.the way to save gas"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.the way to save gas"/></a><div class="content"><a class="title" href="/2023/01/06/13.%E5%85%B3%E4%BA%8Egas/06.the%20way%20to%20save%20gas/" title="06.the way to save gas">06.the way to save gas</a><time datetime="2023-01-06T10:59:23.449Z" title="发表于 2023-01-06 18:59:23">2023-01-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/06/02.solidity%E8%AF%AD%E6%B3%95/52.Expressions%20and%20Control%20Structures/" title="52.Expressions and Control Structures"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="52.Expressions and Control Structures"/></a><div class="content"><a class="title" href="/2023/01/06/02.solidity%E8%AF%AD%E6%B3%95/52.Expressions%20and%20Control%20Structures/" title="52.Expressions and Control Structures">52.Expressions and Control Structures</a><time datetime="2023-01-06T05:47:50.194Z" title="发表于 2023-01-06 13:47:50">2023-01-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/05/02.solidity%E8%AF%AD%E6%B3%95/51.Units%20and%20Globally%20Available%20Variables/" title="51.Units and Globally Available Variables"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="51.Units and Globally Available Variables"/></a><div class="content"><a class="title" href="/2023/01/05/02.solidity%E8%AF%AD%E6%B3%95/51.Units%20and%20Globally%20Available%20Variables/" title="51.Units and Globally Available Variables">51.Units and Globally Available Variables</a><time datetime="2023-01-05T12:30:29.669Z" title="发表于 2023-01-05 20:30:29">2023-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/04/02.solidity%E8%AF%AD%E6%B3%95/50.Operators/" title="50.Operators"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="50.Operators"/></a><div class="content"><a class="title" href="/2023/01/04/02.solidity%E8%AF%AD%E6%B3%95/50.Operators/" title="50.Operators">50.Operators</a><time datetime="2023-01-04T14:43:17.081Z" title="发表于 2023-01-04 22:43:17">2023-01-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/02/02.solidity%E8%AF%AD%E6%B3%95/49.User%20Defined%20Value%20Types/" title="49.User Defined Value Types"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="49.User Defined Value Types"/></a><div class="content"><a class="title" href="/2023/01/02/02.solidity%E8%AF%AD%E6%B3%95/49.User%20Defined%20Value%20Types/" title="49.User Defined Value Types">49.User Defined Value Types</a><time datetime="2023-01-02T03:09:48.545Z" title="发表于 2023-01-02 11:09:48">2023-01-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
