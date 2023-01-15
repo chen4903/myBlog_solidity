@@ -1,0 +1,961 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>04.Yul | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="YulYul（先前被也被称为 JULIA 或 IULIA）是一种可以编译到各种不同后端的中间语言。 计划支持EVM 1.0，EVM 1.5和Ewasm，它被设计为这三个平台的可用的共同标准。 它已经可以在独立模式下使用，也可以在Solidity内部用于 “内联汇编”， 并且有一个Solidity编译器的实验性实现，将Yul作为一种中间语言。 Yul是高级优化阶段的一个很好的目标，可以使所有的目标平">
+<meta property="og:type" content="article">
+<meta property="og:title" content="04.Yul">
+<meta property="og:url" content="http://example.com/2023/01/15/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/04.Yul/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="YulYul（先前被也被称为 JULIA 或 IULIA）是一种可以编译到各种不同后端的中间语言。 计划支持EVM 1.0，EVM 1.5和Ewasm，它被设计为这三个平台的可用的共同标准。 它已经可以在独立模式下使用，也可以在Solidity内部用于 “内联汇编”， 并且有一个Solidity编译器的实验性实现，将Yul作为一种中间语言。 Yul是高级优化阶段的一个很好的目标，可以使所有的目标平">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2023-01-15T11:13:50.499Z">
+<meta property="article:modified_time" content="2023-01-15T12:10:25.352Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/01/15/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/04.Yul/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '04.Yul',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-15 20:10:25'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">31</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">04.Yul</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-15T11:13:50.499Z" title="发表于 2023-01-15 19:13:50">2023-01-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-15T12:10:25.352Z" title="更新于 2023-01-15 20:10:25">2023-01-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/14-%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/">14.内联汇编</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Yul"><a href="#Yul" class="headerlink" title="Yul"></a>Yul</h1><p>Yul（先前被也被称为 JULIA 或 IULIA）是一种可以编译到各种不同后端的中间语言。</p>
+<p>计划支持EVM 1.0，EVM 1.5和Ewasm，它被设计为这三个平台的可用的共同标准。 它已经可以在独立模式下使用，也可以在Solidity内部用于 “内联汇编”， 并且有一个Solidity编译器的实验性实现，将Yul作为一种中间语言。 Yul是高级优化阶段的一个很好的目标，可以使所有的目标平台同样受益。</p>
+<h2 id="动机和高级别描述"><a href="#动机和高级别描述" class="headerlink" title="动机和高级别描述"></a>动机和高级别描述</h2><p>Yul 的设计试图实现几个目标：</p>
+<ol>
+<li>用Yul编写的程序应该是可读的，即使代码是由Solidity或其他高级语言的编译器生成的。</li>
+<li>控制流应易于理解，以帮助人工检查、形式化验证和优化。</li>
+<li>从Yul到字节码的翻译应该尽可能的简单明了。</li>
+<li>Yul应该适用于整个程序的优化。</li>
+</ol>
+<p>为了实现第一个和第二个目标，Yul提供了高级别的结构，如 <code>for</code> 循环， <code>if</code> 和 <code>switch</code> 语句和函数调用。 这些应该足以充分代表汇编程序的控制流。 因此，没有提供 <code>SWAP</code>， <code>DUP</code>， <code>JUMPDEST</code>， <code>JUMP</code> 和 <code>JUMPI</code> 的明确语句， 因为前两者混淆了数据流，后两者混淆了控制流。此外， <code>mul(add(x, y), 7)</code> 形式的函数语句比 <code>7 y x add mul</code> 这样的纯操作码语句更受欢迎， 因为在第一种形式中，更容易看到哪个操作数用于哪个操作码。</p>
+<p>尽管它是为堆栈机设计的，但Yul并没有暴露堆栈本身的复杂性。 程序员或审计师不应该担心堆栈的问题。</p>
+<p>第三个目标是通过以一种非常有规律的方式将高层结构编译成字节码来实现的。 汇编器执行的唯一非本地操作是用户定义的标识符（函数、变量……）的名称查找和清理堆栈中的本地变量。</p>
+<p>为了避免值和引用等概念之间的混淆， Yul是静态类型的。同时， 有一个默认的类型（通常是目标机的整数字）， 可以随时省略以帮助增加可读性。</p>
+<p>为了保持语言的简单和灵活， Yul在其纯粹的形式下没有任何内置的操作，函数或类型。 在指定Yul的语言时，这些操作和语义被添加到一起， 这使得Yul可以根据不同的目标平台和功能集的要求进行专业化。</p>
+<p>目前，只有一种指定的Yul语言。这个语言使用EVM的操作码作为内建函数（见下文）， 并且只定义了 <code>u256</code> 类型，这是EVM的本地256位类型。正因为如此，我们将不在下面的例子中提供类型。</p>
+<h2 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h2><p>下面的例子程序是用EVM语言编写的，用来计算指数。 它可以用 <code>solc --strict-assembly</code> 指令编译。 内置函数 <code>mul</code> 和 <code>div</code> 分别计算乘法和除法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    function power(base, exponent) -&gt; result</span><br><span class="line">    &#123;</span><br><span class="line">        switch exponent</span><br><span class="line">        case 0 &#123; result := 1 &#125;</span><br><span class="line">        case 1 &#123; result := base &#125;</span><br><span class="line">        default</span><br><span class="line">        &#123;</span><br><span class="line">            result := power(mul(base, base), div(exponent, 2))</span><br><span class="line">            switch mod(exponent, 2)</span><br><span class="line">                case 1 &#123; result := mul(base, result) &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以用for-loop而不是递归来实现同样的函数。 这里， <code>lt(a, b)</code> 计算 <code>a</code> 是否小于 <code>b</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    function power(base, exponent) -&gt; result</span><br><span class="line">    &#123;</span><br><span class="line">        result := 1</span><br><span class="line">        for &#123; let i := 0 &#125; lt(i, exponent) &#123; i := add(i, 1) &#125;</span><br><span class="line">        &#123;</span><br><span class="line">            result := mul(result, base)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/yul.html#erc20yul">本节的末尾</a> ，可以找到ERC-20标准的完整实现。</p>
+<h2 id="单独使用"><a href="#单独使用" class="headerlink" title="单独使用"></a>单独使用</h2><p>您可以使用Solidity编译器在EVM语言中以独立的形式使用Yul。 这将使用 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/yul.html#yul-object">Yul 对象符号</a>，这样就有可能将代码作为数据引用到部署合约中。 这种Yul模式可用于命令行编译器（使用 <code>--strict-assembly</code>）和 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/using-the-compiler.html#compiler-api">标准-json接口</a>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;language&quot;: &quot;Yul&quot;,</span><br><span class="line">    &quot;sources&quot;: &#123; &quot;input.yul&quot;: &#123; &quot;content&quot;: &quot;&#123; sstore(0, 1) &#125;&quot; &#125; &#125;,</span><br><span class="line">    &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;outputSelection&quot;: &#123; &quot;*&quot;: &#123; &quot;*&quot;: [&quot;*&quot;], &quot;&quot;: [ &quot;*&quot; ] &#125; &#125;,</span><br><span class="line">        &quot;optimizer&quot;: &#123; &quot;enabled&quot;: true, &quot;details&quot;: &#123; &quot;yul&quot;: true &#125; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>警告</p>
+<p>Yul正在积极开发中，只有以EVM 1.0为目标，Yul的EVM语言才能完全实现字节码生成。</p>
+</blockquote>
+<h2 id="对Yul的非正式描述"><a href="#对Yul的非正式描述" class="headerlink" title="对Yul的非正式描述"></a>对Yul的非正式描述</h2><p>在下文中，我们将谈论Yul语言的每个单独方面。在例子中，我们将使用默认的EVM语言。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>Yul使用与Solidity相同的方式解析注释，字词和标识符， 所以您可以使用 <code>//</code> 和 <code>/* */</code> 来表示注释。 但是有一个例外，Yul中的标识符可以包含圆点： <code>.</code>。</p>
+<p>Yul可以指定由代码，数据和子对象组成的 “对象”。 请参阅 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/yul.html#yul-object">Yul 对象</a> 以了解这方面的详情。 在本节中，我们只关注这样一个对象的代码部分。 这个代码部分总是由一个大括号限定的块组成。 大多数工具都支持只指定一个预期对象的代码块。</p>
+<p>在一个代码块内，可以使用以下元素（更多细节见后面章节）：</p>
+<ul>
+<li>字母，即 <code>0x123</code>， <code>42</code> 或 <code>&quot;abc&quot;</code> （32个字符以内的字符串）。</li>
+<li>对内置函数的调用，例如 <code>add(1, mload(0))</code></li>
+<li>变量声明，例如 <code>let x := 7</code>， <code>let x := add(y, 3)</code> 或 <code>let x</code> （初始值为0）</li>
+<li>标识符（变量），例如： <code>add(3, x)</code></li>
+<li>赋值，例如： <code>x := add(y, 3)</code></li>
+<li>局部变量的作用域所在的代码块，例如 <code>&#123; let x := 3 &#123; let y := add(x, 1) &#125; &#125;</code></li>
+<li>if 语句，例如 <code>if lt(a, b) &#123; sstore(0, 1) &#125;</code></li>
+<li>switch语句，例如 <code>switch mload(0) case 0 &#123; revert() &#125; default &#123; mstore(0, 1) &#125;</code></li>
+<li>for 循环，例如 <code>for &#123; let i := 0&#125; lt(i, 10) &#123; i := add(i, 1) &#125; &#123; mstore(i, 7) &#125;</code></li>
+<li>函数的定义，例如 <code>function f(a, b) -&gt; c &#123; c := add(a, b) &#125;</code></li>
+</ul>
+<p>多个语法元素之间可以简单地用空格隔开，即不需要结尾的 <code>;</code> 或换行。</p>
+<h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><p>作为字面量，您可以使用。</p>
+<ul>
+<li>以十进制或十六进制符号表示的整数常数。</li>
+<li>ASCII字符串（例如 <code>&quot;abc&quot;</code>），可能包含十六进制转义 <code>\xNN</code> 和 Unicode转义 <code>\uNNNN</code>，其中 <code>N</code> 是十六进制数字。</li>
+<li>十六进制字符串（例如： <code>hex&quot;616263&quot;</code>）。</li>
+</ul>
+<p>在Yul的EVM语言中，字面量表示256位的单词，如下所示：</p>
+<ul>
+<li>十进制或十六进制的常量必须小于 <code>2**256</code>。 它们以大端编码的无符号整数形式表示具有该值的256位字。</li>
+<li>一个ASCII字符串首先被看作是一个字节序列， 通过将非转义ASCII字符看作是一个单字节，其值是ASCII代码， 转义 <code>\xNN</code> 是具有该值的单字节， 转义 <code>\uNNNN</code> 是该代码点的UTF-8字节序列。 字节序列不得超过32字节。 字节序列在右边用零填充，以达到32个字节的长度； 换句话说，字符串是以左对齐的方式存储。 填充后的字节序列代表一个256位的字，其最有意义的8位是第一个字节的1， 也就是说，字节被解释为大端形式。</li>
+<li>十六进制字符串首先被视为一个字节序列， 将每一对连续的十六进制数字视为一个字节。 字节序列不得超过32个字节（即64个十六进制数字），并按上述方法处理。</li>
+</ul>
+<p>当为EVM编译时，这将被翻译成一个适当的 <code>PUSHi</code> 指令。 在下面的例子中， <code>3</code> 和 <code>2</code> 相加的结果是 5， 然后计算与字符串 “abc” 的按位 <code>与（and）</code>。 最后的数值被分配到一个叫做 <code>x</code> 的局部变量。</p>
+<p>上述32字节的限制并不适用于传递给需要字面参数的内置函数的字符串（例如， <code>setimmutable</code> 或 <code>loadimmutable</code>）。 这些字符串最终不会出现在生成的字节码中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let x := and(&quot;abc&quot;, add(3, 2))</span><br></pre></td></tr></table></figure>
+
+<p>除非是默认类型，否则字面的类型必须在冒号后指定：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 这将不会被编译（u32和u256类型尚未实现）。</span><br><span class="line">let x := and(&quot;abc&quot;:u32, add(3:u256, 2:u256))</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h3><p>内置函数和用户定义的函数（见下文）都可以用前面例子中的相同方式调用。 如果函数返回一个单一的值，它可以直接在一个表达式中再次使用。 如果它返回多个值，则必须将它们分配给局部变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function f(x, y) -&gt; a, b &#123; /* ... */ &#125;</span><br><span class="line">mstore(0x80, add(mload(0x80), 3))</span><br><span class="line">// 此处，用户定义的函数 `f` 返回两个值。</span><br><span class="line">let x, y := f(1, mload(0))</span><br></pre></td></tr></table></figure>
+
+<p>对于EVM的内置函数，函数表达式可以直接转换为操作码流： 您只需从右到左读取表达式，就可以得到操作码。 在例子中的第一行，是 <code>PUSH1 3 PUSH1 0x80 MLOAD ADD PUSH1 0x80 MSTORE</code>。</p>
+<p>对于调用用户定义的函数，参数也从右到左放在堆栈中，这是参数列表被评估的顺序。 然而，返回值是在堆栈中从左到右，即在这个例子中， <code>y</code> 在堆栈的顶部， <code>x</code> 在其下方。</p>
+<h3 id="变量声明"><a href="#变量声明" class="headerlink" title="变量声明"></a>变量声明</h3><p>您可以使用 <code>let</code> 关键字来声明变量。变量只在它所定义的 <code>&#123;...&#125;</code> 块内可见。 当编译到EVM时，会创建一个新的堆栈槽，为该变量保留，并在到达块的末端时自动移除。 您可以为该变量提供一个初始值。如果您不提供一个值，该变量将被初始化为零。</p>
+<p>由于变量存储在堆栈中，它们不直接影响内存或存储， 但它们可以在内置函数 <code>mstore</code>， <code>mload</code>， <code>sstore</code> 和 <code>sload</code> 中作为内存或存储位置的指针使用。 未来的语言可能会为这种指针引入特定的类型。</p>
+<p>当一个变量被引用时，其当前值被复制。 对于EVM来说，这相当于一个 <code>DUP</code> 指令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    let zero := 0</span><br><span class="line">    let v := calldataload(zero)</span><br><span class="line">    &#123;</span><br><span class="line">        let y := add(sload(v), 1)</span><br><span class="line">        v := y</span><br><span class="line">    &#125; // y在这里被 “删除” 了</span><br><span class="line">    sstore(v, zero)</span><br><span class="line">&#125; // v和zero在这里被 “删除”。</span><br></pre></td></tr></table></figure>
+
+<p>如果声明的变量应该有一个与默认类型不同的类型，您可以用冒号表示。 当您从一个返回多个值的函数调用中赋值时，您也可以在一条语句中声明多个变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 这将不会被编译（u32和u256类型尚未实现）。</span><br><span class="line">&#123;</span><br><span class="line">    let zero:u32 := 0:u32</span><br><span class="line">    let v:u256, t:u32 := f()</span><br><span class="line">    let x, y := g()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据优化器的设置，编译器可以在变量被最后一次使用后释放堆栈槽，即使它仍然在范围内。</p>
+<h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><p>变量可以在其定义后使用 <code>:=</code> 操作符进行赋值。可以在同一时间对多个变量进行赋值。 为此，数值的数量和类型必须匹配。如果您想对一个有多个返回参数的函数进行赋值， 您必须提供多个变量。同一变量不能多次出现在赋值的左侧，例如： <code>x, x := f()</code> 是无效的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let v := 0</span><br><span class="line">// 重新对v赋值</span><br><span class="line">v := 2</span><br><span class="line">let t := add(v, 2)</span><br><span class="line">function f() -&gt; a, b &#123; &#125;</span><br><span class="line">// 赋予多个值</span><br><span class="line">v, t := f()</span><br></pre></td></tr></table></figure>
+
+<h3 id="If"><a href="#If" class="headerlink" title="If"></a>If</h3><p>if语句可用于有条件地执行代码。不能定义 “else” 块。 如果您需要多种选择条件，可以考虑使用 “switch” 来代替（见下文）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if lt(calldatasize(), 4) &#123; revert(0, 0) &#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码块的大括号是必需的。</p>
+<h3 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h3><p>您可以使用switch语句作为if语句的扩展版本。 它获取一个表达式的值，并将其与几个字面常量进行比较，与匹配的常量相对应的分支被选中。 与其他编程语言不同的是，出于安全考虑，控制流不会从一个条件延续到下一个条件。 可以有一个叫 <code>default</code> 的回退或默认情况，如果没有一个字面常数匹配，就会采取这种情况。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    let x := 0</span><br><span class="line">    switch calldataload(4)</span><br><span class="line">    case 0 &#123;</span><br><span class="line">        x := calldataload(0x24)</span><br><span class="line">    &#125;</span><br><span class="line">    default &#123;</span><br><span class="line">        x := calldataload(0x44)</span><br><span class="line">    &#125;</span><br><span class="line">    sstore(0, div(x, 2))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>条件的列表没有用大括号括起来，但条件的主体确实需要大括号。</p>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>Yul支持for循环，它由一个包含初始化部分的头，一个条件，一个后迭代部分和一个主体组成。 条件必须是一个表达式，而其他三个是代码块。 如果初始化部分在顶层声明了任何变量，这些变量的范围将延伸到循环的所有其他部分。</p>
+<p><code>break</code> 和 <code>continue</code> 语句可以在主体中使用，分别用于退出循环或跳到后部分。</p>
+<p>下面的例子是计算内存中一个代码区域的总和。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    let x := 0</span><br><span class="line">    for &#123; let i := 0 &#125; lt(i, 0x100) &#123; i := add(i, 0x20) &#125; &#123;</span><br><span class="line">        x := add(x, mload(i))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>For循环也可以作为while循环的替代： 只需将初始化和后迭代部分留为空即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    let x := 0</span><br><span class="line">    let i := 0</span><br><span class="line">    for &#123; &#125; lt(i, 0x100) &#123; &#125; &#123;     // while(i &lt; 0x100)</span><br><span class="line">        x := add(x, mload(i))</span><br><span class="line">        i := add(i, 0x20)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数声明"><a href="#函数声明" class="headerlink" title="函数声明"></a>函数声明</h3><p>Yul允许定义函数。这些不应该与 Solidity 中的函数相混淆，因为它们从来不是一个合约的外部接口的一部分， 而是一个独立于 Solidity 函数的命名空间的一部分。</p>
+<p>对于EVM来说，Yul函数从堆栈中获取它们的参数（和一个返回的PC）， 同时也将结果放到堆栈中。用户定义的函数和内置函数的调用方式完全相同。</p>
+<p>函数可以在任何地方定义，并且在它们所声明的块中是可见的。 在一个函数中，您不能访问在该函数之外定义的局部变量。</p>
+<p>函数声明参数和返回变量，与Solidity类似。 为了返回一个值，您可以把它分配给返回变量。</p>
+<p>如果您调用一个返回多个值的函数， 您必须用 <code>a, b := f(x)</code> 或 <code>let a, b := f(x)</code> 将它们分配给多个变量。</p>
+<p><code>leave</code> 语句可以用来退出当前函数。它的工作原理类似于其他语言中的 <code>return</code> 语句， 只是它不需要返回值，它只是退出函数， 函数将返回当前分配给返回变量的任何值。</p>
+<p>注意，EVM语言有一个内置的函数叫 <code>return</code>， 它可以退出整个执行环境（内部消息调用），而不仅仅是当前的yul函数。</p>
+<p>下面的例子通过平方和乘法实现了幂函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    function power(base, exponent) -&gt; result &#123;</span><br><span class="line">        switch exponent</span><br><span class="line">        case 0 &#123; result := 1 &#125;</span><br><span class="line">        case 1 &#123; result := base &#125;</span><br><span class="line">        default &#123;</span><br><span class="line">            result := power(mul(base, base), div(exponent, 2))</span><br><span class="line">            switch mod(exponent, 2)</span><br><span class="line">                case 1 &#123; result := mul(base, result) &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Yul形式规范"><a href="#Yul形式规范" class="headerlink" title="Yul形式规范"></a>Yul形式规范</h2><p>本章正式描述Yul代码。Yul代码通常放置在Yul对象内， Yul对象将在它们自己的章节中解释。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">代码块 = &#x27;&#123;&#x27; 语句* &#x27;&#125;&#x27;</span><br><span class="line">语句 =</span><br><span class="line">    代码块 |</span><br><span class="line">    函数定义 |</span><br><span class="line">    变量声明 |</span><br><span class="line">    赋值 |</span><br><span class="line">    If |</span><br><span class="line">    表达式 |</span><br><span class="line">    Switch |</span><br><span class="line">    For 循环 |</span><br><span class="line">    循环中断 |</span><br><span class="line">    退出</span><br><span class="line">函数定义 =</span><br><span class="line">    &#x27;function&#x27; 标识符 &#x27;(&#x27; 带类型的标识符列表? &#x27;)&#x27;</span><br><span class="line">    ( &#x27;-&gt;&#x27; 带类型的标识符列表 )? 代码块</span><br><span class="line">变量声明 =</span><br><span class="line">    &#x27;let&#x27; 带类型的标识符列表 ( &#x27;:=&#x27; 表达式 )?</span><br><span class="line">赋值 =</span><br><span class="line">    标识符列表 &#x27;:=&#x27; 表达式</span><br><span class="line">表达式 =</span><br><span class="line">    函数调用 | 标识符 | 字面量</span><br><span class="line">If 条件语句 =</span><br><span class="line">    &#x27;if&#x27; 表达式 代码块</span><br><span class="line">Switch 条件语句 =</span><br><span class="line">    &#x27;switch&#x27; 表达式 ( Case+ Default? | Default )</span><br><span class="line">Case =</span><br><span class="line">    &#x27;case&#x27; 字面量 代码块</span><br><span class="line">Default =</span><br><span class="line">    &#x27;default&#x27; 代码块</span><br><span class="line">For 循环 =</span><br><span class="line">    &#x27;for&#x27; 代码块 表达式 代码块 代码块</span><br><span class="line">循环中断 =</span><br><span class="line">    &#x27;break&#x27; | &#x27;continue&#x27;</span><br><span class="line">退出 = &#x27;leave&#x27;</span><br><span class="line">函数调用 =</span><br><span class="line">    标识符 &#x27;(&#x27; ( 表达式 ( &#x27;,&#x27; 表达式 )* )? &#x27;)&#x27;</span><br><span class="line">标识符 = [a-zA-Z_$] [a-zA-Z_$0-9.]*</span><br><span class="line">标识符列表 = 标识符 ( &#x27;,&#x27; 标识符)*</span><br><span class="line">类型名 = 标识符</span><br><span class="line">带类型的标识符列表 = 标识符 ( &#x27;:&#x27; 类型名 )? ( &#x27;,&#x27; 标识符 ( &#x27;:&#x27; 类型名 )? )*</span><br><span class="line">字面量 =</span><br><span class="line">    (数字字面量 | 字符串字面量 | True字面量 | False字面量) ( &#x27;:&#x27; 类型名 )?</span><br><span class="line">数字字面量 = 十六进制数字 | 十进制数字</span><br><span class="line">字符串字面量 = &#x27;&quot;&#x27; ([^&quot;\r\n\\] | &#x27;\\&#x27; .)* &#x27;&quot;&#x27;</span><br><span class="line">True字面量 = &#x27;true&#x27;</span><br><span class="line">False字面量 = &#x27;false&#x27;</span><br><span class="line">十六进制数字 = &#x27;0x&#x27; [0-9a-fA-F]+</span><br><span class="line">十进制数字 = [0-9]+</span><br></pre></td></tr></table></figure>
+
+<h3 id="语法层面的限制"><a href="#语法层面的限制" class="headerlink" title="语法层面的限制"></a>语法层面的限制</h3><p>除语法直接规定的限制外，还适用以下限制：</p>
+<p>Switch 语句必须至少有一个判断条件（包括默认条件）。 所有情况下的值都需要有相同的类型和不同的值。 如果表达式类型的所有可能值都被覆盖，则不允许有默认情况 （例如，一个带有 <code>bool</code> 表达式的Switch 语句，如果有一个真和一个假的情况，则不允许有默认情况）。</p>
+<p>每个表达式都评估为零或多个值。 标识符和字面量精确地评估为一个值， 而函数调用求值为所调用函数的返回值。</p>
+<p>在变量声明和赋值中，右边的表达式（如果存在的话）必须求值到与左边的变量数量相等的数值。 这是唯一允许对一个以上的值进行评估的表达式的情况。 在赋值或变量声明的左侧，同一个变量名称不能出现多次。</p>
+<p>也是语句的表达式（即在块级）必须评估为零值。</p>
+<p>在所有其他情况下，表达式必须精确评估为一个值。</p>
+<p><code>continue</code> 或 <code>break</code> 语句只能在for循环的主体内使用，如下所示。 考虑包含该语句的最内部循环。循环和语句必须在同一个函数中，或者两者必须在最高层。 该语句必须在循环的主体块中；不能在循环的初始化块或更新块中。 值得强调的是，这个限制只适用于包含 <code>continue</code> 或 <code>break</code> 语句的最内层循环： 这个最内层循环，以及 <code>continue</code> 或 <code>break</code> 语句， 可以出现在外层循环的任何地方，可能是外层循环的初始化块或更新块中。 例如，下面的例子是合法的，因为 <code>break</code> 出现在内循环的主体块中，尽管也出现在外循环的更新块中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for &#123;&#125; true &#123; for &#123;&#125; true &#123;&#125; &#123; break &#125; &#125;</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>for循环的条件部分必须精确评估为一个值。</p>
+<p><code>leave</code> 语句只能在一个函数内使用。</p>
+<p>函数不能在for循环初始化块的任何地方定义。</p>
+<p>字面量不可以大于它们本身的类型。已定义的最大类型宽度为 256 比特。</p>
+<p>在赋值和函数调用过程中，各个值的类型必须匹配。 没有隐式的类型转换。一般来说，只有当EVM语言提供一个适当的内置函数， 接收一个类型的值并返回一个不同类型的值时，才能实现类型转换。</p>
+<h3 id="作用域规则"><a href="#作用域规则" class="headerlink" title="作用域规则"></a>作用域规则</h3><p>Yul中的作用域是与块联系在一起的（函数和for循环是例外，下面会解释）， 所有的声明（ <code>函数定义（FunctionDefinition）</code>， <code>变量声明（VariableDeclaration）</code>） 都将新的标识符引入这些作用域。</p>
+<p>标识符在其定义的块中是可见的（包括所有子节点和子块）。 函数在整个块中是可见的（甚至在其定义之前）， 而变量只在 <code>变量声明</code> 之后的语句中可见。</p>
+<p>特别是，变量不能在其自身变量声明的右侧被引用。 函数可以在其声明之前就被引用（如果它们是可见的）。</p>
+<p>作为一般范围规则的一个例外，for 循环的 “init” 部分（第一个块）的范围延伸到for 循环的所有其他部分。 这意味着在init部分声明的变量（和函数）（但不在init部分的块内）在for循环的所有其他部分都是可见的。</p>
+<p>在for循环的其他部分声明的标识符要遵守常规的句法范围规则。</p>
+<p>这意味着一个for循环的形式 <code>for &#123; I... &#125; C &#123; P... &#125; &#123; B... &#125;</code> 等同于 <code>&#123; I... for &#123;&#125;. C &#123; P... &#125; &#123; B... &#125;</code>.</p>
+<p>函数的参数和返回参数在函数体中是可见的，其名称必须是不同的。</p>
+<p>在函数内部，不可能引用一个在该函数之外声明的变量。</p>
+<p>影子变量是不允许的，也就是说，您不能在另一个同名的标识符也可见的地方声明一个标识符， 即使因为它是在当前函数之外声明的而不可能引用它。</p>
+<h3 id="形式规范"><a href="#形式规范" class="headerlink" title="形式规范"></a>形式规范</h3><p>我们通过提供一个在AST的各个节点上重载的评估函数E来正式指定Yul。 由于内置函数可能有副作用，E接收两个状态对象和AST节点，并返回两个新的状态对象和数量不定的其他值。 这两个状态对象是全局状态对象（在EVM的背景下，它是区块链的内存、存储和状态） 和本地状态对象（本地变量的状态，即EVM中堆栈的一段）。</p>
+<p>如果AST节点是一个语句，E返回两个状态对象和一个 “mode”， 该mode用于 <code>break</code>， <code>continue</code> 和 <code>leave</code> 语句。 如果AST节点是一个表达式，E返回两个状态对象和表达式所评估的数值。</p>
+<p>全局状态的确切性质在这个高层次的描述中没有明确说明。 本地状态 <code>L</code> 是标识符 <code>i</code> 到值 <code>v</code> 的映射，表示为 <code>L[i] = v</code>。</p>
+<p>对于标识符 <code>v</code>, 我们用 <code>$v</code> 作为标识符的名字。</p>
+<p>我们将为 AST 节点使用解构符号。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">E(G, L, &lt;&#123;St1, ..., Stn&#125;&gt;: Block) =</span><br><span class="line">    let G1, L1, mode = E(G, L, St1, ..., Stn)</span><br><span class="line">    let L2 be a restriction of L1 to the identifiers of L</span><br><span class="line">    G1, L2, mode</span><br><span class="line">E(G, L, St1, ..., Stn: Statement) =</span><br><span class="line">    if n is zero:</span><br><span class="line">        G, L, regular</span><br><span class="line">    else:</span><br><span class="line">        let G1, L1, mode = E(G, L, St1)</span><br><span class="line">        if mode is regular then</span><br><span class="line">            E(G1, L1, St2, ..., Stn)</span><br><span class="line">        otherwise</span><br><span class="line">            G1, L1, mode</span><br><span class="line">E(G, L, FunctionDefinition) =</span><br><span class="line">    G, L, regular</span><br><span class="line">E(G, L, &lt;let var_1, ..., var_n := rhs&gt;: VariableDeclaration) =</span><br><span class="line">    E(G, L, &lt;var_1, ..., var_n := rhs&gt;: Assignment)</span><br><span class="line">E(G, L, &lt;let var_1, ..., var_n&gt;: VariableDeclaration) =</span><br><span class="line">    let L1 be a copy of L where L1[$var_i] = 0 for i = 1, ..., n</span><br><span class="line">    G, L1, regular</span><br><span class="line">E(G, L, &lt;var_1, ..., var_n := rhs&gt;: Assignment) =</span><br><span class="line">    let G1, L1, v1, ..., vn = E(G, L, rhs)</span><br><span class="line">    let L2 be a copy of L1 where L2[$var_i] = vi for i = 1, ..., n</span><br><span class="line">    G1, L2, regular</span><br><span class="line">E(G, L, &lt;for &#123; i1, ..., in &#125; condition post body&gt;: ForLoop) =</span><br><span class="line">    if n &gt;= 1:</span><br><span class="line">        let G1, L1, mode = E(G, L, i1, ..., in)</span><br><span class="line">        // 由于语法限制，mode 必须是规则的</span><br><span class="line">        if mode is leave then</span><br><span class="line">            G1, L1 restricted to variables of L, leave</span><br><span class="line">        otherwise</span><br><span class="line">            let G2, L2, mode = E(G1, L1, for &#123;&#125; condition post body)</span><br><span class="line">            G2, L2 restricted to variables of L, mode</span><br><span class="line">    else:</span><br><span class="line">        let G1, L1, v = E(G, L, condition)</span><br><span class="line">        if v is false:</span><br><span class="line">            G1, L1, regular</span><br><span class="line">        else:</span><br><span class="line">            let G2, L2, mode = E(G1, L, body)</span><br><span class="line">            if mode is break:</span><br><span class="line">                G2, L2, regular</span><br><span class="line">            otherwise if mode is leave:</span><br><span class="line">                G2, L2, leave</span><br><span class="line">            else:</span><br><span class="line">                G3, L3, mode = E(G2, L2, post)</span><br><span class="line">                if mode is leave:</span><br><span class="line">                    G3, L3, leave</span><br><span class="line">                otherwise</span><br><span class="line">                    E(G3, L3, for &#123;&#125; condition post body)</span><br><span class="line">E(G, L, break: BreakContinue) =</span><br><span class="line">    G, L, break</span><br><span class="line">E(G, L, continue: BreakContinue) =</span><br><span class="line">    G, L, continue</span><br><span class="line">E(G, L, leave: Leave) =</span><br><span class="line">    G, L, leave</span><br><span class="line">E(G, L, &lt;if condition body&gt;: If) =</span><br><span class="line">    let G0, L0, v = E(G, L, condition)</span><br><span class="line">    if v is true:</span><br><span class="line">        E(G0, L0, body)</span><br><span class="line">    else:</span><br><span class="line">        G0, L0, regular</span><br><span class="line">E(G, L, &lt;switch condition case l1:t1 st1 ... case ln:tn stn&gt;: Switch) =</span><br><span class="line">    E(G, L, switch condition case l1:t1 st1 ... case ln:tn stn default &#123;&#125;)</span><br><span class="line">E(G, L, &lt;switch condition case l1:t1 st1 ... case ln:tn stn default st&#x27;&gt;: Switch) =</span><br><span class="line">    let G0, L0, v = E(G, L, condition)</span><br><span class="line">    // i = 1 .. n</span><br><span class="line">    // 对字面量求值，上下文无关</span><br><span class="line">    let _, _, v1 = E(G0, L0, l1)</span><br><span class="line">    ...</span><br><span class="line">    let _, _, vn = E(G0, L0, ln)</span><br><span class="line">    if there exists smallest i such that vi = v:</span><br><span class="line">        E(G0, L0, sti)</span><br><span class="line">    else:</span><br><span class="line">        E(G0, L0, st&#x27;)</span><br><span class="line"></span><br><span class="line">E(G, L, &lt;name&gt;: Identifier) =</span><br><span class="line">    G, L, L[$name]</span><br><span class="line">E(G, L, &lt;fname(arg1, ..., argn)&gt;: FunctionCall) =</span><br><span class="line">    G1, L1, vn = E(G, L, argn)</span><br><span class="line">    ...</span><br><span class="line">    G(n-1), L(n-1), v2 = E(G(n-2), L(n-2), arg2)</span><br><span class="line">    Gn, Ln, v1 = E(G(n-1), L(n-1), arg1)</span><br><span class="line">    Let &lt;function fname (param1, ..., paramn) -&gt; ret1, ..., retm block&gt;</span><br><span class="line">    be the function of name $fname visible at the point of the call.</span><br><span class="line">    Let L&#x27; be a new local state such that</span><br><span class="line">    L&#x27;[$parami] = vi and L&#x27;[$reti] = 0 for all i.</span><br><span class="line">    Let G&#x27;&#x27;, L&#x27;&#x27;, mode = E(Gn, L&#x27;, block)</span><br><span class="line">    G&#x27;&#x27;, Ln, L&#x27;&#x27;[$ret1], ..., L&#x27;&#x27;[$retm]</span><br><span class="line">E(G, L, l: StringLiteral) = G, L, str(l),</span><br><span class="line">    where str is the string evaluation function,</span><br><span class="line">    which for the EVM dialect is defined in the section &#x27;Literals&#x27; above</span><br><span class="line">E(G, L, n: HexNumber) = G, L, hex(n)</span><br><span class="line">    where hex is the hexadecimal evaluation function,</span><br><span class="line">    which turns a sequence of hexadecimal digits into their big endian value</span><br><span class="line">E(G, L, n: DecimalNumber) = G, L, dec(n),</span><br><span class="line">    where dec is the decimal evaluation function,</span><br><span class="line">    which turns a sequence of decimal digits into their big endian value</span><br></pre></td></tr></table></figure>
+
+<h3 id="EVM语言"><a href="#EVM语言" class="headerlink" title="EVM语言"></a>EVM语言</h3><p>目前Yul的默认语言是当前选择的EVM版本的EVM语言，与EVM的一个版本。 该语言中唯一可用的类型是 <code>u256</code>，即Ethereum虚拟机的256位本地类型。 因为它是该语言的默认类型，所以可以省略。</p>
+<p>下表列出了所有内置函数（取决于EVM版本），并提供了函数&#x2F;操作码的语义的简短描述。 本文件并不想成为以太坊虚拟机的完整描述。如果您对精确的语义感兴趣，请参考另一份文件。</p>
+<p>标有 <code>-</code> 的操作码不返回结果，所有其他操作码正好返回一个值。 标有 <code>F</code>， <code>H</code>， <code>B</code>， <code>C</code>， <code>I</code> 和 <code>L</code> 的操作码分别 是从Frontier，Homestead，Byzantium，Constantinople，Istanbul或London版本出现的。</p>
+<p>在下文中， <code>mem[a...b)</code> 表示从位置 <code>a</code> 开始到不包括位置 <code>b</code> 的内存字节， <code>storage[p]</code> 表示插槽 <code>p</code> 的存储内容。</p>
+<p>由于Yul管理着局部变量和控制流，所以不能使用干扰这些功能的操作码。 这包括 <code>dup</code> 和 <code>swap</code> 指令，以及 <code>jump</code> 指令，标签和 <code>push</code> 指令。</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th></th>
+<th></th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>stop()</td>
+<td>-</td>
+<td>F</td>
+<td>停止执行，与return(0, 0)相同</td>
+</tr>
+<tr>
+<td>add(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x + y</td>
+</tr>
+<tr>
+<td>sub(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x - y</td>
+</tr>
+<tr>
+<td>mul(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x * y</td>
+</tr>
+<tr>
+<td>div(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x &#x2F; y 或 如果 y &#x3D;&#x3D; 0，则为 0</td>
+</tr>
+<tr>
+<td>sdiv(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x &#x2F; y，对于有符号的二进制补数，如果 y &#x3D;&#x3D; 0，则为 0</td>
+</tr>
+<tr>
+<td>mod(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x % y, 如果 y &#x3D;&#x3D; 0，则为 0</td>
+</tr>
+<tr>
+<td>smod(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x % y, 对于有符号的二进制补数, 如果 y &#x3D;&#x3D; 0，则为 0</td>
+</tr>
+<tr>
+<td>exp(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x的y次方</td>
+</tr>
+<tr>
+<td>not(x)</td>
+<td></td>
+<td>F</td>
+<td>x的位 “非”（x的每一个位都被否定）</td>
+</tr>
+<tr>
+<td>lt(x, y)</td>
+<td></td>
+<td>F</td>
+<td>如果 x &lt; y，则为1，否则为0</td>
+</tr>
+<tr>
+<td>gt(x, y)</td>
+<td></td>
+<td>F</td>
+<td>如果 x &gt; y，则为1，否则为0</td>
+</tr>
+<tr>
+<td>slt(x, y)</td>
+<td></td>
+<td>F</td>
+<td>如果 x &lt; y，则为1，否则为0，适用于有符号的二进制数</td>
+</tr>
+<tr>
+<td>sgt(x, y)</td>
+<td></td>
+<td>F</td>
+<td>如果 x &gt; y，则为1，否则为0，适用于有符号的二进制补数</td>
+</tr>
+<tr>
+<td>eq(x, y)</td>
+<td></td>
+<td>F</td>
+<td>如果 x &#x3D;&#x3D; y，则为1，否则为0</td>
+</tr>
+<tr>
+<td>iszero(x)</td>
+<td></td>
+<td>F</td>
+<td>如果 x &#x3D;&#x3D; 0，则为1，否则为0</td>
+</tr>
+<tr>
+<td>and(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x 和 y 的按位 “与”</td>
+</tr>
+<tr>
+<td>or(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x 和 y 的按位 “或”</td>
+</tr>
+<tr>
+<td>xor(x, y)</td>
+<td></td>
+<td>F</td>
+<td>x 和 y 的按位 “异或”</td>
+</tr>
+<tr>
+<td>byte(n, x)</td>
+<td></td>
+<td>F</td>
+<td>x的第n个字节，其中最重要的字节是第0个字节</td>
+</tr>
+<tr>
+<td>shl(x, y)</td>
+<td></td>
+<td>C</td>
+<td>将 y 逻辑左移 x 位</td>
+</tr>
+<tr>
+<td>shr(x, y)</td>
+<td></td>
+<td>C</td>
+<td>将 y 逻辑右移 x 位</td>
+</tr>
+<tr>
+<td>sar(x, y)</td>
+<td></td>
+<td>C</td>
+<td>将 y 算术右移 x 位</td>
+</tr>
+<tr>
+<td>addmod(x, y, m)</td>
+<td></td>
+<td>F</td>
+<td>(x + y) % m，采用任意精度算术，如果m &#x3D;&#x3D; 0则为0</td>
+</tr>
+<tr>
+<td>mulmod(x, y, m)</td>
+<td></td>
+<td>F</td>
+<td>(x * y) % m，采用任意精度算术，如果m &#x3D;&#x3D; 0则为0</td>
+</tr>
+<tr>
+<td>signextend(i, x)</td>
+<td></td>
+<td>F</td>
+<td>从第 (i*8+7) 位开始进行符号扩展，从最低符号位开始计算</td>
+</tr>
+<tr>
+<td>keccak256(p, n)</td>
+<td></td>
+<td>F</td>
+<td>keccak(mem[p…(p+n)))</td>
+</tr>
+<tr>
+<td>pc()</td>
+<td></td>
+<td>F</td>
+<td>代码中的当前位置</td>
+</tr>
+<tr>
+<td>pop(x)</td>
+<td>-</td>
+<td>F</td>
+<td>丢弃值 x</td>
+</tr>
+<tr>
+<td>mload(p)</td>
+<td></td>
+<td>F</td>
+<td>mem[p…(p+32))</td>
+</tr>
+<tr>
+<td>mstore(p, v)</td>
+<td>-</td>
+<td>F</td>
+<td>mem[p…(p+32)) :&#x3D; v</td>
+</tr>
+<tr>
+<td>mstore8(p, v)</td>
+<td>-</td>
+<td>F</td>
+<td>mem[p] :&#x3D; v &amp; 0xff （(只修改了一个字节)）</td>
+</tr>
+<tr>
+<td>sload(p)</td>
+<td></td>
+<td>F</td>
+<td>storage[p]</td>
+</tr>
+<tr>
+<td>sstore(p, v)</td>
+<td>-</td>
+<td>F</td>
+<td>storage[p] :&#x3D; v</td>
+</tr>
+<tr>
+<td>msize()</td>
+<td></td>
+<td>F</td>
+<td>内存的大小，即最大的访问内存索引</td>
+</tr>
+<tr>
+<td>gas()</td>
+<td></td>
+<td>F</td>
+<td>仍可以执行的气体值</td>
+</tr>
+<tr>
+<td>address()</td>
+<td></td>
+<td>F</td>
+<td>当前合约&#x2F;执行环境的地址</td>
+</tr>
+<tr>
+<td>balance(a)</td>
+<td></td>
+<td>F</td>
+<td>地址为A的余额，以wei为单位</td>
+</tr>
+<tr>
+<td>selfbalance()</td>
+<td></td>
+<td>I</td>
+<td>相当于balance(address())，但更便宜</td>
+</tr>
+<tr>
+<td>caller()</td>
+<td></td>
+<td>F</td>
+<td>消息调用者（不包括 <code>delegatecall</code> 调用）。</td>
+</tr>
+<tr>
+<td>callvalue()</td>
+<td></td>
+<td>F</td>
+<td>与当前调用一起发送的wei的数量</td>
+</tr>
+<tr>
+<td>calldataload(p)</td>
+<td></td>
+<td>F</td>
+<td>从位置p开始的调用数据（32字节）</td>
+</tr>
+<tr>
+<td>calldatasize()</td>
+<td></td>
+<td>F</td>
+<td>调用数据的大小，以字节为单位</td>
+</tr>
+<tr>
+<td>calldatacopy(t, f, s)</td>
+<td>-</td>
+<td>F</td>
+<td>从位置f的calldata复制s字节到位置t的内存中</td>
+</tr>
+<tr>
+<td>codesize()</td>
+<td></td>
+<td>F</td>
+<td>当前合约&#x2F;执行环境的代码大小</td>
+</tr>
+<tr>
+<td>codecopy(t, f, s)</td>
+<td>-</td>
+<td>F</td>
+<td>从位置f的code中复制s字节到位置t的内存中</td>
+</tr>
+<tr>
+<td>extcodesize(a)</td>
+<td></td>
+<td>F</td>
+<td>地址为a的代码的大小</td>
+</tr>
+<tr>
+<td>extcodecopy(a, t, f, s)</td>
+<td>-</td>
+<td>F</td>
+<td>像codecopy(t, f, s)一样，但在地址a处取代码</td>
+</tr>
+<tr>
+<td>returndatasize()</td>
+<td></td>
+<td>B</td>
+<td>最后返回数据的大小</td>
+</tr>
+<tr>
+<td>returndatacopy(t, f, s)</td>
+<td>-</td>
+<td>B</td>
+<td>从位置f的returndata复制s字节到位置t的内存中</td>
+</tr>
+<tr>
+<td>extcodehash(a)</td>
+<td></td>
+<td>C</td>
+<td>地址a的代码哈希值</td>
+</tr>
+<tr>
+<td>create(v, p, n)</td>
+<td></td>
+<td>F</td>
+<td>用代码mem[p…(p+n))创建新的合约，发送v数量的wei并返回新地址； 错误时返回0</td>
+</tr>
+<tr>
+<td>create2(v, p, n, s)</td>
+<td></td>
+<td>C</td>
+<td>在keccak256(0xff . this . s . keccak256(mem[p…(p+n)))地址处 创建代码为mem[p…(p+n)]的新合约 并发送v 数量个wei和返回新地址， 其中 <code>0xff</code> 是一个1字节的值， <code>this</code> 是当前合约的地址， 是一个20字节的值， <code>s</code> 是一个256位的大端的值; 错误时返回0</td>
+</tr>
+<tr>
+<td>call(g, a, v, in, insize, out, outsize)</td>
+<td></td>
+<td>F</td>
+<td>调用地址 a 上的合约，以 mem[in..(in+insize)) 作为输入 一并发送 g 数量的 gas 和 v 数量的 wei， 以 mem[out..(out+outsize)) 作为输出空间。 若错误，返回 0 （比如，gas 用光） 若成功，返回 1 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/yul.html#yul-call-return-area">查看更多</a></td>
+</tr>
+<tr>
+<td>callcode(g, a, v, in, insize, out, outsize)</td>
+<td></td>
+<td>F</td>
+<td>相当于 <code>call</code> 但仅仅使用地址 a 上的代码， 执行时留在当前合约的上下文当中 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/yul.html#yul-call-return-area">查看更多</a></td>
+</tr>
+<tr>
+<td>delegatecall(g, a, in, insize, out, outsize)</td>
+<td></td>
+<td>H</td>
+<td>相当于 <code>callcode</code>, 但同时保留 <code>caller</code> 和 <code>callvalue</code> <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/yul.html#yul-call-return-area">查看更多</a></td>
+</tr>
+<tr>
+<td>staticcall(g, a, in, insize, out, outsize)</td>
+<td></td>
+<td>B</td>
+<td>相当于 <code>call(g, a, 0, in, insize, out, outsize)</code> 但不允许状态变量的修改 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/yul.html#yul-call-return-area">查看更多</a></td>
+</tr>
+<tr>
+<td>return(p, s)</td>
+<td>-</td>
+<td>F</td>
+<td>终止执行，返回 mem[p..(p+s)) 上的数据</td>
+</tr>
+<tr>
+<td>revert(p, s)</td>
+<td>-</td>
+<td>B</td>
+<td>终止执行，恢复状态变更，返回 mem[p..(p+s)) 上的数据</td>
+</tr>
+<tr>
+<td>selfdestruct(a)</td>
+<td>-</td>
+<td>F</td>
+<td>终止执行，销毁当前合约，并且将余额发送到地址 a</td>
+</tr>
+<tr>
+<td>invalid()</td>
+<td>-</td>
+<td>F</td>
+<td>以无效指令终止执行</td>
+</tr>
+<tr>
+<td>log0(p, s)</td>
+<td>-</td>
+<td>F</td>
+<td>用 mem[p..(p+s)] 上的数据产生日志，但没有 topic</td>
+</tr>
+<tr>
+<td>log1(p, s, t1)</td>
+<td>-</td>
+<td>F</td>
+<td>用 mem[p..(p+s)] 上的数据和 topic t1 产生日志</td>
+</tr>
+<tr>
+<td>log2(p, s, t1, t2)</td>
+<td>-</td>
+<td>F</td>
+<td>用 mem[p..(p+s)] 上的数据和 topic t1，t2 产生日志</td>
+</tr>
+<tr>
+<td>log3(p, s, t1, t2, t3)</td>
+<td>-</td>
+<td>F</td>
+<td>用 mem[p..(p+s)] 上的数据和 topic t1，t2，t3 产生日志</td>
+</tr>
+<tr>
+<td>log4(p, s, t1, t2, t3, t4)</td>
+<td>-</td>
+<td>F</td>
+<td>用 mem[p..(p+s)] 上的数据和 topic t1，t2，t3，t4 产生日志</td>
+</tr>
+<tr>
+<td>chainid()</td>
+<td></td>
+<td>I</td>
+<td>执行链的ID（EIP-1344）</td>
+</tr>
+<tr>
+<td>basefee()</td>
+<td></td>
+<td>L</td>
+<td>当前区块的基本费用（EIP-3198和EIP-1559）</td>
+</tr>
+<tr>
+<td>origin()</td>
+<td></td>
+<td>F</td>
+<td>交易发送者</td>
+</tr>
+<tr>
+<td>gasprice()</td>
+<td></td>
+<td>F</td>
+<td>交易的气体价格n</td>
+</tr>
+<tr>
+<td>blockhash(b)</td>
+<td></td>
+<td>F</td>
+<td>区块编号b的哈希值–只针对最近的256个区块，不包括当前区块。</td>
+</tr>
+<tr>
+<td>coinbase()</td>
+<td></td>
+<td>F</td>
+<td>目前的挖矿的受益者</td>
+</tr>
+<tr>
+<td>timestamp()</td>
+<td></td>
+<td>F</td>
+<td>自 epoch 开始的，当前块的时间戳，以秒为单位</td>
+</tr>
+<tr>
+<td>number()</td>
+<td></td>
+<td>F</td>
+<td>当前区块号</td>
+</tr>
+<tr>
+<td>difficulty()</td>
+<td></td>
+<td>F</td>
+<td>当前区块的难度</td>
+</tr>
+<tr>
+<td>gaslimit()</td>
+<td></td>
+<td>F</td>
+<td>当前区块的区块 gas 限制</td>
+</tr>
+</tbody></table>
+<p>备注</p>
+<p><code>call*</code> 指令使用 <code>out</code> 和 <code>outsize</code> 参数来在内存中定义的一个区域， 用于放置返回或失败数据。这个区域的写入取决于被调用的合约返回多少字节。 如果它返回更多的数据，只有第一个 <code>outsize</code> 字节被写入。您可以使用 <code>returndatacopy</code> 操作码访问其余的数据。 如果它返回较少的数据，那么剩下的字节根本不被触及。 您需要使用 <code>returndatacopy</code> 操作码来检查这个内存区域的哪一部分包含返回数据。 剩下的字节将保留调用前的值。</p>
+<p>在一些内部语言中，还有一些额外的函数：</p>
+<h4 id="datasize-dataoffset-datacopy"><a href="#datasize-dataoffset-datacopy" class="headerlink" title="datasize, dataoffset, datacopy"></a>datasize, dataoffset, datacopy</h4><p>函数 <code>datasize(x)</code>， <code>dataoffset(x)</code> 和 <code>datacopy(t, f, l)</code> 用来访问Yul对象的其他部分。</p>
+<p><code>datasize</code> 和 <code>dataoffset</code> 只能接受字符串字面量（其他对象的名称）作为参数， 并分别返回数据区的大小和偏移量。 对于EVM， <code>datacopy</code> 函数等同于 <code>codecopy</code>。</p>
+<h4 id="setimmutable-loadimmutable"><a href="#setimmutable-loadimmutable" class="headerlink" title="setimmutable, loadimmutable"></a>setimmutable, loadimmutable</h4><p>函数 <code>setimmutable(offset, &quot;name&quot;, value)</code> 和 <code>loadimmutable(&quot;name&quot;)</code> 用于Solidity中的不可变机制， 不能很好地映射到纯Yul。 对 <code>setimmutable(offset, &quot;name&quot;, value)</code> 的调用假定包含给定不可变的命名的合约的运行时代码 在偏移量 <code>offset</code> 处被复制到内存中，并将把 <code>value</code> 写到内存中的所有位置（相对于 <code>offset</code>）， 这些位置包含在运行时代码中为调用 <code>loadimmutable(&quot;name&quot;)</code> 产生的占位符。</p>
+<h4 id="linkersymbol"><a href="#linkersymbol" class="headerlink" title="linkersymbol"></a>linkersymbol</h4><p>函数 <code>linkersymbol(&quot;library_id&quot;)</code> 是一个占位符，用来表示被链接器替换的地址字头。 它的第一个也是唯一的参数必须是一个字符串字面量，并且唯一地代表要插入的地址。 标识符可以是任意的，但是当编译器从Solidity源产生Yul代码时，它使用一个库名， 并以定义该库的源单元的名称作为限定。 要用一个特定的库地址链接代码，必须在命令行上的 <code>--libraries</code> 选项中提供相同的标识符。</p>
+<p>例如，这段代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let a := linkersymbol(&quot;file.sol:Math&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let a := 0x1234567890123456789012345678901234567890</span><br></pre></td></tr></table></figure>
+
+<p>当使用 <code>--libraries &quot;file.sol:Math=0x1234567890123456789012345678901234567890</code> 选项调用链接器时。</p>
+<p>请参阅 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/using-the-compiler.html#commandline-compiler">使用命令行编译器</a> 以了解有关 Solidity 链接器的详情。</p>
+<h4 id="memoryguard"><a href="#memoryguard" class="headerlink" title="memoryguard"></a>memoryguard</h4><p>调用 <code>let ptr := memoryguard(size)</code> 的调用者（其中 <code>size</code> 必须是一个数字字面量） 承诺他们只使用 <code>[0, size]</code> 范围内的内存，或者从 <code>ptr</code> 开始的无界范围。</p>
+<p>由于 <code>memoryguard</code> 调用的存在表明所有的内存访问都遵守这一限制， 它允许优化器执行额外的优化步骤， 例如堆栈限制规避器，它试图将原本无法到达的堆栈变量转移到内存中。</p>
+<p>Yul优化器承诺只使用内存范围 <code>[size, ptr)</code> 来实现其目的。 如果优化器不需要保留任何内存，它认为 <code>ptr == size</code>。</p>
+<p><code>memoryguard</code> 可以被多次调用，但是需要在一个Yul子对象内有相同的字样作为参数。 如果在一个子对象中发现至少一个 <code>memoryguard</code> 的调用，额外的优化步骤将在它身上运行。</p>
+<h4 id="verbatim"><a href="#verbatim" class="headerlink" title="verbatim"></a>verbatim</h4><p>一组 <code>verbatim...</code> 内置函数可以让您为Yul编译器不知道的操作码创建字节码。 它还允许您创建不会被优化器修改的字节码序列。</p>
+<p>这些函数是 <code>verbatim_&lt;n&gt;i_&lt;m&gt;o(&quot;&lt;data&gt;&quot;, ...)</code>，其中</p>
+<ul>
+<li><code>n</code> 是一个介于0和99之间的小数，指定输入栈槽&#x2F;变量的数量</li>
+<li><code>m</code> 是一个介于0和99之间的小数，指定输出栈槽&#x2F;变量的数量</li>
+<li><code>data</code> 是一个字符串字面量，包含字节的序列</li>
+</ul>
+<p>例如，如果您想定义一个函数，将输入值乘以2，而不需要优化器触及常数2，您可以使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let x := calldataload(0)</span><br><span class="line">let double := verbatim_1i_1o(hex&quot;600202&quot;, x)</span><br></pre></td></tr></table></figure>
+
+<p>这段代码将产生一个 <code>dup1</code> 操作码来检索 <code>x</code> （尽管优化器可能直接重新使用 <code>calldataload</code> 操作码的结果）， 后面直接是 <code>600202</code>。该代码被假定为消耗 <code>x</code> 的复制值，并在堆栈顶部产生结果。 然后编译器生成代码，为 <code>double</code> 分配一个堆栈槽，并将结果存储在那里。</p>
+<p>与所有的操作码一样，参数被安排在堆栈中，最左边的参数在最上面， 而返回值则被假定是以最右边的变量在栈顶的方式排列的。</p>
+<p>由于 <code>verbatim</code> 可以用来生成任意的操作码，甚至是Solidity编译器不知道的操作码， 在与优化器一起使用 <code>verbatim</code> 时，必须小心。 即使优化器被关闭，代码生成器也必须确定堆栈布局，这意味着，例如， 使用 <code>verbatim</code> 来修改堆栈高度会导致未定义行为。</p>
+<p>下面是一个不完全的列表，列出了对逐字字节码的限制， 这些限制不被编译器检查。违反这些限制会导致未定义的行为。</p>
+<ul>
+<li>控制流不应该跳入或跳出 verbatim 块，但它可以在同一个 verbatim 块内跳入。</li>
+<li>除了输入和输出参数外，堆栈内容不应该被访问。</li>
+<li>堆栈的高度差应该正好是 <code>m - n</code> （输出槽减去输入槽）。</li>
+<li>Verbatim字节码不能对周围的字节码做任何假设。 所有需要的参数都必须作为堆栈变量传入。</li>
+</ul>
+<p>优化器不分析 verbatim 字节码，总是假设它修改了状态的所有方面， 因此只能在 <code>verbatim</code> 函数调用中做很少的优化。</p>
+<p>优化器将 verbatim 字节码视为一个不透明的代码块。它不会分割它， 但可能会移动、重复或与相同的 verbatim 字节码块结合。 如果一个 verbatim 的字节码块不能被控制流所触及。 它可以被删除。</p>
+<p>警告</p>
+<p>在讨论EVM的改进是否会破坏现有的智能合约时， <code>verbatim</code> 内部的功能不能得到与Solidity编译器本身使用的功能一样的考虑。</p>
+<p>备注</p>
+<p>为了避免混淆，所有以字符串 <code>verbatim</code> 开头的标识符都被保留， 不能用于用户定义的标识符。</p>
+<h2 id="Yul对象的规范"><a href="#Yul对象的规范" class="headerlink" title="Yul对象的规范"></a>Yul对象的规范</h2><p>Yul对象被用来分组命名代码和数据部分。 函数 <code>datasize</code>， <code>dataoffset</code> 和 <code>datacopy</code> 可以用来从代码中访问这些部分。 十六进制字符串可用于指定十六进制编码的数据， 普通字符串为本地编码。对于代码， <code>datacopy</code> 将访问其组装的二进制所表示的数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">对象 = &#x27;object&#x27; 字面量 &#x27;&#123;&#x27; 代码 ( 对象 | 数据 )* &#x27;&#125;&#x27;</span><br><span class="line">代码 = &#x27;code&#x27; 块</span><br><span class="line">数据 = &#x27;data&#x27; 字面量 ( 十六进制字面量 | 字面量 )</span><br><span class="line">十六进制字面量 = &#x27;hex&#x27; (&#x27;&quot;&#x27; ([0-9a-fA-F]&#123;2&#125;)* &#x27;&quot;&#x27; | &#x27;\&#x27;&#x27; ([0-9a-fA-F]&#123;2&#125;)* &#x27;\&#x27;&#x27;)</span><br><span class="line">字面量 = &#x27;&quot;&#x27; ([^&quot;\r\n\\] | &#x27;\\&#x27; .)* &#x27;&quot;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>对于上面的 <code>Block</code>，指的是前一章解释的Yul代码语法中的 <code>Block</code>。</p>
+<p>备注</p>
+<p>当一个对象的名称以 <code>_deployed</code> 结尾时，Yul 优化器将其视为部署的代码。 这样做的唯一后果是优化器中的不同 gas 成本启发式算法。</p>
+<p>备注</p>
+<p>可以定义名称中包含 <code>.</code> 的数据对象或子对象， 但不可能通过 <code>datasize</code>， <code>dataoffset</code> 或 <code>datacopy</code> 访问它们， 因为 <code>.</code> 是作为分隔符用来访问另一个对象内的对象。</p>
+<p>备注</p>
+<p>被称为 <code>&quot;.metadata&quot;</code> 的数据对象有特殊意义： 它不能从代码中访问，并且总是被附加到字节码的最末端， 无论它在对象中的位置如何。</p>
+<p>其他具有特殊意义的数据对象在未来可能会被添加， 但它们的名字总是以 <code>.</code> 开头。</p>
+<p>下面是一个Yul对象的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">// 一个合约由一个单一的对象组成，</span><br><span class="line">// 其子对象代表要部署的代码或它可以创建的其他合约。</span><br><span class="line">// 单个 “代码” 节点是该对象的可执行代码。</span><br><span class="line">// 每一个（其他）命名的对象或数据部分都被序列化，</span><br><span class="line">// 并被特殊的内置函数 datacopy / dataoffset / datasize 所访问</span><br><span class="line">// 当前对象、子对象和当前对象内的数据项都在范围内。</span><br><span class="line">object &quot;Contract1&quot; &#123;</span><br><span class="line">    // 这是合约的构造函数代码。</span><br><span class="line">    code &#123;</span><br><span class="line">        function allocate(size) -&gt; ptr &#123;</span><br><span class="line">            ptr := mload(0x40)</span><br><span class="line">            // 请注意，Solidity 生成的 IR 代码也保留了内存偏移量 ``0x60``，但一个纯 Yul 对象可以自由地使用内存。</span><br><span class="line">            if iszero(ptr) &#123; ptr := 0x60 &#125;</span><br><span class="line">            mstore(0x40, add(ptr, size))</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 首先创建 “Contract2”</span><br><span class="line">        let size := datasize(&quot;Contract2&quot;)</span><br><span class="line">        let offset := allocate(size)</span><br><span class="line">        // 这将转化为EVM的代码拷贝。</span><br><span class="line">        datacopy(offset, dataoffset(&quot;Contract2&quot;), size)</span><br><span class="line">        // 构造函数参数是一个单一的数字 0x1234</span><br><span class="line">        mstore(add(offset, size), 0x1234)</span><br><span class="line">        pop(create(offset, add(size, 32), 0))</span><br><span class="line"></span><br><span class="line">        // 现在返回运行时对象</span><br><span class="line">        // 当前执行的代码是构造函数代码）。</span><br><span class="line">        size := datasize(&quot;Contract1_deployed&quot;)</span><br><span class="line">        offset := allocate(size)</span><br><span class="line">        // 这将变成 Ewasm 的 内存-&gt;内存 复制</span><br><span class="line">        // 和 EVM 的代码复制。</span><br><span class="line">        datacopy(offset, dataoffset(&quot;Contract1_deployed&quot;), size)</span><br><span class="line">        return(offset, size)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    data &quot;Table2&quot; hex&quot;4123&quot;</span><br><span class="line"></span><br><span class="line">    object &quot;Contract1_deployed&quot; &#123;</span><br><span class="line">        code &#123;</span><br><span class="line">            function allocate(size) -&gt; ptr &#123;</span><br><span class="line">                ptr := mload(0x40)</span><br><span class="line">                // 请注意，Solidity 生成的 IR 代码也保留了内存偏移量 ``0x60``，但一个纯 Yul 对象可以自由地使用内存。</span><br><span class="line">                if iszero(ptr) &#123; ptr := 0x60 &#125;</span><br><span class="line">                mstore(0x40, add(ptr, size))</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 运行时代码</span><br><span class="line"></span><br><span class="line">            mstore(0, &quot;Hello, World!&quot;)</span><br><span class="line">            return(0, 0x20)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 嵌入对象。使用情况是，外面是一个工厂合约，</span><br><span class="line">    // 而 Contract2 是由工厂创建的代码。</span><br><span class="line">    object &quot;Contract2&quot; &#123;</span><br><span class="line">        code &#123;</span><br><span class="line">            // 此处是代码 ...</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        object &quot;Contract2_deployed&quot; &#123;</span><br><span class="line">            code &#123;</span><br><span class="line">                // 此处是代码 ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        data &quot;Table1&quot; hex&quot;4123&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Yul-优化器"><a href="#Yul-优化器" class="headerlink" title="Yul 优化器"></a>Yul 优化器</h2><p>Yul优化器对Yul代码进行操作，并对输入、输出和中间状态使用相同的语言。这使得优化器的调试和验证变得容易。</p>
+<p>请参考一般的 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/internals/optimizer.html#optimizer">优化器文档</a>，以了解关于不同优化阶段和如何使用优化器的更多细节。</p>
+<p>如果您想在独立的Yul模式下使用Solidity，您可以用 <code>--optimize</code> 激活优化器， 并可选择用 <code>--optimize-runs</code> 指定 <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/zh/v0.8.17/internals/optimizer.html#optimizer-parameter-runs">预期合约执行次数</a>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solc --strict-assembly --optimize --optimize-runs 200</span><br></pre></td></tr></table></figure>
+
+<p>在Solidity模式下，Yul优化器与常规优化器一起被激活。</p>
+<h3 id="优化步骤顺序"><a href="#优化步骤顺序" class="headerlink" title="优化步骤顺序"></a>优化步骤顺序</h3><p>默认情况下，Yul优化器将其预定义的优化步骤序列应用于生成的程序集。 您可以使用 <code>--yul-optimizations</code> 选项覆盖这个序列，并提供您自己的序列：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solc --optimize --ir-optimized --yul-optimizations &#x27;dhfoD[xarrscLMcCTU]uljmul&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>优化步骤的顺序很重要，会影响到输出的质量。 此外，应用一个步骤可能为其他已经应用的步骤发现新的优化机会，所以重复步骤往往是有益的。 通过用方括号（ <code>[]</code> ）包围序列的一部分，您告诉优化器重复应用该部分， 直到它不再改善优化结果的大小。您可以在一个序列中多次使用方括号，但它们不能被嵌套。</p>
+<p>有以下优化步骤：</p>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>全称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>f</code></td>
+<td><code>块展平器</code></td>
+</tr>
+<tr>
+<td><code>l</code></td>
+<td><code>循环引用程序</code></td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td><code>通用子表达式消除器</code></td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td><code>条件简化器</code></td>
+</tr>
+<tr>
+<td><code>U</code></td>
+<td><code>有条件的非对称性放大器</code></td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td><code>控制流简化器</code></td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td><code>死代码消除器</code></td>
+</tr>
+<tr>
+<td><code>v</code></td>
+<td><code>等价的存储清除器</code></td>
+</tr>
+<tr>
+<td><code>e</code></td>
+<td><code>表达式内联</code></td>
+</tr>
+<tr>
+<td><code>j</code></td>
+<td><code>表达式连接器</code></td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td><code>表达式简化器</code></td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td><code>表达式拆分器</code></td>
+</tr>
+<tr>
+<td><code>I</code></td>
+<td><code>循环条件进入正文</code></td>
+</tr>
+<tr>
+<td><code>O</code></td>
+<td><code>体外循环条件</code></td>
+</tr>
+<tr>
+<td><code>o</code></td>
+<td><code>循环初始重写器</code></td>
+</tr>
+<tr>
+<td><code>i</code></td>
+<td><code>完全内联</code></td>
+</tr>
+<tr>
+<td><code>g</code></td>
+<td><code>函数分组器</code></td>
+</tr>
+<tr>
+<td><code>h</code></td>
+<td><code>函数提升器</code></td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td><code>函数特殊化器</code></td>
+</tr>
+<tr>
+<td><code>T</code></td>
+<td><code>字面量再物质化器</code></td>
+</tr>
+<tr>
+<td><code>L</code></td>
+<td><code>负载解析器</code></td>
+</tr>
+<tr>
+<td><code>M</code></td>
+<td><code>循环不变代码模式</code></td>
+</tr>
+<tr>
+<td><code>r</code></td>
+<td><code>冗余赋值消除器</code></td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td><code>基于推理的简化器</code> - 高度实验性</td>
+</tr>
+<tr>
+<td><code>m</code></td>
+<td><code>再物质化</code></td>
+</tr>
+<tr>
+<td><code>V</code></td>
+<td><code>SSA反转器</code></td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td><code>SSA转换</code></td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td><code>结构简化器</code></td>
+</tr>
+<tr>
+<td><code>u</code></td>
+<td><code>未使用过的处理器</code></td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td><code>未使用的函数参数管理器</code></td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td><code>初始化程序</code></td>
+</tr>
+</tbody></table>
+<p>一些步骤依赖于 <code>块展平器</code>, <code>函数分组器</code>, <code>循环初始重写器</code> 所保证的属性。 由于这个原因，Yul优化器总是在应用用户提供的任何步骤之前应用它们。</p>
+<p>基于推理的简化器 是一个优化器步骤，目前在默认步骤集中没有启用。 它使用一个SMT解算器来简化算术表达式和布尔条件。 它还没有得到彻底的测试或验证，可能会产生不可重现的结果， 所以请谨慎使用!</p>
+<h2 id="完整的ERC20示例（基于yul）"><a href="#完整的ERC20示例（基于yul）" class="headerlink" title="完整的ERC20示例（基于yul）"></a>完整的ERC20示例（基于yul）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br></pre></td><td class="code"><pre><span class="line">object &quot;Token&quot; &#123;</span><br><span class="line">    code &#123;</span><br><span class="line">        // 将创建者存储在零号槽中。</span><br><span class="line">        sstore(0, caller())</span><br><span class="line"></span><br><span class="line">        // 部署合约</span><br><span class="line">        datacopy(0, dataoffset(&quot;runtime&quot;), datasize(&quot;runtime&quot;))</span><br><span class="line">        return(0, datasize(&quot;runtime&quot;))</span><br><span class="line">    &#125;</span><br><span class="line">    object &quot;runtime&quot; &#123;</span><br><span class="line">        code &#123;</span><br><span class="line">            // 防止发送以太的保护措施</span><br><span class="line">            require(iszero(callvalue()))</span><br><span class="line"></span><br><span class="line">            // 调度器</span><br><span class="line">            switch selector()</span><br><span class="line">            case 0x70a08231 /* &quot;balanceOf(address)&quot; */ &#123;</span><br><span class="line">                returnUint(balanceOf(decodeAsAddress(0)))</span><br><span class="line">            &#125;</span><br><span class="line">            case 0x18160ddd /* &quot;totalSupply()&quot; */ &#123;</span><br><span class="line">                returnUint(totalSupply())</span><br><span class="line">            &#125;</span><br><span class="line">            case 0xa9059cbb /* &quot;transfer(address,uint256)&quot; */ &#123;</span><br><span class="line">                transfer(decodeAsAddress(0), decodeAsUint(1))</span><br><span class="line">                returnTrue()</span><br><span class="line">            &#125;</span><br><span class="line">            case 0x23b872dd /* &quot;transferFrom(address,address,uint256)&quot; */ &#123;</span><br><span class="line">                transferFrom(decodeAsAddress(0), decodeAsAddress(1), decodeAsUint(2))</span><br><span class="line">                returnTrue()</span><br><span class="line">            &#125;</span><br><span class="line">            case 0x095ea7b3 /* &quot;approve(address,uint256)&quot; */ &#123;</span><br><span class="line">                approve(decodeAsAddress(0), decodeAsUint(1))</span><br><span class="line">                returnTrue()</span><br><span class="line">            &#125;</span><br><span class="line">            case 0xdd62ed3e /* &quot;allowance(address,address)&quot; */ &#123;</span><br><span class="line">                returnUint(allowance(decodeAsAddress(0), decodeAsAddress(1)))</span><br><span class="line">            &#125;</span><br><span class="line">            case 0x40c10f19 /* &quot;mint(address,uint256)&quot; */ &#123;</span><br><span class="line">                mint(decodeAsAddress(0), decodeAsUint(1))</span><br><span class="line">                returnTrue()</span><br><span class="line">            &#125;</span><br><span class="line">            default &#123;</span><br><span class="line">                revert(0, 0)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            function mint(account, amount) &#123;</span><br><span class="line">                require(calledByOwner())</span><br><span class="line"></span><br><span class="line">                mintTokens(amount)</span><br><span class="line">                addToBalance(account, amount)</span><br><span class="line">                emitTransfer(0, account, amount)</span><br><span class="line">            &#125;</span><br><span class="line">            function transfer(to, amount) &#123;</span><br><span class="line">                executeTransfer(caller(), to, amount)</span><br><span class="line">            &#125;</span><br><span class="line">            function approve(spender, amount) &#123;</span><br><span class="line">                revertIfZeroAddress(spender)</span><br><span class="line">                setAllowance(caller(), spender, amount)</span><br><span class="line">                emitApproval(caller(), spender, amount)</span><br><span class="line">            &#125;</span><br><span class="line">            function transferFrom(from, to, amount) &#123;</span><br><span class="line">                decreaseAllowanceBy(from, caller(), amount)</span><br><span class="line">                executeTransfer(from, to, amount)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            function executeTransfer(from, to, amount) &#123;</span><br><span class="line">                revertIfZeroAddress(to)</span><br><span class="line">                deductFromBalance(from, amount)</span><br><span class="line">                addToBalance(to, amount)</span><br><span class="line">                emitTransfer(from, to, amount)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            /* ---------- calldata 解码函数 ----------- */</span><br><span class="line">            function selector() -&gt; s &#123;</span><br><span class="line">                s := div(calldataload(0), 0x100000000000000000000000000000000000000000000000000000000)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            function decodeAsAddress(offset) -&gt; v &#123;</span><br><span class="line">                v := decodeAsUint(offset)</span><br><span class="line">                if iszero(iszero(and(v, not(0xffffffffffffffffffffffffffffffffffffffff)))) &#123;</span><br><span class="line">                    revert(0, 0)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            function decodeAsUint(offset) -&gt; v &#123;</span><br><span class="line">                let pos := add(4, mul(offset, 0x20))</span><br><span class="line">                if lt(calldatasize(), add(pos, 0x20)) &#123;</span><br><span class="line">                    revert(0, 0)</span><br><span class="line">                &#125;</span><br><span class="line">                v := calldataload(pos)</span><br><span class="line">            &#125;</span><br><span class="line">            /* ---------- calldata 编码函数 ---------- */</span><br><span class="line">            function returnUint(v) &#123;</span><br><span class="line">                mstore(0, v)</span><br><span class="line">                return(0, 0x20)</span><br><span class="line">            &#125;</span><br><span class="line">            function returnTrue() &#123;</span><br><span class="line">                returnUint(1)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            /* -------- 事件 ---------- */</span><br><span class="line">            function emitTransfer(from, to, amount) &#123;</span><br><span class="line">                let signatureHash := 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef</span><br><span class="line">                emitEvent(signatureHash, from, to, amount)</span><br><span class="line">            &#125;</span><br><span class="line">            function emitApproval(from, spender, amount) &#123;</span><br><span class="line">                let signatureHash := 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925</span><br><span class="line">                emitEvent(signatureHash, from, spender, amount)</span><br><span class="line">            &#125;</span><br><span class="line">            function emitEvent(signatureHash, indexed1, indexed2, nonIndexed) &#123;</span><br><span class="line">                mstore(0, nonIndexed)</span><br><span class="line">                log3(0, 0x20, signatureHash, indexed1, indexed2)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            /* -------- 存储布局 ---------- */</span><br><span class="line">            function ownerPos() -&gt; p &#123; p := 0 &#125;</span><br><span class="line">            function totalSupplyPos() -&gt; p &#123; p := 1 &#125;</span><br><span class="line">            function accountToStorageOffset(account) -&gt; offset &#123;</span><br><span class="line">                offset := add(0x1000, account)</span><br><span class="line">            &#125;</span><br><span class="line">            function allowanceStorageOffset(account, spender) -&gt; offset &#123;</span><br><span class="line">                offset := accountToStorageOffset(account)</span><br><span class="line">                mstore(0, offset)</span><br><span class="line">                mstore(0x20, spender)</span><br><span class="line">                offset := keccak256(0, 0x40)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            /* -------- 存储访问 ---------- */</span><br><span class="line">            function owner() -&gt; o &#123;</span><br><span class="line">                o := sload(ownerPos())</span><br><span class="line">            &#125;</span><br><span class="line">            function totalSupply() -&gt; supply &#123;</span><br><span class="line">                supply := sload(totalSupplyPos())</span><br><span class="line">            &#125;</span><br><span class="line">            function mintTokens(amount) &#123;</span><br><span class="line">                sstore(totalSupplyPos(), safeAdd(totalSupply(), amount))</span><br><span class="line">            &#125;</span><br><span class="line">            function balanceOf(account) -&gt; bal &#123;</span><br><span class="line">                bal := sload(accountToStorageOffset(account))</span><br><span class="line">            &#125;</span><br><span class="line">            function addToBalance(account, amount) &#123;</span><br><span class="line">                let offset := accountToStorageOffset(account)</span><br><span class="line">                sstore(offset, safeAdd(sload(offset), amount))</span><br><span class="line">            &#125;</span><br><span class="line">            function deductFromBalance(account, amount) &#123;</span><br><span class="line">                let offset := accountToStorageOffset(account)</span><br><span class="line">                let bal := sload(offset)</span><br><span class="line">                require(lte(amount, bal))</span><br><span class="line">                sstore(offset, sub(bal, amount))</span><br><span class="line">            &#125;</span><br><span class="line">            function allowance(account, spender) -&gt; amount &#123;</span><br><span class="line">                amount := sload(allowanceStorageOffset(account, spender))</span><br><span class="line">            &#125;</span><br><span class="line">            function setAllowance(account, spender, amount) &#123;</span><br><span class="line">                sstore(allowanceStorageOffset(account, spender), amount)</span><br><span class="line">            &#125;</span><br><span class="line">            function decreaseAllowanceBy(account, spender, amount) &#123;</span><br><span class="line">                let offset := allowanceStorageOffset(account, spender)</span><br><span class="line">                let currentAllowance := sload(offset)</span><br><span class="line">                require(lte(amount, currentAllowance))</span><br><span class="line">                sstore(offset, sub(currentAllowance, amount))</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            /* ---------- 工具函数 ---------- */</span><br><span class="line">            function lte(a, b) -&gt; r &#123;</span><br><span class="line">                r := iszero(gt(a, b))</span><br><span class="line">            &#125;</span><br><span class="line">            function gte(a, b) -&gt; r &#123;</span><br><span class="line">                r := iszero(lt(a, b))</span><br><span class="line">            &#125;</span><br><span class="line">            function safeAdd(a, b) -&gt; r &#123;</span><br><span class="line">                r := add(a, b)</span><br><span class="line">                if or(lt(r, a), lt(r, b)) &#123; revert(0, 0) &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            function calledByOwner() -&gt; cbo &#123;</span><br><span class="line">                cbo := eq(owner(), caller())</span><br><span class="line">            &#125;</span><br><span class="line">            function revertIfZeroAddress(addr) &#123;</span><br><span class="line">                require(addr)</span><br><span class="line">            &#125;</span><br><span class="line">            function require(condition) &#123;</span><br><span class="line">                if iszero(condition) &#123; revert(0, 0) &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/01/15/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/04.Yul/">http://example.com/2023/01/15/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/04.Yul/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/22.v0.8.0%20Breaking%20Changes/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">22.v0.8.0 Breaking Changes</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">31</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Yul"><span class="toc-number">1.</span> <span class="toc-text">Yul</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA%E5%92%8C%E9%AB%98%E7%BA%A7%E5%88%AB%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">动机和高级别描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">1.2.</span> <span class="toc-text">简单的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%8B%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">单独使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9Yul%E7%9A%84%E9%9D%9E%E6%AD%A3%E5%BC%8F%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.4.</span> <span class="toc-text">对Yul的非正式描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">1.4.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="toc-number">1.4.2.</span> <span class="toc-text">字面量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="toc-number">1.4.3.</span> <span class="toc-text">函数调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E"><span class="toc-number">1.4.4.</span> <span class="toc-text">变量声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC"><span class="toc-number">1.4.5.</span> <span class="toc-text">赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#If"><span class="toc-number">1.4.6.</span> <span class="toc-text">If</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Switch"><span class="toc-number">1.4.7.</span> <span class="toc-text">Switch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF"><span class="toc-number">1.4.8.</span> <span class="toc-text">循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E"><span class="toc-number">1.4.9.</span> <span class="toc-text">函数声明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Yul%E5%BD%A2%E5%BC%8F%E8%A7%84%E8%8C%83"><span class="toc-number">1.5.</span> <span class="toc-text">Yul形式规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%B1%82%E9%9D%A2%E7%9A%84%E9%99%90%E5%88%B6"><span class="toc-number">1.5.1.</span> <span class="toc-text">语法层面的限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E8%A7%84%E5%88%99"><span class="toc-number">1.5.2.</span> <span class="toc-text">作用域规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%A2%E5%BC%8F%E8%A7%84%E8%8C%83"><span class="toc-number">1.5.3.</span> <span class="toc-text">形式规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EVM%E8%AF%AD%E8%A8%80"><span class="toc-number">1.5.4.</span> <span class="toc-text">EVM语言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#datasize-dataoffset-datacopy"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">datasize, dataoffset, datacopy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#setimmutable-loadimmutable"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">setimmutable, loadimmutable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#linkersymbol"><span class="toc-number">1.5.4.3.</span> <span class="toc-text">linkersymbol</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#memoryguard"><span class="toc-number">1.5.4.4.</span> <span class="toc-text">memoryguard</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#verbatim"><span class="toc-number">1.5.4.5.</span> <span class="toc-text">verbatim</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Yul%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%A7%84%E8%8C%83"><span class="toc-number">1.6.</span> <span class="toc-text">Yul对象的规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Yul-%E4%BC%98%E5%8C%96%E5%99%A8"><span class="toc-number">1.7.</span> <span class="toc-text">Yul 优化器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E6%AD%A5%E9%AA%A4%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.7.1.</span> <span class="toc-text">优化步骤顺序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84ERC20%E7%A4%BA%E4%BE%8B%EF%BC%88%E5%9F%BA%E4%BA%8Eyul%EF%BC%89"><span class="toc-number">1.8.</span> <span class="toc-text">完整的ERC20示例（基于yul）</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/04.Yul/" title="04.Yul"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.Yul"/></a><div class="content"><a class="title" href="/2023/01/15/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/04.Yul/" title="04.Yul">04.Yul</a><time datetime="2023-01-15T11:13:50.499Z" title="发表于 2023-01-15 19:13:50">2023-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/22.v0.8.0%20Breaking%20Changes/" title="22.v0.8.0 Breaking Changes"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="22.v0.8.0 Breaking Changes"/></a><div class="content"><a class="title" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/22.v0.8.0%20Breaking%20Changes/" title="22.v0.8.0 Breaking Changes">22.v0.8.0 Breaking Changes</a><time datetime="2023-01-15T10:27:25.023Z" title="发表于 2023-01-15 18:27:25">2023-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/21.v0.7.0%20Breaking%20Changes/" title="21.v0.7.0 Breaking Changes"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="21.v0.7.0 Breaking Changes"/></a><div class="content"><a class="title" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/21.v0.7.0%20Breaking%20Changes/" title="21.v0.7.0 Breaking Changes">21.v0.7.0 Breaking Changes</a><time datetime="2023-01-15T10:16:28.617Z" title="发表于 2023-01-15 18:16:28">2023-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/20.v0.6.0%20Breaking%20Changes/" title="20.v0.6.0 Breaking Changes"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="20.v0.6.0 Breaking Changes"/></a><div class="content"><a class="title" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/20.v0.6.0%20Breaking%20Changes/" title="20.v0.6.0 Breaking Changes">20.v0.6.0 Breaking Changes</a><time datetime="2023-01-15T07:51:19.967Z" title="发表于 2023-01-15 15:51:19">2023-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/19.v0.5.0%20Breaking%20Changes/" title="19.v0.5.0 Breaking Changes"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="19.v0.5.0 Breaking Changes"/></a><div class="content"><a class="title" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/19.v0.5.0%20Breaking%20Changes/" title="19.v0.5.0 Breaking Changes">19.v0.5.0 Breaking Changes</a><time datetime="2023-01-15T07:16:07.339Z" title="发表于 2023-01-15 15:16:07">2023-01-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>

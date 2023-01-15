@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>22.v0.8.0 Breaking Changes | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="v0.8.0 Breaking ChangesThis section highlights the main breaking changes introduced in Solidity version 0.8.0. For the full list check the release changelog. Silent Changes of the SemanticsThis sectio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="22.v0.8.0 Breaking Changes">
+<meta property="og:url" content="http://example.com/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/22.v0.8.0%20Breaking%20Changes/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="v0.8.0 Breaking ChangesThis section highlights the main breaking changes introduced in Solidity version 0.8.0. For the full list check the release changelog. Silent Changes of the SemanticsThis sectio">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2023-01-15T10:27:25.023Z">
+<meta property="article:modified_time" content="2023-01-15T10:47:22.975Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/22.v0.8.0%20Breaking%20Changes/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '22.v0.8.0 Breaking Changes',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-15 18:47:22'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">31</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">22.v0.8.0 Breaking Changes</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-15T10:27:25.023Z" title="发表于 2023-01-15 18:27:25">2023-01-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-15T10:47:22.975Z" title="更新于 2023-01-15 18:47:22">2023-01-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/">03.solidity进阶</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="v0-8-0-Breaking-Changes"><a href="#v0-8-0-Breaking-Changes" class="headerlink" title="v0.8.0 Breaking Changes"></a>v0.8.0 Breaking Changes</h1><p>This section highlights the main breaking changes introduced in Solidity version 0.8.0. For the full list check <a target="_blank" rel="noopener" href="https://github.com/ethereum/solidity/releases/tag/v0.8.0">the release changelog</a>.</p>
+<h2 id="Silent-Changes-of-the-Semantics"><a href="#Silent-Changes-of-the-Semantics" class="headerlink" title="Silent Changes of the Semantics"></a>Silent Changes of the Semantics</h2><p>This section lists changes where existing code changes its behaviour without the compiler notifying you about it.</p>
+<ul>
+<li><p>Arithmetic operations revert on underflow and overflow. You can use <code>unchecked &#123; ... &#125;</code> to use the previous wrapping behaviour.</p>
+<p>Checks for overflow are very common, so we made them the default to increase readability of code, even if it comes at a slight increase of gas costs.</p>
+</li>
+<li><p>ABI coder v2 is activated by default.</p>
+<p>You can choose to use the old behaviour using <code>pragma abicoder v1;</code>. The pragma <code>pragma experimental ABIEncoderV2;</code> is still valid, but it is deprecated and has no effect. If you want to be explicit, please use <code>pragma abicoder v2;</code> instead.</p>
+<p>Note that ABI coder v2 supports more types than v1 and performs more sanity checks on the inputs. ABI coder v2 makes some function calls more expensive and it can also make contract calls revert that did not revert with ABI coder v1 when they contain data that does not conform to the parameter types.</p>
+</li>
+<li><p>Exponentiation is right associative, i.e., the expression <code>a**b**c</code> is parsed as <code>a**(b**c)</code>. Before 0.8.0, it was parsed as <code>(a**b)**c</code>.</p>
+<p>This is the common way to parse the exponentiation operator.</p>
+</li>
+<li><p>Failing assertions and other internal checks like division by zero or arithmetic overflow do not use the invalid opcode but instead the revert opcode. More specifically, they will use error data equal to a function call to <code>Panic(uint256)</code> with an error code specific to the circumstances.</p>
+<p>This will save gas on errors while it still allows static analysis tools to distinguish these situations from a revert on invalid input, like a failing <code>require</code>.</p>
+</li>
+<li><p>If a byte array in storage is accessed whose length is encoded incorrectly, a panic is caused. A contract cannot get into this situation unless inline assembly is used to modify the raw representation of storage byte arrays.</p>
+</li>
+<li><p>If constants are used in array length expressions, previous versions of Solidity would use arbitrary precision in all branches of the evaluation tree. Now, if constant variables are used as intermediate expressions, their values will be properly rounded in the same way as when they are used in run-time expressions.</p>
+</li>
+<li><p>The type <code>byte</code> has been removed. It was an alias of <code>bytes1</code>.</p>
+</li>
+</ul>
+<h2 id="New-Restrictions"><a href="#New-Restrictions" class="headerlink" title="New Restrictions"></a>New Restrictions</h2><p>This section lists changes that might cause existing contracts to not compile anymore.</p>
+<ul>
+<li><p>There are new restrictions related to explicit conversions of literals. The previous behaviour in the following cases was likely ambiguous:</p>
+<ol>
+<li>Explicit conversions from negative literals and literals larger than <code>type(uint160).max</code> to <code>address</code> are disallowed.</li>
+<li>Explicit conversions between literals and an integer type <code>T</code> are only allowed if the literal lies between <code>type(T).min</code> and <code>type(T).max</code>. In particular, replace usages of <code>uint(-1)</code> with <code>type(uint).max</code>.</li>
+<li>Explicit conversions between literals and enums are only allowed if the literal can represent a value in the enum.</li>
+<li>Explicit conversions between literals and <code>address</code> type (e.g. <code>address(literal)</code>) have the type <code>address</code> instead of <code>address payable</code>. One can get a payable address type by using an explicit conversion, i.e., <code>payable(literal)</code>.</li>
+</ol>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/types.html#address-literals">Address literals</a> have the type <code>address</code> instead of <code>address payable</code>. They can be converted to <code>address payable</code> by using an explicit conversion, e.g. <code>payable(0xdCad3a6d3569DF655070DEd06cb7A1b2Ccd1D3AF)</code>.</p>
+</li>
+<li><p>There are new restrictions on explicit type conversions. The conversion is only allowed when there is at most one change in sign, width or type-category (<code>int</code>, <code>address</code>, <code>bytesNN</code>, etc.). To perform multiple changes, use multiple conversions.</p>
+<p>Let us use the notation <code>T(S)</code> to denote the explicit conversion <code>T(x)</code>, where, <code>T</code> and <code>S</code> are types, and <code>x</code> is any arbitrary variable of type <code>S</code>. An example of such a disallowed conversion would be <code>uint16(int8)</code> since it changes both width (8 bits to 16 bits) and sign (signed integer to unsigned integer). In order to do the conversion, one has to go through an intermediate type. In the previous example, this would be <code>uint16(uint8(int8))</code> or <code>uint16(int16(int8))</code>. Note that the two ways to convert will produce different results e.g., for <code>-1</code>. The following are some examples of conversions that are disallowed by this rule.</p>
+<ul>
+<li><code>address(uint)</code> and <code>uint(address)</code>: converting both type-category and width. Replace this by <code>address(uint160(uint))</code> and <code>uint(uint160(address))</code> respectively.</li>
+<li><code>payable(uint160)</code>, <code>payable(bytes20)</code> and <code>payable(integer-literal)</code>: converting both type-category and state-mutability. Replace this by <code>payable(address(uint160))</code>, <code>payable(address(bytes20))</code> and <code>payable(address(integer-literal))</code> respectively. Note that <code>payable(0)</code> is valid and is an exception to the rule.</li>
+<li><code>int80(bytes10)</code> and <code>bytes10(int80)</code>: converting both type-category and sign. Replace this by <code>int80(uint80(bytes10))</code> and <code>bytes10(uint80(int80)</code> respectively.</li>
+<li><code>Contract(uint)</code>: converting both type-category and width. Replace this by <code>Contract(address(uint160(uint)))</code>.</li>
+</ul>
+<p>These conversions were disallowed to avoid ambiguity. For example, in the expression <code>uint16 x = uint16(int8(-1))</code>, the value of <code>x</code> would depend on whether the sign or the width conversion was applied first.</p>
+</li>
+<li><p>Function call options can only be given once, i.e. <code>c.f&#123;gas: 10000&#125;&#123;value: 1&#125;()</code> is invalid and has to be changed to <code>c.f&#123;gas: 10000, value: 1&#125;()</code>.</p>
+</li>
+<li><p>The global functions <code>log0</code>, <code>log1</code>, <code>log2</code>, <code>log3</code> and <code>log4</code> have been removed.</p>
+<p>These are low-level functions that were largely unused. Their behaviour can be accessed from inline assembly.</p>
+</li>
+<li><p><code>enum</code> definitions cannot contain more than 256 members.</p>
+<p>This will make it safe to assume that the underlying type in the ABI is always <code>uint8</code>.</p>
+</li>
+<li><p>Declarations with the name <code>this</code>, <code>super</code> and <code>_</code> are disallowed, with the exception of public functions and events. The exception is to make it possible to declare interfaces of contracts implemented in languages other than Solidity that do permit such function names.</p>
+</li>
+<li><p>Remove support for the <code>\b</code>, <code>\f</code>, and <code>\v</code> escape sequences in code. They can still be inserted via hexadecimal escapes, e.g. <code>\x08</code>, <code>\x0c</code>, and <code>\x0b</code>, respectively.</p>
+</li>
+<li><p>The global variables <code>tx.origin</code> and <code>msg.sender</code> have the type <code>address</code> instead of <code>address payable</code>. One can convert them into <code>address payable</code> by using an explicit conversion, i.e., <code>payable(tx.origin)</code> or <code>payable(msg.sender)</code>.</p>
+<p>This change was done since the compiler cannot determine whether or not these addresses are payable or not, so it now requires an explicit conversion to make this requirement visible.</p>
+</li>
+<li><p>Explicit conversion into <code>address</code> type always returns a non-payable <code>address</code> type. In particular, the following explicit conversions have the type <code>address</code> instead of <code>address payable</code>:</p>
+<ul>
+<li><code>address(u)</code> where <code>u</code> is a variable of type <code>uint160</code>. One can convert <code>u</code> into the type <code>address payable</code> by using two explicit conversions, i.e., <code>payable(address(u))</code>.</li>
+<li><code>address(b)</code> where <code>b</code> is a variable of type <code>bytes20</code>. One can convert <code>b</code> into the type <code>address payable</code> by using two explicit conversions, i.e., <code>payable(address(b))</code>.</li>
+<li><code>address(c)</code> where <code>c</code> is a contract. Previously, the return type of this conversion depended on whether the contract can receive Ether (either by having a receive function or a payable fallback function). The conversion <code>payable(c)</code> has the type <code>address payable</code> and is only allowed when the contract <code>c</code> can receive Ether. In general, one can always convert <code>c</code> into the type <code>address payable</code> by using the following explicit conversion: <code>payable(address(c))</code>. Note that <code>address(this)</code> falls under the same category as <code>address(c)</code> and the same rules apply for it.</li>
+</ul>
+</li>
+<li><p>The <code>chainid</code> builtin in inline assembly is now considered <code>view</code> instead of <code>pure</code>.</p>
+</li>
+<li><p>Unary negation cannot be used on unsigned integers anymore, only on signed integers.</p>
+</li>
+</ul>
+<h2 id="Interface-Changes"><a href="#Interface-Changes" class="headerlink" title="Interface Changes"></a>Interface Changes</h2><p>【看不懂】</p>
+<ul>
+<li>The output of <code>--combined-json</code> has changed: JSON fields <code>abi</code>, <code>devdoc</code>, <code>userdoc</code> and <code>storage-layout</code> are sub-objects now. Before 0.8.0 they used to be serialised as strings.</li>
+<li>The “legacy AST” has been removed (<code>--ast-json</code> on the commandline interface and <code>legacyAST</code> for standard JSON). Use the “compact AST” (<code>--ast-compact--json</code> resp. <code>AST</code>) as replacement.</li>
+<li>The old error reporter (<code>--old-reporter</code>) has been removed.</li>
+</ul>
+<h2 id="How-to-update-your-code"><a href="#How-to-update-your-code" class="headerlink" title="How to update your code"></a>How to update your code</h2><ul>
+<li>If you rely on wrapping arithmetic, surround each operation with <code>unchecked &#123; ... &#125;</code>.</li>
+<li>Optional: If you use SafeMath or a similar library, change <code>x.add(y)</code> to <code>x + y</code>, <code>x.mul(y)</code> to <code>x * y</code> etc.</li>
+<li>Add <code>pragma abicoder v1;</code> if you want to stay with the old ABI coder.</li>
+<li>Optionally remove <code>pragma experimental ABIEncoderV2</code> or <code>pragma abicoder v2</code> since it is redundant.</li>
+<li>Change <code>byte</code> to <code>bytes1</code>.</li>
+<li>Add intermediate explicit type conversions if required.</li>
+<li>Combine <code>c.f&#123;gas: 10000&#125;&#123;value: 1&#125;()</code> to <code>c.f&#123;gas: 10000, value: 1&#125;()</code>.</li>
+<li>Change <code>msg.sender.transfer(x)</code> to <code>payable(msg.sender).transfer(x)</code> or use a stored variable of <code>address payable</code> type.</li>
+<li>Change <code>x**y**z</code> to <code>(x**y)**z</code>.</li>
+<li>Use inline assembly as a replacement for <code>log0</code>, …, <code>log4</code>.</li>
+<li>Negate unsigned integers by subtracting them from the maximum value of the type and adding 1 (e.g. <code>type(uint256).max - x + 1</code>, while ensuring that x is not zero)</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/22.v0.8.0%20Breaking%20Changes/">http://example.com/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/22.v0.8.0%20Breaking%20Changes/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/15/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/04.Yul/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">04.Yul</div></div></a></div><div class="next-post pull-right"><a href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/21.v0.7.0%20Breaking%20Changes/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">21.v0.7.0 Breaking Changes</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">31</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#v0-8-0-Breaking-Changes"><span class="toc-number">1.</span> <span class="toc-text">v0.8.0 Breaking Changes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Silent-Changes-of-the-Semantics"><span class="toc-number">1.1.</span> <span class="toc-text">Silent Changes of the Semantics</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#New-Restrictions"><span class="toc-number">1.2.</span> <span class="toc-text">New Restrictions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Interface-Changes"><span class="toc-number">1.3.</span> <span class="toc-text">Interface Changes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-update-your-code"><span class="toc-number">1.4.</span> <span class="toc-text">How to update your code</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/04.Yul/" title="04.Yul"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.Yul"/></a><div class="content"><a class="title" href="/2023/01/15/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/04.Yul/" title="04.Yul">04.Yul</a><time datetime="2023-01-15T11:13:50.499Z" title="发表于 2023-01-15 19:13:50">2023-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/22.v0.8.0%20Breaking%20Changes/" title="22.v0.8.0 Breaking Changes"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="22.v0.8.0 Breaking Changes"/></a><div class="content"><a class="title" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/22.v0.8.0%20Breaking%20Changes/" title="22.v0.8.0 Breaking Changes">22.v0.8.0 Breaking Changes</a><time datetime="2023-01-15T10:27:25.023Z" title="发表于 2023-01-15 18:27:25">2023-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/21.v0.7.0%20Breaking%20Changes/" title="21.v0.7.0 Breaking Changes"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="21.v0.7.0 Breaking Changes"/></a><div class="content"><a class="title" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/21.v0.7.0%20Breaking%20Changes/" title="21.v0.7.0 Breaking Changes">21.v0.7.0 Breaking Changes</a><time datetime="2023-01-15T10:16:28.617Z" title="发表于 2023-01-15 18:16:28">2023-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/20.v0.6.0%20Breaking%20Changes/" title="20.v0.6.0 Breaking Changes"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="20.v0.6.0 Breaking Changes"/></a><div class="content"><a class="title" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/20.v0.6.0%20Breaking%20Changes/" title="20.v0.6.0 Breaking Changes">20.v0.6.0 Breaking Changes</a><time datetime="2023-01-15T07:51:19.967Z" title="发表于 2023-01-15 15:51:19">2023-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/19.v0.5.0%20Breaking%20Changes/" title="19.v0.5.0 Breaking Changes"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="19.v0.5.0 Breaking Changes"/></a><div class="content"><a class="title" href="/2023/01/15/03.solidity%E8%BF%9B%E9%98%B6/19.v0.5.0%20Breaking%20Changes/" title="19.v0.5.0 Breaking Changes">19.v0.5.0 Breaking Changes</a><time datetime="2023-01-15T07:16:07.339Z" title="发表于 2023-01-15 15:16:07">2023-01-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
