@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>13.多签钱包 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="多签钱包转载 V神曾说过，多签钱包要比硬件钱包更加安全（推文）。这一讲，我们将介绍多签钱包，并且写一个极简版多签钱包合约。教学代码（150行代码）由gnosis safe合约（几千行代码）简化而成。  多签钱包多签钱包是一种电子钱包，特点是交易被多个私钥持有者（多签人）授权后才能执行：例如钱包由3个多签人管理，每笔交易需要至少2人签名授权。多签钱包可以防止单点故障（私钥丢失，单人作恶），更加去中心">
+<meta property="og:type" content="article">
+<meta property="og:title" content="13.多签钱包">
+<meta property="og:url" content="http://example.com/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/13.%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="多签钱包转载 V神曾说过，多签钱包要比硬件钱包更加安全（推文）。这一讲，我们将介绍多签钱包，并且写一个极简版多签钱包合约。教学代码（150行代码）由gnosis safe合约（几千行代码）简化而成。  多签钱包多签钱包是一种电子钱包，特点是交易被多个私钥持有者（多签人）授权后才能执行：例如钱包由3个多签人管理，每笔交易需要至少2人签名授权。多签钱包可以防止单点故障（私钥丢失，单人作恶），更加去中心">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2023-01-24T14:16:37.905Z">
+<meta property="article:modified_time" content="2023-01-24T14:20:44.550Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/13.%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '13.多签钱包',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-24 22:20:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">228</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">13.多签钱包</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-24T14:16:37.905Z" title="发表于 2023-01-24 22:16:37">2023-01-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-24T14:20:44.550Z" title="更新于 2023-01-24 22:20:44">2023-01-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/25-solidity%E5%BA%94%E7%94%A8/">25.solidity应用</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="多签钱包"><a href="#多签钱包" class="headerlink" title="多签钱包"></a>多签钱包</h1><p><a target="_blank" rel="noopener" href="https://wtf.academy/solidity-application/MultisigWallet/">转载</a></p>
+<p>V神曾说过，多签钱包要比硬件钱包更加安全（<a target="_blank" rel="noopener" href="https://twitter.com/VitalikButerin/status/1558886893995134978?s=20&t=4WyoEWhwHNUtAuABEIlcRw">推文</a>）。这一讲，我们将介绍多签钱包，并且写一个极简版多签钱包合约。教学代码（150行代码）由gnosis safe合约（几千行代码）简化而成。</p>
+<p><img src="/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/13.%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85/image-20230124221729313.png" alt="image-20230124221729313"></p>
+<h2 id="多签钱包-1"><a href="#多签钱包-1" class="headerlink" title="多签钱包"></a>多签钱包</h2><p>多签钱包是一种电子钱包，特点是交易被多个私钥持有者（多签人）授权后才能执行：例如钱包由<code>3</code>个多签人管理，每笔交易需要至少<code>2</code>人签名授权。多签钱包可以防止单点故障（私钥丢失，单人作恶），更加去中心化，更加安全，被很多DAO采用。</p>
+<p>Gnosis Safe多签钱包是以太坊最流行的多签钱包，管理近400亿美元资产，合约经过审计和实战测试，支持多链（以太坊，BSC，Polygon等），并提供丰富的DAPP支持。更多信息可以阅读我在21年12月写的<a target="_blank" rel="noopener" href="https://peopledao.mirror.xyz/nFCBXda8B5ZxQVqSbbDOn2frFDpTxNVtdqVBXGIjj0s">Gnosis Safe使用教程</a>。</p>
+<h2 id="多签钱包合约"><a href="#多签钱包合约" class="headerlink" title="多签钱包合约"></a>多签钱包合约</h2><p>在以太坊上的多签钱包其实是智能合约，属于合约钱包。下面我们写一个极简版多签钱包<code>MultisigWallet</code>合约，它的逻辑非常简单：</p>
+<ol>
+<li>设置多签人和门槛（链上）：部署多签合约时，我们需要初始化多签人列表和执行门槛（至少n个多签人签名授权后，交易才能执行）。Gnosis Safe多签钱包支持增加&#x2F;删除多签人以及改变执行门槛，但在咱们的极简版中不考虑这一功能。</li>
+<li>创建交易（链下）：一笔待授权的交易包含以下内容<ul>
+<li><code>to</code>：目标合约。</li>
+<li><code>value</code>：交易发送的以太坊数量。</li>
+<li><code>data</code>：calldata，包含调用函数的选择器和参数。</li>
+<li><code>nonce</code>：初始为<code>0</code>，随着多签合约每笔成功执行的交易递增的值，可以防止签名重放攻击。</li>
+<li><code>chainid</code>：链id，防止不同链的签名重放攻击。</li>
+</ul>
+</li>
+<li>收集多签签名（链下）：将上一步的交易ABI编码并计算哈希，得到交易哈希，然后让多签人签名，并拼接到一起的到打包签名。对ABI编码和哈希不了解的，可以看WTF Solidity极简教程<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/27_ABIEncode/readme.md">第27讲</a>和<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/28_Hash/readme.md">第28讲</a>。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">交易哈希: 0xc1b055cf8e78338db21407b425114a2e258b0318879327945b661bfdea570e66</span><br><span class="line"></span><br><span class="line">多签人A签名: 0xd6a56c718fc16f283512f90e16f2e62f888780a712d15e884e300c51e5b100de2f014ad71bcb6d97946ef0d31346b3b71eb688831abedaf41b33486b416129031c</span><br><span class="line"></span><br><span class="line">多签人B签名: 0x2184f70a17f14426865bda8ebe391508b8e3984d16ce6d90905ae8beae7d75fd435a7e51d837881d820414ebaf0ff16074204c75b33d66928edcf8dd398249861b</span><br><span class="line"></span><br><span class="line">打包签名：</span><br><span class="line">0xd6a56c718fc16f283512f90e16f2e62f888780a712d15e884e300c51e5b100de2f014ad71bcb6d97946ef0d31346b3b71eb688831abedaf41b33486b416129031c2184f70a17f14426865bda8ebe391508b8e3984d16ce6d90905ae8beae7d75fd435a7e51d837881d820414ebaf0ff16074204c75b33d66928edcf8dd398249861b</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>调用多签合约的执行函数，验证签名并执行交易（链上）。对验证签名和执行交易不了解的，可以看WTF Solidity极简教程<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/22_Call/readme.md">第22讲</a>和<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/37_Signature/readme.md">第37讲</a>。</li>
+</ol>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><p><code>MultisigWallet</code>合约有<code>2</code>个事件，<code>ExecutionSuccess</code>和<code>ExecutionFailure</code>，分别在交易成功和失败时释放，参数为交易哈希。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">event ExecutionSuccess(bytes32 txHash);    // 交易成功事件</span><br><span class="line">event ExecutionFailure(bytes32 txHash);    // 交易失败事件</span><br></pre></td></tr></table></figure>
+
+<h3 id="状态变量"><a href="#状态变量" class="headerlink" title="状态变量"></a>状态变量</h3><p><code>MultisigWallet</code>合约有<code>5</code>个状态变量：</p>
+<ol>
+<li><code>owners</code>：多签持有人数组</li>
+<li><code>isOwner</code>：<code>address =&gt; bool</code>的映射，记录一个地址是否为多签持有人。</li>
+<li><code>ownerCount</code>：多签持有人数量</li>
+<li><code>threshold</code>：多签执行门槛，交易至少有n个多签人签名才能被执行。</li>
+<li><code>nonce</code>：初始为<code>0</code>，随着多签合约每笔成功执行的交易递增的值，可以防止签名重放攻击。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">address[] public owners;                   // 多签持有人数组 </span><br><span class="line">mapping(address =&gt; bool) public isOwner;   // 记录一个地址是否为多签持有人</span><br><span class="line">uint256 public ownerCount;                 // 多签持有人数量</span><br><span class="line">uint256 public threshold;                  // 多签执行门槛，交易至少有n个多签人签名才能被执行。</span><br><span class="line">uint256 public nonce;                      // nonce，防止签名重放攻击</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p><code>MultisigWallet</code>合约有<code>6</code>个函数：</p>
+<p>1.构造函数：调用<code>_setupOwners()</code>，初始化和多签持有人和执行门槛相关的变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 构造函数，初始化owners, isOwner, ownerCount, threshold </span><br><span class="line">constructor(        </span><br><span class="line">    address[] memory _owners,</span><br><span class="line">    uint256 _threshold</span><br><span class="line">) &#123;</span><br><span class="line">    _setupOwners(_owners, _threshold);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.<code>_setupOwners()</code>：在合约部署时被构造函数调用，初始化<code>owners</code>，<code>isOwner</code>，<code>ownerCount</code>，<code>threshold</code>状态变量。传入的参数中，执行门槛需大于等于<code>1</code>且小于等于多签人数；多签地址不能为<code>0</code>地址且不能重复。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/// @dev 初始化owners, isOwner, ownerCount,threshold </span><br><span class="line">/// @param _owners: 多签持有人数组</span><br><span class="line">/// @param _threshold: 多签执行门槛，至少有几个多签人签署了交易</span><br><span class="line">function _setupOwners(address[] memory _owners, uint256 _threshold) internal &#123;</span><br><span class="line">    // threshold没被初始化过</span><br><span class="line">    require(threshold == 0, &quot;WTF5000&quot;);</span><br><span class="line">    // 多签执行门槛 小于 多签人数</span><br><span class="line">    require(_threshold &lt;= _owners.length, &quot;WTF5001&quot;);</span><br><span class="line">    // 多签执行门槛至少为1</span><br><span class="line">    require(_threshold &gt;= 1, &quot;WTF5002&quot;);</span><br><span class="line"></span><br><span class="line">    for (uint256 i = 0; i &lt; _owners.length; i++) &#123;</span><br><span class="line">        address owner = _owners[i];</span><br><span class="line">        // 多签人不能为0地址，本合约地址，不能重复</span><br><span class="line">        require(owner != address(0) &amp;&amp; owner != address(this) &amp;&amp; !isOwner[owner], &quot;WTF5003&quot;);</span><br><span class="line">        owners.push(owner);</span><br><span class="line">        isOwner[owner] = true;</span><br><span class="line">    &#125;</span><br><span class="line">    ownerCount = _owners.length;</span><br><span class="line">    threshold = _threshold;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.<code>execTransaction()</code>：在收集足够的多签签名后，验证签名并执行交易。传入的参数为目标地址<code>to</code>，发送的以太坊数额<code>value</code>，数据<code>data</code>，以及打包签名<code>signatures</code>。打包签名就是将收集的多签人对交易哈希的签名，按多签持有人地址从小到大顺序，打包到一个[bytes]数据中。这一步调用了<code>encodeTransactionData()</code>编码交易，调用了<code>checkSignatures()</code>检验签名是否有效、数量是否达到执行门槛。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/// @dev 在收集足够的多签签名后，执行交易</span><br><span class="line">/// @param to 目标合约地址</span><br><span class="line">/// @param value msg.value，支付的以太坊</span><br><span class="line">/// @param data calldata</span><br><span class="line">/// @param signatures 打包的签名，对应的多签地址由小到达，方便检查。 (&#123;bytes32 r&#125;&#123;bytes32 s&#125;&#123;uint8 v&#125;) (第一个多签的签名, 第二个多签的签名 ... )</span><br><span class="line">function execTransaction(</span><br><span class="line">    address to,</span><br><span class="line">    uint256 value,</span><br><span class="line">    bytes memory data,</span><br><span class="line">    bytes memory signatures</span><br><span class="line">) public payable virtual returns (bool success) &#123;</span><br><span class="line">    // 编码交易数据，计算哈希</span><br><span class="line">    bytes32 txHash = encodeTransactionData(to, value, data, nonce, block.chainid);</span><br><span class="line">    nonce++;  // 增加nonce</span><br><span class="line">    checkSignatures(txHash, signatures); // 检查签名</span><br><span class="line">    // 利用call执行交易，并获取交易结果</span><br><span class="line">    (success, ) = to.call&#123;value: value&#125;(data);</span><br><span class="line">    require(success , &quot;WTF5004&quot;);</span><br><span class="line">    if (success) emit ExecutionSuccess(txHash);</span><br><span class="line">    else emit ExecutionFailure(txHash);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4.<code>checkSignatures()</code>：检查签名和交易数据的哈希是否对应，数量是否达到门槛，若否，交易会revert。单个签名长度为65字节，因此打包签名的长度要长于<code>threshold * 65</code>。调用了<code>signatureSplit()</code>分离出单个签名。这个函数的大致思路：</p>
+<ul>
+<li>用ecdsa获取签名地址.</li>
+<li>利用 <code>currentOwner &gt; lastOwner</code> 确定签名来自不同多签（多签地址递增）。</li>
+<li>利用<code>isOwner[currentOwner]</code>确定签名者为多签持有人。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @dev 检查签名和交易数据是否对应。如果是无效签名，交易会revert</span><br><span class="line"> * @param dataHash 交易数据哈希</span><br><span class="line"> * @param signatures 几个多签签名打包在一起</span><br><span class="line"> */</span><br><span class="line">function checkSignatures(</span><br><span class="line">    bytes32 dataHash,</span><br><span class="line">    bytes memory signatures</span><br><span class="line">) public view &#123;</span><br><span class="line">    // 读取多签执行门槛</span><br><span class="line">    uint256 _threshold = threshold;</span><br><span class="line">    require(_threshold &gt; 0, &quot;WTF5005&quot;);</span><br><span class="line"></span><br><span class="line">    // 检查签名长度足够长</span><br><span class="line">    require(signatures.length &gt;= _threshold * 65, &quot;WTF5006&quot;);</span><br><span class="line"></span><br><span class="line">    // 通过一个循环，检查收集的签名是否有效</span><br><span class="line">    // 大概思路：</span><br><span class="line">    // 1. 用ecdsa先验证签名是否有效</span><br><span class="line">    // 2. 利用 currentOwner &gt; lastOwner 确定签名来自不同多签（多签地址递增）</span><br><span class="line">    // 3. 利用 isOwner[currentOwner] 确定签名者为多签持有人</span><br><span class="line">    address lastOwner = address(0); </span><br><span class="line">    address currentOwner;</span><br><span class="line">    uint8 v;</span><br><span class="line">    bytes32 r;</span><br><span class="line">    bytes32 s;</span><br><span class="line">    uint256 i;</span><br><span class="line">    for (i = 0; i &lt; _threshold; i++) &#123;</span><br><span class="line">        (v, r, s) = signatureSplit(signatures, i);</span><br><span class="line">        // 利用ecrecover检查签名是否有效</span><br><span class="line">        currentOwner = ecrecover(keccak256(abi.encodePacked(&quot;\x19Ethereum Signed Message:\n32&quot;, dataHash)), v, r, s);</span><br><span class="line">        require(currentOwner &gt; lastOwner &amp;&amp; isOwner[currentOwner], &quot;WTF5007&quot;);</span><br><span class="line">        lastOwner = currentOwner;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5.<code>signatureSplit()</code>：将单个签名从打包的签名分离出来，参数分别为打包签名<code>signatures</code>和要读取的签名位置<code>pos</code>。利用了内联汇编，将签名的<code>r</code>，<code>s</code>，和<code>v</code>三个值分离出来。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/// 将单个签名从打包的签名分离出来</span><br><span class="line">/// @param signatures 打包签名</span><br><span class="line">/// @param pos 要读取的多签index.</span><br><span class="line">function signatureSplit(bytes memory signatures, uint256 pos)</span><br><span class="line">    internal</span><br><span class="line">    pure</span><br><span class="line">    returns (</span><br><span class="line">        uint8 v,</span><br><span class="line">        bytes32 r,</span><br><span class="line">        bytes32 s</span><br><span class="line">    )</span><br><span class="line">&#123;</span><br><span class="line">    // 签名的格式：&#123;bytes32 r&#125;&#123;bytes32 s&#125;&#123;uint8 v&#125;</span><br><span class="line">    assembly &#123;</span><br><span class="line">        let signaturePos := mul(0x41, pos)</span><br><span class="line">        r := mload(add(signatures, add(signaturePos, 0x20)))</span><br><span class="line">        s := mload(add(signatures, add(signaturePos, 0x40)))</span><br><span class="line">        v := and(mload(add(signatures, add(signaturePos, 0x41))), 0xff)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>6.<code>encodeTransactionData()</code>：将交易数据打包并计算哈希，利用了<code>abi.encode()</code>和<code>keccak256()</code>函数。这个函数可以计算出一个交易的哈希，然后在链下让多签人签名并收集，再调用<code>execTransaction()</code>函数执行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/// @dev 编码交易数据</span><br><span class="line">/// @param to 目标合约地址</span><br><span class="line">/// @param value msg.value，支付的以太坊</span><br><span class="line">/// @param data calldata</span><br><span class="line">/// @param _nonce 交易的nonce.</span><br><span class="line">/// @param chainid 链id</span><br><span class="line">/// @return 交易哈希bytes.</span><br><span class="line">function encodeTransactionData(</span><br><span class="line">    address to,</span><br><span class="line">    uint256 value,</span><br><span class="line">    bytes memory data,</span><br><span class="line">    uint256 _nonce,</span><br><span class="line">    uint256 chainid</span><br><span class="line">) public pure returns (bytes32) &#123;</span><br><span class="line">    bytes32 safeTxHash =</span><br><span class="line">        keccak256(</span><br><span class="line">            abi.encode(</span><br><span class="line">                to,</span><br><span class="line">                value,</span><br><span class="line">                keccak256(data),</span><br><span class="line">                _nonce,</span><br><span class="line">                chainid</span><br><span class="line">            )</span><br><span class="line">        );</span><br><span class="line">    return safeTxHash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Remix演示"><a href="#Remix演示" class="headerlink" title="Remix演示"></a>Remix演示</h2><p>1.部署多签合约，<code>2</code>个多签地址，交易执行门槛设为<code>2</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">多签地址1: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span><br><span class="line">多签地址2: 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/13.%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85/50-2-d5cc6acfb8fc899b88e84b9bddd33552.png" alt="部署"></p>
+<p>2.转账<code>1 ETH</code>到多签合约地址。</p>
+<p><img src="/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/13.%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85/50-3-475a0c198952a20ba3abd4404c57fe88.png" alt="转账"></p>
+<p>3.调用<code>encodeTransactionData()</code>，编码并计算向多签地址1转账<code>1 ETH</code>的交易哈希。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">参数</span><br><span class="line">to: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span><br><span class="line">value: 1000000000000000000</span><br><span class="line">data: 0x</span><br><span class="line">_nonce: 0</span><br><span class="line">chainid: 1</span><br><span class="line"></span><br><span class="line">结果</span><br><span class="line">交易哈希： 0xb43ad6901230f2c59c3f7ef027c9a372f199661c61beeec49ef5a774231fc39b</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/13.%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85/50-4-b7466a86a9352531cfd532542d67a52c.png" alt="计算交易哈希"></p>
+<p>4.利用Remix中ACCOUNT旁边的笔记图案的按钮进行签名，内容输入上面的交易哈希，获得签名，两个钱包都要签。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">多签地址1的签名: 0xa3f3e4375f54ad0a8070f5abd64e974b9b84306ac0dd5f59834efc60aede7c84454813efd16923f1a8c320c05f185bd90145fd7a7b741a8d13d4e65a4722687e1b</span><br><span class="line"></span><br><span class="line">多签地址2的签名: 0x6b228b6033c097e220575f826560226a5855112af667e984aceca50b776f4c885e983f1f2155c294c86a905977853c6b1bb630c488502abcc838f9a225c813811c</span><br><span class="line"></span><br><span class="line">讲两个签名拼接到一起，得到打包签名:  0xa3f3e4375f54ad0a8070f5abd64e974b9b84306ac0dd5f59834efc60aede7c84454813efd16923f1a8c320c05f185bd90145fd7a7b741a8d13d4e65a4722687e1b6b228b6033c097e220575f826560226a5855112af667e984aceca50b776f4c885e983f1f2155c294c86a905977853c6b1bb630c488502abcc838f9a225c813811c</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/13.%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85/50-5-0e84c3861502f80d740ed8d7bf31fcff.png" alt="签名"></p>
+<p>5.调用<code>execTransaction()</code>函数执行交易，将第3步中的交易参数和打包签名作为参数传入。可以看到交易执行成功，<code>ETH</code>被转出多签。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲，我们介绍了多签钱包，并写了一个极简版的多签钱包合约，仅有不到150行代码。</p>
+<p>我与多签钱包很有缘分，2021年因为PeopleDAO创建国库而学习了Gnosis Safe并写了中英文的<a target="_blank" rel="noopener" href="https://peopledao.mirror.xyz/nFCBXda8B5ZxQVqSbbDOn2frFDpTxNVtdqVBXGIjj0s">使用教程</a>，之后很幸运的做了3个国库的多签人维护资产安全，现在又成为了Safe的守护者深度参与治理。希望大家的资产都更加安全。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/13.%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85/">http://example.com/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/13.%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/28.%E4%BC%AA%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">28.伪去中心化</div></div></a></div><div class="next-post pull-right"><a href="/2023/01/24/25.solidity%E5%BA%94%E7%94%A8/12.%E9%80%9A%E7%94%A8%E5%8F%AF%E5%8D%87%E7%BA%A7%E4%BB%A3%E7%90%86/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">11.透明代理</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">228</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85"><span class="toc-number">1.</span> <span class="toc-text">多签钱包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85-1"><span class="toc-number">1.1.</span> <span class="toc-text">多签钱包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%AD%BE%E9%92%B1%E5%8C%85%E5%90%88%E7%BA%A6"><span class="toc-number">1.2.</span> <span class="toc-text">多签钱包合约</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">状态变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.3.</span> <span class="toc-text">函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remix%E6%BC%94%E7%A4%BA"><span class="toc-number">1.3.</span> <span class="toc-text">Remix演示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/36.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_3/" title="36.重入攻击_3"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="36.重入攻击_3"/></a><div class="content"><a class="title" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/36.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_3/" title="36.重入攻击_3">36.重入攻击_3</a><time datetime="2023-01-24T15:48:57.905Z" title="发表于 2023-01-24 23:48:57">2023-01-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/35.%E6%93%8D%E7%BA%B5%E5%8C%BA%E5%9D%97%E6%97%B6%E9%97%B4/" title="35.操纵区块时间"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="35.操纵区块时间"/></a><div class="content"><a class="title" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/35.%E6%93%8D%E7%BA%B5%E5%8C%BA%E5%9D%97%E6%97%B6%E9%97%B4/" title="35.操纵区块时间">35.操纵区块时间</a><time datetime="2023-01-24T15:39:12.066Z" title="发表于 2023-01-24 23:39:12">2023-01-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/34.%E6%9C%AA%E6%A3%80%E6%9F%A5%E7%9A%84%E4%BD%8E%E7%BA%A7%E8%B0%83%E7%94%A8/" title="34.未检查的低级调用"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="34.未检查的低级调用"/></a><div class="content"><a class="title" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/34.%E6%9C%AA%E6%A3%80%E6%9F%A5%E7%9A%84%E4%BD%8E%E7%BA%A7%E8%B0%83%E7%94%A8/" title="34.未检查的低级调用">34.未检查的低级调用</a><time datetime="2023-01-24T15:35:54.592Z" title="发表于 2023-01-24 23:35:54">2023-01-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/33.%E6%8A%A2%E5%85%88%E4%BA%A4%E6%98%93_2/" title="33.抢先交易_2"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="33.抢先交易_2"/></a><div class="content"><a class="title" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/33.%E6%8A%A2%E5%85%88%E4%BA%A4%E6%98%93_2/" title="33.抢先交易_2">33.抢先交易_2</a><time datetime="2023-01-24T15:06:43.758Z" title="发表于 2023-01-24 23:06:43">2023-01-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/32.%E8%B2%94%E8%B2%85/" title="32.貔貅"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="32.貔貅"/></a><div class="content"><a class="title" href="/2023/01/24/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/32.%E8%B2%94%E8%B2%85/" title="32.貔貅">32.貔貅</a><time datetime="2023-01-24T15:04:11.354Z" title="发表于 2023-01-24 23:04:11">2023-01-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
