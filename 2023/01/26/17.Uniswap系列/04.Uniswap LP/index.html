@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>04.Uniswap LP | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Uniswap LP转载 简介他们可以通过为去中心化交易所(DEX)提供流动性来帮助 DeFi 世界。DeFi 协议没有方便的第三方可以依赖，不像银行这样的中心化金融机构可以快速产生流动性。因此，几乎所有 DeFi 协议都会激励准备向市场提供流动性的投资者。 流动性提供者 (LP) 通常被称为流动性提供者 (LP) 代币。让我们看看什么是 LP 代币，为什么它们必不可少，以及如何使用它们被动地产生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="04.Uniswap LP">
+<meta property="og:url" content="http://example.com/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/04.Uniswap%20LP/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="Uniswap LP转载 简介他们可以通过为去中心化交易所(DEX)提供流动性来帮助 DeFi 世界。DeFi 协议没有方便的第三方可以依赖，不像银行这样的中心化金融机构可以快速产生流动性。因此，几乎所有 DeFi 协议都会激励准备向市场提供流动性的投资者。 流动性提供者 (LP) 通常被称为流动性提供者 (LP) 代币。让我们看看什么是 LP 代币，为什么它们必不可少，以及如何使用它们被动地产生">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2023-01-26T06:36:09.704Z">
+<meta property="article:modified_time" content="2023-01-26T06:43:47.748Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/04.Uniswap%20LP/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '04.Uniswap LP',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-26 14:43:47'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">237</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">04.Uniswap LP</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-26T06:36:09.704Z" title="发表于 2023-01-26 14:36:09">2023-01-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-26T06:43:47.748Z" title="更新于 2023-01-26 14:43:47">2023-01-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/17-Uniswap%E7%B3%BB%E5%88%97/">17.Uniswap系列</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Uniswap-LP"><a href="#Uniswap-LP" class="headerlink" title="Uniswap LP"></a>Uniswap LP</h1><p><a target="_blank" rel="noopener" href="https://www.blockchain-council.org/defi/liquidity-provider-tokens/">转载</a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a target="_blank" rel="noopener" href="https://www.blockchain-council.org/defi/how-decentralized-exchanges-and-aggregators-drive-defi-growth/">他们可以通过为去中心化交易所</a>(DEX)提供流动性来帮助 DeFi 世界。<a target="_blank" rel="noopener" href="https://www.blockchain-council.org/defi/defi-protocols/">DeFi 协议</a>没有方便的第三方可以依赖，不像银行这样的中心化金融机构可以快速产生流动性。因此，几乎所有 DeFi 协议都会激励准备向市场提供流动性的投资者。</p>
+<p>流动性提供者 (LP) 通常被称为流动性提供者 (LP) 代币。让我们看看什么是 LP 代币，为什么它们必不可少，以及如何使用它们被动地产生加密收入。</p>
+<h2 id="LP"><a href="#LP" class="headerlink" title="LP"></a>LP</h2><p>流动性提供者利用一种称为流动性挖掘或做市的策略将其货币押在去中心化交易所上，以收取交易费用。这些交易费用通常以利率表示，利率会随着交易完成时的各种因素而变化，包括可用流动性的数量和流动性池中当前活跃的交易数量。根据交易数量和投入资金池的流动性数量，可以生成您预期回报的准确预测。</p>
+<h2 id="LP-token"><a href="#LP-token" class="headerlink" title="LP token"></a>LP token</h2><p>采用自动做市商 (AMM) 协议的去中心化交易所的流动性提供者通过 LP 代币获得补偿，LP 代币是一种独特的加密货币。个人对整体流动资金池的贡献可以使用这些 LP 代币来表示。</p>
+<p>将流动性提供者代币分发给其流动性提供者，流行的DEX 包括 PancakeSwap、Sushi 和<a target="_blank" rel="noopener" href="https://www.blockchain-council.org/certifications/certified-uniswap-expert/">Uniswap</a>。</p>
+<p>个人对整个流动性池的贡献使用流动性提供者代币记录，这些代币与流动性池的整体流动性份额成比例。</p>
+<h2 id="LP-token运作原理"><a href="#LP-token运作原理" class="headerlink" title="LP token运作原理"></a>LP token运作原理</h2><p><a target="_blank" rel="noopener" href="https://www.blockchain-council.org/certifications/certified-cryptocurrency-expert/">当流动性提供者将其加密货币存入DeFi</a>池时，他们会获得一定数量的流动性提供者代币。当流动性提供者希望提取存入的代币时，LP 代币将返回到 DeFi 系统。</p>
+<p>大多数 DeFi 流动性池允许流动性提供者随时将其流动性提供者代币赎回为现金，尽管如果他们这样做得太早可能会产生少量成本。</p>
+<p>就技术质量而言，LP 代币与同一网络上的其他代币没有太大区别。比如Uniswap和Sushiswap都是基于以太坊的平台，他们的LP代币都是<a target="_blank" rel="noopener" href="https://www.blockchain-council.org/ethereum/erc20-vs-erc721/">ERC20代币</a>。这些 LP 代币可以像任何其他 ERC20 代币一样在其他协议上转移、出售和抵押。</p>
+<p>持有 LP 代币可以让流动性提供者完全控制其锁定的流动性，就像任何其他代币一样。大多数流动资金池使提供者能够随时赎回他们的 LP 代币而不会受到处罚，但是，如果赎回太快，有些人可能会收取少量费用。</p>
+<h2 id="LP-代币与自动做市商之间的关系"><a href="#LP-代币与自动做市商之间的关系" class="headerlink" title="LP 代币与自动做市商之间的关系"></a>LP 代币与自动做市商之间的关系</h2><p>自动做市商 (AMM) 的运作与 LP 代币的使用密切相关。由于<a target="_blank" rel="noopener" href="https://www.blockchain-council.org/defi/decentralization-finance-defi-digging-into-the-blockchain-frontier/">DeFi 平台</a>缺乏中心化的中介机构，例如银行，因此他们必须找到一种机制来确保买卖双方能够找到对方。这在 DeFi 领域被称为自动化做市商，一种自动链接买卖双方的预编程算法。另一方面，AMM 允许交易者直接与资产池进行交易，而不是与其他买家或卖家进行交易。</p>
+<p>因此，在交易加密货币时，人们可以直接与 AMM 的储备进行交易，从而消除了相互需求重合的要求。问题在于 AMM 需要一定数量的流动性才能发挥作用。流动性提供者 (LP) 和 LP 代币此时进入画面。</p>
+<p>敦促这些参与者将特定数量的加密货币（通常是比特币或以太坊）作为流动性存入 AMM 流动性池。这些流动性提供者通过适度比例的网络费用来补偿他们的协助。</p>
+<h2 id="LP-代币如何提高-DeFi-流动性？"><a href="#LP-代币如何提高-DeFi-流动性？" class="headerlink" title="LP 代币如何提高 DeFi 流动性？"></a>LP 代币如何提高 DeFi 流动性？</h2><p>流动性的概念在去中心化金融行业中至关重要。顾名思义，这是一种在不改变任何一种资产价值的情况下将一种资产换成另一种资产的简单方法。现金是传统金融中流动性最强的资产，因为它可以在短时间内兑换成多种资产，如黄金、股票、债券等。将法定货币转换为加密货币的过程比看起来要复杂得多。</p>
+<p>BTC 已成为最具流动性的加密资产，因为它几乎在每个中央交易所都被接受和交易。因为它是初始资产并且在每个去中心化交易所都被接受和交换，所以以太币是 DeFi 生态系统中流动性最强的货币。由于 DeFi 建立在以太坊网络上，以太币再次变得高度流动，并在所有 DEX 上被接受和交换。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>流动性提供者代表了加密货币开发和使用的创新方法。LP 代币表示在流动资金池中的所有权，赚取交易费用，类似于持有支付股息的银行普通股，而不是像比特币那样仅作为一种数字现金运作。随着时间的推移，这只是区块链技术取得进步的众多突破性方式之一。</p>
+<p>流动性提供者代币是 DeFi 生态系统的重要发展。它们激励投资者向去中心化交易池提供急需的流动性，这首先让 AMM 得以运作。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/04.Uniswap%20LP/">http://example.com/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/04.Uniswap%20LP/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/05.Uniswap%20%E5%8D%8F%E8%AE%AE%E8%B4%B9/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">05.Uniswap 协议费</div></div></a></div><div class="next-post pull-right"><a href="/2023/01/25/17.Uniswap%E7%B3%BB%E5%88%97/03.Uniswap%20%E6%B7%BB%E5%8A%A0%E6%B5%81%E5%8A%A8%E6%80%A7/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">03.Uniswap 添加流动性</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">237</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">32</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Uniswap-LP"><span class="toc-number">1.</span> <span class="toc-text">Uniswap LP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LP"><span class="toc-number">1.2.</span> <span class="toc-text">LP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LP-token"><span class="toc-number">1.3.</span> <span class="toc-text">LP token</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LP-token%E8%BF%90%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.</span> <span class="toc-text">LP token运作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LP-%E4%BB%A3%E5%B8%81%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%81%9A%E5%B8%82%E5%95%86%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.5.</span> <span class="toc-text">LP 代币与自动做市商之间的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LP-%E4%BB%A3%E5%B8%81%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98-DeFi-%E6%B5%81%E5%8A%A8%E6%80%A7%EF%BC%9F"><span class="toc-number">1.6.</span> <span class="toc-text">LP 代币如何提高 DeFi 流动性？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">1.7.</span> <span class="toc-text">结论</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/27/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/38.LostAssets/" title="38.LostAssets"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="38.LostAssets"/></a><div class="content"><a class="title" href="/2023/01/27/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/38.LostAssets/" title="38.LostAssets">38.LostAssets</a><time datetime="2023-01-27T15:34:15.099Z" title="发表于 2023-01-27 23:34:15">2023-01-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/27/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/37.FlashLoanMain/" title="37.FlashLoanMain"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="37.FlashLoanMain"/></a><div class="content"><a class="title" href="/2023/01/27/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/37.FlashLoanMain/" title="37.FlashLoanMain">37.FlashLoanMain</a><time datetime="2023-01-27T07:02:58.068Z" title="发表于 2023-01-27 15:02:58">2023-01-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/06.Uniswap%20%E5%88%A0%E9%99%A4%E6%B5%81%E5%8A%A8%E6%80%A7/" title="06.Uniswap 删除流动性"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Uniswap 删除流动性"/></a><div class="content"><a class="title" href="/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/06.Uniswap%20%E5%88%A0%E9%99%A4%E6%B5%81%E5%8A%A8%E6%80%A7/" title="06.Uniswap 删除流动性">06.Uniswap 删除流动性</a><time datetime="2023-01-26T11:03:14.630Z" title="发表于 2023-01-26 19:03:14">2023-01-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/26/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/03.%E8%8E%B7%E5%BE%97slowmist%E4%BA%94%E5%91%A8%E5%B9%B4NFT/" title="03.获得slowmist五周年NFT"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.获得slowmist五周年NFT"/></a><div class="content"><a class="title" href="/2023/01/26/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/03.%E8%8E%B7%E5%BE%97slowmist%E4%BA%94%E5%91%A8%E5%B9%B4NFT/" title="03.获得slowmist五周年NFT">03.获得slowmist五周年NFT</a><time datetime="2023-01-26T08:16:26.103Z" title="发表于 2023-01-26 16:16:26">2023-01-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/05.Uniswap%20%E5%8D%8F%E8%AE%AE%E8%B4%B9/" title="05.Uniswap 协议费"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.Uniswap 协议费"/></a><div class="content"><a class="title" href="/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/05.Uniswap%20%E5%8D%8F%E8%AE%AE%E8%B4%B9/" title="05.Uniswap 协议费">05.Uniswap 协议费</a><time datetime="2023-01-26T08:02:16.774Z" title="发表于 2023-01-26 16:02:16">2023-01-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
