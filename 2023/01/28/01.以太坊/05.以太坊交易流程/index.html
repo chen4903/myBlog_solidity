@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>05.以太坊交易流程 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="以太坊交易流程交易的组成 Nonce：发送者发送交易数的计数 gasPrice：发送者愿意支付执行交易所需的每个gas的 Wei数量 gasLimit：发送者愿意为执行交易支付gas数量的最大值 to ：收者的地址，在合约创建交易中。合约账户的地址还没有存在，值先空着 Value：从发送者转移到接收者Wei的数量。在合约创建交易中，value作为新建合约账户的开始余额 v，r，s：交易签名的三个部">
+<meta property="og:type" content="article">
+<meta property="og:title" content="05.以太坊交易流程">
+<meta property="og:url" content="http://example.com/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="以太坊交易流程交易的组成 Nonce：发送者发送交易数的计数 gasPrice：发送者愿意支付执行交易所需的每个gas的 Wei数量 gasLimit：发送者愿意为执行交易支付gas数量的最大值 to ：收者的地址，在合约创建交易中。合约账户的地址还没有存在，值先空着 Value：从发送者转移到接收者Wei的数量。在合约创建交易中，value作为新建合约账户的开始余额 v，r，s：交易签名的三个部">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2023-01-28T11:11:18.708Z">
+<meta property="article:modified_time" content="2023-01-28T11:24:36.174Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '05.以太坊交易流程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-28 19:24:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">253</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">34</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">05.以太坊交易流程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-28T11:11:18.708Z" title="发表于 2023-01-28 19:11:18">2023-01-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-28T11:24:36.174Z" title="更新于 2023-01-28 19:24:36">2023-01-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/">01.以太坊</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="以太坊交易流程"><a href="#以太坊交易流程" class="headerlink" title="以太坊交易流程"></a>以太坊交易流程</h1><h2 id="交易的组成"><a href="#交易的组成" class="headerlink" title="交易的组成"></a>交易的组成</h2><ul>
+<li>Nonce：发送者发送交易数的计数</li>
+<li>gasPrice：发送者愿意支付执行交易所需的每个gas的 Wei数量</li>
+<li>gasLimit：发送者愿意为执行交易支付gas数量的最大值</li>
+<li>to ：收者的地址，在合约创建交易中。合约账户的地址还没有存在，值先空着</li>
+<li>Value：从发送者转移到接收者Wei的数量。在合约创建交易中，value作为新建合约账户的开始余额</li>
+<li>v，r，s：交易签名的三个部分，由发送者的私钥对交易Hash进行签名生成</li>
+<li>init：只有在合约创建交易中存在。用来初始化新合约账户的EVM代码片段。init值会执行一次，然后就会被丢弃</li>
+<li>data：可选域，只有在消息通信中存在。消息通信中的输入数据，也就是参数</li>
+</ul>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128191305054.png" alt="image-20230128191305054"></p>
+<h2 id="交易的类型"><a href="#交易的类型" class="headerlink" title="交易的类型"></a>交易的类型</h2><ul>
+<li>转账交易<ul>
+<li>完成从一个账户向另一账户发送以太币</li>
+</ul>
+</li>
+<li>建智能合约的交易<ul>
+<li>将合约部署到区块链上</li>
+<li>to是一个空字符串</li>
+<li>data中指定初始化合约的二进制代码</li>
+</ul>
+</li>
+<li>合约调用交易<ul>
+<li>执行已经部署在区块链上的智能合约</li>
+<li>from是合约地址</li>
+<li>to是要调用智能合约的地址</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">web3.<span class="property">eth</span>.<span class="title function_">sendTransaction</span>(&#123;</span><br><span class="line"><span class="attr">from</span>:</span><br><span class="line">to：</span><br><span class="line"><span class="attr">value</span>:</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="交易过程"><a href="#交易过程" class="headerlink" title="交易过程"></a>交易过程</h2><h3 id="转账交易或合约调用交易"><a href="#转账交易或合约调用交易" class="headerlink" title="转账交易或合约调用交易"></a>转账交易或合约调用交易</h3><p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128191527630.png" alt="image-20230128191527630"></p>
+<p>1.构建原始交易对象：按照交易格式要求，填写交易信息</p>
+<p>2.签署交易：使用该账户的相应私钥签署交易，确保是该账户的所有者，而不是其 他人以该账户的名义执行该交易</p>
+<p>3.交易经由本地验证：签署过后的交易会提交至用户的本地以太坊节点，然后本地节点会验 证已签名的交易，确保交易真的是由这个账户地址签署过的</p>
+<p>4.发送交易请求：发送者（用户A）将已签署交易经由本地节点广播至其对等节点</p>
+<p>5.交易请求验证和广播：网络上的节点（用户B）同步到此交易，检查交易是否有效、账户余额 是否满足，如果有误，则废弃这条交易。对符合要求的交易请求，用户B将其放在交易存储池中，并且转发给其他节点。其他收到交易请求的节点重复用户B的处理过程</p>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128191637578.png" alt="image-20230128191637578"></p>
+<p>6.矿工节点接受交易：矿工节点的职责是将用户的交易包含到区块上，矿工会先把用户的交易 添加进交易池，然后再进行评估。Gas 价格越高，该交易就越有可能被添加进下一个区块</p>
+<p>7.矿工节点打包交易和执行合约：</p>
+<ul>
+<li>对于转账交易：矿工节点将该交易和其他交易一起打包到区块中</li>
+<li>对于合约交易：<ul>
+<li>矿工将该交易和其他交易一起打包到区块中，并在本地的EVM上运行被调 用的合约代码，直到代码运行结束或Gas用完</li>
+<li>如果代码并未结束而Gas已经用完，那么代码运行而改变的状态回滚到代 码运行前，已经支付的交易费用不可收回，交易费用由获得记账权的矿工 获得</li>
+<li>如果代码运行结束Gas还有剩余，那么矿工也只会获得消耗Gas x GasPrice作为手续费，不会收取剩余Gas对应的手续费</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128191841396.png" alt="image-20230128191841396"></p>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128191850390.png" alt="image-20230128191850390"></p>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128191909056.png" alt="image-20230128191909056"></p>
+<p>8.区块广播：记账节点将有效的区块添加到区块链上。记账节点也会将这一有效区块广播给其他节点</p>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128191934088.png" alt="image-20230128191934088"></p>
+<p>9.区块验证同步：</p>
+<ul>
+<li>其他节点收到该区块后，验证区块</li>
+<li>如果通过验证，节点将内存池中原来用户A的交易请求删除，同时同步该区块，将 其添加到本地的区块链中</li>
+<li>对于合约调用交易，其他节点会在本地EVM上运行该合约，并验证运行的结果是否 与区块中的结果一致</li>
+</ul>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128192004415.png" alt="image-20230128192004415"></p>
+<p>通过以上步骤后，整个交易的过程已经结束。但是出于安全性的需 求，当包含交易的区块链被同步到区块链后，还需要再挖掘一 些块，这笔交易才能算是真正地被确认。</p>
+<blockquote>
+<p>是先挖矿还是先执行智能合约？</p>
+<p>答案：先执行智能合约，然后挖矿</p>
+<p>在挖矿的时候需要计算block header的哈希值，而block header中包含有三棵树的 根哈希值。所以，只有执行完区块中的所有交易（包括智能合约交易）才能更新这 三棵树，得到这三个根哈希值，这样block header的内容才能确定，然后才能尝试 nonce进行挖矿。</p>
+</blockquote>
+<blockquote>
+<p>矿工先消耗了很多资源执行了这个智能合约，但是最后没有挖到矿怎么办？ 能得到什么补偿？</p>
+<p>没有任何补偿，汽油费只给获得记账权发布区块的那个矿工，不仅如此，他还需要 把别人发布的区块中的交易在本地执行一遍，验证它的正确性，每个全结点都要独 立验证。</p>
+</blockquote>
+<blockquote>
+<p>发布到区块链上交易都是成功执行的吗？如果智能合约的执行出现错误， 要不要也发布到区块上去？</p>
+<p> 要发布，要扣掉汽油费，只在本地扣掉的汽油费是没有用的，只有发布到区块上形 成共识，才会成为你账户上的钱。</p>
+</blockquote>
+<h3 id="创建智能合约的交易"><a href="#创建智能合约的交易" class="headerlink" title="创建智能合约的交易"></a>创建智能合约的交易</h3><p>1.构建原始交易对象：按照交易格式要求，填写交易信息</p>
+<p>2.签署交易：使用该账户的相应私钥签署交易，确保是该账户的所有者，而不是其他人以该账户的名义执行该交易</p>
+<p>3.交易经由本地验证：签署过后的交易会提交至用户的本地以太坊节点，然后本地节点会验 证已签名的交易，确保交易真的是由这个账户地址签署过的</p>
+<p>4.发送创建智能合约请求：送者将已签署的创建智能合约的交易请求经由本地节点广播至其对等节点</p>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128192213113.png" alt="image-20230128192213113"></p>
+<p>5.交易请求验证和广播：</p>
+<ul>
+<li>网络上的节点（用户B）同步到此交易，检查交易是否有效、账户余额 是否满足，如果有误，则废弃这条交易</li>
+<li>对符合要求的交易请求，用户B将其放在交易存储池中，并且转发给其 他节点</li>
+<li>其他收到交易请求的节点重复用户B的处理过程</li>
+</ul>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128192304734.png" alt="image-20230128192304734"></p>
+<p>6.矿工节点接受交易</p>
+<ul>
+<li>矿工节点的职责是将用户的交易包含到区块上，矿工会先把用户的交易 添加进交易池，然后再进行评估</li>
+<li>Gas 价格越高，该交易就越有可能被添加进下一个区块</li>
+</ul>
+<p>7.打包、创建合约账户、部署合约：</p>
+<ul>
+<li>获得记账权的节点将该交易和其他交易一起打包到区块中</li>
+<li>获得记账权的节点会根据其提供的交易费用和合约代码，创建合约账户，并在账户空间中部署合约</li>
+<li>智能合约账户的地址是由发送者的地址和交易随机数作为输入，通过 加密算法生成的、交易确认后智能合约的地址返回给发送者</li>
+</ul>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128192358962.png" alt="image-20230128192358962"></p>
+<p>8.区块广播：用户B把包含用户A的交易请求的区块发送至对等节点，并在全网传播</p>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128192405931.png" alt="image-20230128192405931"></p>
+<p>9.验证区块，并部署智能合约到本地：</p>
+<ul>
+<li><p>共识节点接收到该区块，验证区块</p>
+</li>
+<li><p>如果区块通过验证，节点从内存池将原来用户A创建智能合约的交易请 求删除掉，同步区块链，并将智能合约部署在各自的本地区块链中</p>
+</li>
+</ul>
+<p><img src="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/image-20230128192435669.png" alt="image-20230128192435669"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/">http://example.com/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/06.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">06.以太坊数据结构</div></div></a></div><div class="next-post pull-right"><a href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/04.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%8F%8A%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">04.以太坊系统架构及核心概念</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">253</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">34</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">以太坊交易流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">1.1.</span> <span class="toc-text">交易的组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">交易的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">交易过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E8%B4%A6%E4%BA%A4%E6%98%93%E6%88%96%E5%90%88%E7%BA%A6%E8%B0%83%E7%94%A8%E4%BA%A4%E6%98%93"><span class="toc-number">1.3.1.</span> <span class="toc-text">转账交易或合约调用交易</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E7%9A%84%E4%BA%A4%E6%98%93"><span class="toc-number">1.3.2.</span> <span class="toc-text">创建智能合约的交易</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/07.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="07.以太坊共识机制"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.以太坊共识机制"/></a><div class="content"><a class="title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/07.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="07.以太坊共识机制">07.以太坊共识机制</a><time datetime="2023-01-28T11:42:22.433Z" title="发表于 2023-01-28 19:42:22">2023-01-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/06.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="06.以太坊数据结构"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.以太坊数据结构"/></a><div class="content"><a class="title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/06.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="06.以太坊数据结构">06.以太坊数据结构</a><time datetime="2023-01-28T11:24:53.570Z" title="发表于 2023-01-28 19:24:53">2023-01-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/" title="05.以太坊交易流程"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.以太坊交易流程"/></a><div class="content"><a class="title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/" title="05.以太坊交易流程">05.以太坊交易流程</a><time datetime="2023-01-28T11:11:18.708Z" title="发表于 2023-01-28 19:11:18">2023-01-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/04.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%8F%8A%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" title="04.以太坊系统架构及核心概念"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.以太坊系统架构及核心概念"/></a><div class="content"><a class="title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/04.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%8F%8A%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" title="04.以太坊系统架构及核心概念">04.以太坊系统架构及核心概念</a><time datetime="2023-01-28T11:00:37.059Z" title="发表于 2023-01-28 19:00:37">2023-01-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/03.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%AE%80%E4%BB%8B/" title="03.以太坊简介"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.以太坊简介"/></a><div class="content"><a class="title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/03.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%AE%80%E4%BB%8B/" title="03.以太坊简介">03.以太坊简介</a><time datetime="2023-01-28T10:56:04.001Z" title="发表于 2023-01-28 18:56:04">2023-01-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
