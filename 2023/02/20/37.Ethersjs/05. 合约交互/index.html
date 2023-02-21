@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>05. 合约交互 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="合约交互转载 这一讲，我们将介绍如何声明可写的Contract合约变量，并利用它与测试网的WETH合约交互。 创建可写Contract变量声明可写的Contract变量的规则： 1const contract &#x3D; new ethers.Contract(address, abi, signer)  其中address为合约地址，abi是合约的abi接口，signer是wallet对象。注意，这里你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="05. 合约交互">
+<meta property="og:url" content="http://example.com/2023/02/20/37.Ethersjs/05.%20%E5%90%88%E7%BA%A6%E4%BA%A4%E4%BA%92/index.html">
+<meta property="og:site_name" content="solidity life">
+<meta property="og:description" content="合约交互转载 这一讲，我们将介绍如何声明可写的Contract合约变量，并利用它与测试网的WETH合约交互。 创建可写Contract变量声明可写的Contract变量的规则： 1const contract &#x3D; new ethers.Contract(address, abi, signer)  其中address为合约地址，abi是合约的abi接口，signer是wallet对象。注意，这里你">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
+<meta property="article:published_time" content="2023-02-20T12:35:49.504Z">
+<meta property="article:modified_time" content="2023-02-20T13:00:34.548Z">
+<meta property="article:author" content="LEVI_104">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/02/20/37.Ethersjs/05.%20%E5%90%88%E7%BA%A6%E4%BA%A4%E4%BA%92/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '05. 合约交互',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-20 21:00:34'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">284</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">38</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">05. 合约交互</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-20T12:35:49.504Z" title="发表于 2023-02-20 20:35:49">2023-02-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-20T13:00:34.548Z" title="更新于 2023-02-20 21:00:34">2023-02-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="合约交互"><a href="#合约交互" class="headerlink" title="合约交互"></a>合约交互</h1><p><a target="_blank" rel="noopener" href="https://wtf.academy/ether-start/WriteContract/">转载</a></p>
+<p>这一讲，我们将介绍如何声明可写的<code>Contract</code>合约变量，并利用它与测试网的<code>WETH</code>合约交互。</p>
+<h2 id="创建可写Contract变量"><a href="#创建可写Contract变量" class="headerlink" title="创建可写Contract变量"></a>创建可写<code>Contract</code>变量</h2><p>声明可写的<code>Contract</code>变量的规则：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> contract = <span class="keyword">new</span> ethers.<span class="title class_">Contract</span>(address, abi, signer)</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>address</code>为合约地址，<code>abi</code>是合约的<code>abi</code>接口，<code>signer</code>是<code>wallet</code>对象。注意，这里你需要提供<code>signer</code>，而在声明可读合约时你只需要提供<code>provider</code>。</p>
+<p>你也可以利用下面的方法，将可读合约转换为可写合约：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> contract2 = contract.<span class="title function_">connect</span>(signer)</span><br></pre></td></tr></table></figure>
+
+<h2 id="合约交互-1"><a href="#合约交互-1" class="headerlink" title="合约交互"></a>合约交互</h2><p>我们在<a target="_blank" rel="noopener" href="https://github.com/WTFAcademy/WTFEthers/blob/main/03_ReadContract/readme.md">第三讲</a>介绍了读取合约信息。它不需要<code>gas</code>。这里我们介绍写入合约信息，你需要构建交易，并且支付<code>gas</code>。该交易将由整个网络上的每个节点以及矿工验证，并改变区块链状态。</p>
+<p>你可以用下面方法方法进行合约交互：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发送交易</span></span><br><span class="line"><span class="keyword">const</span> tx = <span class="keyword">await</span> contract.<span class="title function_">METHOD_NAME</span>(args [, overrides])</span><br><span class="line"><span class="comment">// 等待链上确认交易</span></span><br><span class="line"><span class="keyword">await</span> tx.<span class="title function_">wait</span>() </span><br></pre></td></tr></table></figure>
+
+<p>其中<code>METHOD_NAME</code>为调用的函数名，<code>args</code>为函数参数，<code>[, overrides]</code>是可以选择传入的数据，包括：</p>
+<ul>
+<li>gasPrice：gas价格</li>
+<li>gasLimit：gas上限</li>
+<li>value：调用时传入的ether（单位是wei）</li>
+<li>nonce：nonce</li>
+</ul>
+<p><strong>注意：</strong> 此方法不能获取合约运行的返回值，如有需要，要使用<code>Solidity</code>事件记录，然后利用交易收据去查询。</p>
+<h2 id="例子：与测试网WETH合约交互"><a href="#例子：与测试网WETH合约交互" class="headerlink" title="例子：与测试网WETH合约交互"></a>例子：与测试网WETH合约交互</h2><p><code>WETH</code> (Wrapped ETH)是<code>ETH</code>的带包装版本，将以太坊原生代币用智能合约包装成了符合<code>ERC20</code>的代币。对<code>WETH</code>合约更详细的内容可以参考WTF Solidity极简合约的<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/41_WETH/readme.md">第41讲 WETH</a>。</p>
+<p>1.创建<code>provider</code>，<code>wallet</code>变量。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;ethers&#125; = <span class="built_in">require</span>(<span class="string">&quot;ethers&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> provider = <span class="keyword">new</span> ethers.<span class="property">providers</span>.<span class="title class_">JsonRpcProvider</span>(<span class="string">`https://eth-goerli.g.alchemy.com/v2/AaEomr1g_2UC3GX_7J4XbxvvjKtn6UAi`</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 利用私钥和provider创建wallet对象</span></span><br><span class="line"><span class="keyword">const</span> privateKey = <span class="string">&#x27;0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#x27;</span></span><br><span class="line"><span class="keyword">const</span> wallet = <span class="keyword">new</span> ethers.<span class="title class_">Wallet</span>(privateKey, provider)</span><br></pre></td></tr></table></figure>
+
+<p>2.创建可写<code>WETH</code>合约变量，我们在<code>ABI</code>中加入了3个我们要调用的函数：</p>
+<ul>
+<li><code>balanceOf()</code>：查询地址的<code>WETH</code>余额。</li>
+<li><code>deposit()</code>：将转入合约的<code>ETH</code>转为<code>WETH</code>。</li>
+<li><code>transfer()</code>：转账。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WETH的ABI,具体在https://goerli.etherscan.io/address/0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6#code</span></span><br><span class="line"><span class="keyword">const</span> abiWETH = <span class="string">&#x27;[&#123;&quot;constant&quot;:true,&quot;inputs&quot;:[],&quot;name&quot;:&quot;name&quot;,&quot;outputs&quot;:[&#123;&quot;name&quot;:&quot;&quot;,&quot;type&quot;:&quot;string&quot;&#125;],&quot;payable&quot;:false,&quot;stateMutability&quot;:&quot;view&quot;,&quot;type&quot;:&quot;function&quot;&#125;,&#123;&quot;constant&quot;:false,&quot;inputs&quot;:[&#123;&quot;name&quot;:&quot;guy&quot;,&quot;type&quot;:&quot;address&quot;&#125;,&#123;&quot;name&quot;:&quot;wad&quot;,&quot;type&quot;:&quot;uint256&quot;&#125;],&quot;name&quot;:&quot;approve&quot;,&quot;outputs&quot;:[&#123;&quot;name&quot;:&quot;&quot;,&quot;type&quot;:&quot;bool&quot;&#125;],&quot;payable&quot;:false,&quot;stateMutability&quot;:&quot;nonpayabl......太多了省略&#x27;</span>;</span><br><span class="line"><span class="comment">// WETH合约地址（goerli测试网）</span></span><br><span class="line"><span class="keyword">const</span> addressWETH = <span class="string">&#x27;0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6&#x27;</span> <span class="comment">// WETH Contract</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明可写合约</span></span><br><span class="line"><span class="keyword">const</span> contractWETH = <span class="keyword">new</span> ethers.<span class="title class_">Contract</span>(addressWETH, abiWETH, wallet)</span><br></pre></td></tr></table></figure>
+
+<p>3.读取账户<code>WETH</code>余额</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> address = <span class="keyword">await</span> wallet.<span class="title function_">getAddress</span>()</span><br><span class="line"><span class="comment">// 读取WETH合约的链上信息（WETH abi）</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n1. 读取WETH余额&quot;</span>)</span><br><span class="line"><span class="keyword">const</span> balanceWETH = <span class="keyword">await</span> contractWETH.<span class="title function_">balanceOf</span>(address)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`存款前WETH持仓: <span class="subst">$&#123;ethers.utils.formatEther(balanceWETH)&#125;</span>\n`</span>)</span><br></pre></td></tr></table></figure>
+
+<p>4.调用<code>WETH</code>合约的<code>deposit()</code>函数，将<code>0.001 ETH</code>转换为<code>0.001 WETH</code>，打印交易详情和余额。<code>deposit()</code>函数没有参数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n2. 调用desposit()函数，存入0.001 ETH&quot;</span>)</span><br><span class="line"><span class="comment">// 发起交易</span></span><br><span class="line"><span class="keyword">const</span> tx = <span class="keyword">await</span> contractWETH.<span class="title function_">deposit</span>(&#123;<span class="attr">value</span>: ethers.<span class="property">utils</span>.<span class="title function_">parseEther</span>(<span class="string">&quot;0.001&quot;</span>)&#125;)</span><br><span class="line"><span class="comment">// 等待交易上链</span></span><br><span class="line"><span class="keyword">await</span> tx.<span class="title function_">wait</span>()</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`交易详情：`</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(tx)</span><br><span class="line"><span class="keyword">const</span> balanceWETH_deposit = <span class="keyword">await</span> contractWETH.<span class="title function_">balanceOf</span>(address)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`存款后WETH持仓: <span class="subst">$&#123;ethers.utils.formatEther(balanceWETH_deposit)&#125;</span>\n`</span>)</span><br></pre></td></tr></table></figure>
+
+<p>5.调用<code>WETH</code>合约的<code>transfer()</code>函数，给V神转账<code>0.001 WETH</code>，并打印余额。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n3. 调用transfer()函数，给vitalik转账0.001 WETH&quot;</span>)</span><br><span class="line"><span class="comment">// 发起交易</span></span><br><span class="line"><span class="keyword">const</span> tx2 = <span class="keyword">await</span> contractWETH.<span class="title function_">transfer</span>(<span class="string">&quot;vitalik.eth&quot;</span>, ethers.<span class="property">utils</span>.<span class="title function_">parseEther</span>(<span class="string">&quot;0.001&quot;</span>))</span><br><span class="line"><span class="comment">// 等待交易上链</span></span><br><span class="line"><span class="keyword">await</span> tx2.<span class="title function_">wait</span>()</span><br><span class="line"><span class="keyword">const</span> balanceWETH_transfer = <span class="keyword">await</span> contractWETH.<span class="title function_">balanceOf</span>(address)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`转账后WETH持仓: <span class="subst">$&#123;ethers.utils.formatEther(balanceWETH_transfer)&#125;</span>\n`</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：观察<code>deposit()</code>函数和<code>balanceOf()</code>函数，为什么他们的返回值不一样？为什么前者返回一堆数据，而后者只返回确定的值？这是因为对于钱包的余额，它是一个只读操作，读到什么就是什么。而对于一次函数的调用，并不知道数据何时上链，所以只会返回这次交易的信息。总结来说，就是对于非<code>pure</code>&#x2F;<code>view</code>函数的调用，会返回交易的信息。如果想知道函数执行过程中合约变量的变化，可以在合约中使用<code>emit</code>输出事件，并在返回的<code>transaction</code>信息中读取事件信息来获取相应的值。</p>
+<p>6.输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1. 读取WETH余额</span><br><span class="line">存款前WETH持仓: 0.0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2. 调用desposit()函数,存入0.001 ETH</span><br><span class="line">交易详情：</span><br><span class="line">&#123;</span><br><span class="line">  type: 2,</span><br><span class="line">  chainId: 5,</span><br><span class="line">  nonce: 464,</span><br><span class="line">  maxPriorityFeePerGas: BigNumber &#123; _hex: &#x27;0x59682f00&#x27;, _isBigNumber: true &#125;,</span><br><span class="line">  maxFeePerGas: BigNumber &#123; _hex: &#x27;0x034dd620a4&#x27;, _isBigNumber: true &#125;,</span><br><span class="line">  value: BigNumber &#123; _hex: &#x27;0x038d7ea4c68000&#x27;, _isBigNumber: true &#125;,</span><br><span class="line">  data: &#x27;0xd0e30db0&#x27;,</span><br><span class="line">&#125;</span><br><span class="line">存款后WETH持仓: 0.001</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">3. 调用transfer()函数,给vitalik转账0.001 WETH</span><br><span class="line">转账后WETH持仓: 0.0</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/02/20/37.Ethersjs/05.%20%E5%90%88%E7%BA%A6%E4%BA%A4%E4%BA%92/">http://example.com/2023/02/20/37.Ethersjs/05.%20%E5%90%88%E7%BA%A6%E4%BA%A4%E4%BA%92/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/02/20/37.Ethersjs/06.%E9%83%A8%E7%BD%B2%E5%90%88%E7%BA%A6/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">06.部署合约</div></div></a></div><div class="next-post pull-right"><a href="/2023/02/20/37.Ethersjs/04.%E5%8F%91%E9%80%81ETH/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">04.发送ETH</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">284</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">38</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%88%E7%BA%A6%E4%BA%A4%E4%BA%92"><span class="toc-number">1.</span> <span class="toc-text">合约交互</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%8F%AF%E5%86%99Contract%E5%8F%98%E9%87%8F"><span class="toc-number">1.1.</span> <span class="toc-text">创建可写Contract变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E7%BA%A6%E4%BA%A4%E4%BA%92-1"><span class="toc-number">1.2.</span> <span class="toc-text">合约交互</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E4%B8%8E%E6%B5%8B%E8%AF%95%E7%BD%91WETH%E5%90%88%E7%BA%A6%E4%BA%A4%E4%BA%92"><span class="toc-number">1.3.</span> <span class="toc-text">例子：与测试网WETH合约交互</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/06.Harhat%E7%B3%BB%E5%88%97/02.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" title="02.快速入门"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.快速入门"/></a><div class="content"><a class="title" href="/2023/02/22/06.Harhat%E7%B3%BB%E5%88%97/02.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" title="02.快速入门">02.快速入门</a><time datetime="2023-02-21T16:33:55.172Z" title="发表于 2023-02-22 00:33:55">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/37.Ethersjs/17.%20MerkleTree%E8%84%9A%E6%9C%AC/" title="17. MerkleTree脚本"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="17. MerkleTree脚本"/></a><div class="content"><a class="title" href="/2023/02/22/37.Ethersjs/17.%20MerkleTree%E8%84%9A%E6%9C%AC/" title="17. MerkleTree脚本">17. MerkleTree脚本</a><time datetime="2023-02-21T16:13:22.694Z" title="发表于 2023-02-22 00:13:22">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/21/37.Ethersjs/16.%E6%89%B9%E9%87%8F%E5%BD%92%E9%9B%86/" title="16.批量归集"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="16.批量归集"/></a><div class="content"><a class="title" href="/2023/02/21/37.Ethersjs/16.%E6%89%B9%E9%87%8F%E5%BD%92%E9%9B%86/" title="16.批量归集">16.批量归集</a><time datetime="2023-02-21T15:36:57.204Z" title="发表于 2023-02-21 23:36:57">2023-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/21/37.Ethersjs/15.%E6%89%B9%E9%87%8F%E8%BD%AC%E8%B4%A6/" title="15.批量转账"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="15.批量转账"/></a><div class="content"><a class="title" href="/2023/02/21/37.Ethersjs/15.%E6%89%B9%E9%87%8F%E8%BD%AC%E8%B4%A6/" title="15.批量转账">15.批量转账</a><time datetime="2023-02-21T15:04:31.697Z" title="发表于 2023-02-21 23:04:31">2023-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/" title="14. 批量生成钱包"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="14. 批量生成钱包"/></a><div class="content"><a class="title" href="/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/" title="14. 批量生成钱包">14. 批量生成钱包</a><time datetime="2023-02-21T13:50:35.735Z" title="发表于 2023-02-21 21:50:35">2023-02-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>

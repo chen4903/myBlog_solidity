@@ -50,7 +50,7 @@
   isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2023-01-30 12:56:15'
+  postUpdate: '2023-02-22 01:02:04'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -139,310 +139,101 @@
       }
     }
     detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">262</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">35</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/bd833433161747b589ed994f354c547e')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">solidity life</h1><div id="site_social_icons"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/07.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="07.以太坊共识机制"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.以太坊共识机制"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/07.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="07.以太坊共识机制">07.以太坊共识机制</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T11:42:22.433Z" title="发表于 2023-01-28 19:42:22">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/">01.以太坊</a></span></div><div class="content">以太坊共识机制以太坊共识机制演变PoS（Proof of Stake， 权益证明）共识机制
-2022年9月15日14:42:42，以太坊在区块高度15537393触发合并机制，首个PoS区块高度为15537394，以太坊共识机制正式从PoW转为了PoS
-PoS简介
-用户将存入一定量的加密资产，成为区块链的验证者
-以太坊中的时间分为时隙（12 秒）和时段（32 个时隙）
-在每个时隙中随机选择一位验证者作为区块提议者，该验证者负责创建新 区块并发送给网络上的其他节点
-在每个时隙中，都会随机选择一个验证者委员会，通过他们的投票确定所 提议区块的有效性
-如果正确的话，验证者将获得区块链的奖励
-如果他们错了，他们将被罚款，失去全部或部分存入的加密资产
-
-
-无成本利益问题（Nothing at Stake）无成本利益问题就是在PoS系统中挖矿几乎没有成本，这就意味 着分叉非常方便
-
-
-假设有一条蓝色的主链和一条红色的从主链中分出来的链条，如何 禁止一个恶意的矿工在红色区块上挖矿然后推动一次硬分叉呢？
-在PoW系统上，因为任何的分叉都会造成挖矿成本直接变成负收益， 所以这会抵抗分叉的产生，矿工倾向于 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/06.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="06.以太坊数据结构"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.以太坊数据结构"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/06.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="06.以太坊数据结构">06.以太坊数据结构</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T11:24:53.570Z" title="发表于 2023-01-28 19:24:53">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/">01.以太坊</a></span></div><div class="content">以太坊数据结构以太坊状态机
-以太坊是一个基于交易的状态机
-全球就这一台单机，但分布存在，系统状态不停的改变
-这台状态机主要由区块链组成，区块链上保存着状态和交易
-当用户与以太坊交互时，其实就是在执行交易、改变系统状态
-从第一个创世块开始，不断的收到交易，由此能进入一连串新的状态
-
-
-以太坊区块链
-以太坊每隔一段时间把交易数据和验证信息打包在一个块里
-每个块的块头里保存了前一个块的块头哈希值，依次串接起来，就成为一个链
-假如有人更改了前间某个块的内容，后面块的父块哈希就和它对应不上，这种块就不被大家认可，这就保证了区块链数据的不可篡改性
-
-
-以太坊区块结构
-世界状态树：包括了从地址到账户状态之间的映射
-世界状态树标示了区块创建时的当前状态
-世界状态树的根节点哈希值存储在区块头的 stateRoot 字段
-整个网络中只有一个世界状态树
-
-
-账户存储树：保存了与某一智能合约相关的数据信息
-由账户状态在 storageRoot 字段保存账户存储树的根节点哈希值
-每个合约账户都有一个账户存储
-
-
-交易树：包含了一个区块中的所有交易信息
-由区块头在 transactionsRoot字段，保存交易树 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/" title="05.以太坊交易流程"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.以太坊交易流程"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/05.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/" title="05.以太坊交易流程">05.以太坊交易流程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T11:11:18.708Z" title="发表于 2023-01-28 19:11:18">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/">01.以太坊</a></span></div><div class="content">以太坊交易流程交易的组成
-Nonce：发送者发送交易数的计数
-gasPrice：发送者愿意支付执行交易所需的每个gas的 Wei数量
-gasLimit：发送者愿意为执行交易支付gas数量的最大值
-to ：收者的地址，在合约创建交易中。合约账户的地址还没有存在，值先空着
-Value：从发送者转移到接收者Wei的数量。在合约创建交易中，value作为新建合约账户的开始余额
-v，r，s：交易签名的三个部分，由发送者的私钥对交易Hash进行签名生成
-init：只有在合约创建交易中存在。用来初始化新合约账户的EVM代码片段。init值会执行一次，然后就会被丢弃
-data：可选域，只有在消息通信中存在。消息通信中的输入数据，也就是参数
-
-
-交易的类型
-转账交易
-完成从一个账户向另一账户发送以太币
-
-
-建智能合约的交易
-将合约部署到区块链上
-to是一个空字符串
-data中指定初始化合约的二进制代码
-
-
-合约调用交易
-执行已经部署在区块链上的智能合约
-from是合约地址
-to是要调用智能合约的地址
-
-
-
-12345web3.eth.sendTransaction(&#123;from:to：value ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/04.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%8F%8A%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" title="04.以太坊系统架构及核心概念"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.以太坊系统架构及核心概念"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/04.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%8F%8A%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" title="04.以太坊系统架构及核心概念">04.以太坊系统架构及核心概念</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T11:00:37.059Z" title="发表于 2023-01-28 19:00:37">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/">01.以太坊</a></span></div><div class="content">以太坊系统架构及核心概念系统架构
-
-应用层
-DApp、智能合约，通过Web3.js进行交互
-
-
-核心模块层
-以太坊虚拟机：智能合约的运行环境
-分布式账本：交易、区块、区块校验、回执、状态数据、交易池相关信息
-共识算法：PoS、DPoS
-共识机制：矿工、代理、CPU挖矿、GPU挖矿
-网络服务：点对点节点发现及链接服务，区块链同步服务
-
-
-底层服务层
-数据库、密码学、基础算法
-
-
-
-核心概念账户
-外部账户：该类账户被公钥-私钥对控制，类似于比特币账户 
-
-合约账户：该类账户被智能合约的代码控制，按照合约规定，运行账户
-
-
-
-
-
-随机数（nonce）
-如果是外部账户，nonce代表从此账户地址发送的交易序号
-如果是合约账户，nonce代表此账户创建的合约序号
-
-
-账户的余额（balance）
-此地址拥有Wei的数量，1Ether&#x3D;10^18Wei
-
-
-合约代码（codeHash）
-如果是合约账户，存储此账户智能合约代码的哈希值
-如果是外部账户，是一个空字符串的哈希值
-
-
-存储（storageRoot）
-Merkle Patricia树的根节点哈希值，默认是空值
-
-
-
-智能合约智能合 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/03.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%AE%80%E4%BB%8B/" title="03.以太坊简介"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.以太坊简介"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/03.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%AE%80%E4%BB%8B/" title="03.以太坊简介">03.以太坊简介</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T10:56:04.001Z" title="发表于 2023-01-28 18:56:04">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/">01.以太坊</a></span></div><div class="content">以太坊简介比特币的缺点
-缺少图灵完备：不支持循环语句
-可表达状态少：只能是已花费和未花费
-价值盲：UTXO不可分割
-区块链盲：看不到区块链数据
-
-以太坊简介
-一个开源的具有智能合约功能的基于公共区块链的分布式账本
-
-一个可编程的区块链，允许用户创建他们自己的任意复杂的操作，成为了多种不同类型去中心化区块链的平台，包括但是不限于密码学货币
-
-可以用来编程、分散、担保和交易任何事物
-
-投票、金融交易所、众筹、公司管理
-合同、协议，知识产权
-
-
-以太坊定义了去中心化应用的平台，核心是以太坊虚拟机（EVM）
-
-EVM可以执行任意复杂度的代码，内置图灵完备编程语言
-
-以太坊使得任何人都可以创建智能合约和去中心化应用，并在其中设立自定义的所有权规则、交易方式、状态转换函数
-
-
-
-以太坊特点
-支持智能合约，不再是支持单一的“虚拟币” 应用
-通过对智能合约及虚拟机的实现来支持开放与灵活的各类区块链应用
-
-
-交易信息内容扩展
-所记录的交易信息内容有了较大的扩展，不仅包括转账信息，还包括智 能合约代码信息、输入及计算结果数据等
-
-
-账户状态跟踪
-跟踪每个账户的状态， 区块链上的状态改变就是账户之间相关数值 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/08.%E6%AF%94%E7%89%B9%E5%B8%81%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" title="08.比特币系统架构"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.比特币系统架构"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/08.%E6%AF%94%E7%89%B9%E5%B8%81%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" title="08.比特币系统架构">08.比特币系统架构</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T07:57:54.220Z" title="发表于 2023-01-28 15:57:54">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/32-%E6%AF%94%E7%89%B9%E5%B8%81/">32.比特币</a></span></div><div class="content">比特币系统架构
-应用层主要由客户端完成记账和转账的功能
-
-激励层发行机制，激励机制
-
-比特币通过奖励给那些创建新区块的矿工的方式生产
-该奖励大约每四年减半
-目前比特币系统10分钟产生一个新区块
-每个区块奖励6.75个比特币给矿工
-这其实就是货币发行的方式
-
-另一个激励：交易费
-
-所有交易都需要支付手续费给记录区块的矿工
-如果某笔交易的交易费不足，那么矿工将拒绝执行
-
-工作证明（ PoW ） 
-矿工通过把网络尚未记录的现 有交易打包到一个区块。然后 不断遍历尝试来寻找一个随机 数，使得新区块加上随机数的 哈希值满足一定的难度条件。 找到之后，即获得本区块的记 账权。然后将该区块广播出去。 其他节点验证该区块，如果通 过，则跟随它， 从而在全网形 挖矿成功 成对当前网络状态的共识。
-
-共识层共识机制
-
-没有中心控制  没有信任基础的个体之间  就交易的合法性等达成共识
-
-优点 
-
-完全去中心化， 节点自由进出
-避免了建立和维护中心化信用机构的成本
-抗攻击，共识易达
-
-缺点
-
-挖矿造成大量的资源浪费
-算力集中化， 背离了去中心化初衷
-共识达成的周期较长，每秒只能做7笔交易
-不适合大规模商 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/07.%E6%AF%94%E7%89%B9%E5%B8%81%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/" title="07.比特币工作原理"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.比特币工作原理"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/07.%E6%AF%94%E7%89%B9%E5%B8%81%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/" title="07.比特币工作原理">07.比特币工作原理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T07:47:18.960Z" title="发表于 2023-01-28 15:47:18">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/32-%E6%AF%94%E7%89%B9%E5%B8%81/">32.比特币</a></span></div><div class="content">比特币工作原理交易流程
-工作原理1.Alice打开他的比特币钱包：这意味着Alice间接创建了自己的比特币地址
-2.Alice扫描Bob的比特币地址：Alice想转比特币转给Bob
-
-3.Alice填写交易账单
-
-填写想要转移的比特币数量、愿意支付的费用
-
-一笔交易包括输入、输出、将被转移的比特币数量
-
-
-
-
-比特币交易不是简单地将一些比特币从一个地址移动到另一个地址
-比特币交易将比特币在一个或多个输入和输出之间移动
-每个输入都是提供比特币的交易和地址
-每个输出是接收比特币的地址，以及发送到该地址的比特币数量
-
-
-4.Alice发送交易账单给钱包
-5.钱包使用Alice的私钥对交易账单签名。如何保证这个交易是Alice创建的，并且没有被修改？如何保证Alice拥有计划转给Bob的比特币？
-
-比特币地址用于接收比特币，私钥用于比特币支付时的交易签名
-支付比特币时，比特币的当前所有者需要在交易中提交其公钥和签名
-比特币网络中的所有人都可以通过所提交的公钥和签名进行验证，并确认该交易是否有效，即确认支付者在该时刻对所交易的比特币拥有所有权
-
-6.交易被发送到比特币网络上最近的节点，然后将其传 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/06.%E6%AF%94%E7%89%B9%E5%B8%81%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="06.比特币共识机制"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.比特币共识机制"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/06.%E6%AF%94%E7%89%B9%E5%B8%81%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="06.比特币共识机制">06.比特币共识机制</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T07:05:27.325Z" title="发表于 2023-01-28 15:05:27">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/32-%E6%AF%94%E7%89%B9%E5%B8%81/">32.比特币</a></span></div><div class="content">比特币共识机制简介
-区块链共识机制
-区块链共识算法：达成共识的计算机算法
-区块链共识规则：达成共识的规则
-
-
-
-每个区块链都有自己精心设计好的规则性协议， 这些协议通过共识算法来保证它们可靠地得以执行
-
-比特币共识机制
-比特币共识算法：SHA256算法
-比特币共识规则：工作量证明（PoW）
-
-
-
-每一个节点必须要做一定的工作后才能赢得记账权，即工作量证明（Proof of Work）。PoW使得攻击整个系统的成本从基本为零的成本变为非常高的成本。
-挖矿流程
-
-构建好一个候选区块后，就开始对这个新区块进行“挖掘” ，求解工 作量证明算法以使这个区块有效
-比特币挖矿过程使用的是SHA256哈希函数
-挖矿节点不断重复进行尝试，直到它找到的随机调整数使得产生的哈 希值低于某个特定的目标
-
-
-工作量证明规则
-一段时间内（10分钟左右）只有一人可以记账成功
-通过解决密码学难题（即工作量证明）竞争获得唯一记账权
-其他节点复制记账结
-
-
-准备工作
-收集广播中还没有被记录账本的原始交易信息
-检查每个交易信息中付款地址有没有足够的余额
-验证交易是否有正确的签名
-把验证通过的交易信息进行打包记录
-添加一个奖 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/05.%E6%AF%94%E7%89%B9%E5%B8%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="05.比特币数据结构"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.比特币数据结构"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/05.%E6%AF%94%E7%89%B9%E5%B8%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="05.比特币数据结构">05.比特币数据结构</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T07:00:15.411Z" title="发表于 2023-01-28 15:00:15">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/32-%E6%AF%94%E7%89%B9%E5%B8%81/">32.比特币</a></span></div><div class="content">比特币数据结构简介一个区块前后分别连接了父区块和子区块
-
-区块头主要用来存储本区块的一些相关属性。区块体则用来存储真实的交易数据记录
-
-区块体包括当前区块经过验证的、 区块创建过程中生成的所有交易记录。这些记录通过默克尔（ Merkle）树的哈希过程生成唯一的默克尔根， 并记入区块头
-默克尔树有 n 个交易，分别对这个 n 个交易进行hash之后，可以得 n 个节点。然后对 n 个节点进行两两配对，生成 n&#x2F;2 个节点，直到根节点
-
-应用：
-
-快速比较大量数据：当两个默克尔树根相同时，则意味着所代表的数据必然相同
-
-快速定位修改：
-
-如果交易A中数据被修改，会影响到HA，HAB和HABCD
-
-沿着 Root–&gt;HAB–&gt;HA，快速定位到发生改变的交易A，时间复杂 度O(lg(n))
-
-快速检索防伪：如果一个恶意的用户试图在默克尔树的底部替换一个假的数据, 这个更 改将导致树根节点的变化
-
-零知识证明 
-
-如何向他人证明拥有的某组数据（交易A……交易D）中包括给定某个 内容交易A，而不暴露其他任何内容
-构造一个默克尔树，公布HashB、HashCD，HashABCD ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/04.%E6%AF%94%E7%89%B9%E5%B8%81%E4%BA%A4%E6%98%93%E7%AD%BE%E5%90%8D%E5%8F%8A%E9%AA%8C%E8%AF%81/" title="04.比特币交易签名及验证"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.比特币交易签名及验证"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/04.%E6%AF%94%E7%89%B9%E5%B8%81%E4%BA%A4%E6%98%93%E7%AD%BE%E5%90%8D%E5%8F%8A%E9%AA%8C%E8%AF%81/" title="04.比特币交易签名及验证">04.比特币交易签名及验证</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T06:41:03.611Z" title="发表于 2023-01-28 14:41:03">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/32-%E6%AF%94%E7%89%B9%E5%B8%81/">32.比特币</a></span></div><div class="content">比特币交易签名及验证比特币验证
-账号所有权验证：如何在不泄露密码的前提下，证明自己对某个账户的所有权呢？
-比特币所有权验证：如何在不泄露密码的前提下，证明自己对要交易的比特币的所有权呢？
-交易所有权验证：如何在不泄露密码的前提下，证明某个交易的确是你创建的呢？
-
-在去中心化的前提下，每个节点独立进行验证
-去中心化验证
-比特币交易脚本语言是没有中心化主体的
-没有任何中心主体能凌驾于脚本之上
-没有中心主体会在脚本被执行后对其进行保存
-
-
-执行脚本所需信息都必须包含在脚本中
-一个脚本能在任何系统上以相同的方式执行
-如果你的节点验证了一个脚本，可以确信比特币网络中的每一 个其他节点也将验证这个脚本，这意味着一个有效的交易对每 个人而言都是有效的
-这种结果可预见性是比特币系统的一项至关重要的良性特征
-
-去中心化验证
-A要从账户X中转账一笔钱给账户Y，就需要向全网广播一条消息
-
-消息中不能包含账户X的密码，否则就意味着账户的控制权泄露给了全网 的用户
-
-网络中的其他节点收到消息后，需要能够验证A，确实拥有账户X的所有权
-
-
-
-账号所有权验证
-由A向全网发布消息，广播的消息中需要包括：
-
-原始交易信 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/#content-inner">27</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">262</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">35</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/30/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/04.%E7%99%BD%E5%A4%9C%E8%A1%8C/" title="04.白夜行"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.白夜行"/></a><div class="content"><a class="title" href="/2023/01/30/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/04.%E7%99%BD%E5%A4%9C%E8%A1%8C/" title="04.白夜行">04.白夜行</a><time datetime="2023-01-30T04:49:06.519Z" title="发表于 2023-01-30 12:49:06">2023-01-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/28/34.Fabric/08.Fabric%E5%AF%B9%E6%AF%94%E4%BB%A5%E5%A4%AA%E5%9D%8A/" title="08.Fabric对比以太坊"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Fabric对比以太坊"/></a><div class="content"><a class="title" href="/2023/01/28/34.Fabric/08.Fabric%E5%AF%B9%E6%AF%94%E4%BB%A5%E5%A4%AA%E5%9D%8A/" title="08.Fabric对比以太坊">08.Fabric对比以太坊</a><time datetime="2023-01-28T13:05:38.142Z" title="发表于 2023-01-28 21:05:38">2023-01-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/" title="07.Fabric智能合约"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Fabric智能合约"/></a><div class="content"><a class="title" href="/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/" title="07.Fabric智能合约">07.Fabric智能合约</a><time datetime="2023-01-28T12:54:08.614Z" title="发表于 2023-01-28 20:54:08">2023-01-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/28/34.Fabric/06.Fabric%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="06.Fabric共识机制"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Fabric共识机制"/></a><div class="content"><a class="title" href="/2023/01/28/34.Fabric/06.Fabric%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="06.Fabric共识机制">06.Fabric共识机制</a><time datetime="2023-01-28T12:48:10.218Z" title="发表于 2023-01-28 20:48:10">2023-01-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/28/34.Fabric/05.Fabric%E8%B4%A6%E6%9C%AC%E7%BB%93%E6%9E%84/" title="05.Fabric账本结构"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.Fabric账本结构"/></a><div class="content"><a class="title" href="/2023/01/28/34.Fabric/05.Fabric%E8%B4%A6%E6%9C%AC%E7%BB%93%E6%9E%84/" title="05.Fabric账本结构">05.Fabric账本结构</a><time datetime="2023-01-28T12:42:01.135Z" title="发表于 2023-01-28 20:42:01">2023-01-28</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">284</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">38</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/bd833433161747b589ed994f354c547e')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">solidity life</h1><div id="site_social_icons"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/21/37.Ethersjs/09.%E4%BA%8B%E4%BB%B6%E8%BF%87%E6%BB%A4/" title="09.事件过滤"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="09.事件过滤"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/09.%E4%BA%8B%E4%BB%B6%E8%BF%87%E6%BB%A4/" title="09.事件过滤">09.事件过滤</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T08:33:32.609Z" title="发表于 2023-02-21 16:33:32">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">事件过滤转载
+在上一讲 Ethers极简入门: 8. 合约监听 的基础上，我们拓展一下，在监听的过程中增加过滤器，监听指定地址的转入转出。
+具体可参考ethers.js文档。
+过滤器当合约创建日志（释放事件）时，它最多可以包含[4]条数据作为索引（indexed）。索引数据经过哈希处理并包含在布隆过滤器中，这是一种允许有效过滤的数据结构。因此，一个事件过滤器最多包含4个主题集，每个主题集是个条件，用于筛选目标事件。规则：
+
+如果一个主题集为null，则该位置的日志主题不会被过滤，任何值都匹配。
+如果主题集是单个值，则该位置的日志主题必须与该值匹配。
+如果主题集是数组，则该位置的日志主题至少与数组中其中一个匹配。
+
+
+构建过滤器ethers.js中的合约类提供了contract.filters来简化过滤器的创建：
+1const filter = contract.filters.EVENT_NAME( ...args ) 
+
+其中EVENT_NAME为要过滤的事件名，..args为主题集&#x2F;条件。前面的规则有一点抽象，下面举几个例子。
+1.过滤来自myAddress地址的Tran ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/21/37.Ethersjs/08.%E7%9B%91%E5%90%AC%E5%90%88%E7%BA%A6%E4%BA%8B%E4%BB%B6/" title="08.监听合约事件"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.监听合约事件"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/08.%E7%9B%91%E5%90%AC%E5%90%88%E7%BA%A6%E4%BA%8B%E4%BB%B6/" title="08.监听合约事件">08.监听合约事件</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T08:22:35.641Z" title="发表于 2023-02-21 16:22:35">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">监听合约事件转载
+这一讲，我们将介绍如何监听合约，并实现监听USDT合约的Transfer事件。
+具体可参考ethers.js文档。
+监听合约事件contract.on在ethersjs中，合约对象有一个contract.on的监听方法，让我们持续监听合约的事件：
+1contract.on(&quot;eventName&quot;, function)
+
+contract.on有两个参数，一个是要监听的事件名称&quot;eventName&quot;，需要包含在合约abi中；另一个是我们在事件发生时调用的函数。
+contract.once合约对象有一个contract.once的监听方法，让我们只监听一次合约释放事件，它的参数与contract.on一样：
+1contract.once(&quot;eventName&quot;, function)
+
+监听USDT合约1.声明provider
+123456const &#123;ethers&#125; = require(&quot;ethers&quot;)// 准备 alchemy API  // 可以参考https://g ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/21/37.Ethersjs/07.%E6%A3%80%E7%B4%A2%E4%BA%8B%E4%BB%B6/" title="07.检索事件"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.检索事件"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/07.%E6%A3%80%E7%B4%A2%E4%BA%8B%E4%BB%B6/" title="07.检索事件">07.检索事件</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T08:00:41.371Z" title="发表于 2023-02-21 16:00:41">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">检索事件转载
+这一讲，我们将介绍如何使用ethers.js读取智能合约释放的事件。如果你不了解Solidity的事件，可以阅读WTF Solidity极简教程中第12讲：事件。
+具体可参考ethers.js文档。
+事件 Event智能合约释放出的事件存储于以太坊虚拟机的日志中。日志分为两个主题topics和数据data部分，其中事件哈希和indexed变量存储在topics中，作为索引方便以后搜索；没有indexed变量存储在data中，不能被直接检索，但可以存储更复杂的数据结构。
+以ERC20代币中的Transfer转账事件为例，在合约中它是这样声明的：
+1event Transfer(address indexed from, address indexed to, uint256 amount);
+
+它共记录了3个变量from，to和amount，分别对应代币的发出地址，接收地址和转账数量，其中from和to前面带有indexed关键字。转账时，Transfer事件会被记录，可以在etherscan中查到。
+
+从上图中可以看到，Transfer事件被记录到了EVM的日志中，其中T ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/20/37.Ethersjs/06.%E9%83%A8%E7%BD%B2%E5%90%88%E7%BA%A6/" title="06.部署合约"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.部署合约"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/20/37.Ethersjs/06.%E9%83%A8%E7%BD%B2%E5%90%88%E7%BA%A6/" title="06.部署合约">06.部署合约</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-20T14:00:36.000Z" title="发表于 2023-02-20 22:00:36">2023-02-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">部署合约转载
+这一讲，我们将介绍ethers.js中的合约工厂ContractFactory类型，并利用它部署合约。具体可参考ethers.js文档。
+部署智能合约在以太坊上，智能合约的部署是一种特殊的交易：将编译智能合约得到的字节码发送到0地址。如果这个合约的构造函数有参数的话，需要利用abi.encode将参数编码为字节码，然后附在在合约字节码的尾部一起发送。对于ABI编码的介绍见WTF Solidity极简教程第27讲 ABI编码。
+合约工厂ethers.js创造了合约工厂ContractFactory类型，方便开发者部署合约。你可以利用合约abi，编译得到的字节码bytecode和签名者变量signer来创建合约工厂实例，为部署合约做准备。
+1const contractFactory = new ethers.ContractFactory(abi, bytecode, signer);
+
+注意：如果合约的构造函数有参数，那么在abi中必须包含构造函数。
+在创建好合约工厂实例之后，可以调用它的deploy函数并传入合约构造函数的参数args来部署并获得合约实例：
+1const ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/20/37.Ethersjs/05.%20%E5%90%88%E7%BA%A6%E4%BA%A4%E4%BA%92/" title="05. 合约交互"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05. 合约交互"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/20/37.Ethersjs/05.%20%E5%90%88%E7%BA%A6%E4%BA%A4%E4%BA%92/" title="05. 合约交互">05. 合约交互</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-20T12:35:49.504Z" title="发表于 2023-02-20 20:35:49">2023-02-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">合约交互转载
+这一讲，我们将介绍如何声明可写的Contract合约变量，并利用它与测试网的WETH合约交互。
+创建可写Contract变量声明可写的Contract变量的规则：
+1const contract = new ethers.Contract(address, abi, signer)
+
+其中address为合约地址，abi是合约的abi接口，signer是wallet对象。注意，这里你需要提供signer，而在声明可读合约时你只需要提供provider。
+你也可以利用下面的方法，将可读合约转换为可写合约：
+1const contract2 = contract.connect(signer)
+
+合约交互我们在第三讲介绍了读取合约信息。它不需要gas。这里我们介绍写入合约信息，你需要构建交易，并且支付gas。该交易将由整个网络上的每个节点以及矿工验证，并改变区块链状态。
+你可以用下面方法方法进行合约交互：
+1234// 发送交易const tx = await contract.METHOD_NAME(args [, overrides])// 等待链上确认交易await t ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/20/37.Ethersjs/04.%E5%8F%91%E9%80%81ETH/" title="04.发送ETH"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.发送ETH"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/20/37.Ethersjs/04.%E5%8F%91%E9%80%81ETH/" title="04.发送ETH">04.发送ETH</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-20T12:07:11.670Z" title="发表于 2023-02-20 20:07:11">2023-02-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">发送ETH转载
+这一讲，我们将介绍Signer签名者类和和它派生的Wallet钱包类，并利用它来发送ETH。
+Signer签名者类Web3.js认为用户会在本地部署以太坊节点，私钥和网络连接状态由这个节点管理（实际并不是这样）；而在ethers.js中，Provider提供器类管理网络连接状态，Signer签名者类或Wallet钱包类管理密钥，安全且灵活。
+在ethers中，Signer签名者类是以太坊账户的抽象，可用于对消息和交易进行签名，并将签名的交易发送到以太坊网络，并更改区块链状态。Signer类是抽象类，不能直接实例化，我们需要使用它的子类：Wallet钱包类。
+Wallet钱包类Wallet类继承了Signer类，并且开发者可以像包含私钥的外部拥有帐户（EOA）一样，用它对交易和消息进行签名。
+下面我们介绍创建Wallet实例的几种办法：
+方法1：创建随机的wallet对象我们可以利用ethers.Wallet.createRandom()函数创建带有随机私钥的Wallet对象。该私钥由加密安全的熵源生成，如果当前环境没有安全的熵源，则会引发错误（没法在在线平台playco ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/20/37.Ethersjs/03.%E8%AF%BB%E5%8F%96%E5%90%88%E7%BA%A6%E4%BF%A1%E6%81%AF/" title="03.读取合约信息"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.读取合约信息"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/20/37.Ethersjs/03.%E8%AF%BB%E5%8F%96%E5%90%88%E7%BA%A6%E4%BF%A1%E6%81%AF/" title="03.读取合约信息">03.读取合约信息</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-20T10:56:32.074Z" title="发表于 2023-02-20 18:56:32">2023-02-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">读取合约信息转载
+这一讲，我们将介绍Contract合约类，并利用它来读取链上的合约信息。
+Contract类在ethers中，Contract类是部署在以太坊网络上的合约（EVM字节码）的抽象。通过它，开发者可以非常容易的对合约进行读取call和交易transcation，并可以获得交易的结果和事件。以太坊强大的地方正是合约，所以对于合约的操作要熟练掌握。
+创建Contract变量只读和可读写ContractContract对象分为两类，只读和可读写。只读Contract只能读取链上合约信息，执行call操作，即调用合约中view和pure的函数，而不能执行交易transaction。创建这两种Contract变量的方法有所不同：
+
+只读Contract：参数分别是合约地址，合约abi和provider变量（只读）。
+
+1const contract = new ethers.Contract(`address`, `abi`, `provider`);
+
+
+可读写Contract：参数分别是合约地址，合约abi和signer变量。Signer签名者是ethers中的另一个类，用于签 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/20/37.Ethersjs/02.Provider%E6%8F%90%E4%BE%9B%E5%99%A8/" title="02.Provider提供器"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.Provider提供器"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/20/37.Ethersjs/02.Provider%E6%8F%90%E4%BE%9B%E5%99%A8/" title="02.Provider提供器">02.Provider提供器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-20T09:35:25.052Z" title="发表于 2023-02-20 17:35:25">2023-02-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">Provider提供器转载
+这一讲，我们将介绍ethers.js的Provider类，然后利用它连接上alchemy节点，读取链上的信息。
+Provider类Provider类是对以太坊网络连接的抽象，为标准以太坊节点功能提供简洁、一致的接口。在ethers中，Provider不接触用户私钥，只能读取链上信息，不能写入，这一点比web3.js要安全。
+除了之前介绍的默认提供者defaultProvider以外，ethers中最常用的是jsonRpcProvider，可以让用户连接到特定节点服务商的节点。
+jsonRpcProvider创建节点服务商的API Key首先，你需要去节点服务商的网站注册并创建API Key。在WTF Solidity极简教程的工具篇，我们介绍了Infura和Alchemy两家公司API Key的创建方法，大家可以参考。下图是Infura的例子
+
+利用Provider读取链上数据Provider类封装了一些方法，可以便捷的读取链上数据：
+1. 利用getBalance()函数读取主网和测试网V神的ETH余额
+2. 利用getNetwork()查询provide ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/19/37.Ethersjs/01.ethersjs%E7%AE%80%E4%BB%8B/" title="01.ethersjs简介"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.ethersjs简介"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/19/37.Ethersjs/01.ethersjs%E7%AE%80%E4%BB%8B/" title="01.ethersjs简介">01.ethersjs简介</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-19T08:32:22.042Z" title="发表于 2023-02-19 16:32:22">2023-02-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">ethersjs引用：1、2
+简介
+ethers.js是一个完整而紧凑的开源库，用于与以太坊区块链及其生态系统进行交互。如果你要写Dapp的前端，你就需要用到ethers.js。ethersjs是调用以太坊接口的一个组件，中间桥梁的作用
+
+通过发送请求：Front-End&#x3D;&gt;ethersjs&#x3D;&gt;Ethereum
+接收请求：Ethereum&#x3D;&gt;ethersjs&#x3D;&gt;Front-End
+
+
+包含三个组件
+
+Provider：A Provider (in ethers) is a class which provides an abstraction for a connection to the Ethereum Network. It provides read-only access to the Blockchain and its status.【读取链上数据】
+Signer：A Signer is a class which (usually) in some way directly or indirectly ha ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/19/37.Ethersjs/00.%E7%AE%80%E4%BB%8B/" title="00.简介"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.简介"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/19/37.Ethersjs/00.%E7%AE%80%E4%BB%8B/" title="00.简介">00.简介</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-19T08:21:59.880Z" title="发表于 2023-02-19 16:21:59">2023-02-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">简介教材：https://wtf.academy/ether-start/
+</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/#content-inner">29</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">284</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">38</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/06.Harhat%E7%B3%BB%E5%88%97/02.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" title="02.快速入门"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.快速入门"/></a><div class="content"><a class="title" href="/2023/02/22/06.Harhat%E7%B3%BB%E5%88%97/02.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" title="02.快速入门">02.快速入门</a><time datetime="2023-02-21T16:33:55.172Z" title="发表于 2023-02-22 00:33:55">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/37.Ethersjs/17.%20MerkleTree%E8%84%9A%E6%9C%AC/" title="17. MerkleTree脚本"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="17. MerkleTree脚本"/></a><div class="content"><a class="title" href="/2023/02/22/37.Ethersjs/17.%20MerkleTree%E8%84%9A%E6%9C%AC/" title="17. MerkleTree脚本">17. MerkleTree脚本</a><time datetime="2023-02-21T16:13:22.694Z" title="发表于 2023-02-22 00:13:22">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/21/37.Ethersjs/16.%E6%89%B9%E9%87%8F%E5%BD%92%E9%9B%86/" title="16.批量归集"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="16.批量归集"/></a><div class="content"><a class="title" href="/2023/02/21/37.Ethersjs/16.%E6%89%B9%E9%87%8F%E5%BD%92%E9%9B%86/" title="16.批量归集">16.批量归集</a><time datetime="2023-02-21T15:36:57.204Z" title="发表于 2023-02-21 23:36:57">2023-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/21/37.Ethersjs/15.%E6%89%B9%E9%87%8F%E8%BD%AC%E8%B4%A6/" title="15.批量转账"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="15.批量转账"/></a><div class="content"><a class="title" href="/2023/02/21/37.Ethersjs/15.%E6%89%B9%E9%87%8F%E8%BD%AC%E8%B4%A6/" title="15.批量转账">15.批量转账</a><time datetime="2023-02-21T15:04:31.697Z" title="发表于 2023-02-21 23:04:31">2023-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/" title="14. 批量生成钱包"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="14. 批量生成钱包"/></a><div class="content"><a class="title" href="/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/" title="14. 批量生成钱包">14. 批量生成钱包</a><time datetime="2023-02-21T13:50:35.735Z" title="发表于 2023-02-21 21:50:35">2023-02-21</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
             <i class="fas fa-folder-open"></i>
             <span>分类</span>
             <a class="card-more-btn" href="/categories/" title="查看更多">
     <i class="fas fa-angle-right"></i></a>
             </div>
             <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-EVM/"><span class="card-category-list-name">01.EVM</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/"><span class="card-category-list-name">01.以太坊</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/"><span class="card-category-list-name">02.solidity语法</span><span class="card-category-list-count">54</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">03.solidity进阶</span><span class="card-category-list-count">22</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/05-Openzeppelin%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">05.Openzeppelin系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/06-Hardhat%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">06.Hardhat系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/07-%E5%8A%A0%E5%AF%86%E5%83%B5%E5%B0%B8/"><span class="card-category-list-name">07.加密僵尸</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">08.扩展见闻&杂笔记</span><span class="card-category-list-count">4</span></a></li>
-            </ul></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">100</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">94</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">68</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">262</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-01-30T04:56:13.652Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-EVM/"><span class="card-category-list-name">01.EVM</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/"><span class="card-category-list-name">01.以太坊</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/"><span class="card-category-list-name">02.solidity语法</span><span class="card-category-list-count">54</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">03.solidity进阶</span><span class="card-category-list-count">22</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/05-Openzeppelin%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">05.Openzeppelin系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/06-Hardhat%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">06.Hardhat系列</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/07-%E5%8A%A0%E5%AF%86%E5%83%B5%E5%B0%B8/"><span class="card-category-list-name">07.加密僵尸</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">08.扩展见闻&杂笔记</span><span class="card-category-list-count">4</span></a></li>
+            </ul></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">22</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">100</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">94</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">68</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">284</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-02-21T17:02:03.509Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
