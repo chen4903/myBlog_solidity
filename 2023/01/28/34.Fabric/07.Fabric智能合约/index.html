@@ -1,147 +1,181 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>07.Fabric智能合约 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Fabric智能合约区块链应用 由若干部署在区块链网络中的智能合约，以及调用这些智能合约的应用程序 组成 用户专注于与业务本身相关的应用程序 智能合约则封装了与区块账本直接交互的相关过程，被应用程序调用     应用程序开发 应用程序通过调用智能合约提供的方法接口来实现业务逻辑 由于离用户侧更贴近，应用程序的开发更为灵活，可以采用已有的 主流开发语言进行开发，包括JavaScript、Python">
-<meta property="og:type" content="article">
-<meta property="og:title" content="07.Fabric智能合约">
-<meta property="og:url" content="http://example.com/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="Fabric智能合约区块链应用 由若干部署在区块链网络中的智能合约，以及调用这些智能合约的应用程序 组成 用户专注于与业务本身相关的应用程序 智能合约则封装了与区块账本直接交互的相关过程，被应用程序调用     应用程序开发 应用程序通过调用智能合约提供的方法接口来实现业务逻辑 由于离用户侧更贴近，应用程序的开发更为灵活，可以采用已有的 主流开发语言进行开发，包括JavaScript、Python">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
-<meta property="article:published_time" content="2023-01-28T12:54:08.614Z">
-<meta property="article:modified_time" content="2023-01-28T13:05:32.943Z">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '07.Fabric智能合约',
-  isPost: true,
-  isHome: false,
-  isHighlightShrink: false,
-  isToc: true,
-  postUpdate: '2023-01-28 21:05:32'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+      07.Fabric智能合约 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">07.Fabric智能合约</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2023-01-28 20:54:08
+        </span>
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
-    
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">07.Fabric智能合约</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-28T12:54:08.614Z" title="发表于 2023-01-28 20:54:08">2023-01-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-28T13:05:32.943Z" title="更新于 2023-01-28 21:05:32">2023-01-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/34-Fabric/">34.Fabric</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Fabric智能合约"><a href="#Fabric智能合约" class="headerlink" title="Fabric智能合约"></a>Fabric智能合约</h1><h2 id="区块链应用"><a href="#区块链应用" class="headerlink" title="区块链应用"></a>区块链应用</h2><ul>
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/34-Fabric/" title="34.Fabric">
+                    <b>#</b> 34.Fabric
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Fabric智能合约"><a href="#Fabric智能合约" class="headerlink" title="Fabric智能合约"></a>Fabric智能合约</h1><h2 id="区块链应用"><a href="#区块链应用" class="headerlink" title="区块链应用"></a>区块链应用</h2><ul>
 <li>由若干部署在区块链网络中的智能合约，以及调用这些智能合约的应用程序 组成<ul>
 <li>用户专注于与业务本身相关的应用程序</li>
 <li>智能合约则封装了与区块账本直接交互的相关过程，被应用程序调用</li>
@@ -176,13 +210,11 @@
 </li>
 </ul>
 <h2 id="系统链码"><a href="#系统链码" class="headerlink" title="系统链码"></a>系统链码</h2><ul>
-<li><p>配置系统链码(CSCC，Configuration System Chaincode）</p>
-<ul>
+<li>配置系统链码(CSCC，Configuration System Chaincode）<ul>
 <li>负责账本和链的配置管理</li>
 </ul>
 </li>
-<li><p>背书管理系统链码(ESCC，Endorsement System Chaincode）</p>
-<ul>
+<li>背书管理系统链码(ESCC，Endorsement System Chaincode）<ul>
 <li>负责背书过程, 并可以支持对背书策略进行管理</li>
 <li>对传入的链码提案的模拟运行结果进行签名, 之后创建响应消息返回给 客户端</li>
 </ul>
@@ -198,8 +230,7 @@
 <li>负责提供账本和链的信息查询功能</li>
 </ul>
 </li>
-<li><p>验证系统链码(VSCC， Verification System Chaincode）</p>
-<ul>
+<li>验证系统链码(VSCC， Verification System Chaincode）<ul>
 <li>交易提交前根据背书策略进行检查<ol>
 <li>首先解析出交易结构, 并对交易结构格式进行校验</li>
 <li>检查交易的读集合中元素版本跟本地账本中版本一致</li>
@@ -241,21 +272,19 @@
 <li>交互：自己定义的方法的调用</li>
 </ol>
 <h2 id="链码接口与结构"><a href="#链码接口与结构" class="headerlink" title="链码接口与结构"></a>链码接口与结构</h2><ul>
-<li>“github.com&#x2F;hyperledger&#x2F;fabric&#x2F;core&#x2F;chaincode&#x2F;shim”<ul>
+<li>“github.com/hyperledger/fabric/core/chaincode/shim”<ul>
 <li>shim包提供了链码与账本交互的中间层</li>
 <li>链码通过shim.ChaincodeStub提供的方法来读取和修改账本状态</li>
 </ul>
 </li>
-<li>“github.com&#x2F;hyperledger&#x2F;fabric&#x2F;protos&#x2F;peer”<ul>
+<li>“github.com/hyperledger/fabric/protos/peer”<ul>
 <li>peer.Response: 响应信息</li>
 </ul>
 </li>
 </ul>
 <h3 id="链码接口"><a href="#链码接口" class="headerlink" title="链码接口"></a>链码接口</h3><p>Init方法在链码部署或升级时被调用, 完成初始化工作。对数据进行操作时， Invoke方法被调用，因此响应调用或查询的业 务逻辑都需要在此方法中实现</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type Chaincode interface&#123;</span><br><span class="line">Init(stub ChaincodeStubInterface) peer.Response</span><br><span class="line">Invoke(stub ChaincodeStubInterface) peer.Response</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="链码结构"><a href="#链码结构" class="headerlink" title="链码结构"></a>链码结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">//引入必要的包</span><br><span class="line">import(</span><br><span class="line">&quot;fmt&quot;</span><br><span class="line">&quot;github.com/hyperledger/fabric/core/chaincode/shim&quot;</span><br><span class="line">&quot;github.com/hyperledger/fabric/protos/peer&quot;</span><br><span class="line">)</span><br><span class="line">//声明一个结构体</span><br><span class="line">type SimpleChaincode struct &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//为结构体添加Init方法</span><br><span class="line">func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) peer.Response&#123;</span><br><span class="line">//在该方法中实现链码初始化或升级时的处理逻辑</span><br><span class="line">//编写时可灵活使用stub中的API</span><br><span class="line">&#125;</span><br><span class="line">//为结构体添加Invoke方法</span><br><span class="line">func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) peer.Response&#123;</span><br><span class="line">//在该方法中实现链码运行中被调用或查询时的处理逻辑</span><br><span class="line">//编写时可灵活使用stub中的API</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//主函数，需要调用shim.Start（ ）方法</span><br><span class="line">func main() &#123;</span><br><span class="line">err := shim.Start(new(SimpleChaincode))</span><br><span class="line">if err != nil &#123;</span><br><span class="line">fmt.Printf(&quot;Error starting Simple chaincode: %s&quot;</span><br><span class="line">, err)</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <h3 id="链码API"><a href="#链码API" class="headerlink" title="链码API"></a>链码API</h3><h3 id="交易信息相关API"><a href="#交易信息相关API" class="headerlink" title="交易信息相关API"></a>交易信息相关API</h3><ul>
 <li>GetTxID() string： 返回交易提案中指定的交易ID </li>
 <li>GetTxTimestamp() (timestamp.Timestamp, error)： 返回交易创建的时间戳，这个时间戳是peer收到交易的当前时间</li>
@@ -277,10 +306,9 @@
 <li>实现Init和Invoke两个接口，通过stub.PutState和stub.GetState保存 和获取链值对数据</li>
 <li>Init(stub shim.ChaincodeStubInterface)：用于智能合约初始化及升级初始化,实现初始化时保存链值对；</li>
 <li>Invoke(stub shim.ChaincodeStubInterface) ：是节点（peer）调用链码的入口函数，实现对账本进行保存和获取链值对</li>
-<li>实现两个文件：chaincode.go。cmd&#x2F; main.go：主入口函数</li>
+<li>实现两个文件：chaincode.go。cmd/ main.go：主入口函数</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">&quot;fmt&quot;</span><br><span class="line">&quot;github.com/hyperledger/fabric/core/chaincode/shim&quot;</span><br><span class="line">&quot;github.com/hyperledger/fabric/helloworld/chaincode/go/helloworld&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">err := shim.Start(new(helloworld.SimpleChaincode))</span><br><span class="line">if err != nil &#123;</span><br><span class="line">fmt.Printf(&quot;Error starting Simple chaincode: %s&quot;</span><br><span class="line">, err)</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">package helloworld</span><br><span class="line">import (</span><br><span class="line">&quot;fmt&quot;</span><br><span class="line">&quot;github.com/hyperledger/fabric/core/chaincode/shim&quot;</span><br><span class="line">pb &quot;github.com/hyperledger/fabric/protos/peer&quot;</span><br><span class="line">)</span><br><span class="line">type SimpleChaincode struct &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <h3 id="Init方法"><a href="#Init方法" class="headerlink" title="Init方法"></a>Init方法</h3><ul>
 <li>获取参数并判断参数长度是否为2，参数: Key, Value</li>
 <li>调用PutState方法将状态写入账本中</li>
@@ -289,7 +317,6 @@
 <li>返回成功</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 链码实例化时，调用Init函数初始化数， 链码升级时，也会调用此函数重置或迁移数据</span><br><span class="line">func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response &#123;</span><br><span class="line">// 获取交易提案中的参数</span><br><span class="line">args := stub.GetStringArgs()</span><br><span class="line">if len(args) != 2 &#123;</span><br><span class="line">return shim.Error(&quot;Incorrect arguments. Expecting a key and a value&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 通过调用stub.PutState()设置变量和数值</span><br><span class="line">// 在账本上设置key和value</span><br><span class="line">err := stub.PutState(args[0], []byte(args[1]))</span><br><span class="line">if err != nil &#123;</span><br><span class="line">return shim.Error(fmt.Sprintf(&quot;Failed to create asset: %s&quot;</span><br><span class="line">, args[0]))</span><br><span class="line">&#125;</span><br><span class="line">return shim.Success(nil)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <h3 id="Invoke方法"><a href="#Invoke方法" class="headerlink" title="Invoke方法"></a>Invoke方法</h3><ul>
 <li><p>获取参数并判断长度是否为1</p>
 </li>
@@ -301,20 +328,390 @@
 </li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">// 调用Invoke函数进行资产交易， 每笔交易通过get或set操作Init函数创建的key和value</span><br><span class="line">// 通过set可以创建新的key和value</span><br><span class="line">func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response &#123;</span><br><span class="line">// 获取交易提案中的函数和参数</span><br><span class="line">fn, args := stub.GetFunctionAndParameters()</span><br><span class="line">var result string</span><br><span class="line">var err error</span><br><span class="line">if fn ==</span><br><span class="line">&quot;set&quot; &#123;</span><br><span class="line">result, err = set(stub, args)</span><br><span class="line">&#125; else &#123; // assume &#x27;get&#x27; even if fn is nil</span><br><span class="line">result, err = get(stub, args)</span><br><span class="line">&#125;</span><br><span class="line">if err != nil &#123;</span><br><span class="line">return shim.Error(err.Error())</span><br><span class="line">&#125;</span><br><span class="line">// Return the result as success payload</span><br><span class="line">return shim.Success([]byte(result))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 保存key和value到账本上</span><br><span class="line">// 如果key存在，覆盖原有的value</span><br><span class="line">func set(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">if len(args) != 2 &#123;</span><br><span class="line">return &quot;&quot;</span><br><span class="line">, fmt.Errorf(&quot;Incorrect arguments. Expecting a key and a</span><br><span class="line">value&quot;)</span><br><span class="line">&#125;</span><br><span class="line">err := stub.PutState(args[0], []byte(args[1]))</span><br><span class="line">if err != nil &#123;</span><br><span class="line">return &quot;&quot;</span><br><span class="line">, fmt.Errorf(&quot;Failed to set asset: %s&quot;</span><br><span class="line">, args[0])</span><br><span class="line">&#125;</span><br><span class="line">return args[1], nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 获取key对应的value</span><br><span class="line">func get(stub shim.ChaincodeStubInterface, args []string) (string, error) &#123;</span><br><span class="line">if len(args) != 1 &#123;</span><br><span class="line">return &quot;&quot;</span><br><span class="line">, fmt.Errorf(&quot;Incorrect arguments. Expecting a key&quot;)</span><br><span class="line">&#125;</span><br><span class="line">value, err := stub.GetState(args[0])</span><br><span class="line">if err != nil &#123;</span><br><span class="line">return &quot;&quot;</span><br><span class="line">, fmt.Errorf(&quot;Failed to get asset: %s with error: %s&quot;</span><br><span class="line">, args[0],</span><br><span class="line">err)</span><br><span class="line">&#125;</span><br><span class="line">if value == nil &#123;</span><br><span class="line">return &quot;&quot;</span><br><span class="line">, fmt.Errorf(&quot;Asset not found: %s&quot;</span><br><span class="line">, args[0])</span><br><span class="line">&#125;</span><br><span class="line">return string(value), ni</span><br></pre></td></tr></table></figure>
-
 <h3 id="构建并启动链码"><a href="#构建并启动链码" class="headerlink" title="构建并启动链码"></a>构建并启动链码</h3><ol>
 <li>打开一个新的终端B，进入 chaincode 容器：docker exec -it chaincode bash</li>
 <li>编译链码：cd hello，go build</li>
 <li>启动链码 <ol>
-<li>CORE_PEER_ADDRESS&#x3D;peer:7052</li>
-<li>CORE_CHAINCODE_ID_NAME&#x3D;hellocc:0 .&#x2F;hell</li>
+<li>CORE_PEER_ADDRESS=peer:7052</li>
+<li>CORE_CHAINCODE_ID_NAME=hellocc:0 ./hell</li>
 </ol>
 </li>
 </ol>
 <h3 id="测试链码"><a href="#测试链码" class="headerlink" title="测试链码"></a>测试链码</h3><ol>
 <li>打开终端C、进入cli容器：docker exec -it cli bash</li>
-<li>安装链码：peer chaincode install -p chaincodedev&#x2F;chaincode&#x2F;hello -n hellocc -v 0</li>
+<li>安装链码：peer chaincode install -p chaincodedev/chaincode/hello -n hellocc -v 0</li>
 <li>实例化：peer chaincode instantiate -n hellocc -v 0 -c ‘{“Args”:[“init” , “Hello” , “World”]}’ -C myc</li>
 <li>调用链码：peer chaincode query -n hellocc -c ‘{“Args”:[“query” , “Hello”]}’ -C myc 根据指定的key查询对应的状态数据，结果为：World</li>
 </ol>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/">http://example.com/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/28/34.Fabric/08.Fabric%E5%AF%B9%E6%AF%94%E4%BB%A5%E5%A4%AA%E5%9D%8A/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">08.Fabric对比以太坊</div></div></a></div><div class="next-post pull-right"><a href="/2023/01/28/34.Fabric/06.Fabric%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">06.Fabric共识机制</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6"><span class="toc-number">1.</span> <span class="toc-text">Fabric智能合约</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE%E5%BA%94%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">区块链应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91"><span class="toc-number">1.2.</span> <span class="toc-text">应用程序开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E5%BC%80%E5%8F%91"><span class="toc-number">1.3.</span> <span class="toc-text">智能合约开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.4.</span> <span class="toc-text">类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%93%BE%E7%A0%81"><span class="toc-number">1.5.</span> <span class="toc-text">系统链码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%80%A7"><span class="toc-number">1.6.</span> <span class="toc-text">特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.7.</span> <span class="toc-text">工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.8.</span> <span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E7%A0%81%E6%8E%A5%E5%8F%A3%E4%B8%8E%E7%BB%93%E6%9E%84"><span class="toc-number">1.9.</span> <span class="toc-text">链码接口与结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E7%A0%81%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.9.1.</span> <span class="toc-text">链码接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E7%A0%81%E7%BB%93%E6%9E%84"><span class="toc-number">1.9.2.</span> <span class="toc-text">链码结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E7%A0%81API"><span class="toc-number">1.9.3.</span> <span class="toc-text">链码API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E4%BF%A1%E6%81%AF%E7%9B%B8%E5%85%B3API"><span class="toc-number">1.9.4.</span> <span class="toc-text">交易信息相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86API"><span class="toc-number">1.9.5.</span> <span class="toc-text">事件处理API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0API"><span class="toc-number">1.9.6.</span> <span class="toc-text">参数API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HelloWorld%E9%93%BE%E7%A0%81"><span class="toc-number">1.10.</span> <span class="toc-text">HelloWorld链码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Init%E6%96%B9%E6%B3%95"><span class="toc-number">1.10.1.</span> <span class="toc-text">Init方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Invoke%E6%96%B9%E6%B3%95"><span class="toc-number">1.10.2.</span> <span class="toc-text">Invoke方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E5%B9%B6%E5%90%AF%E5%8A%A8%E9%93%BE%E7%A0%81"><span class="toc-number">1.10.3.</span> <span class="toc-text">构建并启动链码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E9%93%BE%E7%A0%81"><span class="toc-number">1.10.4.</span> <span class="toc-text">测试链码</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/01/28/34.Fabric/06.Fabric%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2023-01-28 20:54:08
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="分类"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/34-Fabric/" title="34.Fabric">
+                        <b>#</b> 34.Fabric
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/01/28/34.Fabric/08.Fabric%E5%AF%B9%E6%AF%94%E4%BB%A5%E5%A4%AA%E5%9D%8A/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6"><span class="toc-text">Fabric智能合约</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE%E5%BA%94%E7%94%A8"><span class="toc-text">区块链应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91"><span class="toc-text">应用程序开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E5%BC%80%E5%8F%91"><span class="toc-text">智能合约开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B"><span class="toc-text">类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%93%BE%E7%A0%81"><span class="toc-text">系统链码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%80%A7"><span class="toc-text">特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E7%A0%81%E6%8E%A5%E5%8F%A3%E4%B8%8E%E7%BB%93%E6%9E%84"><span class="toc-text">链码接口与结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E7%A0%81%E6%8E%A5%E5%8F%A3"><span class="toc-text">链码接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E7%A0%81%E7%BB%93%E6%9E%84"><span class="toc-text">链码结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E7%A0%81API"><span class="toc-text">链码API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E4%BF%A1%E6%81%AF%E7%9B%B8%E5%85%B3API"><span class="toc-text">交易信息相关API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86API"><span class="toc-text">事件处理API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0API"><span class="toc-text">参数API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HelloWorld%E9%93%BE%E7%A0%81"><span class="toc-text">HelloWorld链码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Init%E6%96%B9%E6%B3%95"><span class="toc-text">Init方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Invoke%E6%96%B9%E6%B3%95"><span class="toc-text">Invoke方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E5%B9%B6%E5%90%AF%E5%8A%A8%E9%93%BE%E7%A0%81"><span class="toc-text">构建并启动链码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E9%93%BE%E7%A0%81"><span class="toc-text">测试链码</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F01%2F28%2F34.Fabric%2F07.Fabric%25E6%2599%25BA%25E8%2583%25BD%25E5%2590%2588%25E7%25BA%25A6%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

@@ -1,154 +1,187 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>14. 批量生成钱包 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="批量生成钱包转载 这一讲，我们将介绍HD钱包，并写一个批量生成钱包的脚本。 HD钱包HD钱包（Hierarchical Deterministic Wallet，多层确定性钱包）是一种数字钱包 ，通常用于存储比特币和以太坊等加密货币持有者的数字密钥。通过它，用户可以从一个随机种子创建一系列密钥对，更加便利、安全、隐私。要理解HD钱包，我们需要简单了解比特币的BIP32，BIP44，和BIP39。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="14. 批量生成钱包">
-<meta property="og:url" content="http://example.com/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="批量生成钱包转载 这一讲，我们将介绍HD钱包，并写一个批量生成钱包的脚本。 HD钱包HD钱包（Hierarchical Deterministic Wallet，多层确定性钱包）是一种数字钱包 ，通常用于存储比特币和以太坊等加密货币持有者的数字密钥。通过它，用户可以从一个随机种子创建一系列密钥对，更加便利、安全、隐私。要理解HD钱包，我们需要简单了解比特币的BIP32，BIP44，和BIP39。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
-<meta property="article:published_time" content="2023-02-21T13:50:35.735Z">
-<meta property="article:modified_time" content="2023-02-21T17:10:35.588Z">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '14. 批量生成钱包',
-  isPost: true,
-  isHome: false,
-  isHighlightShrink: false,
-  isToc: true,
-  postUpdate: '2023-02-22 01:10:35'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+      14. 批量生成钱包 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">14. 批量生成钱包</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2023-02-21 21:50:35
+        </span>
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
-    
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">14. 批量生成钱包</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-21T13:50:35.735Z" title="发表于 2023-02-21 21:50:35">2023-02-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-21T17:10:35.588Z" title="更新于 2023-02-22 01:10:35">2023-02-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="批量生成钱包"><a href="#批量生成钱包" class="headerlink" title="批量生成钱包"></a>批量生成钱包</h1><p><a target="_blank" rel="noopener" href="https://wtf.academy/ether-start/HDwallet/">转载</a></p>
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/37-Ethersjs/" title="37.Ethersjs">
+                    <b>#</b> 37.Ethersjs
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="批量生成钱包"><a href="#批量生成钱包" class="headerlink" title="批量生成钱包"></a>批量生成钱包</h1><p><a target="_blank" rel="noopener" href="https://wtf.academy/ether-start/HDwallet/">转载</a></p>
 <p>这一讲，我们将介绍HD钱包，并写一个批量生成钱包的脚本。</p>
 <h2 id="HD钱包"><a href="#HD钱包" class="headerlink" title="HD钱包"></a>HD钱包</h2><p>HD钱包（Hierarchical Deterministic Wallet，多层确定性钱包）是一种数字钱包 ，通常用于存储比特币和以太坊等加密货币持有者的数字密钥。通过它，用户可以从一个随机种子创建一系列密钥对，更加便利、安全、隐私。要理解HD钱包，我们需要简单了解比特币的<a target="_blank" rel="noopener" href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP32</a>，<a target="_blank" rel="noopener" href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">BIP44</a>，和<a target="_blank" rel="noopener" href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP39</a>。</p>
 <h3 id="BIP32"><a href="#BIP32" class="headerlink" title="BIP32"></a>BIP32</h3><p>在<code>BIP32</code>推出之前，用户需要记录一堆的私钥才能管理很多钱包。<code>BIP32</code>提出可以用一个随机种子衍生多个私钥，更方便的管理多个钱包。钱包的地址由衍生路径决定，例如<code>“m/0/0/1”</code>。</p>
-<p><img src="https://moe.photo/images/2023/02/22/image-20230221215238620.png"></p>
-<h3 id="BIP44"><a href="#BIP44" class="headerlink" title="BIP44"></a>BIP44</h3><p><code>BIP44</code>为<code>BIP32</code>的衍生路径提供了一套通用规范，适配比特币、以太坊等多链。这一套规范包含六级，每级之间用”&#x2F;“分割：</p>
+<p><img src="https://moe.photo/images/2023/02/22/image-20230221215238620.png" alt></p>
+<h3 id="BIP44"><a href="#BIP44" class="headerlink" title="BIP44"></a>BIP44</h3><p><code>BIP44</code>为<code>BIP32</code>的衍生路径提供了一套通用规范，适配比特币、以太坊等多链。这一套规范包含六级，每级之间用”/“分割：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m / purpose&#x27; / coin_type&#x27; / account&#x27; / change / address_index</span><br></pre></td></tr></table></figure>
-
 <p>其中：</p>
 <ul>
 <li>m: 固定为”m”</li>
@@ -161,7 +194,6 @@
 <p>举个例子，以太坊的默认衍生路径为<code>&quot;m/44&#39;/60&#39;/0&#39;/0/0&quot;</code>。</p>
 <h3 id="BIP39"><a href="#BIP39" class="headerlink" title="BIP39"></a>BIP39</h3><p><code>BIP39</code>让用户能以一些人类可记忆的助记词的方式保管私钥，而不是一串16进制的数字：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//私钥</span><br><span class="line">0x813f8f0a4df26f6455814fdd07dd2ab2d0e2d13f4d2f3c66e7fd9e3856060f89</span><br><span class="line">//助记词</span><br><span class="line">air organ twist rule prison symptom jazz cheap rather dizzy verb glare jeans orbit weapon universe require tired sing casino business anxiety seminar hunt</span><br></pre></td></tr></table></figure>
-
 <h2 id="HD钱包生成钱包地址"><a href="#HD钱包生成钱包地址" class="headerlink" title="HD钱包生成钱包地址"></a>HD钱包生成钱包地址</h2><ul>
 <li>有种钱包叫冷钱包，离线（断网)创建私钥，生成助记词。只用来屯币</li>
 <li>只要是evm兼容链都是用同一套算法 同一个助记词在不同链的地址完全相同</li>
@@ -170,18 +202,384 @@
 <h2 id="批量生成钱包-1"><a href="#批量生成钱包-1" class="headerlink" title="批量生成钱包"></a>批量生成钱包</h2><p><code>ethers.js</code>提供了<a target="_blank" rel="noopener" href="https://docs.ethers.io/v5/api/utils/hdnode/">HDNode类</a>，方便开发者使用HD钱包。下面我们利用它从一个助记词批量生成20个钱包。</p>
 <p>1.创建<code>HDNode</code>钱包变量，可以看到助记词为<code>&#39;air organ twist rule prison symptom jazz cheap rather dizzy verb glare jeans orbit weapon universe require tired sing casino business anxiety seminar hunt&#39;</code></p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;ethers&#125; = <span class="built_in">require</span>(<span class="string">&quot;ethers&quot;</span>)</span><br><span class="line"><span class="keyword">const</span> &#123;utils&#125; = <span class="built_in">require</span>(<span class="string">&quot;ethers&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生成随机助记词</span></span><br><span class="line"><span class="keyword">const</span> mnemonic = utils.<span class="title function_">entropyToMnemonic</span>(utils.<span class="title function_">randomBytes</span>(<span class="number">32</span>))</span><br><span class="line"><span class="comment">// 创建HD钱包</span></span><br><span class="line"><span class="keyword">const</span> hdNode = ethers.<span class="property">utils</span>.<span class="property">HDNode</span>.<span class="title function_">fromMnemonic</span>(mnemonic)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(hdNode);</span><br></pre></td></tr></table></figure>
-
 <p>2.通过HD钱包派生20个钱包。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> numWallet = <span class="number">20</span></span><br><span class="line"><span class="comment">// 派生路径：m / purpose&#x27; / coin_type&#x27; / account&#x27; / change / address_index</span></span><br><span class="line"><span class="comment">// 我们只需要切换最后一位address_index，就可以从hdNode派生出新钱包</span></span><br><span class="line"><span class="keyword">let</span> basePath = <span class="string">&quot;m/44&#x27;/60&#x27;/0&#x27;/0&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> wallets = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; numWallet; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> hdNodeNew = hdNode.<span class="title function_">derivePath</span>(basePath + <span class="string">&quot;/&quot;</span> + i);</span><br><span class="line">    <span class="keyword">let</span> walletNew = <span class="keyword">new</span> ethers.<span class="title class_">Wallet</span>(hdNodeNew.<span class="property">privateKey</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`第<span class="subst">$&#123;i+<span class="number">1</span>&#125;</span>个钱包地址： <span class="subst">$&#123;walletNew.address&#125;</span>`</span>)</span><br><span class="line">    wallets.<span class="title function_">push</span>(walletNew);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>3.保存钱包为加密json：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> wallet = ethers.<span class="property">Wallet</span>.<span class="title function_">fromMnemonic</span>(mnemonic)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;通过助记词创建钱包：&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(wallet)</span><br><span class="line"><span class="comment">// 加密json用的密码，可以更改成别的</span></span><br><span class="line"><span class="keyword">const</span> pwd = <span class="string">&quot;password&quot;</span></span><br><span class="line"><span class="keyword">const</span> json = <span class="keyword">await</span> wallet.<span class="title function_">encrypt</span>(pwd)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;钱包的加密json：&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(json)</span><br></pre></td></tr></table></figure>
-
 <p>4.从加密json中读取钱包：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> wallet2 = <span class="keyword">await</span> ethers.<span class="property">Wallet</span>.<span class="title function_">fromEncryptedJson</span>(json, pwd);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n4. 从加密json读取钱包：&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(wallet2)</span><br></pre></td></tr></table></figure>
-
 <p>5.输出</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">HDNode &#123;</span><br><span class="line">  privateKey: &#x27;0xec50109f30d8735bb2d5aba8932496c00beea4dd7a26b9df6ef5ea33f1b15e94&#x27;,</span><br><span class="line">  publicKey: &#x27;0x02541de881cc8f71b5c724770575d82d8dbc7fec81eb6465af337b39b3c727fbbe&#x27;,</span><br><span class="line">  parentFingerprint: &#x27;0x00000000&#x27;,</span><br><span class="line">  fingerprint: &#x27;0xe151bbc6&#x27;,</span><br><span class="line">  address: &#x27;0x6d3dE93c8e953ed707F1bAC57Cc054582e610e91&#x27;,</span><br><span class="line">  chainCode: &#x27;0x23ddc0bcc1c0d490e44d32e5e4357f0c2f7dd6049b99a4c575c7ff23c80d93f2&#x27;,</span><br><span class="line">  index: 0,</span><br><span class="line">  depth: 0,</span><br><span class="line">  mnemonic: &#123;</span><br><span class="line">    phrase: &#x27;blind umbrella jazz online joke shuffle switch chuckle audit notice reject tobacco toward rose fit fly trust wire remind toilet model save check twin&#x27;,</span><br><span class="line">    path: &#x27;m&#x27;,</span><br><span class="line">    locale: &#x27;en&#x27;</span><br><span class="line">  &#125;,</span><br><span class="line">  path: &#x27;m&#x27;</span><br><span class="line">&#125;</span><br><span class="line">第1个钱包地址： 0x392239fa9dc461B268d81dfbfB7DCd0dB847632f</span><br><span class="line">第2个钱包地址： 0xe198dC05EF82678f5a5Ff7BAb9636e6eA3581b2D</span><br><span class="line">第3个钱包地址： 0x0cf82f9F294F4C15244F9ec92Dd12b0983150f5d</span><br><span class="line">第4个钱包地址： 0xf3B1c6e343Cd5662080163BDF7976B34CD995f4D</span><br><span class="line">第5个钱包地址： 0x07966b8d5d12f4D9aBB9accaA6E581f0248DC8C1</span><br><span class="line">第6个钱包地址： 0xe8f3D0867351900d09C3D2a8a28EF13261Ee0022</span><br><span class="line">第7个钱包地址： 0xeeAcA4F890f60Fc15982B4741C9360CE9596e636</span><br><span class="line">第8个钱包地址： 0x53228A97773953a63Af15fa2FA7F43A6F860A61c</span><br><span class="line">第9个钱包地址： 0x82F1504C1EA1E19D6c56eAE6a5669f11A361cc30</span><br><span class="line">第10个钱包地址： 0x3Af8f06D5Dc36a2aafa8B177319CC377374Fd5aA</span><br><span class="line">第11个钱包地址： 0x376aFf982FEBCF8706C0CFba8A2f4EA470DE637E</span><br><span class="line">第12个钱包地址： 0xAe387aEb4d8F333d58f6246bb841Fc9c1450f009</span><br><span class="line">第13个钱包地址： 0xBd549995C1597eD432FD63aC803C9D6338455938</span><br><span class="line">第14个钱包地址： 0xe12fB98df91f76C294749a2E1678545f76E4Be79</span><br><span class="line">第15个钱包地址： 0xf9A769592eA977BcbA3149AC25c5C0Affc0b5eda</span><br><span class="line">第16个钱包地址： 0x48D41058F7B52c74a8e11eF73E43b3758C92d849</span><br><span class="line">第17个钱包地址： 0x6C261F71614Cf47a9f7F719c42F0ADCF8b6DCD23</span><br><span class="line">第18个钱包地址： 0xbC15AA366D9Aeb71725fE0E97C0A05d9f45743B1</span><br><span class="line">第19个钱包地址： 0xfaa37e769d66bcFe6069054B6aae6076d34E7F00</span><br><span class="line">第20个钱包地址： 0xf1923664d011709dFCd1b4106a3EE6E6c9Ab2f1b</span><br><span class="line">通过助记词创建钱包：</span><br><span class="line">Wallet &#123;</span><br><span class="line">&quot;kdf&quot;:&quot;scrypt&quot;,&quot;kdfparams&quot;:&#123;&quot;salt&quot;:&quot;99b45cdb662b267891e60c253c55be8b091783b5299d398982bcb9e32e9e4d23&quot;,&quot;n&quot;:131072,&quot;dklen&quot;:32,&quot;p&quot;:1,&quot;r&quot;:8&#125;,&quot;ma4-48.0Z--392239fa9dc461b268d81dfbfb7dcd0db847632f&quot;,&quot;mnemonicCounter&quot;:&quot;428024820000db5e8830df602ccb92ad&quot;,&quot;mnemonicCiphertext&quot;:&quot;e7a94c6de113031bc0499bd88304264d8c62e3f5dc8e170a114a88c952a73634&quot;,&quot;path&quot;:&quot;m/44&#x27;/60&#x27;/0&#x27;/0/0&quot;,&quot;locale&quot;:&quot;en&quot;,&quot;version&quot;:&quot;0.1&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这一讲我们介绍了HD钱包（BIP32，BIP44，BIP39），并利用它在<code>ethers.js</code>批量生成了20个钱包。</p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/">http://example.com/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/02/21/37.Ethersjs/15.%E6%89%B9%E9%87%8F%E8%BD%AC%E8%B4%A6/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">15.批量转账</div></div></a></div><div class="next-post pull-right"><a href="/2023/02/21/37.Ethersjs/13.%E7%BC%96%E7%A0%81calldata/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">13.编码calldata</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85"><span class="toc-number">1.</span> <span class="toc-text">批量生成钱包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HD%E9%92%B1%E5%8C%85"><span class="toc-number">1.1.</span> <span class="toc-text">HD钱包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BIP32"><span class="toc-number">1.1.1.</span> <span class="toc-text">BIP32</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BIP44"><span class="toc-number">1.1.2.</span> <span class="toc-text">BIP44</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BIP39"><span class="toc-number">1.1.3.</span> <span class="toc-text">BIP39</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HD%E9%92%B1%E5%8C%85%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85%E5%9C%B0%E5%9D%80"><span class="toc-number">1.2.</span> <span class="toc-text">HD钱包生成钱包地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85-1"><span class="toc-number">1.3.</span> <span class="toc-text">批量生成钱包</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/02/21/37.Ethersjs/13.%E7%BC%96%E7%A0%81calldata/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2023-02-21 21:50:35
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="分类"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/37-Ethersjs/" title="37.Ethersjs">
+                        <b>#</b> 37.Ethersjs
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/02/21/37.Ethersjs/15.%E6%89%B9%E9%87%8F%E8%BD%AC%E8%B4%A6/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85"><span class="toc-text">批量生成钱包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HD%E9%92%B1%E5%8C%85"><span class="toc-text">HD钱包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BIP32"><span class="toc-text">BIP32</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BIP44"><span class="toc-text">BIP44</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BIP39"><span class="toc-text">BIP39</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HD%E9%92%B1%E5%8C%85%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85%E5%9C%B0%E5%9D%80"><span class="toc-text">HD钱包生成钱包地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85-1"><span class="toc-text">批量生成钱包</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F02%2F21%2F37.Ethersjs%2F14.%2520%25E6%2589%25B9%25E9%2587%258F%25E7%2594%259F%25E6%2588%2590%25E9%2592%25B1%25E5%258C%2585%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

@@ -1,147 +1,181 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>03.Inline Assembly in doc | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Inline Assembly in docdigestYou can interleave Solidity statements with inline assembly in a language close to the one of the Ethereum Virtual Machine. This gives you more fine-grained control, which">
-<meta property="og:type" content="article">
-<meta property="og:title" content="03.Inline Assembly in doc">
-<meta property="og:url" content="http://example.com/2023/01/09/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/03.Inline%20Assembly%20in%20doc/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="Inline Assembly in docdigestYou can interleave Solidity statements with inline assembly in a language close to the one of the Ethereum Virtual Machine. This gives you more fine-grained control, which">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
-<meta property="article:published_time" content="2023-01-09T08:30:28.747Z">
-<meta property="article:modified_time" content="2023-01-09T09:25:01.200Z">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/01/09/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/03.Inline%20Assembly%20in%20doc/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '03.Inline Assembly in doc',
-  isPost: true,
-  isHome: false,
-  isHighlightShrink: false,
-  isToc: true,
-  postUpdate: '2023-01-09 17:25:01'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+      03.Inline Assembly in doc 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">03.Inline Assembly in doc</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2023-01-09 16:30:28
+        </span>
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
-    
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">03.Inline Assembly in doc</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-09T08:30:28.747Z" title="发表于 2023-01-09 16:30:28">2023-01-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-09T09:25:01.200Z" title="更新于 2023-01-09 17:25:01">2023-01-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/14-%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/">14.内联汇编</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Inline-Assembly-in-doc"><a href="#Inline-Assembly-in-doc" class="headerlink" title="Inline Assembly in doc"></a>Inline Assembly in doc</h1><h2 id="digest"><a href="#digest" class="headerlink" title="digest"></a>digest</h2><p>You can interleave Solidity statements with inline assembly in a language close to the one of the Ethereum Virtual Machine. This gives you more fine-grained control, which is especially useful when you are enhancing the language by writing libraries.</p>
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/14-%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="14.内联汇编">
+                    <b>#</b> 14.内联汇编
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Inline-Assembly-in-doc"><a href="#Inline-Assembly-in-doc" class="headerlink" title="Inline Assembly in doc"></a>Inline Assembly in doc</h1><h2 id="digest"><a href="#digest" class="headerlink" title="digest"></a>digest</h2><p>You can interleave Solidity statements with inline assembly in a language close to the one of the Ethereum Virtual Machine. This gives you more fine-grained control, which is especially useful when you are enhancing the language by writing libraries.</p>
 <p>The language used for inline assembly in Solidity is called <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/yul.html#yul">Yul</a> and it is documented in its own section. This section will only cover how the inline assembly code can interface with the surrounding Solidity code.</p>
 <blockquote>
 <p>Warning</p>
@@ -152,23 +186,19 @@
 <p>Different inline assembly blocks share no namespace, i.e. it is not possible to call a Yul function or access a Yul variable defined in a different inline assembly block.</p>
 <h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p>The following example provides library code to access the code of another contract and load it into a <code>bytes</code> variable. This is possible with “plain Solidity” too, by using <code>&lt;address&gt;.code</code>. But the point here is that reusable assembly libraries can enhance the Solidity language without a compiler change.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.4.16 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">library GetCode &#123;</span><br><span class="line">    function at(address addr) public view returns (bytes memory code) &#123;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            // retrieve the size of the code, this needs assembly</span><br><span class="line">            let size := extcodesize(addr)</span><br><span class="line">            // allocate output byte array - this could also be done without assembly</span><br><span class="line">            // by using code = new bytes(size)</span><br><span class="line">            code := mload(0x40)</span><br><span class="line">            // new &quot;memory end&quot; including padding</span><br><span class="line">            mstore(0x40, add(code, and(add(add(size, 0x20), 0x1f), not(0x1f))))</span><br><span class="line">            // store length in memory</span><br><span class="line">            mstore(code, size)</span><br><span class="line">            // actually retrieve the code, this needs assembly</span><br><span class="line">            extcodecopy(addr, add(code, 0x20), 0, size)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>Inline assembly is also beneficial in cases where the optimizer fails to produce efficient code, for example:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.4.16 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">library VectorSum &#123;</span><br><span class="line">    // This function is less efficient because the optimizer currently fails to</span><br><span class="line">    // remove the bounds checks in array access.</span><br><span class="line">    function sumSolidity(uint[] memory data) public pure returns (uint sum) &#123;</span><br><span class="line">        for (uint i = 0; i &lt; data.length; ++i)</span><br><span class="line">            sum += data[i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // We know that we only access the array in bounds, so we can avoid the check.</span><br><span class="line">    // 0x20 needs to be added to an array because the first slot contains the</span><br><span class="line">    // array length.</span><br><span class="line">    function sumAsm(uint[] memory data) public pure returns (uint sum) &#123;</span><br><span class="line">        for (uint i = 0; i &lt; data.length; ++i) &#123;</span><br><span class="line">            assembly &#123;</span><br><span class="line">                sum := add(sum, mload(add(add(data, 0x20), mul(i, 0x20))))</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Same as above, but accomplish the entire code within inline assembly.</span><br><span class="line">    function sumPureAsm(uint[] memory data) public pure returns (uint sum) &#123;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            // Load the length (first 32 bytes)</span><br><span class="line">            let len := mload(data)</span><br><span class="line"></span><br><span class="line">            // Skip over the length field.</span><br><span class="line">            //</span><br><span class="line">            // Keep temporary variable so it can be incremented in place.</span><br><span class="line">            //</span><br><span class="line">            // NOTE: incrementing data would result in an unusable</span><br><span class="line">            //       data variable after this assembly block</span><br><span class="line">            let dataElementLocation := add(data, 0x20)</span><br><span class="line"></span><br><span class="line">            // Iterate until the bound is not met.</span><br><span class="line">            for</span><br><span class="line">                &#123; let end := add(dataElementLocation, mul(len, 0x20)) &#125;</span><br><span class="line">                lt(dataElementLocation, end)</span><br><span class="line">                &#123; dataElementLocation := add(dataElementLocation, 0x20) &#125;</span><br><span class="line">            &#123;</span><br><span class="line">                sum := add(sum, mload(dataElementLocation))</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="Access-to-External-Variables-Functions-and-Libraries"><a href="#Access-to-External-Variables-Functions-and-Libraries" class="headerlink" title="Access to External Variables, Functions and Libraries"></a>Access to External Variables, Functions and Libraries</h2><p>You can access Solidity variables and other identifiers by using their name.</p>
 <p>Local variables of value type are directly usable in inline assembly. They can both be read and assigned to.</p>
 <p>Local variables that refer to memory evaluate to the address of the variable in memory, not the value itself. Such variables can also be assigned to, but note that an assignment will only change the pointer and not the data and that it is your responsibility to respect Solidity’s memory management. See <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/assembly.html#conventions-in-solidity">Conventions in Solidity</a>.</p>
 <p>Similarly, local variables that refer to statically-sized calldata arrays or calldata structs evaluate to the address of the variable in calldata, not the value itself. The variable can also be assigned a new offset, but note that no validation is performed to ensure that the variable will not point beyond <code>calldatasize()</code>.</p>
 <p>For external function pointers the address and the function selector can be accessed using <code>x.address</code> and <code>x.selector</code>. The selector consists of four right-aligned bytes. Both values can be assigned to. For example:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.8.10 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract C &#123;</span><br><span class="line">    // Assigns a new selector and address to the return variable @fun</span><br><span class="line">    function combineToFunctionPointer(address newAddress, uint newSelector) public pure returns (function() external fun) &#123;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            fun.selector := newSelector</span><br><span class="line">            fun.address  := newAddress</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>For dynamic calldata arrays, you can access their calldata offset (in bytes) and length (number of elements) using <code>x.offset</code> and <code>x.length</code>. Both expressions can also be assigned to, but as for the static case, no validation will be performed to ensure that the resulting data area is within the bounds of <code>calldatasize()</code>.</p>
 <p>For local storage variables or state variables, a single Yul identifier is not sufficient, since they do not necessarily occupy a single full storage slot. Therefore, their “address” is composed of a slot and a byte-offset inside that slot. To retrieve the slot pointed to by the variable <code>x</code>, you use <code>x.slot</code>, and to retrieve the byte-offset you use <code>x.offset</code>. Using <code>x</code> itself will result in an error.</p>
 <p>You can also assign to the <code>.slot</code> part of a local storage variable pointer. For these (structs, arrays or mappings), the <code>.offset</code> part is always zero. It is not possible to assign to the <code>.slot</code> or <code>.offset</code> part of a state variable, though.</p>
 <p>Local Solidity variables are available for assignments, for example:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.7.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract C &#123;</span><br><span class="line">    uint b;</span><br><span class="line">    function f(uint x) public view returns (uint r) &#123;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            // We ignore the storage slot offset, we know it is zero</span><br><span class="line">            // in this special case.</span><br><span class="line">            r := mul(x, sload(b.slot))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>Warning</p>
 <p>If you access variables of a type that spans less than 256 bits (for example <code>uint64</code>, <code>address</code>, or <code>bytes16</code>), you cannot make any assumptions about bits not part of the encoding of the type. Especially, do not assume them to be zero. To be safe, always clear the data properly before you use it in a context where this is important: <code>uint32 x = f(); assembly &#123; x := and(x, 0xffffffff) /* now use x */ &#125;</code> To clean signed types, you can use the <code>signextend</code> opcode: <code>assembly &#123; signextend(&lt;num_bytes_of_x_minus_one&gt;, x) &#125;</code></p>
 <p>Since Solidity 0.6.0, the name of a inline assembly variable may not shadow any declaration visible in the scope of the inline assembly block (including variable, contract and function declarations).</p>
@@ -177,7 +207,6 @@
 <h2 id="Conventions-in-Solidity"><a href="#Conventions-in-Solidity" class="headerlink" title="Conventions in Solidity"></a>Conventions in Solidity</h2><h3 id="Values-of-Typed-Variables"><a href="#Values-of-Typed-Variables" class="headerlink" title="Values of Typed Variables"></a>Values of Typed Variables</h3><p>In contrast to EVM assembly, Solidity has types which are narrower than 256 bits, e.g. <code>uint24</code>. For efficiency, most arithmetic operations ignore the fact that types can be shorter than 256 bits, and the higher-order bits are cleaned when necessary, i.e., shortly before they are written to memory or before comparisons are performed. This means that if you access such a variable from within inline assembly, you might have to manually clean the higher-order bits first.</p>
 <h3 id="Memory-Management"><a href="#Memory-Management" class="headerlink" title="Memory Management"></a>Memory Management</h3><p>Solidity manages memory in the following way. There is a “free memory pointer” at position <code>0x40</code> in memory. If you want to allocate memory, use the memory starting from where this pointer points at and update it. There is no guarantee that the memory has not been used before and thus you cannot assume that its contents are zero bytes. There is no built-in mechanism to release or free allocated memory. Here is an assembly snippet you can use for allocating memory that follows the process outlined above:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function allocate(length) -&gt; pos &#123;</span><br><span class="line">  pos := mload(0x40)</span><br><span class="line">  mstore(0x40, add(pos, length))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>The first 64 bytes of memory can be used as “scratch space” for short-term allocation. The 32 bytes after the free memory pointer (i.e., starting at <code>0x60</code>) are meant to be zero permanently and is used as the initial value for empty dynamic memory arrays. This means that the allocatable memory starts at <code>0x80</code>, which is the initial value of the free memory pointer.</p>
 <p>Elements in memory arrays in Solidity always occupy multiples of 32 bytes (this is even true for <code>bytes1[]</code>, but not for <code>bytes</code> and <code>string</code>). Multi-dimensional memory arrays are pointers to memory arrays. The length of a dynamic array is stored at the first slot of the array and followed by the array elements.</p>
 <blockquote>
@@ -188,7 +217,6 @@
 <p>While we recommend to always respect Solidity’s memory model, inline assembly allows you to use memory in an incompatible way. Therefore, moving stack variables to memory and additional memory optimizations are, by default, globally disabled in the presence of any inline assembly block that contains a memory operation or assigns to Solidity variables in memory.</p>
 <p>However, you can specifically annotate an assembly block to indicate that it in fact respects Solidity’s memory model as follows:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assembly (&quot;memory-safe&quot;) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>In particular, a memory-safe assembly block may only access the following memory ranges:</p>
 <ul>
 <li>Memory allocated by yourself using a mechanism like the <code>allocate</code> function described above.</li>
@@ -199,17 +227,13 @@
 <p>Furthermore, if the assembly block assigns to Solidity variables in memory, you need to assure that accesses to the Solidity variables only access these memory ranges.</p>
 <p>Since this is mainly about the optimizer, these restrictions still need to be followed, even if the assembly block reverts or terminates. As an example, the following assembly snippet is not memory safe, because the value of <code>returndatasize()</code> may exceed the 64 byte scratch space:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">assembly &#123;</span><br><span class="line">  returndatacopy(0, 0, returndatasize())</span><br><span class="line">  revert(0, returndatasize())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>On the other hand, the following code <em>is</em> memory safe, because memory beyond the location pointed to by the free memory pointer can safely be used as temporary scratch space:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">assembly (&quot;memory-safe&quot;) &#123;</span><br><span class="line">  let p := mload(0x40)</span><br><span class="line">  returndatacopy(p, 0, returndatasize())</span><br><span class="line">  revert(p, returndatasize())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>Note that you do not need to update the free memory pointer if there is no following allocation, but you can only use memory starting from the current offset given by the free memory pointer.</p>
 <p>If the memory operations use a length of zero, it is also fine to just use any offset (not only if it falls into the scratch space):</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assembly (&quot;memory-safe&quot;) &#123;</span><br><span class="line">  revert(0, 0)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>Note that not only memory operations in inline assembly itself can be memory-unsafe, but also assignments to Solidity variables of reference type in memory. For example the following is not memory-safe:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bytes memory x;</span><br><span class="line">assembly &#123;</span><br><span class="line">  x := 0x40</span><br><span class="line">&#125;</span><br><span class="line">x[0x20] = 0x42;</span><br></pre></td></tr></table></figure>
-
 <p>Inline assembly that neither involves any operations that access memory nor assigns to any Solidity variables in memory is automatically considered memory-safe and does not need to be annotated.</p>
 <blockquote>
 <p>Warning</p>
@@ -217,6 +241,376 @@
 </blockquote>
 <p>In case you are developing a library that is meant to be compatible across multiple versions of Solidity, you can use a special comment to annotate an assembly block as memory-safe:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/// @solidity memory-safe-assembly</span><br><span class="line">assembly &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with backwards-compatibility with older compiler versions, prefer using the dialect string.</p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/01/09/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/03.Inline%20Assembly%20in%20doc/">http://example.com/2023/01/09/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/03.Inline%20Assembly%20in%20doc/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/09/03.solidity%E8%BF%9B%E9%98%B6/14.JSON%20Output%20of%20State%20Variables%20/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">14.JSON Output of State Variables</div></div></a></div><div class="next-post pull-right"><a href="/2023/01/09/02.solidity%E8%AF%AD%E6%B3%95/53.Overriding/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">53.Overriding</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Inline-Assembly-in-doc"><span class="toc-number">1.</span> <span class="toc-text">Inline Assembly in doc</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#digest"><span class="toc-number">1.1.</span> <span class="toc-text">digest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#example"><span class="toc-number">1.2.</span> <span class="toc-text">example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Access-to-External-Variables-Functions-and-Libraries"><span class="toc-number">1.3.</span> <span class="toc-text">Access to External Variables, Functions and Libraries</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Things-to-Avoid"><span class="toc-number">1.4.</span> <span class="toc-text">Things to Avoid</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conventions-in-Solidity"><span class="toc-number">1.5.</span> <span class="toc-text">Conventions in Solidity</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Values-of-Typed-Variables"><span class="toc-number">1.5.1.</span> <span class="toc-text">Values of Typed Variables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Memory-Management"><span class="toc-number">1.5.2.</span> <span class="toc-text">Memory Management</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Memory-Safety"><span class="toc-number">1.5.3.</span> <span class="toc-text">Memory Safety</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/01/09/02.solidity%E8%AF%AD%E6%B3%95/53.Overriding/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2023-01-09 16:30:28
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="分类"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/14-%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="14.内联汇编">
+                        <b>#</b> 14.内联汇编
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/01/09/03.solidity%E8%BF%9B%E9%98%B6/14.JSON%20Output%20of%20State%20Variables%20/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Inline-Assembly-in-doc"><span class="toc-text">Inline Assembly in doc</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#digest"><span class="toc-text">digest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#example"><span class="toc-text">example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Access-to-External-Variables-Functions-and-Libraries"><span class="toc-text">Access to External Variables, Functions and Libraries</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Things-to-Avoid"><span class="toc-text">Things to Avoid</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conventions-in-Solidity"><span class="toc-text">Conventions in Solidity</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Values-of-Typed-Variables"><span class="toc-text">Values of Typed Variables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Memory-Management"><span class="toc-text">Memory Management</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Memory-Safety"><span class="toc-text">Memory Safety</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 03.Inline%20Assembly%20in%20doc + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F01%2F09%2F14.%25E5%2586%2585%25E8%2581%2594%25E6%25B1%2587%25E7%25BC%2596%2F03.Inline%2520Assembly%2520in%2520doc%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/01/09/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/03.Inline%20Assembly%20in%20doc/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

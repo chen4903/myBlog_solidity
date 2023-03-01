@@ -1,154 +1,188 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>16.signature and vrs | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="signature and vrsA core primitive of Ethereum and other cryptocurrencies is the ability to sign data that can be verified by anyone. This powers the distributed nature of blockchain. In Bitcoin you si">
-<meta property="og:type" content="article">
-<meta property="og:title" content="16.signature and vrs">
-<meta property="og:url" content="http://example.com/2023/01/11/03.solidity%E8%BF%9B%E9%98%B6/16.signature%20and%20vrs/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="signature and vrsA core primitive of Ethereum and other cryptocurrencies is the ability to sign data that can be verified by anyone. This powers the distributed nature of blockchain. In Bitcoin you si">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
-<meta property="article:published_time" content="2023-01-11T05:00:18.001Z">
-<meta property="article:modified_time" content="2023-01-11T12:40:39.153Z">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2023/01/11/03.solidity%E8%BF%9B%E9%98%B6/16.signature%20and%20vrs/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '16.signature and vrs',
-  isPost: true,
-  isHome: false,
-  isHighlightShrink: false,
-  isToc: true,
-  postUpdate: '2023-01-11 20:40:39'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+      16.signature and vrs 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">16.signature and vrs</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2023-01-11 13:00:18
+        </span>
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
-    
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">16.signature and vrs</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-11T05:00:18.001Z" title="发表于 2023-01-11 13:00:18">2023-01-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-01-11T12:40:39.153Z" title="更新于 2023-01-11 20:40:39">2023-01-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/">03.solidity进阶</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="signature-and-vrs"><a href="#signature-and-vrs" class="headerlink" title="signature and vrs"></a>signature and vrs</h1><p>A core primitive of Ethereum and other cryptocurrencies is the ability to sign data that can be verified by anyone. This powers the distributed nature of blockchain. In Bitcoin you sign a transaction saying you want to give Sally 4 bitcoin. Without this property, anyone could make fake transactions giving themselves all coins.</p>
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                    <b>#</b> 03.solidity进阶
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="signature-and-vrs"><a href="#signature-and-vrs" class="headerlink" title="signature and vrs"></a>signature and vrs</h1><p>A core primitive of Ethereum and other cryptocurrencies is the ability to sign data that can be verified by anyone. This powers the distributed nature of blockchain. In Bitcoin you sign a transaction saying you want to give Sally 4 bitcoin. Without this property, anyone could make fake transactions giving themselves all coins.</p>
 <p>An Ethereum transaction needs to be included in a block and mined before it is processed and saved on the blockchain. As a result, on-chain transactions takes time and costs gas to compensate miners for their work.</p>
 <p>In contrast, off-chain computation lets you perform actions instantly without waiting for transactions to be mined and does not cost any gas.</p>
 <p>In this article, let’s look at how you can perform off-chain computation using Ethereum signatures. Cryptographic signatures can be used to validate the origin and integrity of messages. Then, we’ll examine real-life use cases of off-chain computation such as decentralized exchanges, state channels, and meta transactions.</p>
-<p><img src="https://moe.photo/images/2023/01/11/image-20230111172315228.png"></p>
+<p><img src="https://moe.photo/images/2023/01/11/image-20230111172315228.png" alt></p>
 <h2 id="background"><a href="#background" class="headerlink" title="background"></a>background</h2><p>In decentralized exchanges, signatures and off-chain computation are used to pre-authorize market Takers to fill any signed orders made by market Makers. Instead of posting buy or sell orders directly on-chain, Makers signs messages detailing their order using their private key. Makers then submit these signed orders to an off-chain order book - databases hosted by third-party Relayers on centralized servers - for Takers to browse and fill. These off-chain orders are submitted off-chain instantly, without having to pay any gas.</p>
 <h2 id="ECDSA"><a href="#ECDSA" class="headerlink" title="ECDSA"></a>ECDSA</h2><p>To address the drawbacks of RSA, alternative cryptographic algorithms were proposed around the mathematics of elliptic curves known as Elliptic Curve Digital Signature Algorithm (<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm">ECDSA</a>.) An elliptic curve cryptosystem can be defined by picking a prime number as a maximum, a curve equation, and a public point <code>A</code> on the curve:</p>
-<p><img src="https://moe.photo/images/2023/01/11/image02.gif"></p>
+<p><img src="https://moe.photo/images/2023/01/11/image02.gif" alt></p>
 <p>Take any two points on the curve above and draw a line through them; the line will intersect the curve at exactly one more place. Like a game of billiards, take a ball from point A and shoot it towards point B. When it hits the curve, the ball ‘bounces’ either straight up when it’s below the x-axis or straight down when it’s above the x-axis. Repeat this process <code>n</code> times (this process represents a dot product.)</p>
 <p>If you have two points, an initial point ‘bounced’ with itself <code>n</code> times to arrive at a final point, finding out <code>n</code> when you only know the final point and the first point is hard. At the same time, it’s easy to repeat over and over the procedure described above. This is a fine candidate for a trapdoor function.</p>
 <blockquote>
@@ -168,66 +202,54 @@
 <li>其他人使用<code>消息</code>（公开的）和<code>签名</code>（公开的）恢复签名者的<code>公钥</code>（公开的）并验证签名。 我们将配合<code>ECDSA</code>库讲解这两个部分。一个例子<code>私钥</code>，<code>公钥</code>，<code>消息</code>，<code>以太坊签名消息</code>，<code>签名</code>如下所示：</li>
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">私钥: 0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b</span><br><span class="line">公钥: 0xe16C1623c1AA7D919cd2241d8b36d9E79C1Be2A2</span><br><span class="line">消息: 0x1bf2c0ce4546651a1a2feb457b39d891a6b83931cc2454434f39961345ac378c</span><br><span class="line">以太坊签名消息: 0xb42ca4636f721c7a331923e764587e98ec577cea1a185f60dfcc14dbb9bd900b</span><br><span class="line">签名: 0x390d704d7ab732ce034203599ee93dd5d3cb0d4d1d7c600ac11726659489773d559b12d220f99f41d17651b0c1c6a669d346a397f8541760d6b32a5725378b241c</span><br></pre></td></tr></table></figure>
-
 <h2 id="digest"><a href="#digest" class="headerlink" title="digest"></a>digest</h2><p>Signing is the act of a user A “signing” data that anyone can validate came from user A. This is used in transactions to check if they are real.</p>
 <p>A common question is “how can you validate transactions are real?” The short answer is public-key cryptography. It’s an algorithm with 3 parts:</p>
 <ul>
 <li>Key Creation</li>
-<li>Encryption&#x2F;Signing</li>
-<li>Decryption&#x2F;Validation</li>
+<li>Encryption/Signing</li>
+<li>Decryption/Validation</li>
 </ul>
 <p>Encryption is generally used to hide data in other data. If you encrypt a string like ‘hello world’ you get something like <code>dqE3gJz/+5CQHfSJwMP2nQ</code>. Its purpose is to hide the message ‘hello world’. Signing is used to create a different output string, but you also publicize the original message.</p>
 <p>The key creation will output two strings, a public and private key. It links them through an algorithm that has the signing and validation properties. A signature will take in a public key, private key, and message. The output will be another string that is the signature.</p>
 <ul>
-<li>Signature &#x3D; F(public key, private key, message)</li>
-<li>Validation &#x3D; F(Signature, message)</li>
-<li>Is Valid if: Validation &#x3D; public key</li>
+<li>Signature = F(public key, private key, message)</li>
+<li>Validation = F(Signature, message)</li>
+<li>Is Valid if: Validation = public key</li>
 </ul>
 <p>Notice how validation does not require knowledge of the private key. This is what allows 3rd parties to validate information. If the output of the validation function is equal to the public key then the signature is real, otherwise its fake.</p>
 <p>The signature is made up of 3 variables: v, r, s. Ethereum employs <a target="_blank" rel="noopener" href="https://medium.com/@VitalikButerin/exploring-elliptic-curve-pairings-c73c1864e627">Elliptic curve cryptography</a> and those variables are simply part of the underlying math.</p>
-<h2 id="why-sign"><a href="#why-sign" class="headerlink" title="why sign?"></a>why sign?</h2><p>Signing is a nice way to know something is being done by the correct person&#x2F;contract. This means we can trust that someone is actually doing what they say they are.</p>
+<h2 id="why-sign"><a href="#why-sign" class="headerlink" title="why sign?"></a>why sign?</h2><p>Signing is a nice way to know something is being done by the correct person/contract. This means we can trust that someone is actually doing what they say they are.</p>
 <p>Instead of real world signatures, which can be faked, the digital ones can not. If you want to know user A did something, make them sign it before moving forward. Then if a dispute arrises, check the signature.</p>
 <h2 id="example1"><a href="#example1" class="headerlink" title="example1"></a>example1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">私钥: 0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b</span><br><span class="line">公钥: 0xe16C1623c1AA7D919cd2241d8b36d9E79C1Be2A2</span><br><span class="line">消息: 0x1bf2c0ce4546651a1a2feb457b39d891a6b83931cc2454434f39961345ac378c</span><br><span class="line">以太坊签名消息: 0xb42ca4636f721c7a331923e764587e98ec577cea1a185f60dfcc14dbb9bd900b</span><br><span class="line">签名: 0x390d704d7ab732ce034203599ee93dd5d3cb0d4d1d7c600ac11726659489773d559b12d220f99f41d17651b0c1c6a669d346a397f8541760d6b32a5725378b241c</span><br></pre></td></tr></table></figure>
-
 <h3 id="创建签名"><a href="#创建签名" class="headerlink" title="创建签名"></a>创建签名</h3><p><strong>1. 打包消息：</strong> 在以太坊的<code>ECDSA</code>标准中，被签名的<code>消息</code>是一组数据的<code>keccak256</code>哈希，为<code>bytes32</code>类型。我们可以把任何想要签名的内容利用<code>abi.encodePacked()</code>函数打包，然后用<code>keccak256()</code>计算哈希，作为<code>消息</code>。我们例子中的<code>消息</code>是由一个<code>address</code>类型变量和一个<code>uint256</code>类型变量得到的：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * 将mint地址（address类型）和tokenId（uint256类型）拼成消息msgHash</span><br><span class="line"> * _account: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span><br><span class="line"> * _tokenId: 0</span><br><span class="line"> * 对应的消息msgHash: 0x1bf2c0ce4546651a1a2feb457b39d891a6b83931cc2454434f39961345ac378c</span><br><span class="line"> */</span><br><span class="line">function getMessageHash(address _account, uint256 _tokenId) public pure returns(bytes32)&#123;</span><br><span class="line">    return keccak256(abi.encodePacked(_account, _tokenId));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>2. 计算以太坊签名消息：</strong> <code>消息</code>可以是能被执行的交易，也可以是其他任何形式。为了避免用户误签了恶意交易，<code>EIP191</code>提倡在<code>消息</code>前加上<code>&quot;\x19Ethereum Signed Message:\n32&quot;</code>字符，并再做一次<code>keccak256</code>哈希，作为<code>以太坊签名消息</code>。经过<code>toEthSignedMessageHash()</code>函数处理后的消息，不能被用于执行交易:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @dev 返回 以太坊签名消息</span><br><span class="line"> * `hash`：消息</span><br><span class="line"> * 遵从以太坊签名标准：https://eth.wiki/json-rpc/API#eth_sign[`eth_sign`]</span><br><span class="line"> * 以及`EIP191`:https://eips.ethereum.org/EIPS/eip-191`</span><br><span class="line"> * 添加&quot;\x19Ethereum Signed Message:\n32&quot;字段，防止签名的是可执行交易。</span><br><span class="line"> */</span><br><span class="line">function toEthSignedMessageHash(bytes32 hash) internal pure returns (bytes32) &#123;</span><br><span class="line">    // 哈希的长度为32</span><br><span class="line">    return keccak256(abi.encodePacked(&quot;\x19Ethereum Signed Message:\n32&quot;, hash));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>处理后的消息为：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">以太坊签名消息: 0xb42ca4636f721c7a331923e764587e98ec577cea1a185f60dfcc14dbb9bd900b</span><br></pre></td></tr></table></figure>
-
 <p><strong>3-1. 利用钱包签名：</strong> 日常操作中，大部分用户都是通过这种方式进行签名。在获取到需要签名的消息之后，我们需要使用<code>metamask</code>钱包进行签名。<code>metamask</code>的<code>personal_sign</code>方法会自动把<code>消息</code>转换为<code>以太坊签名消息</code>，然后发起签名。所以我们只需要输入<code>消息</code>和<code>签名者钱包account</code>即可。需要注意的是输入的<code>签名者钱包account</code>需要和<code>metamask</code>当前连接的account一致才能使用。</p>
 <p>因此首先把例子中的<code>私钥</code>导入到小狐狸钱包，然后打开浏览器的<code>console</code>页面：<code>Chrome菜单-更多工具-开发者工具-Console</code>。在连接钱包的状态下（如连接opensea，否则会出现错误），依次输入以下指令进行签名：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ethereum.<span class="title function_">enable</span>()</span><br><span class="line">account = <span class="string">&quot;0xe16C1623c1AA7D919cd2241d8b36d9E79C1Be2A2&quot;</span></span><br><span class="line">hash = <span class="string">&quot;0x1bf2c0ce4546651a1a2feb457b39d891a6b83931cc2454434f39961345ac378c&quot;</span></span><br><span class="line">ethereum.<span class="title function_">request</span>(&#123;<span class="attr">method</span>: <span class="string">&quot;personal_sign&quot;</span>, <span class="attr">params</span>: [account, hash]&#125;)</span><br></pre></td></tr></table></figure>
-
 <p>在返回的结果中（<code>Promise</code>的<code>PromiseResult</code>）可以看到创建好的签名。不同账户有不同的私钥，创建的签名值也不同。利用教程的私钥创建的签名如下所示：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x390d704d7ab732ce034203599ee93dd5d3cb0d4d1d7c600ac11726659489773d559b12d220f99f41d17651b0c1c6a669d346a397f8541760d6b32a5725378b241c</span><br></pre></td></tr></table></figure>
-
 <p><strong>3-2. 利用web3.py签名：</strong> 批量调用中更倾向于使用代码进行签名，以下是基于web3.py的实现。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> web3 <span class="keyword">import</span> Web3, HTTPProvider</span><br><span class="line"><span class="keyword">from</span> eth_account.messages <span class="keyword">import</span> encode_defunct</span><br><span class="line"></span><br><span class="line">private_key = <span class="string">&quot;0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b&quot;</span></span><br><span class="line">address = <span class="string">&quot;0x5B38Da6a701c568545dCfcB03FcB875f56beddC4&quot;</span></span><br><span class="line">rpc = <span class="string">&#x27;https://rpc.ankr.com/eth&#x27;</span></span><br><span class="line">w3 = Web3(HTTPProvider(rpc))</span><br><span class="line"></span><br><span class="line"><span class="comment">#打包信息</span></span><br><span class="line">msg = Web3.solidityKeccak([<span class="string">&#x27;address&#x27;</span>,<span class="string">&#x27;uint256&#x27;</span>], [address,<span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;消息：<span class="subst">&#123;msg.<span class="built_in">hex</span>()&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment">#构造可签名信息</span></span><br><span class="line">message = encode_defunct(hexstr=msg.<span class="built_in">hex</span>())</span><br><span class="line"><span class="comment">#签名</span></span><br><span class="line">signed_message = w3.eth.account.sign_message(message, private_key=private_key)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;签名：<span class="subst">&#123;signed_message[<span class="string">&#x27;signature&#x27;</span>].<span class="built_in">hex</span>()&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
 <p>运行的结果如下所示。计算得到的消息，签名和前面的案例一致。</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">消息：0x1bf2c0ce4546651a1a2feb457b39d891a6b83931cc2454434f39961345ac378c</span><br><span class="line">签名：0x390d704d7ab732ce034203599ee93dd5d3cb0d4d1d7c600ac11726659489773d559b12d220f99f41d17651b0c1c6a669d346a397f8541760d6b32a5725378b241c</span><br></pre></td></tr></table></figure>
-
 <h3 id="验证签名"><a href="#验证签名" class="headerlink" title="验证签名"></a>验证签名</h3><p>为了验证签名，验证者需要拥有<code>消息</code>，<code>签名</code>，和签名使用的<code>公钥</code>。我们能验证签名的原因是只有<code>私钥</code>的持有者才能够针对交易生成这样的签名，而别人不能。</p>
 <p><strong>4. 通过签名和消息恢复公钥：</strong><code>签名</code>是由数学算法生成的。这里我们使用的是<code>rsv签名</code>，<code>签名</code>中包含<code>r, s, v</code>三个值的信息。而后，我们可以通过<code>r, s, v</code>及<code>以太坊签名消息</code>来求得<code>公钥</code>。下面的<code>recoverSigner()</code>函数实现了上述步骤，它利用<code>以太坊签名消息 _msgHash</code>和<code>签名 _signature</code>恢复<code>公钥</code>（使用了简单的内联汇编）：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// @dev 从_msgHash和签名_signature中恢复signer地址</span><br><span class="line">function recoverSigner(bytes32 _msgHash, bytes memory _signature) internal pure returns (address)&#123;</span><br><span class="line">    // 检查签名长度，65是标准r,s,v签名的长度</span><br><span class="line">    require(_signature.length == 65, &quot;invalid signature length&quot;);</span><br><span class="line">    bytes32 r;</span><br><span class="line">    bytes32 s;</span><br><span class="line">    uint8 v;</span><br><span class="line">    // 目前只能用assembly (内联汇编)来从签名中获得r,s,v的值</span><br><span class="line">    assembly &#123;</span><br><span class="line">        /*</span><br><span class="line">        前32 bytes存储签名的长度 (动态数组存储规则)</span><br><span class="line">        add(sig, 32) = sig的指针 + 32</span><br><span class="line">        等效为略过signature的前32 bytes</span><br><span class="line">        mload(p) 载入从内存地址p起始的接下来32 bytes数据</span><br><span class="line">        */</span><br><span class="line">        // 读取长度数据后的32 bytes</span><br><span class="line">        r := mload(add(_signature, 0x20))</span><br><span class="line">        // 读取之后的32 bytes</span><br><span class="line">        s := mload(add(_signature, 0x40))</span><br><span class="line">        // 读取最后一个byte</span><br><span class="line">        v := byte(0, mload(add(_signature, 0x60)))</span><br><span class="line">    &#125;</span><br><span class="line">    // 使用ecrecover(全局函数)：利用 msgHash 和 r,s,v 恢复 signer 地址</span><br><span class="line">    return ecrecover(_msgHash, v, r, s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>参数分别为：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_msgHash：0xb42ca4636f721c7a331923e764587e98ec577cea1a185f60dfcc14dbb9bd900b</span><br><span class="line">_signature：0x390d704d7ab732ce034203599ee93dd5d3cb0d4d1d7c600ac11726659489773d559b12d220f99f41d17651b0c1c6a669d346a397f8541760d6b32a5725378b241c</span><br></pre></td></tr></table></figure>
-
 <p>结果：0xe16C1623c1AA7D919cd2241d8b36d9E79C1Be2A2</p>
 <h2 id="example2"><a href="#example2" class="headerlink" title="example2"></a>example2</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.3;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">0. message to sign</span><br><span class="line">1. hash(message)</span><br><span class="line">2.sign(hash(message), private key | offchain)</span><br><span class="line">3. ecrecover(hash(message), signature == signer)</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">contract VerfySig&#123;</span><br><span class="line">    function verify(address _signer, string memory _message, bytes memory _sig)</span><br><span class="line">    external pure returns(bool)</span><br><span class="line">    &#123;</span><br><span class="line">        //1. hash(message)</span><br><span class="line">        bytes32 messageHash = getMessageHash(_message);</span><br><span class="line">        //2.sign(hash(message), private key | offchain)</span><br><span class="line">        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);</span><br><span class="line">        //3. ecrecover(hash(message), signature == signer)</span><br><span class="line">        return recover(ethSignedMessageHash,_sig) == _signer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getMessageHash(string memory _message) public pure returns(bytes32)&#123;</span><br><span class="line">        return keccak256(abi.encodePacked(_message));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getEthSignedMessageHash(bytes32 _messageHash) public pure returns(bytes32)&#123;</span><br><span class="line">        return keccak256(abi.encodePacked(</span><br><span class="line">            &quot;\x19Ethereum Signed Message:\n32&quot;,</span><br><span class="line">            _messageHash</span><br><span class="line">        ));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function recover(bytes32 _ethSignedMessageHash, bytes memory _sig)</span><br><span class="line">    public pure returns(address)</span><br><span class="line">    &#123;</span><br><span class="line">        (bytes32 r, bytes32 s, uint8 v) = _split(_sig);</span><br><span class="line">        return ecrecover(_ethSignedMessageHash, v, r, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function _split(bytes memory _sig) internal pure returns(bytes32 r,bytes32 s, uint8 v)</span><br><span class="line">    &#123;</span><br><span class="line">        require(_sig.length == 65,&quot;invalid signature length&quot;);</span><br><span class="line"></span><br><span class="line">        assembly&#123;</span><br><span class="line">        	/*</span><br><span class="line">            First 32 bytes stores the length of the signature</span><br><span class="line"></span><br><span class="line">            add(sig, 32) = pointer of sig + 32</span><br><span class="line">            effectively, skips first 32 bytes of signature</span><br><span class="line"></span><br><span class="line">            mload(p) loads next 32 bytes starting at the memory address p into memory</span><br><span class="line">            */</span><br><span class="line">        </span><br><span class="line">        	//first 32 bytes is the _sig&#x27;s length: 32~64 is r</span><br><span class="line">            r := mload(add(_sig, 32))</span><br><span class="line">            //64~96 is s</span><br><span class="line">            s := mload(add(_sig, 64))</span><br><span class="line">            //get 0 since 0 is 8 bit =&gt; uint8 v:96~97 is v</span><br><span class="line">            //final byte (first byte of the next 32 bytes)</span><br><span class="line">            v := byte(0, mload(add(_sig, 96)))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>step:</p>
-<p>【1】getMessageHash(“secret message”),  &#x3D;&gt; result &#x3D; 0x9c97d796ed69b7e69790ae723f51163056db3d55a7a6a82065780460162d4812</p>
-<p>【2】getEthSignedMessageHash(0x9c97d796ed69b7e69790ae723f51163056db3d55a7a6a82065780460162d4812), &#x3D;&gt; 0x95a786464acc06fafc0d46036515722ec35acb840ecc291f251e086ebfeb9099</p>
+<p>【1】getMessageHash(“secret message”),  =&gt; result = 0x9c97d796ed69b7e69790ae723f51163056db3d55a7a6a82065780460162d4812</p>
+<p>【2】getEthSignedMessageHash(0x9c97d796ed69b7e69790ae723f51163056db3d55a7a6a82065780460162d4812), =&gt; 0x95a786464acc06fafc0d46036515722ec35acb840ecc291f251e086ebfeb9099</p>
 <p>【3】</p>
-<p>![image-20230111194735995](16.signature and vrs&#x2F;image-20230111194735995.png)</p>
+<p><img src="/2023/01/11/03.solidity%E8%BF%9B%E9%98%B6/16.signature%20and%20vrs/image-20230111194735995.png" alt="image-20230111194735995"></p>
 <p>【4】verify</p>
-<p>【5】getMessageHash()&#x3D;&gt;getEthSignedMessageHash()&#x3D;&gt;F12{account,hash,request}&#x3D;&gt;recover()&#x3D;&gt;verify</p>
+<p>【5】getMessageHash()=&gt;getEthSignedMessageHash()=&gt;F12{account,hash,request}=&gt;recover()=&gt;verify</p>
 <h2 id="利用签名发放白名单"><a href="#利用签名发放白名单" class="headerlink" title="利用签名发放白名单"></a>利用签名发放白名单</h2><p><code>NFT</code>项目方可以利用<code>ECDSA</code>的这个特性发放白名单。由于签名是链下的，不需要<code>gas</code>，因此这种白名单发放模式比<code>Merkle Tree</code>模式还要经济。方法非常简单，项目方利用项目方账户把白名单发放地址签名（可以加上地址可以铸造的<code>tokenId</code>）。然后<code>mint</code>的时候利用<code>ECDSA</code>检验签名是否有效，如果有效，则给他<code>mint</code>。</p>
 <p><code>SignatureNFT</code>合约实现了利用签名发放<code>NFT</code>白名单。</p>
 <h3 id="状态变量"><a href="#状态变量" class="headerlink" title="状态变量"></a>状态变量</h3><p>合约中共有两个状态变量：</p>
@@ -243,24 +265,21 @@
 <li><code>verify()</code>函数调用了<code>ECDSA</code>库的<code>verify()</code>函数，来进行<code>ECDSA</code>签名验证。</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">contract SignatureNFT is ERC721 &#123;</span><br><span class="line">    address immutable public signer; // 签名地址</span><br><span class="line">    mapping(address =&gt; bool) public mintedAddress;   // 记录已经mint的地址</span><br><span class="line"></span><br><span class="line">    // 构造函数，初始化NFT合集的名称、代号、签名地址</span><br><span class="line">    constructor(string memory _name, string memory _symbol, address _signer)</span><br><span class="line">    ERC721(_name, _symbol)</span><br><span class="line">    &#123;</span><br><span class="line">        signer = _signer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 利用ECDSA验证签名并mint</span><br><span class="line">    function mint(address _account, uint256 _tokenId, bytes memory _signature)</span><br><span class="line">    external</span><br><span class="line">    &#123;</span><br><span class="line">        bytes32 _msgHash = getMessageHash(_account, _tokenId); // 将_account和_tokenId打包消息</span><br><span class="line">        bytes32 _ethSignedMessageHash = ECDSA.toEthSignedMessageHash(_msgHash); // 计算以太坊签名消息</span><br><span class="line">        require(verify(_ethSignedMessageHash, _signature), &quot;Invalid signature&quot;); // ECDSA检验通过</span><br><span class="line">        require(!mintedAddress[_account], &quot;Already minted!&quot;); // 地址没有mint过</span><br><span class="line">        _mint(_account, _tokenId); // mint</span><br><span class="line">        mintedAddress[_account] = true; // 记录mint过的地址</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">     * 将mint地址（address类型）和tokenId（uint256类型）拼成消息msgHash</span><br><span class="line">     * _account: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span><br><span class="line">     * _tokenId: 0</span><br><span class="line">     * 对应的消息: 0x1bf2c0ce4546651a1a2feb457b39d891a6b83931cc2454434f39961345ac378c</span><br><span class="line">     */</span><br><span class="line">    function getMessageHash(address _account, uint256 _tokenId) public pure returns(bytes32)&#123;</span><br><span class="line">        return keccak256(abi.encodePacked(_account, _tokenId));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ECDSA验证，调用ECDSA库的verify()函数</span><br><span class="line">    function verify(bytes32 _msgHash, bytes memory _signature)</span><br><span class="line">    public view returns (bool)</span><br><span class="line">    &#123;</span><br><span class="line">        return ECDSA.verify(_msgHash, _signature, signer);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="remix验证"><a href="#remix验证" class="headerlink" title="remix验证"></a>remix验证</h3><ul>
 <li>链下通过以太坊签名获得<code>signature</code>，给<code>_account</code>地址发放<code>tokenId = 0</code>的白名单。所用的数据见&lt;<code>ECDSA</code>合约&gt;章节。</li>
 <li>部署<code>SignatureNFT</code>合约，参数分别为：</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_name: WTF Signature</span><br><span class="line">_symbol: WTF</span><br><span class="line">_signer: 0xe16C1623c1AA7D919cd2241d8b36d9E79C1Be2A2</span><br></pre></td></tr></table></figure>
-
-<p>![image-20230111201946779](16.signature and vrs&#x2F;image-20230111201946779.png)</p>
+<p><img src="/2023/01/11/03.solidity%E8%BF%9B%E9%98%B6/16.signature%20and%20vrs/image-20230111201946779.png" alt="image-20230111201946779"></p>
 <ul>
 <li>调用<code>mint()</code>函数利用<code>ECDSA</code>验证签名并铸造，参数为：</li>
 </ul>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_account: 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span><br><span class="line">_tokenId: 0</span><br><span class="line">_signature: 0x390d704d7ab732ce034203599ee93dd5d3cb0d4d1d7c600ac11726659489773d559b12d220f99f41d17651b0c1c6a669d346a397f8541760d6b32a5725378b241c</span><br></pre></td></tr></table></figure>
-
-<p>![](16.signature and vrs&#x2F;37-6-55ee1bf172ca54ea2ed81a512e0ae173.png)</p>
+<p><img src="/2023/01/11/03.solidity%E8%BF%9B%E9%98%B6/16.signature%20and%20vrs/37-6-55ee1bf172ca54ea2ed81a512e0ae173.png" alt></p>
 <ul>
 <li>调用<code>ownerOf()</code>函数，可以看到<code>tokenId = 0</code>成功铸造给了地址<code>_account</code>，合约运行成功！</li>
 </ul>
-<p>![](16.signature and vrs&#x2F;37-7-954607676e300e7dab2b0d5c57ee3365.png)</p>
+<p><img src="/2023/01/11/03.solidity%E8%BF%9B%E9%98%B6/16.signature%20and%20vrs/37-7-954607676e300e7dab2b0d5c57ee3365.png" alt></p>
 <p><strong>总结</strong></p>
 <p>代码中的<code>ECDSA</code>库由<code>OpenZeppelin</code>的<a target="_blank" rel="noopener" href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol">同名库</a>简化而成。</p>
 <ul>
@@ -272,4 +291,375 @@
 <p><a target="_blank" rel="noopener" href="https://yos.io/2018/11/16/ethereum-signatures/">reference2</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=vYwYe-Gv_XI">reference3</a></p>
 <p><a target="_blank" rel="noopener" href="https://wtf.academy/solidity-application/Signature/">reference4</a></p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/01/11/03.solidity%E8%BF%9B%E9%98%B6/16.signature%20and%20vrs/">http://example.com/2023/01/11/03.solidity%E8%BF%9B%E9%98%B6/16.signature%20and%20vrs/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/13/12.eip/04.eip-1967/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">04.eip-1967</div></div></a></div><div class="next-post pull-right"><a href="/2023/01/10/30.ERC20/05.ERC20%20further/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">05.ERC20 further</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#signature-and-vrs"><span class="toc-number">1.</span> <span class="toc-text">signature and vrs</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#background"><span class="toc-number">1.1.</span> <span class="toc-text">background</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECDSA"><span class="toc-number">1.2.</span> <span class="toc-text">ECDSA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#digest"><span class="toc-number">1.3.</span> <span class="toc-text">digest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#why-sign"><span class="toc-number">1.4.</span> <span class="toc-text">why sign?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#example1"><span class="toc-number">1.5.</span> <span class="toc-text">example1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%AD%BE%E5%90%8D"><span class="toc-number">1.5.1.</span> <span class="toc-text">创建签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E7%AD%BE%E5%90%8D"><span class="toc-number">1.5.2.</span> <span class="toc-text">验证签名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#example2"><span class="toc-number">1.6.</span> <span class="toc-text">example2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E7%AD%BE%E5%90%8D%E5%8F%91%E6%94%BE%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-number">1.7.</span> <span class="toc-text">利用签名发放白名单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">1.7.1.</span> <span class="toc-text">状态变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">1.7.2.</span> <span class="toc-text">函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remix%E9%AA%8C%E8%AF%81"><span class="toc-number">1.7.3.</span> <span class="toc-text">remix验证</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/01/10/30.ERC20/05.ERC20%20further/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2023-01-11 13:00:18
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="分类"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                        <b>#</b> 03.solidity进阶
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/01/13/12.eip/04.eip-1967/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#signature-and-vrs"><span class="toc-text">signature and vrs</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#background"><span class="toc-text">background</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECDSA"><span class="toc-text">ECDSA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#digest"><span class="toc-text">digest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#why-sign"><span class="toc-text">why sign?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#example1"><span class="toc-text">example1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%AD%BE%E5%90%8D"><span class="toc-text">创建签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E7%AD%BE%E5%90%8D"><span class="toc-text">验证签名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#example2"><span class="toc-text">example2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E7%AD%BE%E5%90%8D%E5%8F%91%E6%94%BE%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-text">利用签名发放白名单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-text">状态变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-text">函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remix%E9%AA%8C%E8%AF%81"><span class="toc-text">remix验证</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 16.signature%20and%20vrs + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F01%2F11%2F03.solidity%25E8%25BF%259B%25E9%2598%25B6%2F16.signature%2520and%2520vrs%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/01/11/03.solidity%E8%BF%9B%E9%98%B6/16.signature%20and%20vrs/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

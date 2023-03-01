@@ -1,147 +1,181 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>16.访问私有数据攻击 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="访问私有数据攻击前置知识我们先来了解一下 solidity 中的三种数据存储方式： storage（存储） storage 中的数据被永久存储。其以键值对的形式存储在 slot 插槽中。 storage 中的数据会被写在区块链中（因此它们会更改状态），这就是为什么使用存储非常昂贵的原因。 占用 256 位插槽的 gas 成本为 20,000 gas。 修改 storage 的值将花费 5,000">
-<meta property="og:type" content="article">
-<meta property="og:title" content="16.访问私有数据攻击">
-<meta property="og:url" content="http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="访问私有数据攻击前置知识我们先来了解一下 solidity 中的三种数据存储方式： storage（存储） storage 中的数据被永久存储。其以键值对的形式存储在 slot 插槽中。 storage 中的数据会被写在区块链中（因此它们会更改状态），这就是为什么使用存储非常昂贵的原因。 占用 256 位插槽的 gas 成本为 20,000 gas。 修改 storage 的值将花费 5,000">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
-<meta property="article:published_time" content="2022-12-18T12:24:47.266Z">
-<meta property="article:modified_time" content="2022-12-18T14:52:56.387Z">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '16.访问私有数据攻击',
-  isPost: true,
-  isHome: false,
-  isHighlightShrink: false,
-  isToc: true,
-  postUpdate: '2022-12-18 22:52:56'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+      16.访问私有数据攻击 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">16.访问私有数据攻击</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2022-12-18 20:24:47
+        </span>
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
-    
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">16.访问私有数据攻击</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-18T12:24:47.266Z" title="发表于 2022-12-18 20:24:47">2022-12-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-12-18T14:52:56.387Z" title="更新于 2022-12-18 22:52:56">2022-12-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="访问私有数据攻击"><a href="#访问私有数据攻击" class="headerlink" title="访问私有数据攻击"></a>访问私有数据攻击</h1><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>我们先来了解一下 solidity 中的三种数据存储方式：</p>
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                    <b>#</b> 09.安全审计
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="访问私有数据攻击"><a href="#访问私有数据攻击" class="headerlink" title="访问私有数据攻击"></a>访问私有数据攻击</h1><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>我们先来了解一下 solidity 中的三种数据存储方式：</p>
 <h3 id="storage（存储）"><a href="#storage（存储）" class="headerlink" title="storage（存储）"></a>storage（存储）</h3><ul>
 <li>storage 中的数据被永久存储。其以键值对的形式存储在 slot 插槽中。</li>
 <li>storage 中的数据会被写在区块链中（因此它们会更改状态），这就是为什么使用存储非常昂贵的原因。</li>
@@ -158,18 +192,17 @@
 <p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-16713664971613.png" alt="图片"></p>
 <p>变长数组（长度随元素的数量而改变）：</p>
 <p>变长数组的存储方式就很奇特，在遇到变长数组时，会先启用一个新的插槽 slotA 用来存储数组的长度，其数据存储在另外的编号为 slotV 的插槽中。slotA 表示变长数组声明的位置，用 length 表示变长数组的长度，用 slotV 表示变长数组数据存储的位置，用 value 表示变长数组某个数据的值，用 index 表示 value 对应的索引下标，则</p>
-<p>length &#x3D; sload(slotA)</p>
-<p>slotV &#x3D; keccak256(slotA) + index</p>
-<p>value &#x3D; sload(slotV)</p>
+<p>length = sload(slotA)</p>
+<p>slotV = keccak256(slotA) + index</p>
+<p>value = sload(slotV)</p>
 <p>变长数组在编译期间无法知道数组的长度，没办法提前预留存储空间，所以 Solidity 就用 slotA 位置存储了变长数组的长度。</p>
 <p>我们写一个简单的例子来验证上面描述的变长数组的存储方式：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract haha&#123;</span><br><span class="line">  </span><br><span class="line">  uint[] user;</span><br><span class="line"></span><br><span class="line">  function addUser(uint a) public returns (bytes memory)&#123;</span><br><span class="line">    user.push(a);</span><br><span class="line">    return abi.encode(user);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>部署这个合约后调用 addUser 函数并传入参数 a &#x3D; 998，debug 后可以看出变长数组的存储方式：</p>
+<p>部署这个合约后调用 addUser 函数并传入参数 a = 998，debug 后可以看出变长数组的存储方式：</p>
 <p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-16713667370826.png" alt="图片"></p>
-<p>其中第一个插槽为（这里存储的是变长数组的长度）：<code>0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563</code>,这个值等于：<code>sha3(&quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;)</code>，key &#x3D; 0 这是当前插槽的编号，value &#x3D; 1 这说明变长数组 user[] 中只有一条数据也就是数组长度为 1 ;</p>
+<p>其中第一个插槽为（这里存储的是变长数组的长度）：<code>0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563</code>,这个值等于：<code>sha3(&quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;)</code>，key = 0 这是当前插槽的编号，value = 1 这说明变长数组 user[] 中只有一条数据也就是数组长度为 1 ;</p>
 <p>第二个插槽为（这里存储的是变长数组中的数据）：<code>0x510e4e770828ddbf7f7b00ab00a9f6adaf81c0dc9cc85f1f8249c256942d61d9</code>，这个值等于：<code>sha3(&quot;0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563&quot;)</code>，插槽编号为：<code>key=0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563</code>，这个值等于：<code>sha3(&quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;)+0</code>，插槽中存储的数据为：<code>value=0x00000000000000000000000000000000000000000000000000000000000003e6</code>，也就是 16 进制表示的 998 ，也就是我们传入的 a 的值。</p>
-<p>为了更准确的验证我们再调用一次 addUser 函数并传入 a&#x3D;999 可以得到下面的结果：</p>
+<p>为了更准确的验证我们再调用一次 addUser 函数并传入 a=999 可以得到下面的结果：</p>
 <p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-16713669562959.png" alt="图片"></p>
 <p>这里我们可以看到新的插槽为：<code>0x6c13d8c1c5df666ea9ca2a428504a3776c8ca01021c3a1524ca7d765f600979a</code>，这个值等于：<code>sha3(&quot;0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e564&quot;)</code>，插槽编号为：<code>key=0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e564</code>，这个值等于：<code>sha3(&quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;)+1</code>，插槽中的存储数据为：<code>value=0x00000000000000000000000000000000000000000000000000000000000003e7</code>，这个值就是 16 进制表示的 999 也就是我们刚刚调用 addUser 函数传入的 a 的值。</p>
 <p>通过上面的例子应该可以大致理解变长数组的存储方式了。</p>
@@ -186,7 +219,6 @@
 </ul>
 <h2 id="漏洞示例"><a href="#漏洞示例" class="headerlink" title="漏洞示例"></a>漏洞示例</h2><p>这次我们的目标合约是部署在 Ropsten 上的一个合约。合约地址：<code>0x3505a02BCDFbb225988161a95528bfDb279faD6b</code>。<a target="_blank" rel="noopener" href="https://ropsten.etherscan.io/address/0x3505a02BCDFbb225988161a95528bfDb279faD6b#code">链接</a>。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">contract Vault &#123;</span><br><span class="line">    uint public count = 123;</span><br><span class="line">    address public owner = msg.sender;</span><br><span class="line">    bool public isTrue = true;</span><br><span class="line">    uint16 public u16 = 31;</span><br><span class="line">    bytes32 private password;</span><br><span class="line">    uint public constant someConst = 123;</span><br><span class="line">    bytes32[3] public data;</span><br><span class="line"></span><br><span class="line">    struct User &#123;</span><br><span class="line">        uint id;</span><br><span class="line">        bytes32 password;</span><br><span class="line">    &#125;</span><br><span class="line">    User[] private users;</span><br><span class="line">    mapping(uint =&gt; User) private idToUser;</span><br><span class="line"></span><br><span class="line">    constructor(bytes32 _password) &#123;</span><br><span class="line">        password = _password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function addUser(bytes32 _password) public &#123;</span><br><span class="line">        User memory user = User(&#123;id: users.length, password: _password&#125;);</span><br><span class="line"></span><br><span class="line">        users.push(user);</span><br><span class="line">        idToUser[user.id] = user;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getArrayLocation(</span><br><span class="line">        uint slot,</span><br><span class="line">        uint index,</span><br><span class="line">        uint elementSize</span><br><span class="line">) public pure returns (uint) &#123;</span><br><span class="line">        return uint(keccak256(abi.encodePacked(slot))) + (index * elementSize);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getMapLocation(uint slot, uint key) public pure returns (uint) &#123;</span><br><span class="line">        return uint(keccak256(abi.encodePacked(key, slot)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>由上面的合约代码我们可以看到，Vault 合约将用户的用户名和密码这样的敏感数据记录在了合约中，由前置知识中我们可以了解到，合约中修饰变量的关键字仅限制其调用范围，这也就间接证明了合约中的数据均是公开的，可任意读取的，将敏感数据记录在合约中是不安全的。</p>
 <h2 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h2><p>下面我们就带大家来读取这个合约中的数据。首先我们先看 slot0 中的数据：由合约中可以看到 slot0 中只存储了一个 uint 类型的数据，我们读取出来看一下：</p>
 <p>我这里使用 Web3.py 取得数据</p>
@@ -196,15 +228,15 @@
 <p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136762301915.png" alt="图片"></p>
 <p>我们使用进制转换器转换一下</p>
 <p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136763046018.png" alt="图片"></p>
-<p>这里我们就成功的去到了合约中的第一个插槽 slot0 中存储的 uint 类型的变量 count&#x3D;123 ，下面我们继续：</p>
+<p>这里我们就成功的去到了合约中的第一个插槽 slot0 中存储的 uint 类型的变量 count=123 ，下面我们继续：</p>
 <p>slot1 中存储三个变量：u16, isTrue, owner</p>
 <p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136766128721.png" alt="图片"></p>
 <p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136766863724.png" alt="图片"></p>
 <p>从右往左依次为</p>
 <ul>
-<li>owner &#x3D; f36467c4e023c355026066b8dc51456e7b791d99</li>
-<li>isTrue &#x3D; 01 &#x3D; true</li>
-<li>u16 &#x3D; 1f &#x3D; 31</li>
+<li>owner = f36467c4e023c355026066b8dc51456e7b791d99</li>
+<li>isTrue = 01 = true</li>
+<li>u16 = 1f = 31</li>
 </ul>
 <p>slot2 中就存储着私有变量 password 我们读取看看</p>
 <p><img src="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/640-167136771006427.png" alt="图片"></p>
@@ -235,4 +267,375 @@
 <p><strong>作为审计者</strong></p>
 <p>在审计过程中应当注意合约中是否存在敏感数据，例如：秘钥，游戏通关口令等。</p>
 <p>引用：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/_DV6UaRdA_6pUFXt-EnTtA">慢雾科技</a></p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/">http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/04.%E6%8F%92%E6%A7%BD&amp;%E6%9F%A5%E8%AF%A2%E9%93%BE%E4%B8%8A%E6%95%B0%E6%8D%AE/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">04.插槽&amp;查询链上数据</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/15.delegatecall%E6%BC%8F%E6%B4%9E_3/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">15.delegatecall漏洞_3</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">访问私有数据攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text">前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#storage%EF%BC%88%E5%AD%98%E5%82%A8%EF%BC%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">storage（存储）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#memory%EF%BC%88%E5%86%85%E5%AD%98%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">memory（内存）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#calldata%EF%BC%88%E8%B0%83%E7%94%A8%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">calldata（调用数据）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.</span> <span class="toc-text">漏洞示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-number">1.3.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">1.4.</span> <span class="toc-text">读取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.5.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/15.delegatecall%E6%BC%8F%E6%B4%9E_3/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2022-12-18 20:24:47
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="分类"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                        <b>#</b> 09.安全审计
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/12/18/03.solidity%E8%BF%9B%E9%98%B6/04.%E6%8F%92%E6%A7%BD&%E6%9F%A5%E8%AF%A2%E9%93%BE%E4%B8%8A%E6%95%B0%E6%8D%AE/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB"><span class="toc-text">访问私有数据攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-text">前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#storage%EF%BC%88%E5%AD%98%E5%82%A8%EF%BC%89"><span class="toc-text">storage（存储）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#memory%EF%BC%88%E5%86%85%E5%AD%98%EF%BC%89"><span class="toc-text">memory（内存）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#calldata%EF%BC%88%E8%B0%83%E7%94%A8%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="toc-text">calldata（调用数据）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E7%A4%BA%E4%BE%8B"><span class="toc-text">漏洞示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-text">读取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-text">修复建议</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F12%2F18%2F09.%25E5%25AE%2589%25E5%2585%25A8%25E5%25AE%25A1%25E8%25AE%25A1%2F16.%25E8%25AE%25BF%25E9%2597%25AE%25E7%25A7%2581%25E6%259C%2589%25E6%2595%25B0%25E6%258D%25AE%25E6%2594%25BB%25E5%2587%25BB%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/12/18/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/16.%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%95%B0%E6%8D%AE%E6%94%BB%E5%87%BB/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

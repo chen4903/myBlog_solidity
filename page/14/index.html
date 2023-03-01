@@ -1,217 +1,533 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="始生有物，其形必丑">
-<meta property="og:type" content="website">
-<meta property="og:title" content="solidity life">
-<meta property="og:url" content="http://example.com/page/14/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="始生有物，其形必丑">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/page/14/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'solidity life',
-  isPost: false,
-  isHome: true,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2023-02-25 22:52:07'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
+    <meta name="robots" content="noindex" />
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <div class="container index">
+  <div class="post-list">
+    <!-- 遍历渲染文章 -->
+    
+      <div class="post-item" title="47.Fixed Point Numbers">
+        <div class="time-m-d">2023-01-01</div>
+        <div class="title">
+          <a href="/2023/01/01/02.solidity%E8%AF%AD%E6%B3%95/47.Fixed%20Point%20Numbers/">
+            
+              
+                <span>47.Fixed Point Numbers</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="13.ABI Coder Pragma">
+        <div class="time-m-d">2023-01-01</div>
+        <div class="title">
+          <a href="/2023/01/01/03.solidity%E8%BF%9B%E9%98%B6/13.ABI%20Coder%20Pragma/">
+            
+              
+                <span>13.ABI Coder Pragma</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="46.SPDX License Identifier">
+        <div class="time-m-d">2023-01-01</div>
+        <div class="title">
+          <a href="/2023/01/01/02.solidity%E8%AF%AD%E6%B3%95/46.SPDX%20License%20Identifier/">
+            
+              
+                <span>46.SPDX License Identifier</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="05.rules">
+        <div class="time-m-d">2023-01-01</div>
+        <div class="title">
+          <a href="/2023/01/01/13.%E5%85%B3%E4%BA%8Egas/05.rules/">
+            
+              
+                <span>05.rules</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="02.eip-114">
+        <div class="time-m-d">2022-12-31</div>
+        <div class="title">
+          <a href="/2022/12/31/12.eip/02.eip-114/">
+            
+              
+                <span>02.eip-114</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="01.eip-90">
+        <div class="time-m-d">2022-12-31</div>
+        <div class="title">
+          <a href="/2022/12/31/12.eip/01.eip-90/">
+            
+              
+                <span>01.eip-90</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="12.stack 1024 level">
+        <div class="time-m-d">2022-12-31</div>
+        <div class="title">
+          <a href="/2022/12/31/03.solidity%E8%BF%9B%E9%98%B6/12.stack%201024%20level/">
+            
+              
+                <span>12.stack 1024 level</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="02.EVM in solidity doc">
+        <div class="time-m-d">2022-12-30</div>
+        <div class="title">
+          <a href="/2022/12/30/04.EVM/02.EVM%20in%20solidity%20doc/">
+            
+              
+                <span>02.EVM in solidity doc</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="04.英文">
+        <div class="time-m-d">2022-12-30</div>
+        <div class="title">
+          <a href="/2022/12/30/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&%E6%9D%82%E7%AC%94%E8%AE%B0/04.%E8%8B%B1%E6%96%87/">
+            
+              
+                <span>04.英文</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="02.remix部署本地">
+        <div class="time-m-d">2022-12-29</div>
+        <div class="title">
+          <a href="/2022/12/29/20.Remix%E7%B3%BB%E5%88%97/02.remix%E9%83%A8%E7%BD%B2%E6%9C%AC%E5%9C%B0/">
+            
+              
+                <span>02.remix部署本地</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+  </div>
+  <nav class="post-navigation">
+    
+      <a href="/page/13/"><i class="iconfont icon-angleleft"></i></a>
+    
+    <span class="page-num">14 / 30</span>    
+      <a href="/page/15/"><i class="iconfont icon-angleright"></i></a>
+    
+  </nav>
+</div>
+
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
       }
     }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/bd833433161747b589ed994f354c547e')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">solidity life</h1><div id="site_social_icons"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/01/13.%E5%85%B3%E4%BA%8Egas/05.rules/" title="05.rules"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.rules"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/01/13.%E5%85%B3%E4%BA%8Egas/05.rules/" title="05.rules">05.rules</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-01T05:23:25.974Z" title="发表于 2023-01-01 13:23:25">2023-01-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/13-%E5%85%B3%E4%BA%8Egas/">13.关于gas</a></span></div><div class="content">rules
-Sending message to any non-existing account costs more than sending message to an existing account. That also applies to the accounts of the precompiled contracts.
-To not pay higher costs of the message you need to create the destination account before. That is the reason why some test&#x2F;private genesis blocks creates the accounts for the precompiled contracts by setting theirs balances to 1 wei, e.g. testnet genesis block.
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
 
 
 
-</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/12/31/12.eip/02.eip-114/" title="02.eip-114"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.eip-114"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/31/12.eip/02.eip-114/" title="02.eip-114">02.eip-114</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-31T04:42:12.948Z" title="发表于 2022-12-31 12:42:12">2022-12-31</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/12-eip/">12.eip</a></span></div><div class="content">eip-114简介</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/12/31/12.eip/01.eip-90/" title="01.eip-90"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.eip-90"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/31/12.eip/01.eip-90/" title="01.eip-90">01.eip-90</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-31T04:42:12.634Z" title="发表于 2022-12-31 12:42:12">2022-12-31</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/12-eip/">12.eip</a></span></div><div class="content">eip-90简介</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/12/31/03.solidity%E8%BF%9B%E9%98%B6/12.stack%201024%20level/" title="12.stack 1024 level"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="12.stack 1024 level"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/31/03.solidity%E8%BF%9B%E9%98%B6/12.stack%201024%20level/" title="12.stack 1024 level">12.stack 1024 level</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-30T17:23:29.270Z" title="发表于 2022-12-31 01:23:29">2022-12-31</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/">03.solidity进阶</a></span></div><div class="content">stack 1024 level前置知识
-code：部署合约时，data字段是存放合约内容的空间，即专门存放智能合约二进制源代码的空间。
-storage：Storage是一个可读、可写、可修改的持久化存储空间，也是每个合约持久化存储数据的地方。Storage是一张巨大的map，一共有2^256个slot，每个slot有32个字节。合约中的“状态变量”将根据其特定类型存储在这些插槽中。
-stack：Stack就是所谓的“运行栈”，用来保存EVM指令的输入输出数据。可以免费使用，没有gas消耗，用于存储函数的局部变量数量限制为16个。栈的最大深度为1024，每个单元为32字节。
-args：也叫calldata，是一个只读的可寻址空间，用于存储函数调用参数。与stack不同的是，如果要使用calldata中的数据，必须手动指定offset和读取的字节数。
-memory：内存是一个简单的字节数组，主要是存储运行时的数据，以及给内部函数传递参数。基于32byte的寻址和扩展。
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
 
 
-storage是永久存储在区块链上的地方。如果你想操作storage中的数据，你可以将它复制到内存中。然后，所有内存 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/12/30/04.EVM/02.EVM%20in%20solidity%20doc/" title="02.EVM in solidity doc"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.EVM in solidity doc"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/30/04.EVM/02.EVM%20in%20solidity%20doc/" title="02.EVM in solidity doc">02.EVM in solidity doc</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-30T08:25:12.202Z" title="发表于 2022-12-30 16:25:12">2022-12-30</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/01-EVM/">01.EVM</a></span></div><div class="content">EVM in solidity docOverviewIt is not only sandboxed but actually completely isolated, which means that code running inside the EVM has no access to network, filesystem or other processes. Smart contracts even have limited access to other smart contracts.
-AccountsThere are two kinds of accounts in Ethereum which share the same address space: External accounts that are controlled by public-private key pairs (i.e. humans) and contract accounts which are controlled by the code stored together with t ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/12/30/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&amp;%E6%9D%82%E7%AC%94%E8%AE%B0/04.%E8%8B%B1%E6%96%87/" title="04.英文"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.英文"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/30/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&amp;%E6%9D%82%E7%AC%94%E8%AE%B0/04.%E8%8B%B1%E6%96%87/" title="04.英文">04.英文</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-30T08:21:04.662Z" title="发表于 2022-12-30 16:21:04">2022-12-30</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/">08.扩展见闻&amp;杂笔记</a></span></div><div class="content">英文
-linear sequence：线性队列
-order selection mechanism：排序选择机制
-incentivize：激励
-comparatively：相对地
-initialise：初始化
-derived：获得，起源
-computations：计算
-performed：做，运转
-synchronous：同步
-variant：变形
-deactivate：停止工作，灭活
-obligation：义务
-annotate：注释
-incompatible：不兼容
-semantics：语义
-syntax：语法
-executable：可执行的
-alias：别名
-restricted：受限制的
-truncate：截断
-operand：操作数
-Exponentiation：指数运算
-flavours：特点
-Implicit：隐式
-adhere：遵守
-malicious：恶意的
-interpreted：解释，理解
-fractional：很小的，微不足道的，小数的
-digit：数字
-consecutive：连续的
-intermediate：中间的
-whitespace：空白符
-concat ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/12/29/20.Remix%E7%B3%BB%E5%88%97/02.remix%E9%83%A8%E7%BD%B2%E6%9C%AC%E5%9C%B0/" title="02.remix部署本地"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.remix部署本地"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/29/20.Remix%E7%B3%BB%E5%88%97/02.remix%E9%83%A8%E7%BD%B2%E6%9C%AC%E5%9C%B0/" title="02.remix部署本地">02.remix部署本地</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-29T06:04:49.186Z" title="发表于 2022-12-29 14:04:49">2022-12-29</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/20-Remix%E7%B3%BB%E5%88%97/">20.Remix系列</a></span></div><div class="content">remix部署本地使用remixd插件：npm i @remix-project&#x2F;remixd
 
-每次工作之前都要手动开启remixd
-工作区选择：connect to localhost自己安装即可
 
-</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/12/28/29.DeFi/01.flashloan/" title="01.flashloan"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.flashloan"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/28/29.DeFi/01.flashloan/" title="01.flashloan">01.flashloan</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-28T14:05:35.156Z" title="发表于 2022-12-28 22:05:35">2022-12-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/29-DeFi/">29.DeFi</a></span></div><div class="content">flashloandigest闪电贷，顾名思义就是在极短的时间内完成贷款与还款的操作。在DeFi领域，闪电贷为金融业务提供了免抵押借 款服务，是DeFi世界的一款利器。闪电贷的概念最早是由Marble协议提出来的，并由Aave、dYdX、Uniswap等协议 进行了普及，第一笔闪电贷操作来自于Aave协议。
-theory闪电贷是通过智能合约的原子性，来完成零风险贷款的业务，因此闪电贷业务只能由智能合约来实现。简单来说， 就是在一个区块交易中，同时完成借款和还款操作这两个操作，无需抵押任何资产，只需支付手续费即可。用户在借到 款之后，可以利用借到的资产进行其他操作，比如套利、偿还抵押借款、自清算等操作。然后在交易结束的时候，用户 只要把借到的款项及手续费及时归还就可以，否则该笔交易就会回滚，就像什么也没有发生过一样。
-Atomicity原子性是指具有原子性的事务。以太坊的每比交易都是具有原子性的，原子事务是不可分割的，在事务执行完 毕之前，不会被任 何其他操作所中断。而该事务中的所有操作，要么全部被成功执行，要么全部执行失败，不会出现 一部分成功而另一部分失败的情况。
 
-向dYdX进行借 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/12/28/21.Ethernaut%E9%9D%B6%E5%9C%BA/00.%E5%8F%82%E8%80%83/" title="00.参考"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.参考"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/28/21.Ethernaut%E9%9D%B6%E5%9C%BA/00.%E5%8F%82%E8%80%83/" title="00.参考">00.参考</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-28T13:57:37.891Z" title="发表于 2022-12-28 21:57:37">2022-12-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/21-Ethernaut%E9%9D%B6%E5%9C%BA/">21.Ethernaut靶场</a></span></div><div class="content">参考靶场：https://ethernaut.openzeppelin.com/
-解题参考：
+        
+  
+  
+<script src="/js/shares.js"></script>
 
-https://medium.com/@0xsage
-https://stermi.medium.com/
-https://cyanwingsbird.blog/solidity/ethernaut/13-gatekeeper-one/
-https://cmichel.io/ethernaut-solutions/
-https://www.youtube.com/watch?v=AUQxXJiqLF4&amp;list=PLiAoBT74VLnmRIPZGg4F36fH3BjQ5fLnz&amp;index=14
 
-</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/12/28/21.Ethernaut%E9%9D%B6%E5%9C%BA/20.Denial/" title="20.Denial"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="20.Denial"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/28/21.Ethernaut%E9%9D%B6%E5%9C%BA/20.Denial/" title="20.Denial">20.Denial</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-28T13:21:58.927Z" title="发表于 2022-12-28 21:21:58">2022-12-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/21-Ethernaut%E9%9D%B6%E5%9C%BA/">21.Ethernaut靶场</a></span></div><div class="content">Denial题目目标：这是一个简单的钱包，会随着时间的推移而流失资金。您可以成为提款伙伴，慢慢提款。通关条件： 在owner调用withdraw()时拒绝提取资金（合约仍有资金，并且交易的gas少于1M）。
-123456789101112131415161718192021222324252627282930313233// SPDX-License-Identifier: MITpragma solidity ^0.8.0;contract Denial &#123;    address public partner; // withdrawal partner - pay the gas, split the withdraw    address public constant owner = address(0xA9E);    uint timeLastWithdrawn;    mapping(address =&gt; uint) withdrawPartnerBalances; // keep track of partners balances    functio ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/13/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#content-inner">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/#content-inner">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/#content-inner">30</a><a class="extend next" rel="next" href="/page/15/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
-            <i class="fas fa-folder-open"></i>
-            <span>分类</span>
-            <a class="card-more-btn" href="/categories/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a>
-            </div>
-            <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-EVM/"><span class="card-category-list-name">01.EVM</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/"><span class="card-category-list-name">01.以太坊</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/"><span class="card-category-list-name">02.solidity语法</span><span class="card-category-list-count">54</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">03.solidity进阶</span><span class="card-category-list-count">22</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/05-Openzeppelin%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">05.Openzeppelin系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/06-Hardhat%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">06.Hardhat系列</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/07-%E5%8A%A0%E5%AF%86%E5%83%B5%E5%B0%B8/"><span class="card-category-list-name">07.加密僵尸</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">08.扩展见闻&杂笔记</span><span class="card-category-list-count">4</span></a></li>
-            </ul></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">30</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">100</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">94</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">68</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">292</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-02-25T14:52:06.212Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

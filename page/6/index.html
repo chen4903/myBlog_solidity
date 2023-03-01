@@ -1,250 +1,533 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="始生有物，其形必丑">
-<meta property="og:type" content="website">
-<meta property="og:title" content="solidity life">
-<meta property="og:url" content="http://example.com/page/6/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="始生有物，其形必丑">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/page/6/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'solidity life',
-  isPost: false,
-  isHome: true,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2023-02-25 22:52:07'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
+    <meta name="robots" content="noindex" />
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <div class="container index">
+  <div class="post-list">
+    <!-- 遍历渲染文章 -->
+    
+      <div class="post-item" title="06.比特币共识机制">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/06.%E6%AF%94%E7%89%B9%E5%B8%81%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/">
+            
+              
+                <span>06.比特币共识机制</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="05.比特币数据结构">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/05.%E6%AF%94%E7%89%B9%E5%B8%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+            
+              
+                <span>05.比特币数据结构</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="04.比特币交易签名及验证">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/04.%E6%AF%94%E7%89%B9%E5%B8%81%E4%BA%A4%E6%98%93%E7%AD%BE%E5%90%8D%E5%8F%8A%E9%AA%8C%E8%AF%81/">
+            
+              
+                <span>04.比特币交易签名及验证</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="03.比特币交易">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/03.%E6%AF%94%E7%89%B9%E5%B8%81%E4%BA%A4%E6%98%93/">
+            
+              
+                <span>03.比特币交易</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="02.比特币地址">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/02.%E6%AF%94%E7%89%B9%E5%B8%81%E5%9C%B0%E5%9D%80/">
+            
+              
+                <span>02.比特币地址</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="03.区块链重要性">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/33.%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/03.%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8D%E8%A6%81%E6%80%A7/">
+            
+              
+                <span>03.区块链重要性</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="02.区块链特点">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/33.%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/02.%E5%8C%BA%E5%9D%97%E9%93%BE%E7%89%B9%E7%82%B9/">
+            
+              
+                <span>02.区块链特点</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="01.区块链产业人才">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/33.%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/01.%E5%8C%BA%E5%9D%97%E9%93%BE%E4%BA%A7%E4%B8%9A%E4%BA%BA%E6%89%8D/">
+            
+              
+                <span>01.区块链产业人才</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="01.比特币简介">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/01.%E6%AF%94%E7%89%B9%E5%B8%81%E7%AE%80%E4%BB%8B/">
+            
+              
+                <span>01.比特币简介</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="38.LostAssets">
+        <div class="time-m-d">2023-01-27</div>
+        <div class="title">
+          <a href="/2023/01/27/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/38.LostAssets/">
+            
+              
+                <span>38.LostAssets</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+  </div>
+  <nav class="post-navigation">
+    
+      <a href="/page/5/"><i class="iconfont icon-angleleft"></i></a>
+    
+    <span class="page-num">6 / 30</span>    
+      <a href="/page/7/"><i class="iconfont icon-angleright"></i></a>
+    
+  </nav>
+</div>
+
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
       }
     }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/bd833433161747b589ed994f354c547e')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">solidity life</h1><div id="site_social_icons"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/03.%E6%AF%94%E7%89%B9%E5%B8%81%E4%BA%A4%E6%98%93/" title="03.比特币交易"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.比特币交易"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/03.%E6%AF%94%E7%89%B9%E5%B8%81%E4%BA%A4%E6%98%93/" title="03.比特币交易">03.比特币交易</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T06:28:44.625Z" title="发表于 2023-01-28 14:28:44">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/32-%E6%AF%94%E7%89%B9%E5%B8%81/">32.比特币</a></span></div><div class="content">比特币交易交易、消费、UTXO
-交易就是比特币持有者已授权把自己拥有的比特币转账给其他人
 
-花费是指签署一笔交易，转移一笔以前交易的比特币给以比特币地址所标示的新所有者
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
 
-未花费的交易输出（Unspent Transaction Output，UTXO），是还没有被下一个交易花费的交易输出
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
 
-不能分割，只能被整体消费
-单位是“聪” ， 1比特币&#x3D; 1亿聪
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
 
 
 
-交易输入输出
-交易就是比特币持有者已授权把自己拥有的比特币转账给其他人
-包含一个或多个输入
-包含一个或多个输出
-包含每一笔输入的所有权证明
 
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
 
-输出累加略少于输入，两者的差隐含为手续费
-
-
-
-
-上图链接
-交易输入
-每个交易都有一个或多个输入，用来支付交易输出所需的价值
-
-交易输入通过引用将 UTXO标记为将被消费，并通过解锁脚本提供所有权证明 
-
-交易输入包含三部分
-
-指向UTXO的指针，被记录在区块链中所在的交易的哈希值和序列号
-解锁脚本，用以满足设定在UTXO中的支出条件，数字签名和公钥
-序列号，相对时间锁定，在给定时间前该UXTO不能被花费
+  
+<script src="/js/colorscheme.js"></script>
 
 
 
-交易输入举例
-123456789101112131415&quot ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/02.%E6%AF%94%E7%89%B9%E5%B8%81%E5%9C%B0%E5%9D%80/" title="02.比特币地址"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.比特币地址"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/02.%E6%AF%94%E7%89%B9%E5%B8%81%E5%9C%B0%E5%9D%80/" title="02.比特币地址">02.比特币地址</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T06:17:29.965Z" title="发表于 2023-01-28 14:17:29">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/32-%E6%AF%94%E7%89%B9%E5%B8%81/">32.比特币</a></span></div><div class="content">比特币地址引入对方给你转账，你需要提供什么信息？你的户名、你的银行卡卡号
-你给对方转账，你需要提供什么信息？对方的户名、对方银行卡卡号、你的户名、你的银行卡卡号、你的银行卡密码
-比特币如何 借鉴？
-账户
-每个账户有一个密钥
-给每个账户一个字母或数字组成的标识符–比特币地址。例如：1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
-比特币地址就好像银行卡卡号，通过比特币地址，任何人也可以向你转入比特币
 
-私钥
-一个比特币地址中的所有资金的控制取决于相应私钥的所有权和控制权
-在比特币交易中，私钥用于生成支付比特币所必需的签名以证明资金的所有权 
-私钥必须始终保持机密，因为一旦被泄露给第三方，相当于该私钥保护 之下的比特币也拱手相让了
-你可以随机生成你的私钥：掷硬币256次，用纸和笔记录正反面并转换为0和1，随机得到的256位二进制数字可作为比特币钱包的私钥
 
-公钥通过椭圆曲线算法可以从私钥计算得到 公钥，这是不可逆转的过程：
-
-K &#x3D; k * G
-其中k是私钥，G是被称为生成点的常数点，而K是所得公钥
-
-其反向运算，从已知公钥K来求出私钥 k，是非常困难的，就像 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/33.%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/03.%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8D%E8%A6%81%E6%80%A7/" title="03.区块链重要性"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.区块链重要性"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/33.%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/03.%E5%8C%BA%E5%9D%97%E9%93%BE%E9%87%8D%E8%A6%81%E6%80%A7/" title="03.区块链重要性">03.区块链重要性</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T05:58:15.277Z" title="发表于 2023-01-28 13:58:15">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/33-%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/">33.区块链概述</a></span></div><div class="content">区块链重要性区块链上升为国家战略2019年10月24日中共中央总书记习近平在主持中共中 央政治局就区块链技术发展现状和趋势进行的第十八次 集体学习时强调，区块链技术的集成应用在新的技术革 新和产业变革中起着重要作用。区块链技术应用已延伸 到数字金融、物联网、智能制造、供应链管理、数字资 产交易等多个领域。要求探索区块链在信息基础设施、 智慧交通、能源电力等领域的推广应用。
-关键字：集成应用、技术革新、产业变革、实体经济、数字金融、信息基础设施
-区块链正式纳入“新基建”2020年4月20日，国家发改委创新和高技术发展司司长伍浩仔国家发展和改革委员会新闻发布会上表示，新型基础 设施是以新发展理念为引领，以技术创新为驱动，以信息网络为基础，面向高质量发展需要，提供数字转型、智能 升级、融合创新等服务的基础设施体系。 新型基础设施主要包括信息基础设施、融合基础设施和创新基础设施3个方面内容，其中信息基础设施主要是指基于 新一代信息技术演化生成的基础设施，比如，以5G、物联网、工业互联网、卫星互联网为代表的通信网络基础设施， 以人工智能、云计算、区块链等为代表的新技术基础设施，以数据中心、智能计 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/33.%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/02.%E5%8C%BA%E5%9D%97%E9%93%BE%E7%89%B9%E7%82%B9/" title="02.区块链特点"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.区块链特点"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/33.%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/02.%E5%8C%BA%E5%9D%97%E9%93%BE%E7%89%B9%E7%82%B9/" title="02.区块链特点">02.区块链特点</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T05:56:09.785Z" title="发表于 2023-01-28 13:56:09">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/33-%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/">33.区块链概述</a></span></div><div class="content">区块链特点
-去中心化：不依赖任何第三方中介机 构做信用背书，所有的参 与者自己给自己做背书。
-安全且不可篡改：一个人的账本被攻破，还 有其他所有参与着的账本 作为备案，要想篡改信息， 就必须攻破超过51%参与 者的账本。
-公平：所有人都可参与记账，记 账最快的人可获得记账奖 励。
-公开：记账结果对所有参与者公 开，防止中心机构的数据 作假。
-匿名：记账信息公开，但记账人 的实际对应人匿名，这也 保护了记账人和交易人的 信息安全。
-可追溯：区块链固化了交易历史， 并提供对交易历史的追溯 查询，保证交易的不可篡 改和不可抵赖。
-
-</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/33.%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/01.%E5%8C%BA%E5%9D%97%E9%93%BE%E4%BA%A7%E4%B8%9A%E4%BA%BA%E6%89%8D/" title="01.区块链产业人才"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.区块链产业人才"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/33.%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/01.%E5%8C%BA%E5%9D%97%E9%93%BE%E4%BA%A7%E4%B8%9A%E4%BA%BA%E6%89%8D/" title="01.区块链产业人才">01.区块链产业人才</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T05:51:37.899Z" title="发表于 2023-01-28 13:51:37">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/33-%E5%8C%BA%E5%9D%97%E9%93%BE%E6%A6%82%E8%BF%B0/">33.区块链概述</a></span></div><div class="content">区块链产业人才简介
-区块链是一门跨学科、跨领域的技术体系，专业方向涉及计算机、数 学、密码学等
-根据实际产业情况，区块链人才可分为四类
-理论创新人才：致力于研究区块链前沿核心理论，推动理论创新与突破 
-区块链核心研发人才：结合区块链前沿前沿理论与算法，开发区块链底层平台 
-区块链实用技术人才：将区块链具体技术应用于具体落地应用
-区块链行业应用人才：把区块链和实际行业相结合，致力于用区块链技术解决 实际行业问题
+        
+  
+  
+<script src="/js/shares.js"></script>
 
 
 
-区块链岗位能力要素
-</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/01.%E6%AF%94%E7%89%B9%E5%B8%81%E7%AE%80%E4%BB%8B/" title="01.比特币简介"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.比特币简介"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/32.%E6%AF%94%E7%89%B9%E5%B8%81/01.%E6%AF%94%E7%89%B9%E5%B8%81%E7%AE%80%E4%BB%8B/" title="01.比特币简介">01.比特币简介</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T05:50:12.114Z" title="发表于 2023-01-28 13:50:12">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/32-%E6%AF%94%E7%89%B9%E5%B8%81/">32.比特币</a></span></div><div class="content">比特币简介比特币是一套点对点的公共账本
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
-比特币的诞生
-1977：哈耶克提出了《货币非国有化》的主张:货币应该像其他商品一样，在自由竞争中优胜劣汰
-1982：莱斯利·兰伯特等人提出拜占庭将军问题。戴维·乔姆最早提出了不可追踪的密码学网络支付系统（比特币隐私保护的雏形)
-1990：戴维·乔姆将他的想法扩展为最初的密码学匿名现金系统(ecash)，莱斯利·兰伯提出Paxos算法（分布式系统一致性算法
-1991：斯图尔·哈伯等人提出利用时间戳确保数位文件安全的协议，后来被比特币系统采用
-1997：亚当·巴科开发出“哈希现金”系统，体现出易验证难破解的特征，后来成为比特币系统的核心技术之一
-1998：戴维的分布式B钱，引入PoW机制。尼克·萨博发明了“Bit gold”，通过“工作量证明”构建出产权认证系统
-2008：中本聪发表白皮书《比特币:一种点对点的电子现金系统》
-2008：哈尔芬尼提出RPoW（可重复使用的工作量证明)，将B钱与哈希现金结合起来创造了密码学货币DigiCash
-
-电子档与实物的 “转移”差异
-“货币”如果可以复制粘贴，足以让整个世界凌乱
-中本聪没有去创造一种具象的电子档 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/27/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/38.LostAssets/" title="38.LostAssets"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="38.LostAssets"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/27/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/38.LostAssets/" title="38.LostAssets">38.LostAssets</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-27T15:34:15.099Z" title="发表于 2023-01-27 23:34:15">2023-01-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="content">LostAssets题目要求：调用isComplete()返回true
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134pragma solidity 0.8.10;import &quot;@openzeppelin/contracts/token/ERC20/ERC20.sol&quot;;import &quot;@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol&quot;;import  ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/27/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/37.FlashLoanMain/" title="37.FlashLoanMain"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="37.FlashLoanMain"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/27/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/37.FlashLoanMain/" title="37.FlashLoanMain">37.FlashLoanMain</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-27T07:02:58.068Z" title="发表于 2023-01-27 15:02:58">2023-01-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="content">FlashLoanMain题目要求：FlashLoanMain的isComplete设置为true
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174175176177178179180181182183184185186 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/06.Uniswap%20%E5%88%A0%E9%99%A4%E6%B5%81%E5%8A%A8%E6%80%A7/" title="06.Uniswap 删除流动性"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Uniswap 删除流动性"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/26/17.Uniswap%E7%B3%BB%E5%88%97/06.Uniswap%20%E5%88%A0%E9%99%A4%E6%B5%81%E5%8A%A8%E6%80%A7/" title="06.Uniswap 删除流动性">06.Uniswap 删除流动性</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-26T11:03:14.630Z" title="发表于 2023-01-26 19:03:14">2023-01-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/17-Uniswap%E7%B3%BB%E5%88%97/">17.Uniswap系列</a></span></div><div class="content">Uniswap 删除流动性图片取自：thinkingchain.app
-![image-20230126190943142](06.Uniswap 删除流动性&#x2F;image-20230126190943142.png)
-![image-20230126191616084](06.Uniswap 删除流动性&#x2F;image-20230126191616084.png)
-</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/26/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/03.%E8%8E%B7%E5%BE%97slowmist%E4%BA%94%E5%91%A8%E5%B9%B4NFT/" title="03.获得slowmist五周年NFT"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.获得slowmist五周年NFT"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/26/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/03.%E8%8E%B7%E5%BE%97slowmist%E4%BA%94%E5%91%A8%E5%B9%B4NFT/" title="03.获得slowmist五周年NFT">03.获得slowmist五周年NFT</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-26T08:16:26.103Z" title="发表于 2023-01-26 16:16:26">2023-01-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/99-%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/">99.生活随笔</a></span></div><div class="content">获得slowmist五周年NFT
-
-</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/5/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#content-inner">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/#content-inner">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/#content-inner">30</a><a class="extend next" rel="next" href="/page/7/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
-            <i class="fas fa-folder-open"></i>
-            <span>分类</span>
-            <a class="card-more-btn" href="/categories/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a>
-            </div>
-            <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-EVM/"><span class="card-category-list-name">01.EVM</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/"><span class="card-category-list-name">01.以太坊</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/"><span class="card-category-list-name">02.solidity语法</span><span class="card-category-list-count">54</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">03.solidity进阶</span><span class="card-category-list-count">22</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/05-Openzeppelin%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">05.Openzeppelin系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/06-Hardhat%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">06.Hardhat系列</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/07-%E5%8A%A0%E5%AF%86%E5%83%B5%E5%B0%B8/"><span class="card-category-list-name">07.加密僵尸</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">08.扩展见闻&杂笔记</span><span class="card-category-list-count">4</span></a></li>
-            </ul></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">30</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">100</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">94</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">68</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">292</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-02-25T14:52:06.212Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+</body>
+</html>

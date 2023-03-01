@@ -1,195 +1,533 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="始生有物，其形必丑">
-<meta property="og:type" content="website">
-<meta property="og:title" content="solidity life">
-<meta property="og:url" content="http://example.com/page/26/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="始生有物，其形必丑">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/page/26/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'solidity life',
-  isPost: false,
-  isHome: true,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2023-02-25 22:52:07'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
+    <meta name="robots" content="noindex" />
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <div class="container index">
+  <div class="post-list">
+    <!-- 遍历渲染文章 -->
+    
+      <div class="post-item" title="01.RPL编码">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/03.solidity%E8%BF%9B%E9%98%B6/01.RPL%E7%BC%96%E7%A0%81/">
+            
+              
+                <span>01.RPL编码</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="43.Hash">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/43.Hash/">
+            
+              
+                <span>43.Hash</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="42.ABI编解码">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/42.ABI%E7%BC%96%E8%A7%A3%E7%A0%81/">
+            
+              
+                <span>42.ABI编解码</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="41.selfdestruct删除合约">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/41.selfdestruct%E5%88%A0%E9%99%A4%E5%90%88%E7%BA%A6/">
+            
+              
+                <span>41.selfdestruct删除合约</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="40.create2合约地址计算">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/40.create2%E5%90%88%E7%BA%A6%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97/">
+            
+              
+                <span>40.create2合约地址计算</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="39.create在合约中创建新合约">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/39.create%E5%9C%A8%E5%90%88%E7%BA%A6%E4%B8%AD%E5%88%9B%E5%BB%BA%E6%96%B0%E5%90%88%E7%BA%A6/">
+            
+              
+                <span>39.create在合约中创建新合约</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="38.ABI">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/38.ABI/">
+            
+              
+                <span>38.ABI</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="37.String Literals and Types">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/37.String%20Literals%20and%20Types/">
+            
+              
+                <span>37.String Literals and Types</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="36.import">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/36.import/">
+            
+              
+                <span>36.import</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="35.Special Functions">
+        <div class="time-m-d">2022-11-27</div>
+        <div class="title">
+          <a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/35.Special%20Functions/">
+            
+              
+                <span>35.Special Functions</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+  </div>
+  <nav class="post-navigation">
+    
+      <a href="/page/25/"><i class="iconfont icon-angleleft"></i></a>
+    
+    <span class="page-num">26 / 30</span>    
+      <a href="/page/27/"><i class="iconfont icon-angleright"></i></a>
+    
+  </nav>
+</div>
+
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
       }
     }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/bd833433161747b589ed994f354c547e')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">solidity life</h1><div id="site_social_icons"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/41.selfdestruct%E5%88%A0%E9%99%A4%E5%90%88%E7%BA%A6/" title="41.selfdestruct删除合约"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="41.selfdestruct删除合约"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/41.selfdestruct%E5%88%A0%E9%99%A4%E5%90%88%E7%BA%A6/" title="41.selfdestruct删除合约">41.selfdestruct删除合约</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.303Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">删除合约selfdestruct命令可以用来删除智能合约，并将该合约剩余ETH转到指定地址。selfdestruct是为了应对合约出错的极端情况而设计的。它最早被命名为suicide（自杀），但是这个词太敏感。为了保护抑郁的程序员，改名为selfdestruct。
-用法selfdestruct使用起来非常简单：
-1selfdestruct(_addr)；
 
-其中_addr是接收合约中剩余ETH的地址。
-例子1234567891011121314151617contract DeleteContract &#123;    uint public value = 10;    constructor() payable &#123;&#125;    receive() external payable &#123;&#125;    function deleteContract() external &#123;        // 调用selfdestruct销毁合约，并把剩余的ETH转给msg.sender        selfdestruct(payable(msg.send ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/40.create2%E5%90%88%E7%BA%A6%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97/" title="40.create2合约地址计算"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="40.create2合约地址计算"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/40.create2%E5%90%88%E7%BA%A6%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97/" title="40.create2合约地址计算">40.create2合约地址计算</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.301Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">create2合约地址计算CREATE2 操作码使我们在智能合约部署在以太坊网络之前就能预测合约的地址。Uniswap创建Pair合约用的就是CREATE2而不是CREATE。这一讲，我将介绍CREATE2的用法
-CREATE2如何计算地址CREATE2的目的是为了让合约地址独立于未来的事件。不管未来区块链上发生了什么，你都可以把合约部署在事先计算好的地址上。用CREATE2创建的合约地址由4个部分决定：
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
 
-0xFF：一个常数，避免和CREATE冲突
-创建者地址
-salt（盐）：一个创建者给定的数值
-待部署合约的字节码（bytecode）
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
 
-1新地址 = hash(&quot;0xFF&quot;,创建者地址, salt, bytecode)
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
 
-CREATE2 确保，如果创建者使用 CREATE2 和提供的 salt 部署给定的合约bytecode，它将存储在 新地址 中。
-计算包含特定字符的地址以下以计算一个包含’5a54’的地址为例
-12345678910111213141516171819//使用python，引入web3库from web3 import Web3s1 = &# ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/39.create%E5%9C%A8%E5%90%88%E7%BA%A6%E4%B8%AD%E5%88%9B%E5%BB%BA%E6%96%B0%E5%90%88%E7%BA%A6/" title="39.create在合约中创建新合约"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="39.create在合约中创建新合约"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/39.create%E5%9C%A8%E5%90%88%E7%BA%A6%E4%B8%AD%E5%88%9B%E5%BB%BA%E6%96%B0%E5%90%88%E7%BA%A6/" title="39.create在合约中创建新合约">39.create在合约中创建新合约</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.300Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">在合约中创建新合约在以太坊链上，用户（外部账户，EOA）可以创建智能合约，智能合约同样也可以创建新的智能合约。去中心化交易所uniswap就是利用工厂合约（Factory）创建了无数个币对合约（Pair）。这一讲，我会用简化版的uniswap讲如何通过合约创建合约。
-create和create2有两种方法可以在合约中创建新合约，create和create2，这里我们讲create，下一讲会介绍create2。
-create的用法很简单，就是new一个合约，并传入新合约构造函数所需的参数：
-1Contract x = new Contract&#123;value: _value&#125;(params)
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
 
-其中Contract是要创建的合约名，x是合约对象（地址），如果构造函数是payable，可以创建时转入_value数量的ETH，params是新合约构造函数的参数。
-极简UniswapUniswap V2核心合约中包含两个合约：
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
 
-UniswapV2Pair: 币对合约，用于管理币对地址、流动性、买卖。
-UniswapV2Factory: 工厂合约，用于创建新的币对，并管理币对地 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/38.ABI/" title="38.ABI"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="38.ABI"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/38.ABI/" title="38.ABI">38.ABI</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.298Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">ABI像 Solidity这样的高级语言定义了如何从程序的入口点到达特定函数的入口点。当外部应用程序或另一个智能合约想要与区块链交互时，它需要了解智能合约的接口，例如识别方法及其参数的方法。以太坊应用程序二进制接口 (ABI) 实现了这一点。  
-它类似于应用程序接口 (API)，它本质上是人类可读形式或高级语言的代码接口表示。在 EVM 中，作为二进制数据存储的编译代码和人类可读的界面消失了，智能合约交互必须转换为 EVM 可以解释的二进制格式。ABI 定义了您可以简单地用于与该二进制合约交互的方法和结构（就像 API 所做的那样），只是在较低级别上。ABI 向调用者指示编码所需的信息（函数签名和变量声明），以便虚拟机调用字节码（合同）可以理解。这个过程称为ABI 编码。
-与 API 不同，我们不能直接以 JSON 格式向智能合约发送请求并期望得到响应，因为合约仅以字节码进行通信。为了将其转换为 EVM 可以理解的内容，此信息通过 ABI 编码进行编码。这些编码包括函数签名和变量声明，以便 EVM 准确知道在智能合约中执行哪个函数。 
-智能合约在区块链中的调用情况如图，如何理解ABI ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/37.String%20Literals%20and%20Types/" title="37.String Literals and Types"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="37.String Literals and Types"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/37.String%20Literals%20and%20Types/" title="37.String Literals and Types">37.String Literals and Types</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.296Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">String Literals and TypesString literals are written with either double or single-quotes (&quot;foo&quot; or &#39;bar&#39;), and they can also be split into multiple consecutive parts (&quot;foo&quot; &quot;bar&quot; is equivalent to &quot;foobar&quot;) which can be helpful when dealing with long strings. They do not imply trailing zeroes as in C; &quot;foo&quot; represents three bytes, not four. As with integer literals, their type can vary, but they are implicitly convertible to bytes1, …, byt ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/36.import/" title="36.import"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="36.import"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/36.import/" title="36.import">36.import</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.294Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">importsolidity支持利用import关键字导入其他源代码中的合约，让开发更加模块化。作用：导入其他合约中的全局符号。
-用法
-引用(import)在代码中的位置为：在声明版本号之后，在其余代码之前
+                  if (start < 0) {
+                    start = 0;
+                  }
 
-通过源文件相对位置导入：import “filename”;
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
 
 
-1234567文件结构├── Import.sol└── Yeye.sol// 通过文件相对位置importimport &#x27;./Yeye.sol&#x27;;//这个写法错误：import from&quot;./Yeye.sol&quot;;
 
-The filename part is called an import path. This statement imports all global symbols from “filename” (and symbols imported there) into the current global scope (different than in ES6 but backwards-compatible for Solidity). This form ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/35.Special%20Functions/" title="35.Special Functions"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="35.Special Functions"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/35.Special%20Functions/" title="35.Special Functions">35.Special Functions</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.293Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">Special FunctionsReceive FunctionA contract can have at most one receive function, declared using receive() external payable &#123; ... &#125; (without the function keyword). This function cannot have arguments, cannot return anything and must have external visibility and payable state mutability. It can be virtual, can override and can have modifiers.
-The receive function is executed on a call to the contract with empty calldata. This is the function that is executed on plain Ether transfers (e ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/34.abstract%20contract/" title="34.abstract contract"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="34.abstract contract"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/34.abstract%20contract/" title="34.abstract contract">34.abstract contract</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.291Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">abstract contractContracts must be marked as abstract when at least one of their functions is not implemented or when they do not provide arguments for all of their base contract constructors. Even if this is not the case, a contract may still be marked abstract, such as when you do not intend for the contract to be created directly. Abstract contracts are similar to Interfaces but an interface is more limited in what it can declare.
-An abstract contract is declared using the abstract keyword as ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/33.modifier/" title="33.modifier"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="33.modifier"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/33.modifier/" title="33.modifier">33.modifier</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.289Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">modifierdigestModifiers can be used to change the behaviour of functions in a declarative way. For example, you can use a modifier to automatically check a condition prior to executing the function.
-Modifiers are inheritable properties of contracts and may be overridden by derived contracts, but only if they are marked virtual. For details, please see Modifier Overriding.
-feature
-If you want to access a modifier m defined in a contract C, you can use C.m to reference it without virtual lookup. I ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/32.%E6%9E%84%E9%80%A0%E5%99%A8/" title="32.构造器"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="32.构造器"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/02.solidity%E8%AF%AD%E6%B3%95/32.%E6%9E%84%E9%80%A0%E5%99%A8/" title="32.构造器">32.构造器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T14:23:20.288Z" title="发表于 2022-11-27 22:23:20">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/">02.solidity语法</a></span></div><div class="content">构造器digestA constructor is an optional function declared with the constructor keyword which is executed upon contract creation, and where you can run contract initialisation code.
-Before the constructor code is executed, state variables are initialised to their specified value if you initialise them inline, or their default value if you do not.
-After the constructor has run, the final code of the contract is deployed to the blockchain. The deployment of the code costs additional gas linear to the ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/25/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/#content-inner">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/#content-inner">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/#content-inner">30</a><a class="extend next" rel="next" href="/page/27/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
-            <i class="fas fa-folder-open"></i>
-            <span>分类</span>
-            <a class="card-more-btn" href="/categories/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a>
-            </div>
-            <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-EVM/"><span class="card-category-list-name">01.EVM</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/"><span class="card-category-list-name">01.以太坊</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/"><span class="card-category-list-name">02.solidity语法</span><span class="card-category-list-count">54</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">03.solidity进阶</span><span class="card-category-list-count">22</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/05-Openzeppelin%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">05.Openzeppelin系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/06-Hardhat%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">06.Hardhat系列</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/07-%E5%8A%A0%E5%AF%86%E5%83%B5%E5%B0%B8/"><span class="card-category-list-name">07.加密僵尸</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">08.扩展见闻&杂笔记</span><span class="card-category-list-count">4</span></a></li>
-            </ul></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">30</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">100</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">94</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">68</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">292</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-02-25T14:52:06.212Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

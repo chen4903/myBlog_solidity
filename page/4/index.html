@@ -1,341 +1,533 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="始生有物，其形必丑">
-<meta property="og:type" content="website">
-<meta property="og:title" content="solidity life">
-<meta property="og:url" content="http://example.com/page/4/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="始生有物，其形必丑">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/page/4/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'solidity life',
-  isPost: false,
-  isHome: true,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2023-02-25 22:52:07'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
+    <meta name="robots" content="noindex" />
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <div class="container index">
+  <div class="post-list">
+    <!-- 遍历渲染文章 -->
+    
+      <div class="post-item" title="00.简介">
+        <div class="time-m-d">2023-02-19</div>
+        <div class="title">
+          <a href="/2023/02/19/37.Ethersjs/00.%E7%AE%80%E4%BB%8B/">
+            
+              
+                <span>00.简介</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="01.unstoppable">
+        <div class="time-m-d">2023-02-18</div>
+        <div class="title">
+          <a href="/2023/02/18/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/01.unstoppable/">
+            
+              
+                <span>01.unstoppable</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="00.digest">
+        <div class="time-m-d">2023-02-18</div>
+        <div class="title">
+          <a href="/2023/02/18/36.Damn%20Vulnerable%20DeFi%20v3%20CTF/00.digest/">
+            
+              
+                <span>00.digest</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="00.digest">
+        <div class="time-m-d">2023-02-18</div>
+        <div class="title">
+          <a href="/2023/02/18/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/00.digest/">
+            
+              
+                <span>00.digest</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="04.白夜行">
+        <div class="time-m-d">2023-01-30</div>
+        <div class="title">
+          <a href="/2023/01/30/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/04.%E7%99%BD%E5%A4%9C%E8%A1%8C/">
+            
+              
+                <span>04.白夜行</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="08.Fabric对比以太坊">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/34.Fabric/08.Fabric%E5%AF%B9%E6%AF%94%E4%BB%A5%E5%A4%AA%E5%9D%8A/">
+            
+              
+                <span>08.Fabric对比以太坊</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="07.Fabric智能合约">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/">
+            
+              
+                <span>07.Fabric智能合约</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="06.Fabric共识机制">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/34.Fabric/06.Fabric%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/">
+            
+              
+                <span>06.Fabric共识机制</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="05.Fabric账本结构">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/34.Fabric/05.Fabric%E8%B4%A6%E6%9C%AC%E7%BB%93%E6%9E%84/">
+            
+              
+                <span>05.Fabric账本结构</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="04.Fabric交易流程">
+        <div class="time-m-d">2023-01-28</div>
+        <div class="title">
+          <a href="/2023/01/28/34.Fabric/04.Fabric%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/">
+            
+              
+                <span>04.Fabric交易流程</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+  </div>
+  <nav class="post-navigation">
+    
+      <a href="/page/3/"><i class="iconfont icon-angleleft"></i></a>
+    
+    <span class="page-num">4 / 30</span>    
+      <a href="/page/5/"><i class="iconfont icon-angleright"></i></a>
+    
+  </nav>
+</div>
+
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
       }
     }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/bd833433161747b589ed994f354c547e')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">solidity life</h1><div id="site_social_icons"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/18/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/00.digest/" title="00.digest"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/18/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/00.digest/" title="00.digest">00.digest</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-18T15:05:48.030Z" title="发表于 2023-02-18 23:05:48">2023-02-18</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/35-Damn-Vulnerable-DeFi-v2-CTF/">35.Damn Vulnerable DeFi v2 CTF</a></span></div><div class="content">digest
-CTF site：https://www.damnvulnerabledefi.xyz/
 
-version：2.0.0。version update introduction：https://www.damnvulnerabledefi.xyz/v2-release/
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
 
-solution reference
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
 
-https://cmichel.io/damn-vulnerable-de-fi-solutions/
-https://medium.com/@balag3/damn-vulnerable-defi-walkthrough-223cdbaf216e
-https://medium.com/@juanxaviervalverde
-https://thomasxu-blockchain.github.io/categories/
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
 
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
 
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
 
-</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/30/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/04.%E7%99%BD%E5%A4%9C%E8%A1%8C/" title="04.白夜行"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.白夜行"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/30/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/04.%E7%99%BD%E5%A4%9C%E8%A1%8C/" title="04.白夜行">04.白夜行</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-30T04:49:06.519Z" title="发表于 2023-01-30 12:49:06">2023-01-30</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/99-%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/">99.生活随笔</a></span></div><div class="content">白夜行二刷《白夜行》，最喜欢的一本书
+                  if (start < 0) {
+                    start = 0;
+                  }
 
-“我的天空里没有太阳，总是黑夜，但并不暗，因为有东西代替了太阳。虽然没有太阳那么明亮，但对我来说已经足够。凭借着这份光，我便能把黑夜当成白天。你明白吧？我从来就没有太阳，所以不怕失去。”
-笹垣观察了一下室内，房间整理得算是相当干净。就小学生的房间而言，甚至给人有点冷清的感觉。房内没有贴山口百惠或樱田淳子的海报，也没有装饰超级跑车图片。书架上没有漫画，只有百科全书、《汽车的构造》《电视的构造》等儿童科普书籍。
-然而，男孩低头看警察的目光中却没有那种味道。他的眼神甚至可以用无机质来形容，也像是正在进行观察的科学家。他是在观察我吗？笹垣有这种感觉。
-他想，她在学校里一定与别人格格不入
-她吃过的苦，一定不是无忧无虑地长大的自己所能体会的。但是，分明历经如此艰难的过去，雪穗又怎能如此优雅呢？江利子钦佩不已。或者正因为有这些体验，才让她从内而外散发出光芒。
-其实不止雄一，他似乎和同学不相往来。无论做什么，他都不起眼，上课时也极少发言，午休和下课时间总是一个人看书。阴沉的家伙——这是雄一对他的印象。
-“可缩写是 RK呢。”江利子看着绣在上面的字母，“唐泽雪穗（ ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/34.Fabric/08.Fabric%E5%AF%B9%E6%AF%94%E4%BB%A5%E5%A4%AA%E5%9D%8A/" title="08.Fabric对比以太坊"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Fabric对比以太坊"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/34.Fabric/08.Fabric%E5%AF%B9%E6%AF%94%E4%BB%A5%E5%A4%AA%E5%9D%8A/" title="08.Fabric对比以太坊">08.Fabric对比以太坊</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T13:05:38.142Z" title="发表于 2023-01-28 21:05:38">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/34-Fabric/">34.Fabric</a></span></div><div class="content">Fabric对比以太坊
+                  if (start == 0) {
+                    end = 100;
+                  }
 
-</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/" title="07.Fabric智能合约"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Fabric智能合约"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/34.Fabric/07.Fabric%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6/" title="07.Fabric智能合约">07.Fabric智能合约</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T12:54:08.614Z" title="发表于 2023-01-28 20:54:08">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/34-Fabric/">34.Fabric</a></span></div><div class="content">Fabric智能合约区块链应用
-由若干部署在区块链网络中的智能合约，以及调用这些智能合约的应用程序 组成
-用户专注于与业务本身相关的应用程序
-智能合约则封装了与区块账本直接交互的相关过程，被应用程序调用
+                  if (end > content.length) {
+                    end = content.length;
+                  }
 
+                  var match_content = content.substr(start, end);
 
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
 
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
 
-应用程序开发
-应用程序通过调用智能合约提供的方法接口来实现业务逻辑
-由于离用户侧更贴近，应用程序的开发更为灵活，可以采用已有的 主流开发语言进行开发，包括JavaScript、Python、Go、Java等
-应用程序既可以运行在区块链网络的节点上，又可以运行在中心化 的服务器上，但必须保证可以访问到智能合约暴露的服务接口
-
-智能合约开发
-智能合约直接与账本结构打交道，处于十分核心的位置
-智能合约代码本质上是为了对上层业务逻辑进行支持
-智能合约最终会部署在区块链网络中与账本进行交互
-开发者需要了解所选用区块链平台的智能合约结构、语言特性、状态存 储方式等知识
-开发者需要对智能合约的生命周期管理进行考虑，包括代码的编写、版 本管理、提交验证，以及升级版本等，都需要遵循一套标准的规范
-
-类型
-Fabric的智能合约称为链码（chaincode），分为系统链码和用户链码
-用户链码:
-开 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/34.Fabric/06.Fabric%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="06.Fabric共识机制"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Fabric共识机制"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/34.Fabric/06.Fabric%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6/" title="06.Fabric共识机制">06.Fabric共识机制</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T12:48:10.218Z" title="发表于 2023-01-28 20:48:10">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/34-Fabric/">34.Fabric</a></span></div><div class="content">Fabric共识机制简介
-Fabric共识机制
-Fabric共识算法：Kafka算法&#x2F;RAFT算法
-Fabric共识规则：基于投票的三阶段规则
-
-
-
-Fabric区块链框架业务通过执行两个框架达成单独的共识过程：交易排序、交易验证 共识过程分解为三个阶段：背书阶段、排序阶段和验证阶段
-
-背书阶段：客户端节点根据背书策略，选择背书节点，发送交易提案，背书节点调用智能 合约执行模拟交易，执行完成后，经过签名背书，返回给客户端节点
-排序阶段：排序节点接收已经签名背书的交易，确定交易顺序，将排好序的交易打包成区 块，分发给其他组织主节点，排序节点不关心交易是否正确，只负责排序和打 包区块
-验证阶段：区块存储和交易验证不冲突，区块存储前进行交易验证，区块状态是世界状态
-
-Fabric共识流程
-背书阶段背书节点对客户端发来的交易预案进行合法性检验
-
-客户端应用程序将交易请求打包成为交易提案后，根据背书策略发送 给指定的背书节点
-各背书节点接收到交易提议后，首先进行一些检查和签名的验证，然 后独立地模拟执行指定的链码，并不会将数据记录到账本中
-执行完成后生成一个提议结果，并调用交易背书系统 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/34.Fabric/05.Fabric%E8%B4%A6%E6%9C%AC%E7%BB%93%E6%9E%84/" title="05.Fabric账本结构"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.Fabric账本结构"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/34.Fabric/05.Fabric%E8%B4%A6%E6%9C%AC%E7%BB%93%E6%9E%84/" title="05.Fabric账本结构">05.Fabric账本结构</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T12:42:01.135Z" title="发表于 2023-01-28 20:42:01">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/34-Fabric/">34.Fabric</a></span></div><div class="content">Fabric账本结构简介
-状态数据：交易执行后的所有键值对的最新值
-历史状态索：记录改变动作， 不记录具体改变
-区块索引：快速定位区块在 文件中的位置
-区块链数据：账本数据
-
-
-区块链数据：
-
-由一个一个的区块连接而成的链式数据结构
-每一个区块中都存储有一条或一组有序的且不可篡改的记录
-每个通道有且仅有一个账本，该通道中的每个加盟成员的对等节点都 维护同一份账本
-每一个区块包含三部分数据：区块头、交易数据和元数据 
-每一个区块头中包含一个指向前一个区块头的Hash值，组成一个完整 的链
-区块链数据是直接保存在文件系统里
-
-账本存储结构
-区块链数据
-对于区块链数据结构，已经产生的数据是无法修改的，只能查询
-当有新的区块生成时，就附加在链的末尾，从而这个链逐渐增长，最 终形成一个完整的交易记录
-所有针对数据状态变更的请求都会生成有序且不可篡改的记录保存于 区块链数据中
-数据状态的变更是由所有参与方认可的智能合约调用事务的结果
-每个事务都将产生一组Key&#x2F;Value对，这些键值对作为创建、更新或 删除等操作而同步到所有账本
-
-世界状态数据
-交易执行后的所有键的最新值，是链式数据结构 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/34.Fabric/04.Fabric%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/" title="04.Fabric交易流程"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.Fabric交易流程"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/34.Fabric/04.Fabric%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B/" title="04.Fabric交易流程">04.Fabric交易流程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T12:34:10.154Z" title="发表于 2023-01-28 20:34:10">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/34-Fabric/">34.Fabric</a></span></div><div class="content">Fabric交易流程假定各节点已经提前颁发好证书，且已正常启动，并加入已经创建好的通道  在已经实例化了的链码通道上从发起一个调用交易到最终记账的全过程
-
-
-客户A从客户B 处购买萝卜
-Peer A为客户A的区块链节点，Peer B 为客户B的区块链节点
-链码：实现购买萝卜的价格和交易逻辑
-链码背书策略：Peer A和Peer B必须同时背书
-
-
-1.创建交易提案并发送给背书节点
-
-应用程序构造好交易提案请求后，选择背书节点执行并进行背书签名
-交易提案由消息头和消息结构组成，并且添加了调用者的签名信息
-背书节点会根据签名信息验证其是否是一个有效的消息
-背书节点是链码背书策略里指定的节点
-有些背书节点可能离线，其他背书节点可能拒绝对交易进行背书，或不背书 ，应用程序可以尝试使用其他可用的背书节点来满足策略
-应用程序以何种顺序给背书节点发送背书请求是没有关系的，正常情 况下背书节点执行后的结果是一致的，只有背书节点对结果的签名不 一样
-
-
-2.背书节点模拟交易并生成背书签名
-
-在收到交易提案后会进行一些验证
-交易提案的格式是否正确
-交易是否提交过（重复攻击保护）
-交易签名是否有效（通过  ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/34.Fabric/03.Fabric%E7%BD%91%E7%BB%9C%E8%8A%82%E7%82%B9%E6%9E%B6%E6%9E%84/" title="03.Fabric网络节点架构"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.Fabric网络节点架构"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/34.Fabric/03.Fabric%E7%BD%91%E7%BB%9C%E8%8A%82%E7%82%B9%E6%9E%B6%E6%9E%84/" title="03.Fabric网络节点架构">03.Fabric网络节点架构</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T12:31:34.346Z" title="发表于 2023-01-28 20:31:34">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/34-Fabric/">34.Fabric</a></span></div><div class="content">Fabric网络节点架构
-节点是区块链的通信主体，是一个逻辑概念
-多个不同类型的节点可以运行在同一物理服务器上
-节点类型
-客户端 ：代表由最终用户操作的实体
-背书节点(Endorser): 执行交易，并对结果进行签名背书
-排序节点(Orderer): 接收包含背书签名的交易，对未打包的交易进行排序 生成块
-记账节点(Committer): 负责验证从排序节点区块里的交易，维护状态数据 和账本
-
-
-
-
-
-客户端节点／应用程序
-
-必须连接到某一个 Peer 节点或者排序服务节点上与区块链网络进行通信
-向背书节点提交交易提案
-当收集到足够背书后，向排序节点广播交易，进行排序，生成区块
-
-
-背书节点
-
-背书节点是动态的角色，是与具体链码绑定的
-每个链码在实例化时会设置背书策略，指定哪些节点对交易背书后才是有效的
-只有在向它发起交易背书请求时才是背书节点，其他时候就是普通的记账节点
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
 
 
-主节点
-
-和排序节点通信，负责从排序节点处获取最新的区块并在组织内部同步
-可以强制设置为主节点，也可以动态选举产生
 
 
-排序节点
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
 
-接收包含背书签名的交易，对未打包的交易进行排序生成块，广播给Peer节点
-原子广 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/01/28/34.Fabric/02.Fabric%20%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" title="02.Fabric 系统架构"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.Fabric 系统架构"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/34.Fabric/02.Fabric%20%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" title="02.Fabric 系统架构">02.Fabric 系统架构</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T12:25:50.237Z" title="发表于 2023-01-28 20:25:50">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/34-Fabric/">34.Fabric</a></span></div><div class="content">Fabric 系统架构简介Fabric是超级账本代码库的第一个提案
-![image-20230128202653620](02.Fabric 系统架构&#x2F;image-20230128202653620.png)
-Fabric的系统架构![image-20230128202724042](02.Fabric 系统架构&#x2F;image-20230128202724042.png)
-应用层
-标准的 gRPC API接口
-高级语言的SDK：Golang 、 Node.js 、Java 、 Python 等。开发人员可以利用 SDK 开发基于区块链的应用
-事件：各个节点之间达成共识需要较长的执行时间，采用异步通信模式。 事件模块可以在触发区块事件或者链码事件的时候执行预先定义的回 调函数
-
-应用程序角度
-身份管理
-
-用户注册和登录系统后，获取到用户注册证书
-其他所有的操作都需要与用户证书关联的私钥进行签名 
-消息接收方首先会进行签名验证，才进行后续的消息处理
-网络节点同样会用到颁发的证书，比如系统启动和网络节点管理等都会 对用户身份进行认证和授权
+  
+<script src="/js/colorscheme.js"></script>
 
 
-账本管理
-
-授权的用户可以查询 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/01/28/34.Fabric/01.%20%E8%B6%85%E7%BA%A7%E8%B4%A6%E6%9C%AC%E7%AE%80%E4%BB%8B/" title="01. 超级账本简介"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01. 超级账本简介"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/01/28/34.Fabric/01.%20%E8%B6%85%E7%BA%A7%E8%B4%A6%E6%9C%AC%E7%AE%80%E4%BB%8B/" title="01. 超级账本简介">01. 超级账本简介</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-01-28T12:19:33.461Z" title="发表于 2023-01-28 20:19:33">2023-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/34-Fabric/">34.Fabric</a></span></div><div class="content">超级账本简介以太坊vs比特币比特币：跟踪比特币及其所有权状态，交易会导致全局范围的状态转换，改变了比特币的 所有权。
-以太坊：跟踪一个通用目的的数据存储的状态转变，运行智能合约会导致数据存储的状态改变，并把状态转换的结果保存在区块链账本上。
-商用区块链的要求
-多方共享数据，访问权限控制
-
-交易具有合适的可见性：交易内容只有相关方才 能看见
-
-用代码描述业务：只有满足条件才能 调用
-
-多方共同认可交易：满足需求的吞吐量
-
-身份识别与可审核性：事后能够通过身份识别来确定交易当事人身份及其在账本上的活动
-
-私下交易及保密合约：需要保证未授权的第三方不能获悉有关身份、交易模式、保密合约等条款
-
-模块共识：不同的网络需要能够配置不同的共识算法来满足不同的使用要求
-
-逻辑&#x3D;链上代码&#x3D;智能合约：区块链逻辑由代码实现，能够进行自动结算，通过签名或其他触发事件来执行
-
-性能绩效及可扩展性：在保证性能的前提下，支持网络节点数量及交易人员的不断增加
 
 
-公有链的不足![image-20230128202250515](01. 超级账本简介&#x2F;image-2023012820225 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/3/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#content-inner">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/#content-inner">30</a><a class="extend next" rel="next" href="/page/5/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
-            <i class="fas fa-folder-open"></i>
-            <span>分类</span>
-            <a class="card-more-btn" href="/categories/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a>
-            </div>
-            <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-EVM/"><span class="card-category-list-name">01.EVM</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/"><span class="card-category-list-name">01.以太坊</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/"><span class="card-category-list-name">02.solidity语法</span><span class="card-category-list-count">54</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">03.solidity进阶</span><span class="card-category-list-count">22</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/05-Openzeppelin%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">05.Openzeppelin系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/06-Hardhat%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">06.Hardhat系列</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/07-%E5%8A%A0%E5%AF%86%E5%83%B5%E5%B0%B8/"><span class="card-category-list-name">07.加密僵尸</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">08.扩展见闻&杂笔记</span><span class="card-category-list-count">4</span></a></li>
-            </ul></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">30</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">100</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">94</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">68</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">292</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-02-25T14:52:06.212Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+        
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

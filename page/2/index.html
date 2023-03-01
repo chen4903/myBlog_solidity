@@ -1,251 +1,533 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="始生有物，其形必丑">
-<meta property="og:type" content="website">
-<meta property="og:title" content="solidity life">
-<meta property="og:url" content="http://example.com/page/2/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="始生有物，其形必丑">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/page/2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'solidity life',
-  isPost: false,
-  isHome: true,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2023-02-25 22:52:07'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
+    <meta name="robots" content="noindex" />
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <div class="container index">
+  <div class="post-list">
+    <!-- 遍历渲染文章 -->
+    
+      <div class="post-item" title="03.Truster">
+        <div class="time-m-d">2023-02-23</div>
+        <div class="title">
+          <a href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/03.Truster/">
+            
+              
+                <span>03.Truster</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="02.Naive receiver">
+        <div class="time-m-d">2023-02-23</div>
+        <div class="title">
+          <a href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/02.Naive%20receiver/">
+            
+              
+                <span>02.Naive receiver</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="02.快速入门">
+        <div class="time-m-d">2023-02-22</div>
+        <div class="title">
+          <a href="/2023/02/22/06.Harhat%E7%B3%BB%E5%88%97/02.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+            
+              
+                <span>02.快速入门</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="17. MerkleTree脚本">
+        <div class="time-m-d">2023-02-22</div>
+        <div class="title">
+          <a href="/2023/02/22/37.Ethersjs/17.%20MerkleTree%E8%84%9A%E6%9C%AC/">
+            
+              
+                <span>17. MerkleTree脚本</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="16.批量归集">
+        <div class="time-m-d">2023-02-21</div>
+        <div class="title">
+          <a href="/2023/02/21/37.Ethersjs/16.%E6%89%B9%E9%87%8F%E5%BD%92%E9%9B%86/">
+            
+              
+                <span>16.批量归集</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="15.批量转账">
+        <div class="time-m-d">2023-02-21</div>
+        <div class="title">
+          <a href="/2023/02/21/37.Ethersjs/15.%E6%89%B9%E9%87%8F%E8%BD%AC%E8%B4%A6/">
+            
+              
+                <span>15.批量转账</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="14. 批量生成钱包">
+        <div class="time-m-d">2023-02-21</div>
+        <div class="title">
+          <a href="/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/">
+            
+              
+                <span>14. 批量生成钱包</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="13.编码calldata">
+        <div class="time-m-d">2023-02-21</div>
+        <div class="title">
+          <a href="/2023/02/21/37.Ethersjs/13.%E7%BC%96%E7%A0%81calldata/">
+            
+              
+                <span>13.编码calldata</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="12.识别ERC721合约">
+        <div class="time-m-d">2023-02-21</div>
+        <div class="title">
+          <a href="/2023/02/21/37.Ethersjs/12.%E8%AF%86%E5%88%ABERC721%E5%90%88%E7%BA%A6/">
+            
+              
+                <span>12.识别ERC721合约</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="11.CallStatic">
+        <div class="time-m-d">2023-02-21</div>
+        <div class="title">
+          <a href="/2023/02/21/37.Ethersjs/11.CallStatic/">
+            
+              
+                <span>11.CallStatic</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+  </div>
+  <nav class="post-navigation">
+    
+      <a href="/"><i class="iconfont icon-angleleft"></i></a>
+    
+    <span class="page-num">2 / 30</span>    
+      <a href="/page/3/"><i class="iconfont icon-angleright"></i></a>
+    
+  </nav>
+</div>
+
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
       }
     }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/bd833433161747b589ed994f354c547e')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">solidity life</h1><div id="site_social_icons"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/22/37.Ethersjs/17.%20MerkleTree%E8%84%9A%E6%9C%AC/" title="17. MerkleTree脚本"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="17. MerkleTree脚本"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/22/37.Ethersjs/17.%20MerkleTree%E8%84%9A%E6%9C%AC/" title="17. MerkleTree脚本">17. MerkleTree脚本</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T16:13:22.694Z" title="发表于 2023-02-22 00:13:22">2023-02-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">MerkleTree脚本转载
-这一讲我们写一个利用Merkle Tree白名单铸造NFT的脚本，如果你对Merkle Tree合约不熟悉，请看WTF Solidity极简教程第37讲：Merkle Tree。
-Merkle Tree，也叫默克尔树或哈希树，是区块链的底层加密技术，被比特币和以太坊区块链广泛采用。Merkle Tree是一种自下而上构建的加密树，每个叶子是对应数据的哈希，而每个非叶子为它的2个子节点的哈希
 
-Merkle Tree允许对大型数据结构的内容进行有效和安全的验证（Merkle Proof）。对于有N个叶子结点的Merkle Tree，在已知root根值的情况下，验证某个数据是否有效（属于Merkle Tree叶子结点）只需要log(N)个数据（也叫proof），非常高效。如果数据有误，或者给的proof错误，则无法还原出root根植。下面的例子中，叶子L1的Merkle proof为Hash 0-1和Hash 1：知道这两个值，就能验证L1的值是不是在Merkle Tree的叶子中。
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
 
-Merkle Tree合约简述WTF Solidity极简教程第36讲：M ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/21/37.Ethersjs/16.%E6%89%B9%E9%87%8F%E5%BD%92%E9%9B%86/" title="16.批量归集"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="16.批量归集"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/16.%E6%89%B9%E9%87%8F%E5%BD%92%E9%9B%86/" title="16.批量归集">16.批量归集</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T15:36:57.204Z" title="发表于 2023-02-21 23:36:57">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">批量归集转载
-这一讲，我们介绍如何使用ethers.js将多个钱包的ETH和代币归集到一个钱包中。
-批量归集在链上交互、撸毛之后，就需要将多个钱包的资产进行归集管理。你可以用HD钱包或者保存多份密钥的方式操作多个钱包，然后用ethers.js脚本完成归集。下面我们分别示范归集ETH（原生代币）和WETH（ERC20代币）。
-1.创建provider和wallet，其中wallet是接收资产的钱包。
-123456// 准备 alchemy API 可以参考https://github.com/AmazingAng/WTFSolidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md const ALCHEMY_GOERLI_URL = &#x27;https://eth-goerli.alchemyapi.io/v2/GlaeWuylnNM3uuOo-SAwJxuwTdqHaY5l&#x27;;const provider = new ethers.providers.JsonRpcProvider(ALCHEMY_GOERLI_URL) ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/21/37.Ethersjs/15.%E6%89%B9%E9%87%8F%E8%BD%AC%E8%B4%A6/" title="15.批量转账"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="15.批量转账"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/15.%E6%89%B9%E9%87%8F%E8%BD%AC%E8%B4%A6/" title="15.批量转账">15.批量转账</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T15:04:31.697Z" title="发表于 2023-02-21 23:04:31">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">批量转账转账
-这一讲，我们将介绍用ethers.js进行批量转账。通过调用WTF Solidity极简入门第33讲：空投中的Airdrop合约，可以在一笔交易中实现批量转账，节省gas费。
-Airdrop合约这里简单介绍下Airdrop合约，细节可以去Solidity教程中看。我们会用到2个函数：
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
 
-multiTransferETH()：批量发送ETH，包含2个参数：
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
 
-_addresses：接收空投的用户地址数组（address[]类型）
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
 
-_amounts：空投数量数组，对应_addresses里每个地址的数量（uint[]类型）
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
 
 
 
-multiTransferToken()函数：批量发送ERC20代币，包含3个参数
 
-_token：代币合约地址（address类型）
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
 
-_addresses：接收空投的用户地址数组（address[]类型）
-
-_amounts：空投数量数组，对应_addresses里每个地址的数量（uint[]类型）
-
-
-
-
-我们在Goerli测试网部署了一个Airdrop合约，地址为：
-10x71C2aD976210264ff0468d43b198FD6977 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/" title="14. 批量生成钱包"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="14. 批量生成钱包"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/14.%20%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E9%92%B1%E5%8C%85/" title="14. 批量生成钱包">14. 批量生成钱包</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T13:50:35.735Z" title="发表于 2023-02-21 21:50:35">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">批量生成钱包转载
-这一讲，我们将介绍HD钱包，并写一个批量生成钱包的脚本。
-HD钱包HD钱包（Hierarchical Deterministic Wallet，多层确定性钱包）是一种数字钱包 ，通常用于存储比特币和以太坊等加密货币持有者的数字密钥。通过它，用户可以从一个随机种子创建一系列密钥对，更加便利、安全、隐私。要理解HD钱包，我们需要简单了解比特币的BIP32，BIP44，和BIP39。
-BIP32在BIP32推出之前，用户需要记录一堆的私钥才能管理很多钱包。BIP32提出可以用一个随机种子衍生多个私钥，更方便的管理多个钱包。钱包的地址由衍生路径决定，例如“m/0/0/1”。
-
-BIP44BIP44为BIP32的衍生路径提供了一套通用规范，适配比特币、以太坊等多链。这一套规范包含六级，每级之间用”&#x2F;“分割：
-1m / purpose&#x27; / coin_type&#x27; / account&#x27; / change / address_index
-
-其中：
-
-m: 固定为”m”
-purpose：固定为”44”
-coin_type：代币类型，比特币主网为0 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/21/37.Ethersjs/13.%E7%BC%96%E7%A0%81calldata/" title="13.编码calldata"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="13.编码calldata"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/13.%E7%BC%96%E7%A0%81calldata/" title="13.编码calldata">13.编码calldata</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T11:07:26.136Z" title="发表于 2023-02-21 19:07:26">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">编码calldata转载
-这一讲，我们将介绍ethers.js中的接口类，并利用它编码calldata。
-接口类 Interfaceethers.js的接口类抽象了与以太坊网络上的合约交互所需的ABI编码和解码。ABI（Application Binary Interface）与API类似，是一格式，用于对合约可以处理的各种类型的数据进行编码，以便它们可以交互。更多内容见WTF Solidity教程第27讲 ABI编码。
-我们可以利用abi生成或者直接从合约中获取interface变量：
-1234// 利用abi生成const interface = ethers.utils.Interface(abi)// 直接从contract中获取const interface2 = contract.interface
-
-接口类封装了一些编码解码的方法。与一些特殊的合约交互时（比如代理合约），你需要编码参数、解码返回值：
-注意：相关函数必须包含在abi中。
-
-getSighash()：获取函数选择器（function selector），参数为函数名或函数签名。
-
-12interface.ge ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/21/37.Ethersjs/12.%E8%AF%86%E5%88%ABERC721%E5%90%88%E7%BA%A6/" title="12.识别ERC721合约"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="12.识别ERC721合约"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/12.%E8%AF%86%E5%88%ABERC721%E5%90%88%E7%BA%A6/" title="12.识别ERC721合约">12.识别ERC721合约</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T09:54:40.978Z" title="发表于 2023-02-21 17:54:40">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">识别ERC721合约转载
-这一讲，我们介绍如何用ether.js识别一个合约是否为ERC721标准。
-ERC721RC721是以太坊上流行的非同质化代币（NFT）标准，如果对这个标准不熟悉，可以阅读WTF Solidity第34讲 ERC721。在做NFT相关产品时，我们需要筛选出符合ERC721标准的合约。例如Opensea，他会自动识别ERC721，并爬下它的名称、代号、metadata等数据用于展示。要识别ERC721，我们先要理解ERC165。
-ERC165通过ERC165标准，智能合约可以声明它支持的接口，供其他合约检查。因此，我们可以通过ERC165来检查一个智能合约是不是支持了ERC721的接口。
-IERC165接口合约只声明了一个supportsInterface函数，输入要查询的interfaceId接口id（类型为bytes4），若合约实现了该接口id，则返回true；反之，则返回false：
-12345678interface IERC165 &#123;    /**     * @dev 如果合约实现了查询的`interfaceId`，则返回true      ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/21/37.Ethersjs/11.CallStatic/" title="11.CallStatic"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="11.CallStatic"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/11.CallStatic/" title="11.CallStatic">11.CallStatic</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T09:19:27.654Z" title="发表于 2023-02-21 17:19:27">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">CallStatic转载
-这一讲，我们介绍合约类的callStatic方法，在发送交易之前检查交易是否会失败，节省大量gas。
-callStatic方法是属于ethers.Contract类的编写方法分析，同类的还有populateTransaction和estimateGas方法。
-具体可参考ethers.js文档。
-可能失败的交易在以太坊上发交易需要付昂贵的gas，并且有失败的风险，发送失败的交易并不会把gas返还给你。因此，在发送交易前知道哪些交易可能会失败非常重要。如果你用过metamask小狐狸钱包，那对下图不会陌生。
-
-如果你的交易将失败，小狐狸会告诉你this transaction may fail，翻译过来就是“这笔交易可能失败”。当用户看到这个红字提示，就知道要取消这笔交易了，除非他想尝尝失败的滋味。
-它是怎么做到的呢？这是因为以太坊节点有一个eth_call方法，让用户可以模拟一笔交易，并返回可能的交易结果，但不真正在区块链上执行它（交易不上链）。
-callStatic在ethers.js中你可以利用contract对象的callStatic()来调用以太坊节点的 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/21/37.Ethersjs/10.bigNumber%E5%92%8C%E5%8D%95%E4%BD%8D%E8%BD%AC%E6%8D%A2/" title="10.bigNumber和单位转换"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="10.bigNumber和单位转换"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/10.bigNumber%E5%92%8C%E5%8D%95%E4%BD%8D%E8%BD%AC%E6%8D%A2/" title="10.bigNumber和单位转换">10.bigNumber和单位转换</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T09:06:11.149Z" title="发表于 2023-02-21 17:06:11">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">bigNumber和单位转换转载
-这一讲，我们介绍BigNumber类和单位转换。
-BigNumber以太坊中，许多计算都对超出JavaScript整数的安全值（js中最大安全整数为9007199254740991）。因此，ethers.js使用BigNumber类安全地对任何数量级的数字进行数学运算。在ethers.js中，大多数需要返回值的操作将返回BigNumber，而接受值的参数也会接受它们。
-创建BigNumber实例你可以利用ethers.BigNumber.from()函数将string，number，BigNumber等类型转换为BigNumber。
-代码参考：https://docs.ethers.io/v5/api/utils/bignumber/#BigNumber
-注意，超过js最大安全整数的数值将不能转换。
-12345678910111213const oneGwei = ethers.BigNumber.from(&quot;1000000000&quot;); // 从十进制字符串生成console.log(oneGwei)console.log(ethe ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2023/02/21/37.Ethersjs/09.%E4%BA%8B%E4%BB%B6%E8%BF%87%E6%BB%A4/" title="09.事件过滤"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="09.事件过滤"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/09.%E4%BA%8B%E4%BB%B6%E8%BF%87%E6%BB%A4/" title="09.事件过滤">09.事件过滤</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T08:33:32.609Z" title="发表于 2023-02-21 16:33:32">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">事件过滤转载
-在上一讲 Ethers极简入门: 8. 合约监听 的基础上，我们拓展一下，在监听的过程中增加过滤器，监听指定地址的转入转出。
-具体可参考ethers.js文档。
-过滤器当合约创建日志（释放事件）时，它最多可以包含[4]条数据作为索引（indexed）。索引数据经过哈希处理并包含在布隆过滤器中，这是一种允许有效过滤的数据结构。因此，一个事件过滤器最多包含4个主题集，每个主题集是个条件，用于筛选目标事件。规则：
-
-如果一个主题集为null，则该位置的日志主题不会被过滤，任何值都匹配。
-如果主题集是单个值，则该位置的日志主题必须与该值匹配。
-如果主题集是数组，则该位置的日志主题至少与数组中其中一个匹配。
+  
+<script src="/js/colorscheme.js"></script>
 
 
-构建过滤器ethers.js中的合约类提供了contract.filters来简化过滤器的创建：
-1const filter = contract.filters.EVENT_NAME( ...args ) 
 
-其中EVENT_NAME为要过滤的事件名，..args为主题集&#x2F;条件。前面的规则有一点抽象，下面举几个例子。
-1.过滤来自myAddress地址的Tran ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2023/02/21/37.Ethersjs/08.%E7%9B%91%E5%90%AC%E5%90%88%E7%BA%A6%E4%BA%8B%E4%BB%B6/" title="08.监听合约事件"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.监听合约事件"></a></div><div class="recent-post-info"><a class="article-title" href="/2023/02/21/37.Ethersjs/08.%E7%9B%91%E5%90%AC%E5%90%88%E7%BA%A6%E4%BA%8B%E4%BB%B6/" title="08.监听合约事件">08.监听合约事件</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-02-21T08:22:35.641Z" title="发表于 2023-02-21 16:22:35">2023-02-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/37-Ethersjs/">37.Ethersjs</a></span></div><div class="content">监听合约事件转载
-这一讲，我们将介绍如何监听合约，并实现监听USDT合约的Transfer事件。
-具体可参考ethers.js文档。
-监听合约事件contract.on在ethersjs中，合约对象有一个contract.on的监听方法，让我们持续监听合约的事件：
-1contract.on(&quot;eventName&quot;, function)
 
-contract.on有两个参数，一个是要监听的事件名称&quot;eventName&quot;，需要包含在合约abi中；另一个是我们在事件发生时调用的函数。
-contract.once合约对象有一个contract.once的监听方法，让我们只监听一次合约释放事件，它的参数与contract.on一样：
-1contract.once(&quot;eventName&quot;, function)
 
-监听USDT合约1.声明provider
-123456const &#123;ethers&#125; = require(&quot;ethers&quot;)// 准备 alchemy API  // 可以参考https://g ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/#content-inner">30</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
-            <i class="fas fa-folder-open"></i>
-            <span>分类</span>
-            <a class="card-more-btn" href="/categories/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a>
-            </div>
-            <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-EVM/"><span class="card-category-list-name">01.EVM</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/"><span class="card-category-list-name">01.以太坊</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/"><span class="card-category-list-name">02.solidity语法</span><span class="card-category-list-count">54</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">03.solidity进阶</span><span class="card-category-list-count">22</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/05-Openzeppelin%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">05.Openzeppelin系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/06-Hardhat%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">06.Hardhat系列</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/07-%E5%8A%A0%E5%AF%86%E5%83%B5%E5%B0%B8/"><span class="card-category-list-name">07.加密僵尸</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">08.扩展见闻&杂笔记</span><span class="card-category-list-count">4</span></a></li>
-            </ul></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">30</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">100</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">94</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">68</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">292</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-02-25T14:52:06.212Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+        
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

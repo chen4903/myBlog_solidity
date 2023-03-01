@@ -1,252 +1,533 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>solidity life</title><meta name="author" content="LEVI_104"><meta name="copyright" content="LEVI_104"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="始生有物，其形必丑">
-<meta property="og:type" content="website">
-<meta property="og:title" content="solidity life">
-<meta property="og:url" content="http://example.com/page/24/index.html">
-<meta property="og:site_name" content="solidity life">
-<meta property="og:description" content="始生有物，其形必丑">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6">
-<meta property="article:author" content="LEVI_104">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6"><link rel="shortcut icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0"><link rel="canonical" href="http://example.com/page/24/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'solidity life',
-  isPost: false,
-  isHome: true,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2023-02-25 22:52:07'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
 
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
   
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
+    <meta name="robots" content="noindex" />
   
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
+  
+  <title>
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <div class="container index">
+  <div class="post-list">
+    <!-- 遍历渲染文章 -->
+    
+      <div class="post-item" title="02.省gas步骤">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/13.%E5%85%B3%E4%BA%8Egas/02.%E7%9C%81gas%E6%AD%A5%E9%AA%A4/">
+            
+              
+                <span>02.省gas步骤</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="01.实验室第一次考核">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/11.%E5%AF%B9%E5%A4%96/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/01.%E5%AE%9E%E9%AA%8C%E5%AE%A4%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/">
+            
+              
+                <span>01.实验室第一次考核</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="01.字节码与操作码基础">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/14.%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/01.%E5%AD%97%E8%8A%82%E7%A0%81%E4%B8%8E%E6%93%8D%E4%BD%9C%E7%A0%81%E5%9F%BA%E7%A1%80/">
+            
+              
+                <span>01.字节码与操作码基础</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="01.学习资源&常用工具">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/10.%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90&%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/01.%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90&%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">
+            
+              
+                <span>01.学习资源&常用工具</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="02.MetaMask">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/10.%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90&%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/02.MetaMask/">
+            
+              
+                <span>02.MetaMask</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="07.合约审计工具">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/07.%E5%90%88%E7%BA%A6%E5%AE%A1%E8%AE%A1%E5%B7%A5%E5%85%B7/">
+            
+              
+                <span>07.合约审计工具</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="05.整数溢出_1">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/05.%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA_1/05.%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">
+            
+              
+                <span>05.整数溢出_1</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="06.提案攻击">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/">
+            
+              
+                <span>06.提案攻击</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="03.delegate漏洞_1">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/03.delegatecall%E6%BC%8F%E6%B4%9E_1/03.delegate%E6%BC%8F%E6%B4%9E_1/">
+            
+              
+                <span>03.delegate漏洞_1</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+      <div class="post-item" title="02.stake漏洞">
+        <div class="time-m-d">2022-11-28</div>
+        <div class="title">
+          <a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/02.stake%E6%BC%8F%E6%B4%9E/02.stake%E6%BC%8F%E6%B4%9E/">
+            
+              
+                <span>02.stake漏洞</span>
+              
+            
+          </a>
+        </div>
+      </div>
+    
+  </div>
+  <nav class="post-navigation">
+    
+      <a href="/page/23/"><i class="iconfont icon-angleleft"></i></a>
+    
+    <span class="page-num">24 / 30</span>    
+      <a href="/page/25/"><i class="iconfont icon-angleright"></i></a>
+    
+  </nav>
+</div>
+
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
       }
     }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://s1.vika.cn/space/2022/11/28/bd833433161747b589ed994f354c547e')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">solidity life</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa-solid fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">solidity life</h1><div id="site_social_icons"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/28/10.%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90&amp;%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/01.%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90&amp;%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/" title="01.学习资源&amp;常用工具"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.学习资源&amp;常用工具"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/10.%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90&amp;%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/01.%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90&amp;%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/" title="01.学习资源&amp;常用工具">01.学习资源&amp;常用工具</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T00:45:52.355Z" title="发表于 2022-11-28 08:45:52">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/10-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">10.学习资源&amp;常用工具</a></span></div><div class="content">学习资源&amp;常用工具00.工具
-ABI和接口转换：https://gnidan.github.io/abi-to-sol/
-密码学转换keccak256：https://emn178.github.io/online-tools/keccak_256.html
-EVM Codes：https://evm.codes/playground
-数值转化为ASCII码：https://www.rapidtables.com/convert/number/hex-to-ascii.html
-JSON Editor：https://jsoneditoronline.org/#left=local.mepebe&amp;right=local.xecoxu
 
-01.教程01.1以太坊入门
-面向没接触过以太坊的人的书：https://ethbook.abyteahead.com/index.html
-以太坊入门级文档：https://www.kancloud.cn/qq393855529/ethereum/837511
-知乎“以太坊概念和基础”：https://zhuanlan.zhihu.co ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/28/10.%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90&amp;%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/02.MetaMask/" title="02.MetaMask"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.MetaMask"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/10.%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90&amp;%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/02.MetaMask/" title="02.MetaMask">02.MetaMask</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T00:45:52.355Z" title="发表于 2022-11-28 08:45:52">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/10-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90-%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/">10.学习资源&amp;常用工具</a></span></div><div class="content">MetaMask简介创建 MetaMask 是为了满足基于以太坊的安全和可用网站的需求。特别是，它处理帐户管理并将用户连接到区块链。ETH 是以太坊网络上的主要货币。但是，以太坊可以支持多种货币，而 ETH 不会有特权地位。
-在以太坊上执行交易要么运行计算，要么存储数据。这会消耗网络 CPU 周期或存储空间。该费用由发起交易的账户支付。付款称为“gas”。Gas 目前使用 ETH 支付
-购买、存储、发送和交换代币
-MetaMask是一个浏览器插件和一个手机app，为您提供密钥库、安全登录、登录钱包和交易——所有的数字资产的一切
-探索区块链应用
-MetaMask 提供了连接到基于区块链的应用程序的最简单但最安全的方式。在新的去中心化网络上进行交互时，您始终处于安全环境中
-下载网站：https://metamask.io/
-文档：https://docs.metamask.io/guide/getting-started.html#basic-considerations
-安装以及使用教程：https://zhuanlan.zhihu.com/p/437558693
-入门安装好MetaMa ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/07.%E5%90%88%E7%BA%A6%E5%AE%A1%E8%AE%A1%E5%B7%A5%E5%85%B7/" title="07.合约审计工具"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.合约审计工具"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/07.%E5%90%88%E7%BA%A6%E5%AE%A1%E8%AE%A1%E5%B7%A5%E5%85%B7/" title="07.合约审计工具">07.合约审计工具</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T00:30:25.764Z" title="发表于 2022-11-28 08:30:25">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="content">靶场
-Ethernaut:https://ethernaut.openzeppelin.com/
-chainflag:https://chainflag.org/challenges
-Damn Vulnerable DeFi:https://www.damnvulnerabledefi.xyz/
-paradigm ctf: https://ctf.paradigm.xyz/
-CBSC-2022一等奖chainflg队伍开源题解：https://github.com/chainflag/CBSC-2022-solutions
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
 
-安全审计工具
-Mythril：EVM 字节码的安全分析工具。它使用符号执行、SMT 解决和污点分析来检测各种安全漏洞
-https://github.com/ConsenSys/mythril
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
 
 
-Slither：一个用 Python 3 编写的 Solidity 静态分析框架
-https://github.com/crytic/slither
 
 
-Manticore：用于分析智能合约和二进制文件的符号执行工具
-https://github.com/trailofb ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/05.%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA_1/05.%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/" title="05.整数溢出_1"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.整数溢出_1"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/05.%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA_1/05.%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/" title="05.整数溢出_1">05.整数溢出_1</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T00:30:12.871Z" title="发表于 2022-11-28 08:30:12">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="content">整数溢出简介solidity和其他编程语言一样，存在溢出问题。它包括加法溢出、减法溢出、乘法溢出三类
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
 
-原理在solidity中，变量支持的整数类型长度以8递增，从uint8到uint256，以及int8到int256。
-EVM中储存一个数所占的位数是固定，在solidity 0.8.0之前，只有截断模式，当存储的数字长度超出最大值时会导致进位，使所有1翻转成0。比如：uint8的255(11111111)，当它加1，不会变成256，而是变成0，原因是11111111&#x3D;&#x3D;&#x3D;&gt;00000000。EVM不会提示你可能溢出了。
-各个uint变量的最大值：
-1234567891011121314151617181920212223242526272829303132uint8 最高为: 255uint16 最高为: 65535uint24 最高为: 16777215uint32 最高为: 4294967295uint40 最高为: 1099511627775uint48 最高为: 281474976710655uint56 最高为: 720575940379 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/" title="06.提案攻击"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.提案攻击"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/" title="06.提案攻击">06.提案攻击</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T00:30:12.839Z" title="发表于 2022-11-28 08:30:12">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="content">提案攻击简介什么是提案？
-提案攻击：DAO governance attacks
-在去中心化自治组织 （DAO）中，参与者会提出关于未来协议升级、资金管理等一些提案。为了让提案生效，需要对其进行投票。在DAO中，参与者要想参与提案投票，需要持有对应的治理代币。拥有治理代币的持有者，可以进行发起提案、投票、执行提案一系列活动。
-虽然提案治理有利于建设去中心化的未来，但是也存在一些缺陷。治理代币持有比例较小的用户对参与治理采取理性冷漠态度，这进一步导致 DAO 当中投票权的中心化，转而服务于少数人利益。持有较多治理代币的用户，拥有过多的投票权。
-目前 DAO已经成为常见的 dapp协议的治理模式，在 DAO模式下，协议的资金管理、重要参数的修改、协议升级都通过 DAO合约进行管理。而治理代币的持有者可以向 DAO合约发起提案、投票、执行提案。
-
-相应地，基于 DAO提案的攻击也成为了黑客的“新潮流”
-提案常常存在以下风险：
-
-决策影响：很多因素很容易影响持有人。这可以通过付费公关活动、影响者营销，甚至通过贿赂人们对提案发表有偏见的意见来实现。
-垃圾提案：任何人都可以通过存入一定数量的该链代 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/03.delegatecall%E6%BC%8F%E6%B4%9E_1/03.delegate%E6%BC%8F%E6%B4%9E_1/" title="03.delegate漏洞_1"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="03.delegate漏洞_1"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/03.delegatecall%E6%BC%8F%E6%B4%9E_1/03.delegate%E6%BC%8F%E6%B4%9E_1/" title="03.delegate漏洞_1">03.delegate漏洞_1</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T00:30:08.285Z" title="发表于 2022-11-28 08:30:08">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="content">delegate漏洞漏洞简介任务描述：将setup.sol中的isSolved方法返回true，分析一下，实质是将defuse合约中的powerState修改为true。
-该任务描述的项目业务：
-
-攻击思路：
-
-分析查看题目给我们的代码发现，我们的任务是让isSolved()返回true，实际上是想办法将defuse中的powerState状态从true修改为false。但是我们查看Defuse的方法里面，没有任何一个方法可以修改powerState，但是有一个函数setCountDownTimer()，方法体里面有delegatecall方法，这里就是突破点。
-delegatecall的性质简述：调用外部合约的方法修改本合约的内容。详细描述见本文件夹下关于delegatecall文件。因此，我们可以利用delegatecacll的性质，另外攻击合约，来修改Defuse里面的powerState变量。
-1234//突破点function setCountDownTimer(uint256 _deadline) public onlyOwner notExplode &#123;	lau ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/02.stake%E6%BC%8F%E6%B4%9E/02.stake%E6%BC%8F%E6%B4%9E/" title="02.stake漏洞"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="02.stake漏洞"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/02.stake%E6%BC%8F%E6%B4%9E/02.stake%E6%BC%8F%E6%B4%9E/" title="02.stake漏洞">02.stake漏洞</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T00:30:08.242Z" title="发表于 2022-11-28 08:30:08">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="content">改正stake漏洞任务描述：将setup.sol中的complete方法返回true，分析一下，实质就是让我在erc20合约中的余额要大于500000ETH。
-这个代码描述的业务是：有一个合约A(ztstakepool)，每操作一次stake，可以传入一个参数blocknumber(这个合约A提供给你的利息，因为你把钱存到它这里)，当blocknumber达到规定的数量后(当前区块达到blocknumber)，才可以调用swap方法，将利息转出去。它希望我们执行完1，2，3步骤之后，合约只能让我们从新从1开始循环。合约A希望的正常交易流程如下：
-
-但是，合约A写的合约有问题，我们可以直接获取任意数额的利息！
-分析过程我们想要获取利息，那么就必须要调用swap方法。我们分析这个代码发现，第一个require是确定转账地址，第二个require是不可以提取的利息大于利息本身，最重要的是要调用workBalanceOf这个方法，来获取利息的数量。
-1234567function swap(address from,address to,uint amount)external&#123;   ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/" title="01.重入攻击_1"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.重入攻击_1"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/01.%E9%87%8D%E5%85%A5%E6%94%BB%E5%87%BB_1/" title="01.重入攻击_1">01.重入攻击_1</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T00:30:08.221Z" title="发表于 2022-11-28 08:30:08">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="content">重入攻击重入攻击叫做：Reentrancy attack或者replay attack。顾名思义，就是再次进入、再次执行的攻击。
-简介solidity文档对重入的解释：任何从合约 A 到合约 B 的交互、任何从合约 A 到合约 B 的以太币转移，都会将控制权交给合约 B。 这使得合约 B 能够在交互结束前回调 A 中的代码。
-简单来说，就是重复地调用同一个方法，达到一个目的：黑客利用自己攻击合约中的回调函数、多余的gas将合约中本不属于自己的 ETH 转走。
-注意：一般情况下是用Fallback函数进行重入，其实receive函数也可以进行重入。后面的两个例子，分别尝试了这两个情况
-
-发生重入攻击的条件原理
-调用了外部的合约且该合约是不安全的
-外部合约的函数调用早于状态变量的修改
-
-Fallback回调函数声明方式如下：
-123fallback () external [payable]&#123;&#125;//或fallback (bytes calldata input) external [payable] returns (bytes memory output)&#123; ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/04.%E6%A8%A1%E7%B3%8A%E8%BA%AB%E4%BB%BD%E6%BC%8F%E6%B4%9E/04.%E6%A8%A1%E7%B3%8A%E8%BA%AB%E4%BB%BD%E6%BC%8F%E6%B4%9E/" title="04.模糊身份漏洞"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="04.模糊身份漏洞"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/04.%E6%A8%A1%E7%B3%8A%E8%BA%AB%E4%BB%BD%E6%BC%8F%E6%B4%9E/04.%E6%A8%A1%E7%B3%8A%E8%BA%AB%E4%BB%BD%E6%BC%8F%E6%B4%9E/" title="04.模糊身份漏洞">04.模糊身份漏洞</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T00:30:08.178Z" title="发表于 2022-11-28 08:30:08">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/">09.安全审计</a></span></div><div class="content">模糊身份漏洞简介任务描述：触发sendFlag事件
-业务逻辑图：
-
-分析能够触发sendFlag事件的只有函数payforflag
-1234function payforflag() public&#123;        require(token.balance(msg.sender) &gt;= 10000000 *10 **18, &quot;Try again&quot;);        emit SendFlag(msg.sender);    &#125;
-
-这个函数需要我们的余额大于10000000ETH，也就是调用者msg.sender在token中拥有10000000ETH。因此我们需要调用share_my_vault方法，来进行转钱。（我们用来盗取的msg.sender是create2创建出来的合约）
-123function share_my_vault()external only_EOA only_family&#123;        token.transfer(msg.sender,token.balanceOf(address(this)));    ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/27/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&amp;%E6%9D%82%E7%AC%94%E8%AE%B0/01.%E9%AA%9A%E6%93%8D%E4%BD%9C/" title="01.骚操作"><img class="post_bg" src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="01.骚操作"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/27/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&amp;%E6%9D%82%E7%AC%94%E8%AE%B0/01.%E9%AA%9A%E6%93%8D%E4%BD%9C/" title="01.骚操作">01.骚操作</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-27T15:33:08.248Z" title="发表于 2022-11-27 23:33:08">2022-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/">08.扩展见闻&amp;杂笔记</a></span></div><div class="content">骚操作回顾这个币给V神转了币，又从V神钱包转走了，但是V神自己肯定没操作，怎么实现的？
-
-分析该操作的核心代码
+  
+<script src="/js/colorscheme.js"></script>
 
 
-从v神那里转出去只是一种表面现象，也可以说是区块链浏览器解析不准确，把emit事件去掉，就看不到那两个转账记录了，在事件上面做文章，真是没想到过啊。
-为什么地址是Vb而不是十六进制串地址呢？因为使用了ens，绑定了账户。ens是以太坊域名服务。
-浏览器只统计emit记录
-ERC20协议的转账只要操作balance就可以
-实际上V神钱包里只有一半的币
-那实际上这两笔交易  是转了还是没转
-应该是没转吧
-部署合约就分了一半给v神
-转了一笔
-那个币好像有流动池了
-没转出
-部署合约的时候创建了流动性
-在uniswap创建了pair
-今后只能相信函数逻辑了 
-这个肯定不会骗人的
-嗯，浏览器记录不靠谱
 
-源码12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/23/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/#content-inner">23</a><span class="page-number current">24</span><a class="page-number" href="/page/25/#content-inner">25</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/#content-inner">30</a><a class="extend next" rel="next" href="/page/25/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.vika.cn/space/2022/11/27/638555bfd98049caacc20724b56b4fb6" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">LEVI_104</div><div class="author-info__description">始生有物，其形必丑</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">292</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">39</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chen4903"><i class="fab fa-github"></i><span>关注</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a><a class="social-icon" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0" target="_blank" title="WeChat"><i class="fa-brands fa-weixin"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="08.Puppet"/></a><div class="content"><a class="title" href="/2023/02/25/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/" title="08.Puppet">08.Puppet</a><time datetime="2023-02-25T08:55:42.290Z" title="发表于 2023-02-25 16:55:42">2023-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="00.digest"/></a><div class="content"><a class="title" href="/2023/02/24/38.chainflag%20CTF/00.digest/" title="00.digest">00.digest</a><time datetime="2023-02-24T13:09:53.109Z" title="发表于 2023-02-24 21:09:53">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="07.Compromised"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/" title="07.Compromised">07.Compromised</a><time datetime="2023-02-24T12:24:39.774Z" title="发表于 2023-02-24 20:24:39">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="06.Selfie"/></a><div class="content"><a class="title" href="/2023/02/24/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/" title="06.Selfie">06.Selfie</a><time datetime="2023-02-24T04:08:03.757Z" title="发表于 2023-02-24 12:08:03">2023-02-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder"><img src="https://s1.vika.cn/space/2022/11/28/6277e467ee4040d58bb28fa1428e156f" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="05.The Rewarder"/></a><div class="content"><a class="title" href="/2023/02/23/35.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/" title="05.The Rewarder">05.The Rewarder</a><time datetime="2023-02-23T11:51:26.671Z" title="发表于 2023-02-23 19:51:26">2023-02-23</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
-            <i class="fas fa-folder-open"></i>
-            <span>分类</span>
-            <a class="card-more-btn" href="/categories/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a>
-            </div>
-            <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-EVM/"><span class="card-category-list-name">01.EVM</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/01-%E4%BB%A5%E5%A4%AA%E5%9D%8A/"><span class="card-category-list-name">01.以太坊</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/02-solidity%E8%AF%AD%E6%B3%95/"><span class="card-category-list-name">02.solidity语法</span><span class="card-category-list-count">54</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-solidity%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">03.solidity进阶</span><span class="card-category-list-count">22</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/05-Openzeppelin%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">05.Openzeppelin系列</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/06-Hardhat%E7%B3%BB%E5%88%97/"><span class="card-category-list-name">06.Hardhat系列</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/07-%E5%8A%A0%E5%AF%86%E5%83%B5%E5%B0%B8/"><span class="card-category-list-name">07.加密僵尸</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">08.扩展见闻&杂笔记</span><span class="card-category-list-count">4</span></a></li>
-            </ul></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">30</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">100</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">94</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">68</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">292</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-02-25T14:52:06.212Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By LEVI_104</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div></div></body></html>
+
+
+        
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
