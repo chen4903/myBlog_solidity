@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      08.Uniswap v2 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">08.Uniswap v2</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-03-02 15:25:12
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/17-Uniswap%E7%B3%BB%E5%88%97/" title="17.Uniswap系列">
+                    <b>#</b> 17.Uniswap系列
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Uniswap-v2"><a href="#Uniswap-v2" class="headerlink" title="Uniswap v2"></a>Uniswap v2</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li><p>支持任意ERC20代币的交易对，允许流动性提供者为任意两个ERC-20代币创建交易对合约。</p>
+</li>
+<li><p>提供价格预言机功能，其原理是在每个区块开始时累计两种代币的相对价格，这将允许其他以太坊合约可以获取任意时间段内两种代币的时间加权平均价格</p>
+</li>
+<li>提供“闪电贷”功能</li>
+<li>不可升级</li>
+<li>支持在工厂合约中修改一个变量，以便允许Uniswap协议针对每笔交易收取0.05%的手续费（即0.3%的1/6）。该手续费默认关闭，但是可以在未来被打开，在打开后流动性提供者将只能获取0.25%手续费，而非0.3%。【因为其中0.05%分给协议，关于0.05%协议手续费这个开关，后续引发了Sushiswap和Uniswap的流动性大战，Sushiswap fork Uniswap代码，<a target="_blank" rel="noopener" href="https://docs.sushi.com/products/yield-farming/the-sushibar#what-is-xsushi">将0.05%协议手续费分给SUSHI持有者</a>，一度要将Uniswap流动性抢走；并最终迫使Uniswap发行了自己的代币UNI。】</li>
+</ul>
+<h2 id="新特性"><a href="#新特性" class="headerlink" title="新特性"></a>新特性</h2><h3 id="ERC20交易对"><a href="#ERC20交易对" class="headerlink" title="ERC20交易对"></a>ERC20交易对</h3><p>Uniswap v1使用ETH作为桥接代币，任何交易对都包含ETH作为其中一个代币。这使得路由更加简单，比如要想实现ABC和XYZ的交易，只需要分别使用ETH/ABC和ETH/XYZ交易对即可，这同时也减少了流动性分裂。注：由于交易对总是包含ETH，相比v2任意ERC-20代币组合，v1的交易对数量大大减少，并且流动性都被吸收到ETH这一侧。</p>
+<p>但是这样的规则给流动性提供者带来巨大成本。所有的流动性提供者都将面临ETH的风险敞口，并且在代币价格相对ETH价格波动时承受无常损失。如果ABC和XYZ是两种关联的代币，比如都是USD稳定币，那么交易对ABC/XYZ的无常损失将小于ABC/ETH或XYZ/ETH。【因为ABC与XYZ价格相对于ETH朝同一方向运动，ABC/XYZ价格波动较小，而ABC/ETH或XYZ/ETH价格波动较大。】</p>
+<p>使用ETH作为强制的交易代币也会增加交易成本。相比直接使用ABC/XYZ交易对，他们将支付两倍的交易手续费，同时承受两倍的滑点。【因为在v1，要想从ABC交易到XYZ，必须依次交易ABC/ETH和ETH/XYZ，因此手续费和滑点都需要两倍。】</p>
+<h3 id="价格预言机"><a href="#价格预言机" class="headerlink" title="价格预言机"></a>价格预言机</h3><p>在时间点 t 由Uniswap提供的边际价格P（不包含手续费）可以通过代币 a 和代币 b 的数量 r 相除得出：【？？？】</p>
+<script type="math/tex; mode=display">
+P_t={r_t^a \over r_t^b}【公式1】</script><p>当Uniswap提供的价格不正确时，套利者可以在Uniswap交易套利（通过足够数量代币以支付手续费），因此Uniswap提供的代币价格将跟随市场价格。这意味着Uniswap提供的代币价格可以作为一种近似的价格预言机。同一个代币在不同市场的价格差异提供了套利机会，驱使套利者维持Uniswap市场价格与其他市场（如中心化交易所或DEX）价格一致。</p>
+<p>然而，Uniswap v1无法提供安全的链上预言机，因为它的价格很容易被操控。假设其他合约使用当前ETH-DAI价格作为衍生品交易的基准价格。攻击者可以从ETH-DAI交易对买入ETH来操控价格，并触发衍生品合约的清算，接着再将ETH卖回以使价格回归正常。上述操作可以通过一个原子交易完成，或者被矿工通过排序同一区块中的不同的交易来实现。</p>
+<p>Uniswap v2改进了预言机功能，通过在每个区块的第一笔交易前计算和记录价格来实现（等价于上一个区块的最后一笔交易之后）。操纵这个价格会比操纵区块中任意时间点的价格要困难。如果攻击者通过在区块的最后阶段提交一笔交易来操纵价格，其他套利者（发现价格差异后）可以在同一区块中提交另一笔交易来将价格恢复正常。矿工（或者支付了足够gas费用填充整个区块的攻击者）可以在区块的末尾操控价格，但是除非他们同时挖出了下一个区块，否则他们没有特殊的优势可以进行套利。</p>
+<p>Uniswap v2改进了预言机功能，通过在每个区块的第一笔交易前计算和记录价格来实现（等价于上一个区块的最后一笔交易之后）。操纵这个价格会比操纵区块中任意时间点的价格要困难。如果攻击者通过在区块的最后阶段提交一笔交易来操纵价格，其他套利者（发现价格差异后）可以在同一区块中提交另一笔交易来将价格恢复正常。矿工（或者支付了足够gas费用填充整个区块的攻击者）可以在区块的末尾操控价格，但是除非他们同时挖出了下一个区块，否则他们没有特殊的优势可以进行套利。【由于价格预言机仅在每个区块记录一次，因此除非同一个人控制了两个区块的所有交易，否则他们将没有足够的套利优势。但是这从另一方面说明，Uniswap v2的预言机仍然是不够健壮的。我们在v3可以看到这方面的改进。】【？？？】</p>
+<p>Uniswap v2通过在每个区块第一笔交易前记录累计价格实现预言机。每个价格会以时间权重记录（基于当前区块与上一次更新价格的区块的时间差）。这意味着在任意时间点，该累计价格将是此合约历史上每秒的现货价格之和。</p>
+<script type="math/tex; mode=display">
+a_t=\sum_{i=1}^t p_i          【公式2】</script><p>为了估算在t1到t2时间段内的时间加权平均价格（TWAP），外部调用者可以分别记录t1和t2的累计价格，将t2价格减去t1价格，并除以t2-t1的时间差（需注意，合约本身不存储历史的累计价格，因此需要调用者在区间开始时调用合约，读取并保存当前的价格）。</p>
+<script type="math/tex; mode=display">
+P_{t_1,t_2}={\sum_{i=t_1}^{t_2} p_i \over t_2 - t_1}={\sum_{i=1}^{t_2} p_i -\sum_{i=1}^{t_1} p_i \over t_2 - t_1}={a_{t_2} - a_{t_1} \over t_2 - t_1}【公式3】</script><p>预言机的用户可以自行选择区间的开始和结束。选择一个更长的区间，意味着攻击者将花费更高的代价来操控该区间的时间加权平均价格，虽然这将导致该平均价格与实时价格相差较大。【？？？】</p>
+<blockquote>
+<p>注：公式(3)比较容易理解，这里就不展开。但是需注意，由于合约仅记录当前的累计价格，因此如果需要计算区间的平均价格，外部应用要自己记录并保存历史价格，合约本身不保存历史数据。</p>
+<p>Uniswap v2的TWAP计算方式实际上使用的是（加权）算数平均数（Arithmetic Mean），这里我们需要了解几种平均数的概念和应用场景。</p>
+<p>在数学上有一个<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Pythagorean_means">毕达哥拉斯平均</a>的概念，指的是三种经典平均数，分别是：算数平均数、几何平均数和调和平均数。</p>
+</blockquote>
+<ul>
+<li>算数平均数</li>
+</ul>
+<script type="math/tex; mode=display">
+A(x_1,...x_n)={1 \over n}(x_1+...+ x_n)</script><ul>
+<li>几何平均数</li>
+</ul>
+<script type="math/tex; mode=display">
+G(x_1,...,x_n)=\sqrt[n]{x_1...x_n}</script><ul>
+<li>调和平均数</li>
+</ul>
+<script type="math/tex; mode=display">
+H(x_1,...,x_n)={n \over {1 \over x_1} + ... + {1 \over x_n} }</script><ul>
+<li>当x为正数时，三者的关系：</li>
+</ul>
+<script type="math/tex; mode=display">
+A\geq G \geq H</script><blockquote>
+<p>其中，算术平均数是最常见的一种平均数，其优点是计算简单，缺点是容易受到极端数据的影响，导致均值误差；几何平均数相比算术平均数，更适用于在金融市场场景，因为金融市场价格本身是一种<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Brownian_motion">布朗运动</a>；调和平均数更易受到极小值的影响，一般应用于计算平均速率等场景。</p>
+<p>从应用场景上，Uniswap价格均值应该使用几何平均数更合适，均值的误差更小，但由于几何平均数在以太坊合约上实现难度较大，所以Uniswap v2版本采用算数平均数；但是Uniswap v3则使用几何平均数计算价格预言机。</p>
+</blockquote>
+<p>一个难题：我们应该计算以B代币计价的A代币价格，还是以A代币计价的B代币价格？虽然在现货价格上，以B代币计价的A代币价格（B/A）与以A代币计价的B代币价格（A/B）总是互为倒数，但在计算某个时间区间的算数平均数时，二者却不是互为倒数关系。比如，假设在区块1的价格为100 USD/ETH（B为USD，A为ETH），区块2的价格为300 USD/ETH，则其平均价格为200 USD/ETH，但ETH/USD的平均价格却是1/150 ETH/USD。因为合约无法知道交易对中哪一个代币将被用户用作计价单位，因此Uniswap v2同时记录了两个代币的价格。</p>
+<p>两种代币计价的均值计算如下：</p>
+<ul>
+<li>以USD计价</li>
+</ul>
+<script type="math/tex; mode=display">
+A(x_1,x_2)={100+300 \over 2}=200 USD / ETH</script><ul>
+<li>以ETH计价</li>
+</ul>
+<script type="math/tex; mode=display">
+A({1 \over x_1},{1 \over x_2})= { {1 \over 100}  + {1 \over 300} \over 2}={1 \over 150 } ETH / USD</script><p>另一个难题是用户可以不通过交易而直接向交易对合约发送代币（这将改变代币余额并影响价格），此时将无法触发预言机价格更新。因为预言机价格需要在区块的第一笔交易之前更新，因此如果不交易，将绕开预言机更新。</p>
+<p>如果合约只是简单地检查它的余额，并使用当前余额计算价格来更新预言机，那么攻击者可以在区块的第一笔交易之前，立即向合约发送代币来操控预言机价格。如果上一笔交易是在X秒之前的某个区块，合约将错误的使用（被操纵后的）新价格乘以X来累计，即使并没有人使用该价格交易过。【假设在上一个区块最后一笔交易后，交易对合约中两个代币A、B的余额分别为100、200，以A计价的B价格为200/100=2，在X秒后，下一个区块第一笔交易发生之前，应该累计的价格是<em>2X</em>，但是如果在第一笔交易发生之前，攻击者向合约发送了100个B，此时价格为200/200=1，合约将错误地以<em>1X</em>累计。】</p>
+<p>为了防止这个问题，core合约在每次交互后缓存了两种代币余额，并且使用缓存余额（而非实时余额）更新预言机价格。除了防止预言机价格被操控外，这个改动也带来了合约架构的重新设计</p>
+<h4 id="精度"><a href="#精度" class="headerlink" title="精度"></a>精度</h4><p>因为Solidity原生不支持非整数数据类型，Uniswap v2使用了简单的二进制定点制进行编码和操作价格。确切地说，任意时间的价格都被保存为UQ112.112格式的数据，它表示在小数点的左右两边都有112位比特表示精度，无符号（注：非负数）。这个格式能表示的范围为[0, (2的112次方)-1]，精度为(2的112次方)分之一。【UQ112.112的理论最大值为：2的112次方-(2的112次方)分之一，但由于Uniswap v2使用两个uint112相除得到UQ112.112，因此其最大值为(2的112次方)-1】</p>
+<p>选择UQ112.112格式是出于（Solidty合约）编程实践的考虑，因为这些格式的数字能够使用一个uint224类型（占用224位比特，28个字节）的变量表示，在一个256位（比特）的存储槽（注：EVM中一个Storage Slot是256位）中正好剩余32位可用。而对于缓存的代币余额变量，每一个代币余额可以使用一个uint112类型（112比特位，14个字节）的变量，（在声明时）也正好在256位的存储槽中剩余32位可用。这些剩余空间可用于上述的累计运算使用。具体来说，代币余额与最近一个有交易区块的时间戳一起保存，该时间戳针对2的32次方取模，以确保可以使用32位表示。此外，虽然在任意时间点的价格（使用UQ112.112格式的数字）一定符合224位，但是一段时间的累计价格却不是这样。在存储槽末尾的多余32位空间将用于存储由于重复累计价格导致的溢出数据。这样的设计意味着价格预言机仅仅在每个区块的第一笔交易增加了3个SSTORE操作（当前消耗15,000 gas）。</p>
+<p>这里我们可以看到Uniswap在设计上是非常小心的，价格预言机虽然是一个很有用的功能，但是却不能因为过度设计而给用户增加成本，因此如何在确保对用户影响最小的同时把功能实现，就成为设计的核心所在。为了避免每次交易都更新预言机给用户带来额外交易成本，Uniswap v2才设计成只在每个区块的第一笔交易之前更新。</p>
+<p>每个代币余额使用uint112表示，时间戳使用32位表示，总共112+112+32=256位，正好占用一个storage slot。更少的storage slot意味着交互时需要花费的gas更小，有利于减少用户操作成本。累计价格则采用256位表示。</p>
+<p>这个设计最主要的缺点是32位无法确保时间戳永不溢出。事实上，Unix时间戳溢出32位（可表示的最大值）将发生在02/07/2106。为了确保系统能够在该时间后正常工作，同时在每一轮32位溢出后（(2的32次方)-1秒）也能正常工作，预言机需要至少在每一轮（大约136年）被调用查询一次。因为累计计算的核心方法是溢出安全的，这意味着即使交易跨越了时间戳溢出的时间点，它也是可以被正常累计的，只要预言机使用了正确的溢出算法来检查时间间隔。</p>
+<blockquote>
+<p>注：这里我们主要关注在时间戳溢出边界，使用公式（3）是否能够正确算出预言机价格的平均数。假设在2106年2月7日附近，t1,t2,t3分别表示三个连续的区块时间，其中t1未发生时间戳溢出（差1秒），而t2,t3则发生溢出，可以算出即使在溢出后，t2-t1仍然可以计算出正确的时间差（3秒）；同理可以计算即使当累计价格at3发生溢出后，只要调用者保存了at1的值，即可计算出二者正确的差值。pt1,t3为t1到t3时间区间的平均价格，按照公式（3）可推出如下计算：</p>
+</blockquote>
+<p><img src="/2023/03/02/17.Uniswap%E7%B3%BB%E5%88%97/08.Uniswap%20v2/image-20230302172152051.png" alt="image-20230302172152051"></p>
+<h3 id="闪电贷"><a href="#闪电贷" class="headerlink" title="闪电贷"></a>闪电贷</h3><p>在Uniswap v1，用户如果想使用XYZ购买ABC，则需要先将XYZ发送到合约才能收到ABC。这将给那些希望使用ABC购买XYZ的用户带来不便。比如，当Uniswap与其他合约出现套利机会时，用户可能希望使用ABC在别的合约购买XYZ；或者用户希望通过卖出抵押物来释放他们在Maker或Compound的头寸，以此偿还Uniswap的借款。</p>
+<p>Uniswap v2增加了一个新特性，允许用户在支付费用前先收到并使用代币，只要他们在同一个交易中完成支付。swap方法会在转出代币和检查k值两个步骤之间，调用一个可选的用户指定的回调合约。一旦回调完成，Uniswap合约会检查当前代币余额，并且确认其满足k值条件（在扣除手续费后）。如果当前合约没有足够的余额，整个交易将被回滚。</p>
+<p>用户可以只归还原始代币，而不需要执行交易操作。这个功能将使得任何人可以闪电借出Uniswap池子中的任意数量的代币（闪电贷手续费与交易手续费一致，都是0.30%）。</p>
+<blockquote>
+<p>注：闪电贷在DeFi领域非常实用，对于TVL较高的协议，协议可以通过闪电贷获取手续费收入。比如dYdX和Aave，都推出了闪电贷功能。Uniswap v2合约中的闪电贷与交易功能实际上使用同一个swap方法。</p>
+</blockquote>
+<h3 id="协议手续费"><a href="#协议手续费" class="headerlink" title="协议手续费"></a>协议手续费</h3><p>Uniswap v2包含一个0.05%的协议手续费开关。如果打开，该手续费将被发送到合约中的feeTo地址。</p>
+<p>默认情况下没有设置feeTo地址，因此不收取协议手续费。预定义的feeToSetter地址可以调用Uniswap v2工厂合约中的setFeeTo方法来修改feeTo地址。feeToSetter也可以调用setFeeToSetter修改合约中feeToSetter地址。</p>
+<p>如果feeTo地址被设置了，协议将开始收取5个基点（0.05%）的手续费，也就是流动性提供者收取的30个基点（0.30%）手续费中的1/6将分配给协议。这意味着交易者将继续为每一笔交易支付0.30%的交易手续费，83.3%（5/6）的手续费（整笔交易的0.25%）将分配给流动性提供者，剩余的16.6%（手续费的1/6，整笔交易的0.05%）将分配给feeTo地址。</p>
+<p>如果在每笔交易时收取0.05%的手续费，将带来额外的gas消耗。为了避免这个问题，累计的手续费只在提供或销毁流动性时收取。合约计算累计手续费，并且在流动性代币铸造或销毁的时候，为手续费受益者（feeTo地址）铸造新的流动性代币。</p>
+<p>总累计手续费可以通过计算从上次收取手续费后，以根号k（也就是根号xy）计价的增长量。可计算从t1到t2的累计手续费，与t2时刻的流动性的百分比如下：</p>
+<script type="math/tex; mode=display">
+f_{1,2}=1-{\sqrt{k_1} \over \sqrt{k_2} }【公式4】</script><p>这里不太好理解，为什么手续费是以根号xy的形式给出的呢？如果看完白皮书【3.4 初始化流动性代币供应】就明白了。第一次流动性铸造的代币数量是以根号xy算出的，在t1,t2不同时刻，（不考虑mint/burn流动性时）其流动性代币数量始终等于根号x1y1与根号x2y2，其增长部分即为手续费，因此公式（4）可按照如下推导得出：</p>
+<p><img src="/2023/03/02/17.Uniswap%E7%B3%BB%E5%88%97/08.Uniswap%20v2/image-20230302172718006.png" alt="image-20230302172718006"></p>
+<p>那么当mint/burn流动性时，如何计算手续费呢？实际上在每次mint/burn流动性之前，都会先结算未领取的累计手续费，所以在mint/burn之后，可以重新按照上面的公式计算手续费。因此上述公式只需关注仅当发生swap交易时，累计手续费如何计算这一问题。</p>
+<p>如果协议手续费在t1之前被激活，那么在t1,t2时段，feeTo地址应该收取1/6的手续费作为协议手续费。因此，我们需要为feeTo地址铸造新的流动性代币以代表该时段手续费，这里等于1/6 * f1,2。</p>
+<p>假设协议手续费对应的流动性代币数量为sm，s1为t1时刻的流动性代币数量，则有以下等式：</p>
+<script type="math/tex; mode=display">
+{s_m \over {s_m + s_1} } = \phi * f_{1,2}【公式5】</script><p>使用公式（4）替换f1,2，经过计算可以得出sm为：</p>
+<script type="math/tex; mode=display">
+s_m={\sqrt{k_2}- \sqrt{k_1} \over ( {1 \over \phi} ) * \sqrt{k_2} + \sqrt{k_1}} * s_1【公式6】</script><p>使用1/6替换其中的比例部分，可得：</p>
+<script type="math/tex; mode=display">
+s_m={\sqrt{1.5*96} - \sqrt{1*100} \over 5 * \sqrt{1.5*96} + \sqrt{1*100}}* 10 \approx 0.0286</script><p>注：当没有mint/burn流动性时，只是单纯swap，池子的k值是不断变大的，原因就在于手续费沉淀，因为此时流动性代币总量（shares）不变，但交易对池子中两种代币余额不断增加。如上所述，k1 = 100 DAI x 1 ETH = 100，k2 = 96 DAI * 1.5 ETH = 144，k2 &gt; k1。</p>
+<h3 id="元交易"><a href="#元交易" class="headerlink" title="元交易"></a>元交易</h3><h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mirror.xyz/adshao.eth/qmzSfrOB8s6_-s1AsflYNqEkTynShdpBE0EliqjGC1U">https://mirror.xyz/adshao.eth/qmzSfrOB8s6_-s1AsflYNqEkTynShdpBE0EliqjGC1U</a></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/03/01/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/05.%E7%99%B8%E5%8D%AF%E5%85%94%E5%B9%B4%E5%8F%81%E6%9C%88%E5%A3%B9%E6%97%A5/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-03-02 15:25:12
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/17-Uniswap%E7%B3%BB%E5%88%97/" title="17.Uniswap系列">
+                        <b>#</b> 17.Uniswap系列
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Uniswap-v2"><span class="toc-text">Uniswap v2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ERC20%E4%BA%A4%E6%98%93%E5%AF%B9"><span class="toc-text">ERC20交易对</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%B7%E6%A0%BC%E9%A2%84%E8%A8%80%E6%9C%BA"><span class="toc-text">价格预言机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B2%BE%E5%BA%A6"><span class="toc-text">精度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AA%E7%94%B5%E8%B4%B7"><span class="toc-text">闪电贷</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E6%89%8B%E7%BB%AD%E8%B4%B9"><span class="toc-text">协议手续费</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E4%BA%A4%E6%98%93"><span class="toc-text">元交易</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-text">源码分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8"><span class="toc-text">引用</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 08.Uniswap%20v2 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F03%2F02%2F17.Uniswap%25E7%25B3%25BB%25E5%2588%2597%2F08.Uniswap%2520v2%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/03/02/17.Uniswap%E7%B3%BB%E5%88%97/08.Uniswap%20v2/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
