@@ -167,34 +167,38 @@
           
       </div>
       <div class="markdown-body">
-        <h1 id="使用remix验证已部署的合约-goerli为例"><a href="#使用remix验证已部署的合约-goerli为例" class="headerlink" title="使用remix验证已部署的合约(goerli为例)"></a>使用remix验证已部署的合约(goerli为例)</h1><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
-<li>打开remix，点击左下角【插件管理】按钮<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/a7f576b0d1604360a06d01a2fb00fda6.png)</li>
-<li>搜索 etherscan - contract verification，并点击激活按钮<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/a47fadf0879e4e208a5913aeea5172a9.png)</li>
-<li>点击左侧工具栏中的 etherscan - contract verification 图标<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/5a7d97fc81b34f348e9d311dbeda3add.png)</li>
-<li>获取 Etherscan APIKey<ol>
-<li>Etherscan <a target="_blank" rel="noopener" href="https://etherscan.io/">网站</a>。点击右上角，登录注册。<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/d56990d02d7e47bd803e2b73e1eca4bd-166991720199039)</li>
-<li>点击 左侧工具栏 API Keys，右上角添加 App Name，得到 API Key Token<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/6c30014ad3c14db7a527014a6de7e3ba)</li>
-<li>复制 API Key，并返回 remix，点击 按钮 Save API Key<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/acd29d73ddff4c24aabedcc9c04e8cf4-166991664402716)<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/f97d307d26f24f2598c59debbf7cb89f)</li>
-</ol>
-</li>
-<li>选中你要验证的合约源码。以 Storage 合约为例，之前已经部署到 Goerli 测试网，但未验证合约。<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/5af0dd72dce64d239925d4304790f287)</li>
-<li>先编译合约，选中 Goerli 测试网，再打开 验证合约 插件，选择待验证的合约名字，输入构造参数的十六进制数据和 合约地址，点击按钮 Verify Contract<ol>
-<li>编译合约<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/8595ec34209e491ebddbbfd29baf9d9a)</li>
-<li>选中 Goerli 测试网<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/c6c452aa1b7f49bb893f92f88cff1a5a)</li>
-<li>打开 验证合约 插件，选择待验证的合约名字，输入构造参数的十六进制数据和 合约地址，点击按钮 Verify Contract<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/fda12616cf5d4eebbfe5f450716a3f3e)</li>
+        <h1 id="使用remix验证已部署的合约-goerli为例"><a href="#使用remix验证已部署的合约-goerli为例" class="headerlink" title="使用remix验证已部署的合约(goerli为例)"></a>使用remix验证已部署的合约(goerli为例)</h1><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1.打开remix，点击左下角【插件管理】按钮</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/a7f576b0d1604360a06d01a2fb00fda6.png)</p>
+<p>2.搜索 etherscan - contract verification，并点击激活按钮</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/a47fadf0879e4e208a5913aeea5172a9.png)</p>
+<p>3.点击左侧工具栏中的 etherscan - contract verification 图标</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/5a7d97fc81b34f348e9d311dbeda3add.png)</p>
+<p>4.获取 Etherscan APIKey</p>
+<p>4.1Etherscan <a target="_blank" rel="noopener" href="https://etherscan.io/">网站</a>。点击右上角，登录注册。</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/d56990d02d7e47bd803e2b73e1eca4bd-166991720199039)</p>
+<p>4.2点击 左侧工具栏 API Keys，右上角添加 App Name，得到 API Key Token</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/6c30014ad3c14db7a527014a6de7e3ba)</p>
+<p>4.3复制 API Key，并返回 remix，点击 按钮 Save API Key<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/acd29d73ddff4c24aabedcc9c04e8cf4-166991664402716)</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/f97d307d26f24f2598c59debbf7cb89f)</p>
+<p>5选中你要验证的合约源码。以 Storage 合约为例，之前已经部署到 Goerli 测试网，但未验证合约。</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/5af0dd72dce64d239925d4304790f287)</p>
+<p>6.先编译合约，选中 Goerli 测试网，再打开 验证合约 插件，选择待验证的合约名字，输入构造参数的十六进制数据和 合约地址，点击按钮 Verify Contract</p>
+<p>6.1编译合约</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/8595ec34209e491ebddbbfd29baf9d9a)</p>
+<p>6.2选中 Goerli 测试网</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/c6c452aa1b7f49bb893f92f88cff1a5a)</p>
+<p>6.3打开 验证合约 插件，选择待验证的合约名字，输入构造参数的十六进制数据和 合约地址，点击按钮 Verify Contract</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/fda12616cf5d4eebbfe5f450716a3f3e)</p>
+<ol>
 <li>此刻查看你部署在 Goerli 测试网的合约是否已经被验证</li>
-</ol>
-</li>
 </ol>
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p><strong>如何获取构造参数十六进制数据</strong>，以下列代码为例：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.7.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract Name &#123;</span><br><span class="line">    constructor(string memory name) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ol>
-<li><p>先编译合约，再进入部署页面，之后点击 Deploy 函数后的小箭头<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/d4486ef378444fafb6c673d8143f7d89)</p>
-</li>
-<li><p>输入构造参数，点击 2 指向的按钮，可复制 编码后的十六进制数据<img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/bbca1f6bcb8a483baca48bc47d3ae3d7)</p>
+<p>1.先编译合约，再进入部署页面，之后点击 Deploy 函数后的小箭头</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/d4486ef378444fafb6c673d8143f7d89)</p>
+<p>2.输入构造参数，点击 2 指向的按钮，可复制 编码后的十六进制数据</p>
+<p><img src="/2022/12/02/20.Remix%E7%B3%BB%E5%88%97/01.%E4%BD%BF%E7%94%A8remix%E9%AA%8C%E8%AF%81%E5%B7%B2%E9%83%A8%E7%BD%B2%E7%9A%84%E5%90%88%E7%BA%A6(goerli%E4%B8%BA%E4%BE%8B)/01.使用remix验证已部署的合约(goerli为例" alt>/bbca1f6bcb8a483baca48bc47d3ae3d7)</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abi.encode(&quot;ether&quot;) = 0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000056574686572000000000000000000000000000000000000000000000000000000</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
 
       </div>
       
