@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      24.结构&amp;拷贝与引用 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">24.结构&拷贝与引用</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-03-16 23:37:50
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                    <b>#</b> 03.solidity进阶
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="结构-amp-拷贝与引用"><a href="#结构-amp-拷贝与引用" class="headerlink" title="结构&amp;拷贝与引用"></a>结构&amp;拷贝与引用</h1><p>开始之前，我们约定数据块也叫插槽，也就是storage。</p>
+<p>storage是永久存储在区块链上的地方。如果你想操作storage中的数据，你可以将它复制到内存中。然后，所有内存代码都在堆栈上执行。Stack 的最大深度为 1024 个元素，支持 256 位的字长。</p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p><img src="/2023/03/16/03.solidity%E8%BF%9B%E9%98%B6/24.%E7%BB%93%E6%9E%84&%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%BC%95%E7%94%A8/结构.png" alt="结构"></p>
+<p>当定义局部变量时，它存储在内存中，然后压入堆栈以执行。</p>
+<p><img src="/2023/03/16/03.solidity%E8%BF%9B%E9%98%B6/24.%E7%BB%93%E6%9E%84&%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%BC%95%E7%94%A8/ycYr9.png" alt></p>
+<h2 id="1024栈深"><a href="#1024栈深" class="headerlink" title="1024栈深"></a>1024栈深</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><ul>
+<li>EVM不是寄存器机而是堆栈机，所以所有的计算都在称为堆栈的数据区域上进行。</li>
+<li>在函数调用过程中<ul>
+<li>memory<ul>
+<li>用来存放变量、引用、方法或是方法返回值，用来存储函数内存中的数据。</li>
+<li>它不做任何运算，只保存临时数据</li>
+</ul>
+</li>
+<li>stack<ul>
+<li>调用合约内部的函数不会增加层数，每一个外部调用（call, callcode, delegatecall, staticcall）都有自己的stack，用来存储参数、返回值和局部变量等。即如果一个调用A拥有自己的stack_A，如果再进行外部调用B，则会新起一个stack_B</li>
+<li>每一个局部变量都会占据一级，比如局部变量是bytes1，并不会将32个bytes1拼凑在一起占用一个slot而占据一级</li>
+<li>合约无法使用与查看call stack，合约只知道mg.sender和tx.origin，合约无法知道中间是否还有其他合约调用。但是我们在remix的debug中可以看到call调用其他合约的堆栈和内存，这是remix自己搞的功能，它可以访问所有的内容，然而EVM本身是没有这个功能的。想要看到中间调用了哪些外部合约，要进行<a target="_blank" rel="noopener" href="https://docs.alchemy.com/reference/what-are-evm-traces">contract trace</a>。</li>
+<li>调用链越深，你需要的插槽就越多，如果你走得太深，你最终会用超1024个插槽，然后报错。通常 1024 个就足够了，除非出现无限递归或者循环过多</li>
+<li>stack 也叫execution stack，它会执行一系列操作码和运算，其数据来自memory</li>
+<li>假如合约A调用自身的方法b()，stack 不会增加级数。用户B调用b()，会增加。合约A调用其他合约的函数，会增加。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="设计原因"><a href="#设计原因" class="headerlink" title="设计原因"></a>设计原因</h3><ul>
+<li>具有固定大小使得 EVM 的整体模型更加简单且易于实现</li>
+<li>如果它非常大，那么执行合约会更昂贵（即需要更多内存）。 1024 是一个非常保守的值，以尽可能安全</li>
+<li>EVM 的设计方式往往会使更大的堆栈变得无用。EVM 只能访问堆栈中前16个slot。因此，即使您有一个 4096 slot的的堆栈，也只能够访问前16个，除非你不断pop，才可以访问到下面更深层次的内容</li>
+</ul>
+<h3 id="访问限制"><a href="#访问限制" class="headerlink" title="访问限制"></a>访问限制</h3><p>对stack的访问仅限于顶端：</p>
+<ul>
+<li>可以将最顶端的前 16 个元素之一复制到堆栈的顶部：<ul>
+<li>操作码【PUSH  n】，将第n个slot的内容放入堆栈中，n从 1 到 16</li>
+<li>操作码【DUP  n】，复制第n 个堆栈项，n从 1 到16</li>
+</ul>
+</li>
+<li>可以将最顶端的元素与前 16 个元素之一交换<ul>
+<li>操作码【SWAP  n】，交换第 1 个和第n 个堆栈项，其中 n从 1 到 16</li>
+</ul>
+</li>
+<li>其他的操作就是正常的stack操作：取栈顶的元素，计算，压回栈顶<ul>
+<li>正常的pop和push操作</li>
+</ul>
+</li>
+</ul>
+<p>注意：只可以访问前16个元素：状态变量可以无限个，但是局部变量最多16个，局部变量存储在堆栈中，下面是一个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">contract stackExample &#123;</span><br><span class="line">    function test() public&#123;</span><br><span class="line">        bytes1 a1 = &quot;0&quot;;</span><br><span class="line">        bytes1 a2 = &quot;0&quot;;</span><br><span class="line">        bytes1 a3 = &quot;0&quot;;</span><br><span class="line">        bytes1 a4 = &quot;0&quot;;</span><br><span class="line">        bytes1 a5 = &quot;0&quot;;</span><br><span class="line">        bytes1 a6 = &quot;0&quot;;</span><br><span class="line">        bytes1 a7 = &quot;0&quot;;</span><br><span class="line">        bytes1 a8 = &quot;0&quot;;</span><br><span class="line">        bytes1 a9 = &quot;0&quot;;</span><br><span class="line">        bytes1 a10 = &quot;0&quot;;</span><br><span class="line">        bytes1 a11 = &quot;0&quot;;</span><br><span class="line">        bytes1 a12 = &quot;0&quot;;</span><br><span class="line">        bytes1 a13 = &quot;0&quot;;</span><br><span class="line">        bytes1 a14 = &quot;0&quot;;</span><br><span class="line">        bytes1 a15 = &quot;0&quot;;</span><br><span class="line">        bytes1 a16 = &quot;0&quot;;</span><br><span class="line">        bytes1 a17 = &quot;0&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>报错内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">报错内容如下：</span><br><span class="line">from solidity:</span><br><span class="line">aaa.sol:6:9: CompilerError: Stack too deep, try removing local variables.</span><br><span class="line">        uint256 a1 = 0;</span><br><span class="line">        ^--------^</span><br><span class="line">【去掉任何一个变量则不报错，因为局部变量最多16个】</span><br></pre></td></tr></table></figure>
+<h2 id="拷贝与引用"><a href="#拷贝与引用" class="headerlink" title="拷贝与引用"></a>拷贝与引用</h2><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>数据类型<ul>
+<li>成员变量storage</li>
+<li>局部变量<ul>
+<li>值类型</li>
+<li>引用类型</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>局部变量的location<ul>
+<li>memory</li>
+<li>calldata</li>
+<li>storage：指向storage</li>
+</ul>
+</li>
+<li>消息调用的有效载荷叫做calldata，和location的calldata不是同一个意思！</li>
+<li><p>消息调用message的calldata，即有效载荷的部分。message不能被修改，因此location的calldata是只读的。calldata的数据块不能被值拷贝，但是可以进行引用拷贝。也就是说，calldata这个area的数据只能引用message中的数据，或者两个calldata之间相互引用。</p>
+</li>
+<li><p>任何一个成员变量永远都只会指向属于自己的数据块(插槽)，是一对一的关系，不存在一对多、多对一、多对多的情况，如图：</p>
+</li>
+</ul>
+<p><img src="/2023/03/16/03.solidity%E8%BF%9B%E9%98%B6/24.%E7%BB%93%E6%9E%84&%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%BC%95%E7%94%A8/image-20230317004222604.png" alt="image-20230317004222604"></p>
+<h3 id="图示与算法"><a href="#图示与算法" class="headerlink" title="图示与算法"></a>图示与算法</h3><p><img src="/2023/03/16/03.solidity%E8%BF%9B%E9%98%B6/24.%E7%BB%93%E6%9E%84&%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%BC%95%E7%94%A8/类型图解.png" alt="类型图解"></p>
+<p><img src="/2023/03/16/03.solidity%E8%BF%9B%E9%98%B6/24.%E7%BB%93%E6%9E%84&%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%BC%95%E7%94%A8/值拷贝与引用拷贝.png" alt="值结构&amp;拷贝与引用拷贝"></p>
+<h3 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a>代码演示</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract MemberVatiable&#123;</span><br><span class="line">	int256[] data1;</span><br><span class="line">	int256[] data2;</span><br><span class="line">	</span><br><span class="line">	function getData1() public view returns(int256 memory)&#123;</span><br><span class="line">		return data1;</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	function getData2() public view returns(uint256 memory)&#123;</span><br><span class="line">		return data2;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function insertData1(int256 d) public&#123;</span><br><span class="line">		return data1.push(d);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function insertData2(int256 d) public&#123;</span><br><span class="line">		return data2.push(d);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	//1.成员变量都是存放在storage</span><br><span class="line">	//2.storage存储位置的变量之间赋值的时候是值拷贝</span><br><span class="line">	function setData2ToData1() public&#123;</span><br><span class="line">		data1 = data2;//成员变量相互赋值</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	//成员变量本质上就是插槽，storage layout</span><br><span class="line">	function refAndState_1() public&#123;</span><br><span class="line">		int256p[] storage dataref = data1;//data1和dataref指向同一个数据块(插槽)</span><br><span class="line">		//下面这条语句是引用赋值: data2和dataref指向同一个数据块(插槽)</span><br><span class="line">		dataref = data2;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	//成员变量本质上就是插槽，storage layout</span><br><span class="line">	function refAndState_2() public&#123;</span><br><span class="line">		int256p[] storage dataref = data2;//data2和dataref指向同一个数据块(插槽)</span><br><span class="line">		//下面这条语句是值拷贝</span><br><span class="line">		data1 = dataref;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function calldata_ref_right(string calldata name) public&#123;</span><br><span class="line">		string calldata temp = name;//引用拷贝</span><br><span class="line">		name = temp;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    function calldata_copy_wrong(string calldata name) public &#123;</span><br><span class="line">        //calldata不能成为值拷贝目标</span><br><span class="line">        //以下内容报错</span><br><span class="line">        //string memory temp = name;//值拷贝</span><br><span class="line">        //name = temp;</span><br><span class="line">        </span><br><span class="line">        //报错内容：Type string memory is not implicitly convertible to expected type string calldata.</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	function valueCopy() public&#123;//值类型的数据之间赋值: 只能是值拷贝</span><br><span class="line">		uint v1 = 1;</span><br><span class="line">		uint v2 = 2;</span><br><span class="line">		v1 = v2;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function refCopy() public&#123;//引用类型的数据之间赋值： </span><br><span class="line">	</span><br><span class="line">		//定义一个引用变量，必须指明他的location，否则报错，例如</span><br><span class="line">        //string x;  ===&gt;  这会报错，应该这么写</span><br><span class="line">        string memory x;//或string calldata x;或string storage x;</span><br><span class="line">        //假如location写成calldata，那么这个变量x就是指向消息调用calldata的一部分calldata</span><br><span class="line">        //注意：location的calldata指的是数据类型的，而消息调用的数据叫做calldata，两者不同</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function x_1() public&#123;</span><br><span class="line">		data1 = data2;//值拷贝</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function x_2() public&#123;</span><br><span class="line">		int256[] memory temp = new int256[](6);</span><br><span class="line">		data1 = temp;//值拷贝</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function x_3() public&#123;</span><br><span class="line">		int256[] memory temp = new int256[](6);</span><br><span class="line">		temp1 = data2;//值拷贝</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	function x_4() public&#123;</span><br><span class="line">		int256[] storage temp = data1;</span><br><span class="line">		temp = data2;//引用拷贝</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>例子1</p>
+<ol>
+<li>初始状态下，调用insertData1()和insertData2()向data1和data2插入两个数据，结果：getData1()返回[1,1]，getData2()返回[2,2]</li>
+<li>调用setData2ToData1()，结果：getData1()返回[2,2]，getData2()返回[2,2]</li>
+<li>调用insertData1()向data1插入数据1</li>
+<li>结果：getData1()返回[2,2,1]，getData2()返回[2,2]</li>
+<li>调用insertData2()向data2插入数据2</li>
+<li>结果：getData1()返回[2,2,1]，getData2()返回[2,2，2]</li>
+<li>结论：storage存储位置的变量之间赋值的时候是值拷贝</li>
+</ol>
+</li>
+<li><p>例子2</p>
+<ol>
+<li>初始状态下，调用insertData1()和insertData2()向data1和data2插入两个数据，结果：getData1()返回[1,1]，getData2()返回[2,2]</li>
+<li>调用refAndState_2()，结果：getData1()返回[2,2]，getData2()返回[2,2]</li>
+</ol>
+</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/03/16/27.DApp%E5%85%A5%E9%97%A8%E9%A1%B9%E7%9B%AE/02.%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-03-16 23:37:50
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                        <b>#</b> 03.solidity进阶
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E6%9E%84-amp-%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%BC%95%E7%94%A8"><span class="toc-text">结构&amp;拷贝与引用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-text">结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1024%E6%A0%88%E6%B7%B1"><span class="toc-text">1024栈深</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%9B%A0"><span class="toc-text">设计原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E9%99%90%E5%88%B6"><span class="toc-text">访问限制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%BC%95%E7%94%A8"><span class="toc-text">拷贝与引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%A4%BA%E4%B8%8E%E7%AE%97%E6%B3%95"><span class="toc-text">图示与算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%BC%94%E7%A4%BA"><span class="toc-text">代码演示</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 24.%E7%BB%93%E6%9E%84%26%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%BC%95%E7%94%A8 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F03%2F16%2F03.solidity%25E8%25BF%259B%25E9%2598%25B6%2F24.%25E7%25BB%2593%25E6%259E%2584%26%25E6%258B%25B7%25E8%25B4%259D%25E4%25B8%258E%25E5%25BC%2595%25E7%2594%25A8%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/03/16/03.solidity%E8%BF%9B%E9%98%B6/24.%E7%BB%93%E6%9E%84&%E6%8B%B7%E8%B4%9D%E4%B8%8E%E5%BC%95%E7%94%A8/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
