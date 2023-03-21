@@ -168,7 +168,7 @@
       </div>
       <div class="markdown-body">
         <h1 id="Public-Key"><a href="#Public-Key" class="headerlink" title="Public Key"></a>Public Key</h1><h2 id="topic"><a href="#topic" class="headerlink" title="topic"></a>topic</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.21;</span><br><span class="line"></span><br><span class="line">contract PublicKeyChallenge &#123;</span><br><span class="line">    address owner = 0x92b28647ae1f3264661f72fb2eb9625a89d88a31;</span><br><span class="line">    bool public isComplete;</span><br><span class="line"></span><br><span class="line">    function authenticate(bytes publicKey) public &#123;</span><br><span class="line">        require(address(keccak256(publicKey)) == owner);</span><br><span class="line"></span><br><span class="line">        isComplete = true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="analyse"><a href="#analyse" class="headerlink" title="analyse"></a>analyse</h2><h2 id="solution"><a href="#solution" class="headerlink" title="solution"></a>solution</h2>
+<h2 id="analyses"><a href="#analyses" class="headerlink" title="analyses"></a>analyses</h2><h2 id="solution"><a href="#solution" class="headerlink" title="solution"></a>solution</h2>
       </div>
       
         <div class="prev-or-next">
@@ -217,7 +217,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Public-Key"><span class="toc-text">Public Key</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#topic"><span class="toc-text">topic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#analyse"><span class="toc-text">analyse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solution"><span class="toc-text">solution</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Public-Key"><span class="toc-text">Public Key</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#topic"><span class="toc-text">topic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#analyses"><span class="toc-text">analyses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solution"><span class="toc-text">solution</span></a></li></ol></li></ol>
       
     </div>
   </div>
