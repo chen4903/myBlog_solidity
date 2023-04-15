@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      12.Omni比特币网络协议 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">12.Omni比特币网络协议</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-04-10 00:51:34
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/23-%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/" title="23.知识扫盲">
+                    <b>#</b> 23.知识扫盲
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Omni比特币网络协议"><a href="#Omni比特币网络协议" class="headerlink" title="Omni比特币网络协议"></a>Omni比特币网络协议</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/40062558">转载与二创</a></p>
+<h2 id="OP-Return"><a href="#OP-Return" class="headerlink" title="OP_Return"></a>OP_Return</h2><p>一笔比特币交易是一个含有输入值和输出值的数据结构，该数据结构植入了将一笔资金从初始点（输入值）转移至目标地址（输出值）的代码信息。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>大小</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>version</td>
+<td>4 bytes</td>
+<td>明确这笔交易参照的规则</td>
+</tr>
+<tr>
+<td>输入数量</td>
+<td>1~9 bytes</td>
+<td>被包含的输入的数量</td>
+</tr>
+<tr>
+<td>输入</td>
+<td>交易：32 bytes</td>
+<td>指向交易包含的被花费的UTXO的哈希指针</td>
+</tr>
+<tr>
+<td></td>
+<td>输出索引：4 bytes</td>
+<td>被花费的UTXO的索引号</td>
+</tr>
+<tr>
+<td></td>
+<td>解锁脚本尺寸：1~9 bytes</td>
+<td>用字节表示的后面的解锁脚本长度</td>
+</tr>
+<tr>
+<td></td>
+<td>解锁脚本：变长</td>
+<td>签名数据，是隔离见证要移走的东西</td>
+</tr>
+<tr>
+<td></td>
+<td>序列号：4 bytes</td>
+<td>目前未被使用的交易替换功能</td>
+</tr>
+<tr>
+<td>输出数量</td>
+<td>1~9 bytes</td>
+<td>被包含的输出的数量</td>
+</tr>
+<tr>
+<td>输出</td>
+<td>总量：8 bytes</td>
+<td>用聪表示的比特币值</td>
+</tr>
+<tr>
+<td></td>
+<td>锁定脚本尺寸：1~9 bytes</td>
+<td>用字节表示的后面的锁定脚本长度</td>
+</tr>
+<tr>
+<td></td>
+<td>锁定脚本：变长</td>
+<td>一个定义了支付输出所需条件的脚本</td>
+</tr>
+<tr>
+<td>时钟时间</td>
+<td>4 bytes</td>
+<td>一个UNIX时间戳或区块高度</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在上述表格的倒数第2行，即“锁定脚本”可以是一种“备注信息”（请注意，这里是“可以是”），只要是以OP_Return开头的都属于“备注信息”。就像我们使用网银转账可有填写备注一样，这种“备注信息”的“锁定脚本”，即BCH节点来说是不作处理的。我们称这种“备注信息”为OP_Return数据。</p>
+<blockquote>
+<p>BCH：比特币现金</p>
+</blockquote>
+<p>但是这种OP_Return数据，都一定会和这笔交易共同存在BCH的区块里的。这句话的意思是：<strong>OP_Return数据是受BCH区块链保护的，这个数据是不可篡改，不可伪造的。</strong>哪怕是你再发一笔交易，填写完全一样的OP_Return信息，但这笔交易的txid肯定是不一样的，BCH区块链是可以识别“信息完全相同的OP_Return数据”是属于哪笔交易，在哪个区块的。这意味着，一笔交易tx，外带一个OP_Return数据，这两个信息就会是在全世界唯一性地存在。即使是在同一区块里，相同的输入地址和输出地址外加相同的OP_Return数据，的两笔交易，因为UTXO不同，交易加OP_Return也可以形成唯一性，在区块内部可以排到顺序。</p>
+<p><strong>OP_Return一旦写入了区块链，就相当于有了一个时间戳，哪怕是同一区块里的交易，都因排序不一样，而有不同的时间戳。</strong>这句话是什么意思呢？就类似于，今天的人民日报第2版发表了一篇文章，那这篇文章就带有2018年7月18日这个时间戳。如果明天，在人民日报第2版完全相同的地方，又发表了完全一样的文章，但时间戳是不一样的。</p>
+<p>注意：OP_Retrun一般会在浏览器的输出列出中显示为“地址解析失败”，然后在浏览器的输出脚本部分显示具体的数据。</p>
+<p>以上信息就是Omni协议成立的关键。</p>
+<h2 id="让我们来设计一个货币"><a href="#让我们来设计一个货币" class="headerlink" title="让我们来设计一个货币"></a>让我们来设计一个货币</h2><p>设计货币，最重要的就是三个功能：货币的发行、建立账户、货币的转移。</p>
+<ol>
+<li>发行必须有理有据，你不能胡乱发。我们可以约定好，一次性发行，然后永久不增加。也可以约定好按特定的条件来持续增发。只要定义好规则就好。为了方便起见，我们设计一个一次性发行，永久不增加的货币，我们先管它叫TFBC（The First Bticoin cash’s token Coin的首字母缩写），发行76亿（全世界人口，一人一个好了）。初次发行，就将所有的币存放到一个账户上。</li>
+<li>建立账户就得开户，允许新用户加入到这套货币体系当中来。新开的户，余额是零，然后可以接收币，收到币后可以发送币给别的账户。这个好理解。</li>
+<li>货币的转移，或叫支付，是我们使用这个货币的过程。这个过程必须是安全的和让用户可识别的。你不能出现一个人原本是没有币，他却能支付，即这套货币系统需要能识别出哪个账户有币，然后才能支付，也不能支付的总额超过了账户的余额。让用户可识别的就是说，你得让人知道他账户上有多少币，这个不能显示是假的，或者有人造假说自己有多少币，系统得能识别。</li>
+</ol>
+<p>有这三个功能，就实现了一套最简化的货币。</p>
+<p>我们使用一种中心化的思维来设计的话，就是使用一个账本，形象点说，就是一个excel表格。表格的第1列记录的是账户名字，第二列是账户余额。</p>
+<ol>
+<li>货币的发行，就直接在excel表里填写一个账户，随便叫个名字，就叫“闪电”好了，余额是76亿。</li>
+<li>新建账户就是在excel表格里增加一行，比如新建一个叫“雷神”的账户，余额为0。</li>
+<li>货币的转移，比如“闪电”这个账户要转1亿个币给“雷神”。要完成这个过程只需要修改两个数，第1是将“闪电”的余额改为75亿，将“雷神”的余额改为1亿，就完成了。</li>
+<li><strong>为了保证转移过程的安全性，我们会要求记录所有的历史支付记录。</strong>这样可以通过所有的历史记录回溯到初始发行的货币量，回溯就是将支付的过程逆过来，原本“闪电”支付给“雷神”1亿，回溯就变成了“雷神”支付给“闪电”1亿。如果回溯的最终结果和发行是一样的，那就可以说明整个支付过程是没有问题。有了历史记录，我们也可以对所有的账户余额进行回溯，回溯的结果一定的所有的账户余额都为零（除了初始发行的那个账户）。</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>账户</th>
+<th>第2列</th>
+<th>第3列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>闪电</td>
+<td>76亿</td>
+<td>-1亿</td>
+</tr>
+<tr>
+<td>雷神</td>
+<td>0亿</td>
+<td>+1亿</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>如果我们将上述一张excle表，复制到很多台电脑上，然后这些电脑可以同步更新数据，那我们就使用了去中心化的方式来实现这套最简化的货币体系。</p>
+<p>但是，如何保证货币的发行和转移是安全的呢？下面我们来讲如何使用Bitcoin Cash区块链来设计一个安全的货币发行和转移系统，即Omni协议。</p>
+<h2 id="Omni协议"><a href="#Omni协议" class="headerlink" title="Omni协议"></a>Omni协议</h2><p>因为有OP_Return数据的存在，将Bitcoin Cash的区块链里的OP_Return数据提取出来，就是一个非常好的“excel表”，每一次对这张表的修改，都会被记录在区块链里，而这些数据是不可篡改，不可伪造的。可以利用“OP_Return excel表”来设计一个去中心化的货币发行和转移系统。</p>
+<p>现在我们来利用BCH区块链来设计一套最简化的货币系统。</p>
+<ol>
+<li><p>我们使用一个BCH钱包来发一笔带自定义OP_Return数据的交易，交易的输入是自己控制私钥的地址A，输出有两个，第一个输出还是地址A，即这笔交易是自己发给自己，第二个输出是一个OP_Retrun数据。这个OP_Return数据写的意思就是“使用地址A当成创世账户，给这个账户注入76亿个TFBC货币”。这笔交易我们记为“铸币交易tx1。”</p>
+<p>因为BCH系统是不会去识别这个OP_Return里的数据的，所有的BCH节点都会直接忽略掉这个数据。那我们给bitcoin cash的节点钱包做一个外挂，这个外挂程序专门用来解析这个OP_Return数据。这个外挂结合上述tx1和这个OP_Return数据，就可以解析出一张excel表格，表格的第一列就是账户“地址A”，第二列就是“余额76亿TFBC”。</p>
+<p>因为OP_Return在BCH网络是不会被检验的，可以被随意填写。有没有可能别人也发一笔交易，包含完全相同的OP_Return数据，来伪造我们上面发行的76亿货币呢？答案是不能的，因为他无法伪造tx1，而外挂程序需要结合tx1来解析出这张excel表格。那么创世交易的的创造者能不能篡改或伪造铸币交易tx1呢，也是不能的，因为创造者可以使用相同的输入和输出，但无法伪造成相同的UTXO，否则就会被BCH网络确定为双花。</p>
+<p>| 账户  | 第2列 |<br>| ——- | ——- |<br>| 地址A | 76亿  |</p>
+</li>
+<li><p>在这个新发生的货币体系里，账户是和BCH共用的，新建账户也就是新建一个BCH地址。这个很简单。</p>
+<p>转移货币的过程是这样的，第一次转移是从铸币交易往外支付的，比如支付给地址B1亿个币。支付的过程需要使用“铸币地址A”构造一笔BCH交易，输入是地址A，输出之一是地址B，金额为546聪（这是因为BCH网络的防尘设计，如果删掉了这个限制，金额就可以为0），带上矿工费，第二个输出是一个OP_Return，里面的数据写会被解析为“账户A向账户B支付1亿个币”，我们记这笔BCH交易为tx2。</p>
+<p>OP_Return里的数据，在BCH网络是不会被处理的，但在上述的BCH的外挂程序里会被解析出来，解析的结果就是更新这张货币的状态表，如下表。</p>
+<p>| 账户  | 第2列 | 第3列 |<br>| ——- | ——- | ——- |<br>| 地址A | 76亿  | -1亿  |<br>| 地址B | 0     | +1亿  |</p>
+<p>同样的，因为tx2被BCH区块链打包之后，就不可能再被伪造了，除非BCH网络被回滚了。所以这个货币的状态表就无法被伪造了。</p>
+<p>只要地址B上有BCH余额可以支付防尘设置和矿工费，就可以给其他地址支付这个货币了，然后外挂程序就会拿这笔交易和OP_Return里的数据，解析更新货币的最新状态表。</p>
+<p>以上就是最简化的Omni协议实现的代币的原理，为了更实用性，代币一般会增加很多功能，比如锁定功能，自动化转币功能……</p>
+</li>
+</ol>
+<h2 id="Omni协议现状"><a href="#Omni协议现状" class="headerlink" title="Omni协议现状"></a>Omni协议现状</h2><p>Omni协议在BTC是已经做好了，在BCH上还没有。USDT就是使用Omni协议设计出来的。</p>
+<p>Omni Core就是在BTC上使用Omni协议实现的一个客户端，使用这个客户端就可以在BTC上发币，需要同步区块。</p>
+<p>在BTC上，现在一共有370种代币。有很多币，只有USDT有人在用，其他的都是死币。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/04/10/99.%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/07.ETH%20Beijing%20Hackathon%E6%94%B6%E8%8E%B7/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-04-10 00:51:34
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/23-%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/" title="23.知识扫盲">
+                        <b>#</b> 23.知识扫盲
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/04/10/23.%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/00.%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Omni%E6%AF%94%E7%89%B9%E5%B8%81%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE"><span class="toc-text">Omni比特币网络协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#OP-Return"><span class="toc-text">OP_Return</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A9%E6%88%91%E4%BB%AC%E6%9D%A5%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%B4%A7%E5%B8%81"><span class="toc-text">让我们来设计一个货币</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Omni%E5%8D%8F%E8%AE%AE"><span class="toc-text">Omni协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Omni%E5%8D%8F%E8%AE%AE%E7%8E%B0%E7%8A%B6"><span class="toc-text">Omni协议现状</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 12.Omni%E6%AF%94%E7%89%B9%E5%B8%81%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F04%2F10%2F23.%25E7%259F%25A5%25E8%25AF%2586%25E6%2589%25AB%25E7%259B%25B2%2F12.Omni%25E6%25AF%2594%25E7%2589%25B9%25E5%25B8%2581%25E7%25BD%2591%25E7%25BB%259C%25E5%258D%258F%25E8%25AE%25AE%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/04/10/23.%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/12.Omni%E6%AF%94%E7%89%B9%E5%B8%81%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
