@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      00.uniswap_digest 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">00.uniswap_digest</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-04-27 15:25:08
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/17-Uniswap/" title="17.Uniswap">
+                    <b>#</b> 17.Uniswap
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="uniswap-digest"><a href="#uniswap-digest" class="headerlink" title="uniswap_digest"></a>uniswap_digest</h1><h2 id="uniswap简介"><a href="#uniswap简介" class="headerlink" title="uniswap简介"></a>uniswap简介</h2><p>Uniswap协议是一个用来在以太坊区块链上交易加密货币（ERC-20代币）的点对合约系统，简单点说就是通过智能合约实现了一个去中心化的ERC-20代币的自动交易系统。</p>
+<p>任何人都可以再uniswap上创立流动池，一个流动池由一个代币对构成。假如你有一个项目发行了tokenCQ代币，你就能够创立ETH/tokenCQ的TokenPair为你的代币供给流动性。</p>
+<h2 id="相关名词解释"><a href="#相关名词解释" class="headerlink" title="相关名词解释"></a>相关名词解释</h2><ul>
+<li><strong>DEX：</strong>去中心化交易所</li>
+<li><strong>Uniswap Labs：</strong>负责开发Uniswap协议、网络接口的公司。</li>
+<li><strong>The Uniswap Protocol：</strong>一个实现自动化做市商的智能合约全家桶，促进点对点做市和以太坊上ERC-20 token的交易的协议（即Uniswap核心技术，后续工作原理介绍也都是针对协议内容的解释）。</li>
+<li><strong>The Uniswap Interface：</strong>为了方便使用Uniswap protocol而开发的网络接口，是与Uniswap protocol交互的众多方式之一（也可以直接与智能合约交互）。</li>
+<li><strong>Uniswap Governance：</strong>一个Uniswap Protocol的民主治理系统（社区式治理方式，论坛模式）。</li>
+</ul>
+<h2 id="uniswap发展历史"><a href="#uniswap发展历史" class="headerlink" title="uniswap发展历史"></a>uniswap发展历史</h2><p>Uniswap诞生至今也不过两年多的时间，但是却创造了很多令人惊叹的记录：</p>
+<ul>
+<li>2018年11月2日，Uniswap公开宣布上线并部署到以太坊主网，推出第一个版本Uniswap v1，但这个v1版本只能算是一个新型去中心化交易方式的概念验证，可实用性并不强。</li>
+<li>2020年1月31日，经过1年多的沉淀，Uniswap锁仓金额突破5000万美元，成为DeFi龙头。</li>
+<li>2020年5月19日，Uniswap v2版本上线，增加了自由组合交易对、价格预言机、闪贷、最优化交易路径等功能，对v1版本进行了全面的技术升级。</li>
+<li>2020年7月27日，Uniswap 24小时交易额突破1亿美元，DeFi在2020年迎来爆发式增长。</li>
+<li>2020年8月7日，Uniswap官方宣布已完成1100万美元的A轮融资，由Andreessen Horowitz领投。</li>
+<li>2020年8月31日，Uniswap锁仓金额突破10亿美元。</li>
+<li>2020年9月1日，Uniswap总交易量超过100亿美元。</li>
+<li>2020年9月3日，Uniswap锁仓金额突破20亿美元，距离10亿美元仅仅过了3天，可见市场之火爆。</li>
+<li>2020年9月17日，Uniswap宣布其协议治理代币UNI已在以太坊主网上发布，针对每一个之前使用过Uniswap protocol的区块链地址空投400个UNI，UNI的持有者有对平台新的发展及改变的提议的投票权。</li>
+<li>2021年5月5日，Uniswap v3版本上线，提供了集中流动性、多重收费层次、高级价格预言机、流动性预言机等技术升级，核心是提升资本效率，具体实现可关注另一篇文章<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/448382469">Uniswap v3 设计详解</a>。有一点需要注意的是v1和v2版本都遵循的是GPL开源协议，但是v3使用的是Business Source License 1.1（有效时限GPL-2.0或更高版本的许可证）。该许可证将v3源代码在商业环境或生产环境中的使用期限限制为两年，届时它将永久转换为GPL许可证。</li>
+</ul>
+<h2 id="自动化做市商"><a href="#自动化做市商" class="headerlink" title="自动化做市商"></a>自动化做市商</h2><p>自动化做市商（Automated Market Maker，AMM），在开始介绍Uniswap之前，先来说说中心化的交易所是怎么交易的</p>
+<p>在传统中心化交易所中，你以一个价格发出买单，系统会在order book寻找合适的卖单进行撮合成交，如果当前没有合适的对手单，则将新的订单暂存到order book中等待合适的对手单出现。买方===&gt;Order Book&lt;===卖方。</p>
+<p>买方以自己希望买入的价格挂买单，进入订单薄下方并按价格从高到低排序，价格最高成为买1； 卖方以自己希望卖出的价格挂卖单，进入订单薄的上方并按价格从低到高排序，价格最低成为卖1；订单薄上方的买单和下方的卖单按顺序撮合成交，如果没有合适的对手单时，交易就不能完成，订单挂在订单薄上等待。这种模式下，如果买卖双方不够活跃，用户发出的买单或者卖单无法快速找到交易对手方进行撮合，就会出现长时间的挂单，交易效率低下，这时就出现了做市商</p>
+<p>这个order book以中心系统的形式保存了所有买单、买单的信息，如下图所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>Ask Price</th>
+<th>Ask Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>103</td>
+<td>40</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>102</td>
+<td>23</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>101</td>
+<td>10</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>20</td>
+<td>99</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>98</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>35</td>
+<td>97</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Bid Size</td>
+<td>Bid Price</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在这种中心化交易平台上，每笔交易的撮合并不需要通过区块链，而是在中心化系统中实现，保证了交易的高并发和低时延，但如果平台上的买卖双方不够活跃，用户发出的买单或者卖单无法快速找到交易对手方进行撮合，就会出现长时间的挂单，交易效率低下，这时就出现了做市商。</p>
+<p>做市商是指在传统证券市场上，由具备一定实力和信誉的独立证券经营法人作为特许交易商，不断向公众投资者报出某些特定证券的买卖价格（即双向报价），并在该价位上接受公众投资者的买卖要求，以其自有资金和证券与投资者进行证券交易。买卖双方不需等待交易对手出现，只要有做市商出面承担交易对手方既可达成交易。</p>
+<p><img src="/2023/04/27/17.Uniswap/00.uniswap_digest/image-20230228001941354.png" alt="image-20230228001941354"></p>
+<p>做市商通过做市制度来维持市场的流动性，满足公众投资者的投资需求。做市商通过买卖报价的适当差额来补偿所提供服务的成本费用，并实现一定的利润，但是在中心化平台中，买方/卖方并不确定做市商是否真的在区块链上有实际的资产（账户中的余额只是中心化数据库中的一个数字），而且用户的资产都保存在中心化交易所的钱包里，自己没有绝对的控制权，而中心化交易所也没接受任何监管机构的监管，很容易发生监守自盗的事件。</p>
+<p>基于以上种种弊端，Uniswap提出了一种通过智能合约实现<strong>自动化做市商（Automated Market Maker，AMM）</strong>来与用户进行交易的去中心化交易协议，用户资产完全由自己控制，而智能合约中锁定的做市资产也是公开可查，是一种更安全透明的交易方式。</p>
+<p><img src="/2023/04/27/17.Uniswap/00.uniswap_digest/image-20230228002047138.png" alt="image-20230228002047138"></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/04/27/17.Uniswap/01.uniswap_v1_theory/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-04-27 15:25:08
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/17-Uniswap/" title="17.Uniswap">
+                        <b>#</b> 17.Uniswap
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/04/27/17.Uniswap/02.uniswap_v1_code/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#uniswap-digest"><span class="toc-text">uniswap_digest</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#uniswap%E7%AE%80%E4%BB%8B"><span class="toc-text">uniswap简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="toc-text">相关名词解释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#uniswap%E5%8F%91%E5%B1%95%E5%8E%86%E5%8F%B2"><span class="toc-text">uniswap发展历史</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%9A%E5%B8%82%E5%95%86"><span class="toc-text">自动化做市商</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 00.uniswap_digest + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F04%2F27%2F17.Uniswap%2F00.uniswap_digest%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/04/27/17.Uniswap/00.uniswap_digest/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
