@@ -11,7 +11,7 @@
   
   <title>
     
-      01.eip-1884 
+      01.暂无 
       
       
       |
@@ -21,7 +21,7 @@
 
   
     <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
-    <link rel="icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
   
 
   <!-- Raleway-Font -->
@@ -68,7 +68,7 @@
     <a href="/">
       <!-- 头像取消懒加载，添加no-lazy -->
       
-        <img src="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0" alt="">
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
       
     </a>
     <div class="nickname"><a href="/">LEVI_104</a></div>
@@ -147,7 +147,7 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">01.eip-1884</div>
+      <div class="post-title">01.暂无</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
@@ -158,8 +158,8 @@
                 <i class="iconfont icon-bookmark" title="Categories"></i>
                 
                 <span class="span--category">
-                  <a href="/categories/12-eip/" title="12.eip">
-                    <b>#</b> 12.eip
+                  <a href="/categories/12-%E6%9A%82%E6%97%A0/" title="12.暂无">
+                    <b>#</b> 12.暂无
                   </a>
                 </span>
                 
@@ -167,99 +167,7 @@
           
       </div>
       <div class="markdown-body">
-        <h1 id="eip-1884"><a href="#eip-1884" class="headerlink" title="eip-1884"></a>eip-1884</h1><h2 id="Simple-Summary"><a href="#Simple-Summary" class="headerlink" title="Simple Summary"></a>Simple Summary</h2><p>This EIP proposes repricing certain opcodes, to obtain a good balance between gas expenditure and resource consumption.</p>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>The growth of the Ethereum state has caused certain opcodes to be more resource-intensive at this point than they were previously. This EIP proposes to raise the <code>gasCost</code> for those opcodes.</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>An imbalance between the price of an operation and the resource consumption (CPU time, memory etc) has several drawbacks:</p>
-<ul>
-<li>It could be used for attacks, by filling blocks with underpriced operations which causes excessive block processing time.</li>
-<li>Underpriced opcodes cause a skewed block gas limit, where sometimes blocks finish quickly but other blocks with similar gas use finish slowly.</li>
-</ul>
-<p>If operations are well-balanced, we can maximise the block gaslimit and have a more stable processing time.</p>
-<blockquote>
-<p>应该是sload用的太多了，而且这个opcode对资源消耗很大，所以提高gas</p>
-<p>是gas越高，执行的越慢吗？执行的速度是opcode的实现决定的，读取MPT可能需要读取硬盘，进行比较复杂的执行，所以用时很长，但gas消耗和时间不匹配</p>
-<p>gas越高的操作码就越慢？不一定，gas是人为制定的，还考虑其他硬件成本</p>
-<p>一个block的所有交易的执行都是在同一个时间戳下完成的</p>
-<p>和出块有关的影响最多是矿工可能会拒绝含有大量低性价比操作码的交易</p>
-<p>也就是说：攻击者可以在合约中写非常多gas低廉的操作码，但这些操作码所花费的时间并不少(gas和操作码执行时间没有必然联系)。这样的话，一个区块gas限制下，众多的gas低廉操作码会导致此区块执行的时间比其他区块长</p>
-</blockquote>
-<h2 id="Specification"><a href="#Specification" class="headerlink" title="Specification"></a>Specification</h2><p>At block <code>N</code>,</p>
-<ul>
-<li><p>The <code>SLOAD</code> (<code>0x54</code>) operation changes from <code>200</code> to <code>800</code> gas,</p>
-</li>
-<li><p>The <code>BALANCE</code> (<code>0x31</code>) operation changes from <code>400</code> to <code>700</code> gas,</p>
-</li>
-<li><p>The <code>EXTCODEHASH</code> (<code>0x3F</code>) operation changes from <code>400</code> to <code>700</code> gas,</p>
-</li>
-<li><p>A new opcode, <code>SELFBALANCE</code> is introduced at <code>0x47</code></p>
-<ul>
-<li><p><code>SELFBALANCE</code> pops <code>0</code> arguments off the stack,</p>
-</li>
-<li><p><code>SELFBALANCE</code> pushes the <code>balance</code> of the current address to the stack,</p>
-</li>
-<li><p><code>SELFBALANCE</code> is priced as <code>GasFastStep</code>, at <code>5</code> gas.</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Rationale"><a href="#Rationale" class="headerlink" title="Rationale"></a>Rationale</h2><p>Here are two charts, taken from a full sync using Geth. The execution time was measured for every opcode, and aggregated for 10K blocks. These bar charts show the top 25 ‘heavy’ opcodes in the ranges 5M to 6M and 6M to 7M:</p>
-<p><img src="/2022/12/31/12.eip/01.eip-1884/image-20230419223655660.png" alt="image-20230419223655660"></p>
-<p>Note: It can also be seen that the <code>SLOAD</code> moves towards the top position. The <code>GASPRICE</code> (<code>0x3a</code>) opcode has position one which I believe can be optimized away within the client – which is not the case with <code>SLOAD</code>/<code>BALANCE</code>.</p>
-<p>Here is another chart, showing a full sync with Geth. It represents the blocks <code>0</code> to <code>5.7M</code>, and highlights what the block processing time is spent on.</p>
-<p><img src="/2022/12/31/12.eip/01.eip-1884/geth_processing.webp" alt="geth_processing"></p>
-<p>It can be seen that <code>storage_reads</code> and <code>account_reads</code> are the two most significant factors contributing to the block processing time.</p>
-<h3 id="SLOAD"><a href="#SLOAD" class="headerlink" title="SLOAD"></a><code>SLOAD</code></h3><p><code>SLOAD</code> was repriced at <a target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-150">EIP-150</a>, from <code>50</code> to <code>200</code>. The following graph shows a go-ethereum full sync, where each data point represents 10K blocks. During those 10K blocks, the execution time for the opcode was aggregated.</p>
-<p><img src="/2022/12/31/12.eip/01.eip-1884/SLOAD-run3.png" alt="graph"></p>
-<p>It can be seen that the repricing at <a target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-150">EIP-150</a> caused a steep drop, from around <code>67</code> to <code>23</code>. Around block <code>5M</code>, it started reaching pre-<a target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-150">EIP-150</a> levels, and at block <code>7M</code> it was averaging on around <code>150</code> - more than double pre-eip-150 levels.</p>
-<p>Increasing the cost of <code>SLOAD</code> by <code>4</code> would bring it back down to around <code>40</code>. It is to be expected that it will rise again in the future, and may need future repricing, unless state clearing efforts are implemented before that happens.</p>
-<h3 id="BALANCE"><a href="#BALANCE" class="headerlink" title="BALANCE"></a><code>BALANCE</code></h3><p><code>BALANCE</code> (a.k.a <code>EXTBALANCE</code>) is an operation which fetches data from the state trie. It was repriced at <a target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-150">EIP-150</a> from <code>20</code> to <code>400</code>.</p>
-<p><img src="/2022/12/31/12.eip/01.eip-1884/BALANCE-run3.png" alt="graph"></p>
-<p>It is comparable to <code>EXTCODESIZE</code> and <code>EXTCODEHASH</code>, which are priced at <code>700</code> already.</p>
-<p>It has a built-in high variance, since it is often used for checking the balance of <code>this</code>, which is a inherently cheap operation, however, it can be used to lookup the balance of arbitrary account which often require trie (disk) access.</p>
-<p>In hindsight, it might have been a better choice to have two opcodes: <code>EXTBALANCE(address)</code> and <code>SELFBALANCE</code>, and have two different prices.</p>
-<ul>
-<li>This EIP proposes to extend the current opcode set.<ul>
-<li>Unfortunately, the opcode span <code>0x3X</code> is already full, hence the suggestion to place <code>SELFBALANCE</code> in the <code>0x4X</code> range.</li>
-<li>As for why it is priced at <code>5</code> (<code>GasFastStep</code>) instead of <code>2</code> (<code>GasQuickStep</code>), like other similar operations: the EVM execution engine still needs a lookup into the (cached) trie, and <code>balance</code>, unlike <code>gasPrice</code> or <code>timeStamp</code>, is not constant during the execution, so it has a bit more inherent overhead.</li>
-</ul>
-</li>
-</ul>
-<h3 id="EXTCODEHASH"><a href="#EXTCODEHASH" class="headerlink" title="EXTCODEHASH"></a><code>EXTCODEHASH</code></h3><p><code>EXTCODEHASH</code> was introduced in Constantinople, with <a target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-1052">EIP-1052</a>. It was priced at <code>400</code> with the reasoning:</p>
-<blockquote>
-<p>The gas cost is the same as the gas cost for the <code>BALANCE</code> opcode because the execution of the <code>EXTCODEHASH</code> requires the same account lookup as in <code>BALANCE</code>.</p>
-</blockquote>
-<p>Ergo, if we increase <code>BALANCE</code>, we should also increase <code>EXTCODEHASH</code></p>
-<h2 id="Backwards-Compatibility"><a href="#Backwards-Compatibility" class="headerlink" title="Backwards Compatibility"></a>Backwards Compatibility</h2><p>The changes require a hardfork. The changes have the following consequences:</p>
-<ul>
-<li>Certain calls will become more expensive.</li>
-<li>Default-functions which access the storage and may in some cases require more than<code>2300</code> gas (the minimum gas that is always available in calls).</li>
-<li>Contracts that assume a certain fixed gas cost for calls (or internal sections) may cease to function.<ul>
-<li>A fixed gas cost is specified in <a target="_blank" rel="noopener" href="https://eips.ethereum.org/EIPS/eip-165">ERC-165</a> and implementations of this interface do use the affected opcodes<ul>
-<li>The ERC-165 method <code>supportsInterface</code> must return a <code>bool</code> and use at most <code>30,000</code> gas.</li>
-<li>The two example implementations from the EIP were, at the time of writing<ul>
-<li><code>586</code> gas for any input, and</li>
-<li><code>236</code> gas, but increases linearly with a higher number of supported interfaces</li>
-</ul>
-</li>
-<li>It is unlikely that any ERC-165 <code>supportsInterface</code> implementation will go above <code>30.000</code> gas. That would require that the second variant is used, and thirty:ish interfaces are supported.</li>
-<li>However, these operations have already been repriced earlier, so there is a historical precedent that ‘the gascost for these operations may change’, which should have prevented such fixed-gas-cost assumptions from being implemented.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>I expect that certain patterns will be less used, for example the use of multiple modifiers which <code>SLOAD</code>s the same opcode will be merged into one. It may also lead to less <code>log</code> operations containing <code>SLOAD</code>ed values that are not strictly necessary.</p>
-<h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><p>This EIP has not yet been implemented in any client. Both these opcodes have been repriced before, and the client internals for managing reprices are already in place.</p>
-<p><code>SELFBALANCE</code></p>
-<p>This is the implementation for the new opcode in go-ethereum:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">opSelfBalance</span><span class="params">(pc *<span class="type">uint64</span>, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack)</span></span> ([]<span class="type">byte</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	stack.push(interpreter.intPool.get().Set(interpreter.evm.StateDB.GetBalance(contract.Address())</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Security-considerations"><a href="#Security-considerations" class="headerlink" title="Security considerations"></a>Security considerations</h2><ul>
-<li>See backwards compatibility section.</li>
-<li>There are no special edgecases regarding <code>SELFBALANCE</code>, if we define it as <code>BALANCE</code> with <code>address</code> instead of popping an address from the stack – since <code>BALANCE</code> is already well-defined.</li>
-<li>It should be investigated if Solidity contains any hardcoded expectations on the gas cost of these operations.</li>
-<li>In many cases, a recipient of <code>ether</code> from a <code>CALL</code> will want to issue a <code>LOG</code>. The <code>LOG</code> operation costs <code>375</code> plus <code>375</code> per topic. If the <code>LOG</code> also wants to do an <code>SLOAD</code>, this change may make some such transfers fail.</li>
-</ul>
-
+        <h1 id="暂无"><a href="#暂无" class="headerlink" title="暂无"></a>暂无</h1>
       </div>
       
         <div class="prev-or-next">
@@ -281,8 +189,8 @@
                     <i class="iconfont icon-bookmark" title="Categories"></i>
                     
                     <span class="span--category">
-                      <a href="/categories/12-eip/" title="12.eip">
-                        <b>#</b> 12.eip
+                      <a href="/categories/12-%E6%9A%82%E6%97%A0/" title="12.暂无">
+                        <b>#</b> 12.暂无
                       </a>
                     </span>
                     
@@ -308,7 +216,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#eip-1884"><span class="toc-text">eip-1884</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Simple-Summary"><span class="toc-text">Simple Summary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Motivation"><span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Specification"><span class="toc-text">Specification</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rationale"><span class="toc-text">Rationale</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SLOAD"><span class="toc-text">SLOAD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BALANCE"><span class="toc-text">BALANCE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EXTCODEHASH"><span class="toc-text">EXTCODEHASH</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Backwards-Compatibility"><span class="toc-text">Backwards Compatibility</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Implementation"><span class="toc-text">Implementation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Security-considerations"><span class="toc-text">Security considerations</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9A%82%E6%97%A0"><span class="toc-text">暂无</span></a></li></ol>
       
     </div>
   </div>
@@ -595,12 +503,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01.eip-1884 + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F12%2F31%2F12.eip%2F01.eip-1884%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01.%E6%9A%82%E6%97%A0 + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F12%2F31%2F12.%25E6%259A%2582%25E6%2597%25A0%2F01.%25E6%259A%2582%25E6%2597%25A0%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/12/31/12.eip/01.eip-1884/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/12/31/12.%E6%9A%82%E6%97%A0/01.%E6%9A%82%E6%97%A0/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
