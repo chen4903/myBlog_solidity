@@ -167,7 +167,8 @@
           
       </div>
       <div class="markdown-body">
-        <h1 id="uniswap-v2-theory"><a href="#uniswap-v2-theory" class="headerlink" title="uniswap_v2_theory"></a>uniswap_v2_theory</h1><h2 id="feature"><a href="#feature" class="headerlink" title="feature"></a>feature</h2><ul>
+        <h1 id="uniswap-v2-theory"><a href="#uniswap-v2-theory" class="headerlink" title="uniswap_v2_theory"></a>uniswap_v2_theory</h1><p><img src="/2023/04/27/17.Uniswap/03.uniswap_v2_theory/image-20230503095441783.png" alt="image-20230503095441783"></p>
+<h2 id="feature"><a href="#feature" class="headerlink" title="feature"></a>feature</h2><ul>
 <li><p>支持任意ERC20代币的交易对，允许流动性提供者为任意两个ERC-20代币创建交易对合约。</p>
 </li>
 <li><p>提供价格预言机功能，其原理是在每个区块开始时累计两种代币的相对价格，这将允许其他以太坊合约可以获取任意时间段内两种代币的时间加权平均价格</p>
@@ -256,6 +257,9 @@
 <p>交换后，池中有5.997个tokenA和16.675004个tokenB。【不太对，因为手续费没加上去，K值应该是会稍微变大的】</p>
 <p>在 Uniswap V2 中，手续费会留在池子里，而不是直接发送给流动性提供者。每次发生交易时，用户需要支付 0.3% 的手续费。这些费用会以增加储备量的形式添加到池子里。因此，手续费实际上是通过提高流动性池中的代币储备来间接奖励流动性提供者的。</p>
 <p>当流动性提供者想要退出并赎回其份额时，他们可以获得池子中的代币，这时候就包括了那部分累积的手续费。换句话说，流动性提供者可以通过增加的储备量获得手续费收益，而这些增加的储备量正是由于交易产生的手续费。</p>
+<h2 id="预言机"><a href="#预言机" class="headerlink" title="预言机"></a>预言机</h2><p><img src="/2023/04/27/17.Uniswap/03.uniswap_v2_theory/image-20230503155140209.png" alt="image-20230503155140209"></p>
+<p><img src="/2023/04/27/17.Uniswap/03.uniswap_v2_theory/image-20230503155326291.png" alt="image-20230503155326291"></p>
+<p><img src="/2023/04/27/17.Uniswap/03.uniswap_v2_theory/image-20230503155719880.png" alt="image-20230503155719880"></p>
 <h2 id="swap"><a href="#swap" class="headerlink" title="swap"></a>swap</h2><p>如果是币币交换，那么要transferFrom一定的代币到合约，然后再swap。但是假如在这两步当中，其他人swap咋办？这个问题是不是因为交易的原子性，防止了这个问题呢</p>
 <p>1.先转入代币<br>2.swap<br>有人在1.5步提前swap了</p>
 <p>这个情形不会发生，因为1和2这两步是在同一个tx中，tx具有原子性，不会被1.5插队，这样的逻辑是吧？</p>
@@ -264,6 +268,14 @@
 <p>自己调用也可以</p>
 <p><img src="/2023/04/27/17.Uniswap/03.uniswap_v2_theory/image-20230427174341340.png" alt="image-20230427174341340"></p>
 <p>如果转token和调swap分开进行就是做慈善，转入token但没swap出代币会导致滑点偏移，会被套利机器人以最快速度转走</p>
+<h2 id="手续费-amp-协议费"><a href="#手续费-amp-协议费" class="headerlink" title="手续费&amp;协议费"></a>手续费&amp;协议费</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UniswapV2Factory</span><br><span class="line"></span><br><span class="line">address public feeTo //协议费的接收地址</span><br><span class="line">address public feeToSetter //设置feeTo的人，相当于admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>协议费：给项目的维护人员/开发者，是0.3%中的1/6</li>
+<li>手续费：每一笔交易固定的手续费，现在是0.3%</li>
+</ul>
+<p>只在添加和删除流动性的时候才统一计算协议费</p>
+<p><img src="/2023/04/27/17.Uniswap/03.uniswap_v2_theory/image-20230503140618932.png" alt="image-20230503140618932"></p>
+<p><img src="/2023/04/27/17.Uniswap/03.uniswap_v2_theory/image-20230503141333547.png" alt="image-20230503141333547"></p>
 <h2 id="update"><a href="#update" class="headerlink" title="update"></a>update</h2><h3 id="Solidity"><a href="#Solidity" class="headerlink" title="Solidity"></a>Solidity</h3><p>Uniswap v1使用Vyper语言实现，这是一个类Python的智能合约语言。Uniswap v2使用更流行的Solidity语言实现，因为v2依赖一些（在开发时）Vyper语言还不具有的能力，比如解析非标准ERC-20代币的返回值，通过内联的assembly语法访问一些新操作码，如chainid。</p>
 <h3 id="ERC20-tx"><a href="#ERC20-tx" class="headerlink" title="ERC20 tx"></a>ERC20 tx</h3><p>Uniswap v1使用ETH作为桥接代币，任何交易对都包含ETH作为其中一个代币。这使得路由更加简单，比如要想实现ABC和XYZ的交易，只需要分别使用ETH/ABC和ETH/XYZ交易对即可，这同时也减少了流动性分裂。注：由于交易对总是包含ETH，相比v2任意ERC-20代币组合，v1的交易对数量大大减少，并且流动性都被吸收到ETH这一侧。</p>
 <p>但是这样的规则给流动性提供者带来巨大成本。所有的流动性提供者都将面临ETH的风险敞口，并且在代币价格相对ETH价格波动时承受无常损失。如果ABC和XYZ是两种关联的代币，比如都是USD稳定币，那么交易对ABC/XYZ的无常损失将小于ABC/ETH或XYZ/ETH。【因为ABC与XYZ价格相对于ETH朝同一方向运动，ABC/XYZ价格波动较小，而ABC/ETH或XYZ/ETH价格波动较大。】</p>
@@ -323,7 +335,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#uniswap-v2-theory"><span class="toc-text">uniswap_v2_theory</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#feature"><span class="toc-text">feature</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flashloan"><span class="toc-text">flashloan</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k%E5%80%BC"><span class="toc-text">k值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#swap"><span class="toc-text">swap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#update"><span class="toc-text">update</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Solidity"><span class="toc-text">Solidity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ERC20-tx"><span class="toc-text">ERC20 tx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Wrapping-ETH-WETH"><span class="toc-text">Wrapping ETH - WETH</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#uniswap-v2-theory"><span class="toc-text">uniswap_v2_theory</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#feature"><span class="toc-text">feature</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flashloan"><span class="toc-text">flashloan</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k%E5%80%BC"><span class="toc-text">k值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E8%A8%80%E6%9C%BA"><span class="toc-text">预言机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#swap"><span class="toc-text">swap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E7%BB%AD%E8%B4%B9-amp-%E5%8D%8F%E8%AE%AE%E8%B4%B9"><span class="toc-text">手续费&amp;协议费</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#update"><span class="toc-text">update</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Solidity"><span class="toc-text">Solidity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ERC20-tx"><span class="toc-text">ERC20 tx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Wrapping-ETH-WETH"><span class="toc-text">Wrapping ETH - WETH</span></a></li></ol></li></ol></li></ol>
       
     </div>
   </div>

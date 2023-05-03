@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      05.Foundry+test+Event 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">05.Foundry+test+Event</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-04-30 18:27:02
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/43-Foundry-%E9%83%A8%E5%88%86%E7%89%88%E6%9D%83%E9%97%AE%E9%A2%98%E4%B8%8D%E5%85%AC%E5%BC%80%E9%9C%80%E5%AF%86%E7%A0%81/" title="43.Foundry(部分版权问题不公开需密码)">
+                    <b>#</b> 43.Foundry(部分版权问题不公开需密码)
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="bcc6ff7861cb5d9be5bd8b7ddd6027c4bc807c161c4ef337301978d591b99366">61aeca37f4136303695817d1fffb2bc8e2dad573e710378062e4eb54b8774639bd173355487d6f49e6b4397d7fc4a8f69a618ff487e430c88766f74043613965425eb6ffcc080491f538f61e8dfe717c7d3e985e9bf49ac8ec56a7a42e656e90546d3d9f2b9b7bafd99abd589befcf3cd4e8a575f3a0c6bfb4d583d830a146cd2d3cddaf98ab7b9916ec51d1f2e7ca7a8b4194e30f599f800f75d977541d2f86eeaf3e402c7650759ecf0d17f9e297d654acbe20542659f16a93c40b8e8c87a2dbfaf0e5649c7d0f6f6687d033c67aba8401e5fcf4d50c6d1724ffdec540f442c85559399acf773eeea696b93b22a81a243aed983b675c79334dd95867ca9d191fb54268e4fd739a287f3d8d62bf4e8089d3d7313429c91e7c67b250559e1f9a0772e34ba26f1870019c7a60ac63d3c0bde2c77e5edb8e231c2078c475166be790d93f7cf3630c4d39ca8c1614cddf599a170dd9233076118dcc17fb9f905de7bcc59d099aedde63ef6b5222254a6744549df32fb8cd23a32f93bb40e8ddf63bdb0b6beb9780cbf05e92aab0d968a1841f27078ec6e3e018bb5f690b77db7d3468fe204fe11a8e388be6112e94dd50f7387fb33c09e423809a96a521d70bd599d9bfc56a0d783b5b3d0631a7b5aa9ac9ecbc1e140d2d165aac70c8d1f9632678a2c1a26837a51dcfb4e1c4b3b86a36f83c8141fa3dfb4c24d9ff0355e02c61a5fce5ee4322c86c6a15eea976c076c18546c8961ee24f256d1085558eb39b296dbbd341e015e234e5790c5a13f458a4a1c145c6e65c56a754c41440c3c286f4b0e810f47ba04765e065c5918b4b9b96ac1f96effd8d39ca14c3126d1eaba251cea2b9327b8e562a15af004b9dc060788d89fd5ed22aa451fb4f0b5e40b7d902c64e4d9cd5fd37397c0ed9e230461c6a00a041aee788febfffc0b6f11034f3064158f4ae9d244f537a080a610b44703af3bf770ad0eb9f9ba4ea79c218c17a43658f52f22fabe5b335b639ef4612849da404617aa7130eca266fb6effdb85331d4d17c24b435e89169049692fa467f317bce73336114c6c685ad62f055bc170bd67a8eff780bea4dbd96f6844583ac2184c430f767e426f2e8ecaee2abc43e6994962eb7aaa7b4554df947bdc27c56168878b458d7dae72798de30f0a9939118b19b73d8bb3487e958260b692f451cad9fb411327400e29f3731c19c03c7bc3eee5030feacc5e84d46086ea05631486c5a4ccf2aabd33c7abf2b17a7bcb632d9e36635362724611647e81e847c64961815d52f6ce35a497023b487c213d7e6c1e2d59877de4d6cba6e282d487a7b956ac4adbc1c638e6434078d28aa2dc17926ff9ac4a481d96c7c05a08c2fbddf59f27a3bdc3b621ec0afe8aa04401f1f951bf4cd6cd656274dc021d892c7a278c6980d4adc2b6b15388b2a5644ce6bc7e170bdf2383fa59e958bf23ae192c46731bb6a69c195f9caf4189fb3bf80d1c4186fd433d7b8becb52f510041870c95720a9b0341efeacdb37cd8ad579e50ffdcade33a8b033c1dc5bd2cca4aef99a199d0eb659ba5e7e593bc1bbdf8b53bbbfe96fd92db6eca57dcec67a3694488544c6394a9ab903209d00621d18800a17e2c8f680c76d54080de18557f85f9c9a9d89e89884f76f06f9cb826466e8a0999ecf597de858f96b8d996ff9af333eab2630d4c75c57becb4cc8b9b9e26daa4eb59d66ef83bc0da0e322a3afbbbb7ee24fb396c6d636c52ee28604e2a178822395fc7c8a2866c69f8a029a5f208c9215c0144db267637ffc8d74044203142f68e33d5fb54edeef7867f22aabb5d62a33bdce9588094c49322858e8472ee090d1a3b406f823243d43cc6d8f58537f1ffd2b0ef1072507a1a511b43bbf9d7cb76abe59fee43f0470075273bef58f8c2590874f4000fefffe814f69207f82771cbde44c23a426b9a09ebae747fe34e17319fc3deca1ffecd83d1bdd346cef9b4fb0d88b371307bce02ab87de63446fc3798e108b56ab6c06a3365e13441278780e03e27f6cafd869654a64df16c3aa3d5c23c10a95278283e289e329cd239057ada62646ad40aa23758f2fae450faf82621052136613d6b04f82239ebe138bcb4a0e509554f5ff9e89914d020f913c128f6ac5e9e2ee722becf642a055bbdbebc3afb655296da4511f1ca9fb17bcd973159762a36e101f832f221917942e4b31a59f0b3b424ef38c9851301ecf49b99488c2273dfb614ebec38bb574ea93bef7addf1d03e8720661d7c0c9c81dca7333c36f3a869466a7b0418a7a1ef820d4bf0c1ba852afc43266c945ade380c0fc036776f19d49ef7cfc0d41b72a0de7e50a5c814aa1ed1727100511b6a057324eaa145a841cba84387f80ca98726945151c4e63806247562bb0cc17d28e0550476fa4dfe58b9c60ba9295a9ae93d845018a8a23ad829528e19d5fbb731edb9e86f0262529a89a53712b6cdd50a0a0b07b4e2f9cd3bfaa825d46ce7d5f07abdde6cb3679eab46f77970804213ce2424c3db024ac9adb709cc186b69c0afd25b60839d0d0ea059e2b9f16b6c7537a64a9dc7ad783d3f5844a5bab75451c5147bdd1029514f8011ac3310cc63d41a054a1a46080c843e616221a954c19b3f0e12884bedf5625a315b380619c8684c21856fa902b563a5fb84f280d9102443c4124c64b0b59734858d732b769fc336fb47d5d83321ce5a1ca93f96a17f1733dbd444e53466c3923b04451292c2f24dd3aceab5a9fdf053b68d0ff6f4cc2e49f4140a0947cb42200883939db8e7e38ea3c84a17fd687e98fd4e7531bddfdbdf424c0bda9f79a64a11302c550ab8a9faa26e72c801e4579cfc8fe375ed240dd39d057958095de594490b107681e4c059a2a1f8c3321f5484461575acb0e0d177e623fb5451ba41191829e4f65d869932e20b1d56117b533bb5dfc2479d774bfe8d784f482a99d684b39b54f078875d8d93a89c8b4446859ac9ab2f27ace9255d075162ba475b79d889c965b140ff70b55d330f9b3b90a0c259a836bb30e2c3346970e011b9b5e7563c650568850454ff3902ae745b5a3298dee6cd61727ad1420528737da49eba2f20463e9bf815ec10334ec470276c5f75a4d1ce50271e5924e07fdedc955b676b7c1396d7d5d40e1883324c85cf155ffee74ffc1b0f98fd35998a3ac43010381969b7d4d4eb777ce6ed5840786714671d48880f7fc1b57b3e05a78fde3c535c27d2bc278e05ff7ecba0dec29552f00f7ae050d61837d9f896ccfe1cc47229548985fc5ce1178ce8bb8447d38b42d24672e15bbbe5a0655aeeb9fe4cf91f88c2f3e1d14c1d03fbdba853a7f602c8f92f69e695fd454337be78546a1d6c147e22c9e645ae74a5d46755c69cc492102d40fb1f902e6429693b7a0f373d29afbad3767ceab844dd9a534fb89e80cc4f736b583f7d0bb55512656ff382a88792fd3be7218be95827a92bd939b1debe58049cc7ae02c3726c27520de190edf6ea872632427bae583f78cb9e086b535a0e037ed1abf005f453152c506afdbba0b8fb13e76861313b6edf8218192fc6ab82424d93b7b442b044a74bb6d64cf8aa83c7795c9e591f9ca4e4a75587c8b3d2fe4b69fe24c600fb5a937832f1b948e7cf42dedbd44cf1f7bac0c464ade3320ccac477fe9c6cc51241f723177f1d09eb61697dfc9aadcc5223d71ba1357a36658b881244d9cf28d6b11d2544ee12d236766469f7a155bd04e90d509956c2594841f981ef8491174caccca4ae360a4f68ca3560c7d6fc5c8d58887d39e2ea96b3eef5e7832a8394466b718b8ef10e487222695fc01c77e602efbbeed4036ee89756fbc9cd262936c2ffdbf9c1a8c1abaaa77a6a4ee81c4dec1cb3bac1707040e274ad9428c2f36d435714a955ab34c3813934f07e951cca4bffab0230102c736fa9ce3f4108d1d7b512e23b654bcf1217e7b4c36e05e38a51112859e724086192f8e7157f88372e5d27de4a2d4dbbb366764781aa5b1b0dcbedc18587fb26e58845b47bf03f1f7762f95962ca8763376cf513501b4bb9958741fa003d560d28b3103b294b57a13b6ab34f1a39909d7e81546082fc9eaf4670fa3b89da049c0de9266b4cedacdd28caa76ed8aee064e3ff304bcb8f5ad833a39861ced9002a7509ebbec3a97b0a7733337548f8460fe6acdc4912aa3f4a44ebfd081df8cb3c1a7c49808c35634ee7848d3b42a8dec560591a1c940ce7a76d0a99ef8165bc5b92859fc0651e9da5c0a8c528ee5588fe3848db592e0decc1ef7a13f518fd78a45dcb18eb59b637eba573010c4ff8f5053111e2ef0a42f80b035ae423c0eb8988ce0e20e392345f13f63659d5bcd308b7828bddf20bf4dd56387f84e0df40fee374c712c6442d514eefb62d2abd1bc4f2426802ab1831d2a38798433cbe4d169750ce5ed263cea3d8ec4d9223f97fba0a833d013ae9ff8f6860d4d0bbba91f9bf1664785085d11ddadd5c20a228f91914dea14b2c32223a98362539be492032026ac3b0466d15daf2126aff1184c9f0db5d573663379200acc8d9b4455bd22f49a383e0f591eaf9a041b193ee4999eee863c5c6c1233cbc7c07da73e1db417bd6e985db63dc3426f1f4caadf391e3e2a6f655ecb323eed7c35dba70c1b14ca0f8b1b17d26c9aaefd606c58d5a5f612d6971da3a2532e0d521f532101797315458b8434d8d021c2f00793a52013680d4a8ce89d4e5e18c76be3b1197b61ed62b641341562f9cdc0dfbc62ac0f08a27dc330d043e8baee5fb5411df96003238fbb98bd1648a248800a9798141b40c83c2c73f4a1415b4195d9d1eb33626a403d1f90203c322cd7087b7bf355cea3f62b80e06d76775ecaf6e2e204babb9f6825b43dbd30c8d79f6d007de37d573b6888795b7ff0daaa3516e1a3dd262e4edbb0c78db4a0796dc72f7257a839af52a47df152db4513614a04d2f4197f1896557d8d8d8a546b577b8bc8a2ef4584c9f477a5afe174c7d8c7cb09846d62f6054e1e366576cd305bc888ca343e16e96a8a48f139252606e0c28365107a635ed3384016f6fe6c0e71d93afc550fd8a8be070c237a41cf52e88297f49e22cfabbb9d635acb3d541f3169c56c367a17ec41849bb3c8b988e66360ad10826ac8d8b5a6cd7a5c84a171a6058fad9fe6484afbdc476a1cd57d44c08875ffec83cb17ef65e271083022eaf9dfb852fc5f96e997ed87cf9106932873779b08f5d125c221cd5810d957d2beb3b8c41107f7b1d3665da1f8d4293c5b209e0f7bf8e5edf31d9a00d50cf2ea1c6a3df9d5012d40292e27dd2d2485dbb227783f199d6f9df7911b4c2aae059d86452b878b3eb449ff7996e6c3852bb278b7f2e05f5dddc56cc847b8bee31c5bdd51e7127d756366504f857ad50fd030c64e897c4212c70433a0fd2d452b85851450034434fa069d57c8abf3d6410c8bc4b64b4a065c073df28eb7d911a72cfa92625d4ecc3a529a2f4023ad30010140490926c4417b88e88ede4906552204fb07b1413c5eeb796a73d627e08fe5a204a05c9dec8d4750cb1c4f6210530a9f38ad4f7505a99f7677ab4819bfb8ac7ae36be6d522ed89703a2c36fe48162792df56e33034a7ec752920cccd350fa5cb5c0499c19863f9ea4f06cd9a76850e54a76beca87c6fb18f5dd800756138510eb4dd93c5e1418d3121fc801fdb4ddc73b5a8776de7d2d928ef39636f2c064d242366f3409980f40439b7cd9a8ebe91cdab07d47ba678fb5854f9cf47fad89efdfa4c76c2a428c14caa22e8ba743fa52cc2d991a480d3fe4745c316149c5e326ae66c347da5088901fdc62d6c56de555add7b5209e0da1f4808d61349e2b8773410f293736a8ff1fd3ef1509d38e14b4947e585793e7f0069caa7210bb3c2193a339184028711f28de7c5eb8b3cd28a4f91cb3e3c528d5a197d58b7a24d0ced71dc0fe648fed26838c4005cacac906b0ae5251f82ce81d7ee2af1bde799b6c71917b565c33a5a352db908ac6fbdc4a032d74e7f95656cd510eebddb0451689d6707bdc7b4060202f03e5ad03d77cd9b7e91db8a040eeb28a49224ea4f1e55dc333733e79c3682d8dc017d30c56395f635f0acf3eb57fcd6e178c0bb2f79b18d8722ea56bc4695d5c9e15dabfa6bae455bd26de878d8a0d36b4452f145d2f533f644180e492c257007af3f0f8ae4c728982bb600fb4c4051048e06efe67c875a8dbb0973250d763e5800f1fd6468c821bdc7aa1025ca8d7acbdeee319d84249bf09d2c0377eb313e9f68b45fc5dedc5aee944da1641ec6517303100b461db28771b3e995e690aeba36277e77029d436c73c15d08e86733e37309d5b900e16409e7c19aa58affdbac4b3584aea0c05cea51ed7a20d054412d8cf9594dbe5f6facf704465098df282cb8797fd1e115dea3274d073bf69186363db560d5fd3c130f8ebc967d671db61b9c3d5ceaa5b910acdf8db3fcf6fee66a7f19c42bafb923d95acd4a5aea918c38ba086ee5b1ffdd74ca4695dc73cc21dbe555201ded2e6afd5ad1494cf92276ff5e15b663b3f356618ad19c1fa920d937ba3fdbc5bff0ced034c4acf6e7860bed5caba12be670766442a774e18fb7d987bb2b24ddf758d58dd4a6184681f0dbb278f129464b15b74e577b89b0873b02eb4892a1710262e71e17e09b96ec31168e391326292227f50ec14a65dc07d659be430916bb824eb76c5dec76321dbbe1625b86fb36436d2ba205dc7c34012ccad5bba4ebc8f440a83c0f14cd0b3bd90d79a0126cd26cbea8ec3a03a112a9a6e0fb9ac5e5fbc70eeae83afcc40e7da7481f8365fc2dc63f4e2eaebace34154be0aba2ea8c944d0087e897b54807ac9384dc3969f40553836305c567ad46f06b404ce7756249570ff9607bc5f7d755b1fda13990031be464f06fd26d810ed74672f6f4e0f686491617365c4e55f81d3be7ab6f3592288709d1d680af42565a5604f33e12d020da219f3957003803590e28299d45cb396630520b4dd787dea3a8cbb362f6409d953c76b29bc03771871d87e40609c861106c2f3f422e9bc65c53c594654ecb55eb1518f534fe141988406ebe8e03907e8d23adcc87c8f084a5d6f72d4cff2df8d92b5002f23d848bea18b08989b8ea1b81e08f717f4da7ceb95261c6aad349294e26ca88d79697ecdb69d249abbadd6272c2a810cba8b527d67dae2084d63af4f74ccb24d11621de516364f</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/04/29/44.Security%20Event%20Analysis/02.Euler%20Finance%20&%20Flashloan/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-04-30 18:27:02
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/43-Foundry-%E9%83%A8%E5%88%86%E7%89%88%E6%9D%83%E9%97%AE%E9%A2%98%E4%B8%8D%E5%85%AC%E5%BC%80%E9%9C%80%E5%AF%86%E7%A0%81/" title="43.Foundry(部分版权问题不公开需密码)">
+                        <b>#</b> 43.Foundry(部分版权问题不公开需密码)
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/04/30/43.Foundry/06.Foundry+test+trace/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Foundry-test-Event"><span class="toc-text">Foundry+test+Event</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 05.Foundry%2Btest%2BEvent + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F04%2F30%2F43.Foundry%2F05.Foundry%2Btest%2BEvent%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/04/30/43.Foundry/05.Foundry+test+Event/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
