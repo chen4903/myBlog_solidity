@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      40.create2合约地址计算 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">40.create2合约地址计算</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:23
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                    <b>#</b> 02.solidity语法
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="create2合约地址计算"><a href="#create2合约地址计算" class="headerlink" title="create2合约地址计算"></a>create2合约地址计算</h1><p><code>CREATE2</code> 操作码使我们在智能合约部署在以太坊网络之前就能预测合约的地址。<code>Uniswap</code>创建<code>Pair</code>合约用的就是<code>CREATE2</code>而不是<code>CREATE</code>。这一讲，我将介绍<code>CREATE2</code>的用法</p>
+<h2 id="CREATE2如何计算地址"><a href="#CREATE2如何计算地址" class="headerlink" title="CREATE2如何计算地址"></a>CREATE2如何计算地址</h2><p><code>CREATE2</code>的目的是为了让合约地址独立于未来的事件。不管未来区块链上发生了什么，你都可以把合约部署在事先计算好的地址上。用<code>CREATE2</code>创建的合约地址由4个部分决定：</p>
+<ul>
+<li><code>0xFF</code>：一个常数，避免和<code>CREATE</code>冲突</li>
+<li>创建者地址</li>
+<li><code>salt</code>（盐）：一个创建者给定的数值</li>
+<li>待部署合约的字节码（<code>bytecode</code>）</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">新地址 = hash(&quot;0xFF&quot;,创建者地址, salt, bytecode)</span><br></pre></td></tr></table></figure>
+<p><code>CREATE2</code> 确保，如果创建者使用 <code>CREATE2</code> 和提供的 <code>salt</code> 部署给定的合约<code>bytecode</code>，它将存储在 <code>新地址</code> 中。</p>
+<h2 id="计算包含特定字符的地址"><a href="#计算包含特定字符的地址" class="headerlink" title="计算包含特定字符的地址"></a>计算包含特定字符的地址</h2><p>以下以计算一个包含’5a54’的地址为例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//使用python，引入web3库</span><br><span class="line"><span class="keyword">from</span> web3 <span class="keyword">import</span> Web3</span><br><span class="line"></span><br><span class="line">s1 = <span class="string">&#x27;0xff406187E1b3366B5da3539D99C4E88E42FC60De50&#x27;</span></span><br><span class="line"></span><br><span class="line">s3= <span class="string">&#x27;da647010355608442b3eab68e7dcc6d5b836f2628d2366ff8ae853413a643965&#x27;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">    salt = <span class="built_in">hex</span>(i)[<span class="number">2</span>:].rjust(<span class="number">64</span>,<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">    s = s1+salt+s3</span><br><span class="line">    hashed = Web3.sha3(hexstr=s)</span><br><span class="line">    hashed_str = <span class="string">&#x27;&#x27;</span>.join([<span class="string">&#x27;%02x&#x27;</span> % b <span class="keyword">for</span> b <span class="keyword">in</span> hashed])</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;5a54&#x27;</span> <span class="keyword">in</span> hashed_str[<span class="number">26</span>:]:</span><br><span class="line">        <span class="built_in">print</span>(salt,hashed_str)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(salt)</span><br><span class="line">//输出结果：</span><br><span class="line">//salt:0000000000000000000000000000000000000000000000000000000000000314 //hashed_str:ed2bb3003f33323b6ab51649857345a545213f2cf30379035ce2d922d1bf1f9d</span><br></pre></td></tr></table></figure>
+<p>为什么<code>hashed_str[26:]</code>这样子设计呢？原因：这个脚本返回的第二个字符串是一个六十四位的数据，我们只需要后面的四十位作为地址，又因为题目合约的限定需要从第三位开始满足拥有“5a54”，因此我们需要从第二十六位之后的三十八位中含有”5a54”</p>
+<p>注意：我们create2生成的地址是hashed_str后面的40位。即<code>857345a545213f2cf30379035ce2d922d1bf1f9d</code>。原因：判断5a54的时候是从第二十六位开始的，地址只需要四十位。</p>
+<h2 id="如何使用CREATE2"><a href="#如何使用CREATE2" class="headerlink" title="如何使用CREATE2"></a>如何使用<code>CREATE2</code></h2><p>（1）一般使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Contract x = new Contract&#123;salt:_salt,value:_value&#125;(params)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Contract：创建的合约名</li>
+<li>x：合约对象（地址）</li>
+<li>_salt：指定的盐</li>
+<li>_value：如果构造函数是 payable，可以创建时转入_value 数量的 ETH（wei）</li>
+<li>params：新合约构造函数的参数</li>
+</ul>
+<p>（2）编码模式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">predictedAddress = address(uint160(uint(keccak256(abi.encodePacked(</span><br><span class="line">                bytes1(0xff),</span><br><span class="line">                address(this),</span><br><span class="line">                salt,</span><br><span class="line">                keccak256(type(Pair).creationCode)</span><br><span class="line">            )))));</span><br></pre></td></tr></table></figure>
+<p>（3）内联汇编</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assembly &#123;</span><br><span class="line">addr := create2(0, add(bytecode, 0x20), mload(bytecode), salt)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>发送给新合约的wei数(msg.value).</li>
+<li>跳过bytecode前面32个字节长度的数据</li>
+<li>获取bytecode的长度</li>
+<li>salt ，我们将它作为可控参数，可以在计算后再提供，是一个随机数nonce</li>
+</ol>
+<p>解释：bytecode的前32个字节存储的是这个bytecode的总长度，32个字节后面的数据才是bytecode真正的数据</p>
+<p>注意：使用过一次create2部署之后，不可以再次使用相同的（再次调用方法），否则它会返回0地址，因为不可能部署两次相同的地址</p>
+<h2 id="极简Uniswap2"><a href="#极简Uniswap2" class="headerlink" title="极简Uniswap2"></a>极简Uniswap2</h2><h3 id="Pair"><a href="#Pair" class="headerlink" title="Pair"></a><code>Pair</code></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">contract Pair&#123;</span><br><span class="line">    address public factory; // 工厂合约地址</span><br><span class="line">    address public token0; // 代币1</span><br><span class="line">    address public token1; // 代币2</span><br><span class="line"></span><br><span class="line">    constructor() payable &#123;</span><br><span class="line">        factory = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // called once by the factory at time of deployment</span><br><span class="line">    function initialize(address _token0, address _token1) external &#123;</span><br><span class="line">        require(msg.sender == factory, &#x27;UniswapV2: FORBIDDEN&#x27;); // sufficient check</span><br><span class="line">        token0 = _token0;</span><br><span class="line">        token1 = _token1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Pair</code>合约很简单，包含3个状态变量：<code>factory</code>，<code>token0</code>和<code>token1</code>。</p>
+<p>构造函数<code>constructor</code>在部署时将<code>factory</code>赋值为工厂合约地址。<code>initialize</code>函数会在<code>Pair</code>合约创建的时候被工厂合约调用一次，将<code>token0</code>和<code>token1</code>更新为币对中两种代币的地址。</p>
+<h3 id="PairFactory2"><a href="#PairFactory2" class="headerlink" title="PairFactory2"></a><code>PairFactory2</code></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">contract PairFactory2&#123;</span><br><span class="line">        mapping(address =&gt; mapping(address =&gt; address)) public getPair; // 通过两个代币地址查Pair地址</span><br><span class="line">        address[] public allPairs; // 保存所有Pair地址</span><br><span class="line"></span><br><span class="line">        function createPair2(address tokenA, address tokenB) external returns (address pairAddr) &#123;</span><br><span class="line">            require(tokenA != tokenB, &#x27;IDENTICAL_ADDRESSES&#x27;); //避免tokenA和tokenB相同产生的冲突</span><br><span class="line">            // 计算用tokenA和tokenB地址计算salt</span><br><span class="line">            (address token0, address token1) = tokenA &lt; tokenB ? (tokenA, tokenB) : (tokenB, tokenA); //将tokenA和tokenB按大小排序</span><br><span class="line">            bytes32 salt = keccak256(abi.encodePacked(token0, token1));</span><br><span class="line">            // 用create2部署新合约</span><br><span class="line">            Pair pair = new Pair&#123;salt: salt&#125;(); </span><br><span class="line">            // 调用新合约的initialize方法</span><br><span class="line">            pair.initialize(tokenA, tokenB);</span><br><span class="line">            // 更新地址map</span><br><span class="line">            pairAddr = address(pair);</span><br><span class="line">            allPairs.push(pairAddr);</span><br><span class="line">            getPair[tokenA][tokenB] = pairAddr;</span><br><span class="line">            getPair[tokenB][tokenA] = pairAddr;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>工厂合约（<code>PairFactory2</code>）有两个状态变量<code>getPair</code>是两个代币地址到币对地址的<code>map</code>，方便根据代币找到币对地址；<code>allPairs</code>是币对地址的数组，存储了所有币对地址。</p>
+<p><code>PairFactory2</code>合约只有一个<code>createPair2</code>函数，使用<code>CREATE2</code>根据输入的两个代币地址<code>tokenA</code>和<code>tokenB</code>来创建新的<code>Pair</code>合约。其中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair pair = new Pair&#123;salt: salt&#125;(); </span><br></pre></td></tr></table></figure>
+<p>就是利用<code>CREATE2</code>创建合约的代码，非常简单，而<code>salt</code>为<code>token1</code>和<code>token2</code>的<code>hash</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bytes32 salt = keccak256(abi.encodePacked(token0, token1));</span><br></pre></td></tr></table></figure>
+<h3 id="事先计算Pair地址"><a href="#事先计算Pair地址" class="headerlink" title="事先计算Pair地址"></a>事先计算<code>Pair</code>地址</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 提前计算pair合约地址</span><br><span class="line">        function calculateAddr(address tokenA, address tokenB) public view returns(address predictedAddress)&#123;</span><br><span class="line">            require(tokenA != tokenB, &#x27;IDENTICAL_ADDRESSES&#x27;); //避免tokenA和tokenB相同产生的冲突</span><br><span class="line">            // 计算用tokenA和tokenB地址计算salt</span><br><span class="line">            (address token0, address token1) = tokenA &lt; tokenB ? (tokenA, tokenB) : (tokenB, tokenA); //将tokenA和tokenB按大小排序</span><br><span class="line">            bytes32 salt = keccak256(abi.encodePacked(token0, token1));</span><br><span class="line">            // 计算合约地址方法 hash()</span><br><span class="line">            predictedAddress = address(uint160(uint(keccak256(abi.encodePacked(</span><br><span class="line">                bytes1(0xff),</span><br><span class="line">                address(this),</span><br><span class="line">                salt,</span><br><span class="line">                keccak256(type(Pair).creationCode)</span><br><span class="line">            )))));</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>我们写了一个<code>calculateAddr</code>函数来事先计算<code>tokenA</code>和<code>tokenB</code>将会生成的<code>Pair</code>地址。通过它，我们可以验证我们事先计算的地址和实际地址是否相同。</p>
+<p>大家可以部署好<code>PairFactory2</code>合约，然后用下面两个地址作为参数调用<code>createPair2</code>，看看创建的币对地址是什么，是否与事先计算的地址一样：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WBNB地址: 0x2c44b726ADF1963cA47Af88B284C06f30380fC78</span><br><span class="line">BSC链上的PEOPLE地址:</span><br><span class="line">0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c</span><br></pre></td></tr></table></figure>
+<h3 id="在Remix上验证"><a href="#在Remix上验证" class="headerlink" title="在Remix上验证"></a>在Remix上验证</h3><ol>
+<li>首先用<code>WBNB</code>和<code>PEOPLE</code>的地址哈希作为<code>salt</code>来计算出<code>Pair</code>合约的地址</li>
+<li>调用<code>PairFactory2.createPair2</code>传入参数为<code>WBNB</code>和<code>PEOPLE</code>的地址，获取出创建的<code>pair</code>合约地址</li>
+<li>对比合约地址</li>
+</ol>
+<h2 id="create2的实际应用场景"><a href="#create2的实际应用场景" class="headerlink" title="create2的实际应用场景"></a>create2的实际应用场景</h2><ol>
+<li>交易所为新用户预留创建钱包合约地址。</li>
+<li>由 <code>CREATE2</code> 驱动的 <code>factory</code> 合约，在<code>uniswapV2</code>中交易对的创建是在 <code>Factory</code>中调用<code>create2</code>完成。这样做的好处是: 它可以得到一个确定的<code>pair</code>地址, 使得 <code>Router</code>中就可以通过 <code>(tokenA, tokenB)</code> 计算出<code>pair</code>地址, 不再需要执行一次 <code>Factory.getPair(tokenA, tokenB)</code> 的跨合约调用。</li>
+</ol>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/36.import/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:23
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                        <b>#</b> 02.solidity语法
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/38.ABI/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#create2%E5%90%88%E7%BA%A6%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97"><span class="toc-text">create2合约地址计算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CREATE2%E5%A6%82%E4%BD%95%E8%AE%A1%E7%AE%97%E5%9C%B0%E5%9D%80"><span class="toc-text">CREATE2如何计算地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%8C%85%E5%90%AB%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="toc-text">计算包含特定字符的地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8CREATE2"><span class="toc-text">如何使用CREATE2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E7%AE%80Uniswap2"><span class="toc-text">极简Uniswap2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pair"><span class="toc-text">Pair</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PairFactory2"><span class="toc-text">PairFactory2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%85%88%E8%AE%A1%E7%AE%97Pair%E5%9C%B0%E5%9D%80"><span class="toc-text">事先计算Pair地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8Remix%E4%B8%8A%E9%AA%8C%E8%AF%81"><span class="toc-text">在Remix上验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#create2%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">create2的实际应用场景</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 40.create2%E5%90%88%E7%BA%A6%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F02.solidity%25E8%25AF%25AD%25E6%25B3%2595%2F40.create2%25E5%2590%2588%25E7%25BA%25A6%25E5%259C%25B0%25E5%259D%2580%25E8%25AE%25A1%25E7%25AE%2597%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/40.create2%E5%90%88%E7%BA%A6%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

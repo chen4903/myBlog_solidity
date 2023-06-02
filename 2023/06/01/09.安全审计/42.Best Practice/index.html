@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      42.Best Practice 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">42.Best Practice</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:19
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                    <b>#</b> 09.安全审计
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Best-Practice"><a href="#Best-Practice" class="headerlink" title="Best Practice"></a>Best Practice</h1><p><a target="_blank" rel="noopener" href="https://github.com/ConsenSys/smart-contract-best-practices/blob/master/README-zh.md">cite_1</a></p>
+<p><a target="_blank" rel="noopener" href="https://ethereum.org/en/developers/docs/smart-contracts/security/#top">cite_2</a></p>
+<h2 id="代码规范"><a href="#代码规范" class="headerlink" title="代码规范"></a>代码规范</h2><ul>
+<li>私有函数通常以下划线作为前缀</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function _fixMe () private  pure  returns (ufixed nope , fixed doubleNope ) &#123;</span><br><span class="line">        // 使用库！DSMath、PRBMath、ABDKMath64x64</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>应尽可能使用下划线和面额以提高可读性</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1_000_000_000 ether, // == 1000000000000000000000000000</span><br></pre></td></tr></table></figure>
+<ul>
+<li>为了防止函数和事件（Event）产生混淆，命名一个事件使用大写并加入前缀（我们建议LOG）。对于函数， 始终以小写字母开头，构造函数除外。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// bad</span><br><span class="line">event Transfer() &#123;&#125;</span><br><span class="line">function transfer() &#123;&#125;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">event LogTransfer() &#123;&#125;</span><br><span class="line">function transfer() external &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="开发理念"><a href="#开发理念" class="headerlink" title="开发理念"></a>开发理念</h2><ul>
+<li>对可能的错误有所准备。任何有意义的智能合约或多或少都存在错误。因此你的代码必须能够正确的处理出现的bug和漏洞。始终保证以下规则：<ul>
+<li>当智能合约出现错误时，停止合约，（“断路开关”）</li>
+<li>管理账户的资金风险（限制（转账）速率、最大（转账）额度）</li>
+<li>有效的途径来进行bug修复和功能提升</li>
+</ul>
+</li>
+<li>谨慎发布智能合约。 尽量在正式发布智能合约之前发现并修复可能的bug。<ul>
+<li>对智能合约进行彻底的测试，并在任何新的攻击手法被发现后及时的测试(包括已经发布的合约)</li>
+<li>从alpha版本在测试网（testnet）上发布开始便提供bug赏金计划</li>
+<li>阶段性发布，每个阶段都提供足够的测试</li>
+</ul>
+</li>
+<li>保持智能合约的简洁。复杂会增加出错的风险。<ul>
+<li>确保智能合约逻辑简洁</li>
+<li>确保合约和函数模块化</li>
+<li>使用已经被广泛使用的合约或工具（比如，不要自己写一个随机数生成器）</li>
+<li>条件允许的话，清晰明了比性能更重要</li>
+<li>只在你系统的去中心化部分使用区块链</li>
+</ul>
+</li>
+<li>清楚区块链的特性。尽管你先前所拥有的编程经验同样适用于以太坊开发，但这里仍然有些陷阱你需要留意：<ul>
+<li>特别小心针对外部合约的调用，因为你可能执行的是一段恶意代码然后更改控制流程</li>
+<li>清楚你的public function是公开的，意味着可以被恶意调用。（在以太坊上）你的private data也是对他人可见的</li>
+<li>清楚gas的花费和区块的gas limit</li>
+</ul>
+</li>
+</ul>
+<h2 id="msg-value"><a href="#msg-value" class="headerlink" title="msg.value"></a>msg.value</h2><p>在一个循环中访问msg.value存在危险，例如：一个合约实现了一个函数A，允许多个调用合并为一个，它将允许使用相同的msg.value来多次调用函数A。这样的话，看起来调用者支付了多次，其实他只支付了一次</p>
+<h2 id="JUMPDEST"><a href="#JUMPDEST" class="headerlink" title="JUMPDEST"></a>JUMPDEST</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct Func &#123; function () internal f; &#125;</span><br><span class="line">function jumper(uint jumpTo) public &#123;</span><br><span class="line">    Func memory func;</span><br><span class="line">    // Function type variables should be carefully handled and avoided in assembly</span><br><span class="line">    // manipulations to prevent jumps to arbitrary code locations.</span><br><span class="line">    // The following allows jumping to any JUMPDEST opcodes within the contract&#x27;s</span><br><span class="line">    // bytecode, potentially jumping over important checks/requires.</span><br><span class="line">    assembly &#123; mstore(func, jumpTo) &#125;</span><br><span class="line">    func.f();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="encodePacked"><a href="#encodePacked" class="headerlink" title="encodePacked"></a>encodePacked</h2><p>散列 encodePacked 可能很危险，因为打包可能不明确！打包意味着没有填充，所以允许一个变量可以渗入另一个。意外碰撞！</p>
+<h2 id="isContract"><a href="#isContract" class="headerlink" title="isContract"></a>isContract</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function isContract ( address  param ) public  view  returns ( bool  callerIsContract , bool  paramIsContract ) &#123;</span><br><span class="line">        // 我们可以通过比较来可靠地检查调用者是否是合约：</span><br><span class="line">        callerIsContract =  tx。起源 ！= 味精。发件人；</span><br><span class="line">        // tx.origin 将始终包含最初触发的 EOA 帐户的地址</span><br><span class="line">        // 交易（只有 EOA 可以触发交易！）</span><br><span class="line"></span><br><span class="line">        // 我们可以尝试检查帐户代码的大小以检查它是否是合约：</span><br><span class="line">        uint256大小；</span><br><span class="line">        组装&#123;</span><br><span class="line">            大小：=  extcodesize（参数）</span><br><span class="line">        &#125;</span><br><span class="line">        paramIsContract =大小&gt;  0 ;</span><br><span class="line">        // 但这是不可靠的，因为 EOA 的大小不仅为 0，而且</span><br><span class="line">        // - 施工合同</span><br><span class="line">        // - 将创建合约的地址 (CREATE2)</span><br><span class="line">        // - 合约存在但被销毁的地址</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//如果可能的话，无论函数输入如何，函数内完成的工作量（使用的气体）都应该是相对恒定和可预测的。</span><br><span class="line">//参数和返回值也应该是恒定或可预测的大小（例如，具有特定数量项的数组）。测试极端情况！</span><br><span class="line">function loooooping ( uint8 [] calldata  numbers )外部&#123;</span><br><span class="line">    for ( uint8 i; i &lt; numbers.length ; i ++ ) &#123;</span><br><span class="line">      // 循环内的状态变量更新（使用SSTORE）等操作需要花费大量气体，成本高昂，</span><br><span class="line">      // 并可能导致气体外错误。优选使用局部变量进行优化。</span><br><span class="line">      pubInt +=数字[i];</span><br><span class="line">      // 在循环中调用外部合约是危险的（尤其是在循环索引可以由用户控制的情况下），</span><br><span class="line">      // 因为如果其中一个调用恢复或执行耗尽，可能会导致DoS。</span><br><span class="line">      // 避免在循环内调用，检查循环索引是否不能由用户控制或有界。</span><br><span class="line">      应付（消息。发件人）。转移（1）；</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="外部调用"><a href="#外部调用" class="headerlink" title="外部调用"></a>外部调用</h2><p>调用不受信任的外部合约可能会引发一系列意外的风险和错误。外部调用可能在其合约和它所依赖的其他合约内执行恶意代码。因此，每一个外部调用都会有潜在的安全威胁，尽可能的从你的智能合约内移除外部调用。</p>
+<h2 id="用户取款代替发钱"><a href="#用户取款代替发钱" class="headerlink" title="用户取款代替发钱"></a>用户取款代替发钱</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">// bad</span><br><span class="line">contract auction &#123;</span><br><span class="line">    address highestBidder;</span><br><span class="line">    uint highestBid;</span><br><span class="line"></span><br><span class="line">    function bid() payable &#123;</span><br><span class="line">        if (msg.value &lt; highestBid) throw;</span><br><span class="line"></span><br><span class="line">        if (highestBidder != 0) &#123;</span><br><span class="line">            if (!highestBidder.send(highestBid)) &#123; // if this call consistently fails, no one else can bid</span><br><span class="line">                throw;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">       highestBidder = msg.sender;</span><br><span class="line">       highestBid = msg.value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">contract auction &#123;</span><br><span class="line">    address highestBidder;</span><br><span class="line">    uint highestBid;</span><br><span class="line">    mapping(address =&gt; uint) refunds;</span><br><span class="line"></span><br><span class="line">    function bid() payable external &#123;</span><br><span class="line">        if (msg.value &lt; highestBid) throw;</span><br><span class="line"></span><br><span class="line">        if (highestBidder != 0) &#123;</span><br><span class="line">            refunds[highestBidder] += highestBid; // record the refund that this user can claim</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        highestBidder = msg.sender;</span><br><span class="line">        highestBid = msg.value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function withdrawRefund() external &#123;</span><br><span class="line">        uint refund = refunds[msg.sender];</span><br><span class="line">        refunds[msg.sender] = 0;</span><br><span class="line">        if (!msg.sender.send(refund)) &#123;</span><br><span class="line">            refunds[msg.sender] = refund; // reverting state because send failed</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="标记不受信任的合约"><a href="#标记不受信任的合约" class="headerlink" title="标记不受信任的合约"></a>标记不受信任的合约</h2><p>当你自己的函数调用外部合约时，你的变量、方法、合约接口命名应该表明和他们可能是不安全的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// bad</span><br><span class="line">Bank.withdraw(100); // Unclear whether trusted or untrusted</span><br><span class="line"></span><br><span class="line">function makeWithdrawal(uint amount) &#123; // Isn&#x27;t clear that this function is potentially unsafe</span><br><span class="line">    Bank.withdraw(amount);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">UntrustedBank.withdraw(100); // untrusted external call</span><br><span class="line">TrustedBank.withdraw(100); // external but trusted bank contract maintained by XYZ Corp</span><br><span class="line"></span><br><span class="line">function makeUntrustedWithdrawal(uint amount) &#123;</span><br><span class="line">    UntrustedBank.withdraw(amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="整数除法的四舍五入"><a href="#整数除法的四舍五入" class="headerlink" title="整数除法的四舍五入"></a>整数除法的四舍五入</h2><p>所有整数除数都会四舍五入到最接近的整数。 如果您需要更高精度，请考虑使用乘数，或存储分子和分母。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// bad</span><br><span class="line">uint x = 5 / 2; // Result is 2, all integer divison rounds DOWN to the nearest integer</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">uint multiplier = 10;</span><br><span class="line">uint x = (5 * multiplier) / 2;</span><br><span class="line"></span><br><span class="line">uint numerator = 5;</span><br><span class="line">uint denominator = 2;</span><br></pre></td></tr></table></figure>
+<h2 id="记住Ether可以被强制发送到账户"><a href="#记住Ether可以被强制发送到账户" class="headerlink" title="记住Ether可以被强制发送到账户"></a>记住Ether可以被强制发送到账户</h2><p>谨慎编写用来检查账户余额的不变量。</p>
+<p>攻击者可以强制发送wei到任何账户，而且这是不能被阻止的（即使让fallback函数<code>throw</code>也不行）</p>
+<p>攻击者可以仅仅使用1 wei来创建一个合约，然后调用<code>selfdestruct(victimAddress)</code>。在<code>victimAddress</code>中没有代码被执行，所以这是不能被阻止的。</p>
+<h2 id="不要假设合约创建时余额为零"><a href="#不要假设合约创建时余额为零" class="headerlink" title="不要假设合约创建时余额为零"></a>不要假设合约创建时余额为零</h2><p>攻击者可以在合约创建之前向合约的地址发送wei。合约不能假设它的初始状态包含的余额为零</p>
+<h2 id="使Fallback函数尽量简单"><a href="#使Fallback函数尽量简单" class="headerlink" title="使Fallback函数尽量简单"></a>使Fallback函数尽量简单</h2><p>谨慎编写fallback函数以免gas不够用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// bad</span><br><span class="line">function() payable &#123; balances[msg.sender] += msg.value; &#125;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">function deposit() payable external &#123; balances[msg.sender] += msg.value; &#125;</span><br><span class="line"></span><br><span class="line">function() payable &#123; LogDepositReceived(msg.sender); &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="将程序锁定到特定的编译器版本"><a href="#将程序锁定到特定的编译器版本" class="headerlink" title="将程序锁定到特定的编译器版本"></a>将程序锁定到特定的编译器版本</h2><p>智能合约应该应该使用和它们测试时使用最多的编译器相同的版本来部署。锁定编译器版本有助于确保合约不会被用于最新的可能还有bug未被发现的编译器去部署。智能合约也可能会由他人部署，而pragma标明了合约作者希望使用哪个版本的编译器来部署合约。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// bad</span><br><span class="line">pragma solidity ^0.4.4;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">pragma solidity 0.4.4;</span><br></pre></td></tr></table></figure>
+<p>（<em>译者注：这当然也会付出兼容性的代价</em>）</p>
+<h2 id="小心分母为零-Solidity-lt-0-4"><a href="#小心分母为零-Solidity-lt-0-4" class="headerlink" title="小心分母为零 (Solidity &lt; 0.4)"></a>小心分母为零 (Solidity &lt; 0.4)</h2><p>早于0.4版本, 当一个数尝试除以零时，Solidity 返回zero 并没有 throw 一个异常。确保你使用的Solidity版本至少为 0.4。</p>
+<h2 id="跨函数竞态"><a href="#跨函数竞态" class="headerlink" title="跨函数竞态"></a>跨函数竞态</h2><p>攻击者也可以使用两个共享状态变量的不同的函数来进行类似攻击。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// INSECURE</span><br><span class="line">mapping (address =&gt; uint) private userBalances;</span><br><span class="line"></span><br><span class="line">function transfer(address to, uint amount) &#123;</span><br><span class="line">    if (userBalances[msg.sender] &gt;= amount) &#123;</span><br><span class="line">       userBalances[to] += amount;</span><br><span class="line">       userBalances[msg.sender] -= amount;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function withdrawBalance() public &#123;</span><br><span class="line">    uint amountToWithdraw = userBalances[msg.sender];</span><br><span class="line">    if (!(msg.sender.call.value(amountToWithdraw)())) &#123; throw; &#125; // At this point, the caller&#x27;s code is executed, and can call transfer()</span><br><span class="line">    userBalances[msg.sender] = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>着这个例子中，攻击者在他们外部调用<code>withdrawBalance</code>函数时调用<code>transfer()</code>，如果这个时候<code>withdrawBalance</code>还没有执行到<code>userBalances[msg.sender] = 0;</code>这里，那么他们的余额就没有被清零，那么他们就能够调用<code>transfer()</code>转走代币尽管他们其实已经收到了代币。这个弱点也可以被用到对DAO的攻击。</p>
+<p>同样的解决办法也会管用，在执行转账操作之前先清零。也要注意在这个例子中所有函数都是在同一个合约内。然而，如果这些合约共享了状态，同样的bug也可以发生在跨合约调用中。</p>
+<h2 id="交易顺序依赖-TOD-前面的先运行"><a href="#交易顺序依赖-TOD-前面的先运行" class="headerlink" title="交易顺序依赖(TOD) / 前面的先运行"></a>交易顺序依赖(TOD) / 前面的先运行</h2><p>接下来演示在区块链本身运作原理导致的竞态：（同一个block内的）交易顺序很容易受到操纵。</p>
+<p>由于交易在短暂的时间内会先存放到mempool中，所以在矿工将其打包进block之前，是可以知道会发生什么动作。这对于一个去中心化的市场来说是麻烦的，因为可以查看到代币的交易信息，并且可以在它被打包进block之前改变交易顺序。避免这一点很困难，因为它归结为具体的合约本身。例如，在市场上，最好实施批量拍卖（这也可以防止高频交易问题）。 另一种使用预提交方案的方法</p>
+<h3 id="时间戳依赖"><a href="#时间戳依赖" class="headerlink" title="时间戳依赖"></a>时间戳依赖</h3><p>请注意，块的时间戳可以由矿工操纵，并且应考虑时间戳的所有直接和间接使用。 <strong>区块数量</strong>和<strong>平均出块时间</strong>可用于估计时间，但这不是区块时间在未来可能改变（例如Casper期望的更改）的证明。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">uint someVariable = now + 1;</span><br><span class="line"></span><br><span class="line">if (now % 2 == 0) &#123; // the now can be manipulated by the miner</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if ((someVariable - 100) % 2 == 0) &#123; // someVariable can be manipulated by the miner</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="通过-Unexpected-Throw发动DoS"><a href="#通过-Unexpected-Throw发动DoS" class="headerlink" title="通过(Unexpected) Throw发动DoS"></a>通过(Unexpected) Throw发动DoS</h3><p>考虑如下简单的智能合约：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// INSECURE</span><br><span class="line">contract Auction &#123;</span><br><span class="line">    address currentLeader;</span><br><span class="line">    uint highestBid;</span><br><span class="line"></span><br><span class="line">    function bid() payable &#123;</span><br><span class="line">        if (msg.value &lt;= highestBid) &#123; throw; &#125;</span><br><span class="line"></span><br><span class="line">        if (!currentLeader.send(highestBid)) &#123; throw; &#125; // Refund the old leader, and throw if it fails</span><br><span class="line"></span><br><span class="line">        currentLeader = msg.sender;</span><br><span class="line">        highestBid = msg.value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当有更高竞价时，它将试图退款给曾经最高竞价人，如果退款失败则会抛出异常。这意味着，恶意投标人可以成为当前最高竞价人，同时确保对其地址的任何退款<strong>始终</strong>失败。这样就可以阻止任何人调用“bid()”函数，使自己永远保持领先。建议向之前所说的那样建立<a target="_blank" rel="noopener" href="https://github.com/ConsenSys/smart-contract-best-practices/#favor-pull-over-push-payments">基于pull的支付系统</a> 。</p>
+<p>另一个例子是合约可能通过数组迭代来向用户支付（例如，众筹合约中的支持者）时。 通常要确保每次付款都成功。 如果没有，应该抛出异常。 问题是，如果其中一个支付失败，您将恢复整个支付系统，这意味着该循环将永远不会完成。 因为一个地址没有转账成功导致其他人都没得到报酬。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">address[] private refundAddresses;</span><br><span class="line">mapping (address =&gt; uint) public refunds;</span><br><span class="line"></span><br><span class="line">// bad</span><br><span class="line">function refundAll() public &#123;</span><br><span class="line">    for(uint x; x &lt; refundAddresses.length; x++) &#123; // arbitrary length iteration based on how many addresses participated</span><br><span class="line">        if(refundAddresses[x].send(refunds[refundAddresses[x]])) &#123;</span><br><span class="line">            throw; // doubly bad, now a single failure on send will hold up all funds</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再一次强调，同样的解决办法： <a target="_blank" rel="noopener" href="https://github.com/ConsenSys/smart-contract-best-practices/blob/master/README-zh.md#favor-pull-over-push-payments">优先使用pull 而不是push支付系统</a>。</p>
+<h3 id="通过区块Gas-Limit发动DoS"><a href="#通过区块Gas-Limit发动DoS" class="headerlink" title="通过区块Gas Limit发动DoS"></a>通过区块Gas Limit发动DoS</h3><p>在先前的例子中你可能已经注意到另一个问题：一次性向所有人转账，很可能会导致达到以太坊区块gas limit的上限。以太坊规定了每一个区块所能花费的gas limit，如果超过你的交易便会失败。</p>
+<p>即使没有故意的攻击，这也可能导致问题。然而，最为糟糕的是如果gas的花费被攻击者操控。在先前的例子中，如果攻击者增加一部分收款名单，并设置每一个收款地址都接收少量的退款。这样一来，更多的gas将会被花费从而导致达到区块gas limit的上限，整个转账的操作也会以失败告终。</p>
+<p>又一次证明了 <a target="_blank" rel="noopener" href="https://github.com/ConsenSys/smart-contract-best-practices/blob/master/README-zh.md#favor-pull-over-push-payments">优先使用pull 而不是push支付系统</a>。</p>
+<p>如果你实在必须通过遍历一个变长数组来进行转账，最好估计完成它们大概需要多少个区块以及多少笔交易。然后你还必须能够追踪得到当前进行到哪以便当操作失败时从那里开始恢复，举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">struct Payee &#123;</span><br><span class="line">    address addr;</span><br><span class="line">    uint256 value;</span><br><span class="line">&#125;</span><br><span class="line">Payee payees[];</span><br><span class="line">uint256 nextPayeeIndex;</span><br><span class="line"></span><br><span class="line">function payOut() &#123;</span><br><span class="line">    uint256 i = nextPayeeIndex;</span><br><span class="line">    while (i &lt; payees.length &amp;&amp; msg.gas &gt; 200000) &#123;</span><br><span class="line">      payees[i].addr.send(payees[i].value);</span><br><span class="line">      i++;</span><br><span class="line">    &#125;</span><br><span class="line">    nextPayeeIndex = i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="升级有问题的合约"><a href="#升级有问题的合约" class="headerlink" title="升级有问题的合约"></a>升级有问题的合约</h2><p>当需要多方参与决定升级代码的方式也是至关重要的。根据你的合约，升级代码可能会需要通过单个或多个受信任方参与投票决定。如果这个过程会持续很长时间，你就必须要考虑是否要换成一种更加高效的方式以防止遭受到攻击，例如<a target="_blank" rel="noopener" href="https://github.com/ConsenSys/smart-contract-best-practices/blob/master/README-zh.md#circuit-breakers-pause-contract-functionality">紧急停止或断路器</a>。</p>
+<p><strong>Example 1：使用注册合约存储合约的最新版本</strong></p>
+<p>在这个例子中，调用没有被转发，因此用户必须每次在交互之前都先获取最新的合约地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">contract SomeRegister &#123;</span><br><span class="line">    address backendContract;</span><br><span class="line">    address[] previousBackends;</span><br><span class="line">    address owner;</span><br><span class="line"></span><br><span class="line">    function SomeRegister() &#123;</span><br><span class="line">        owner = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modifier onlyOwner() &#123;</span><br><span class="line">        if (msg.sender != owner) &#123;</span><br><span class="line">            throw;</span><br><span class="line">        &#125;</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function changeBackend(address newBackend) public</span><br><span class="line">    onlyOwner()</span><br><span class="line">    returns (bool)</span><br><span class="line">    &#123;</span><br><span class="line">        if(newBackend != backendContract) &#123;</span><br><span class="line">            previousBackends.push(backendContract);</span><br><span class="line">            backendContract = newBackend;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方法有两个主要的缺点：</p>
+<p>1、用户必须始终查找当前合约地址，否则任何未执行此操作的人都可能会使用旧版本的合约 2、在你替换了合约后你需要仔细考虑如何处理原合约中的数据</p>
+<p>另外一种方法是设计一个用来转发调用请求和数据到最新版的合约：</p>
+<p><strong>例2： 使用DELEGATECALL 转发数据和调用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">contract Relay &#123;</span><br><span class="line">    address public currentVersion;</span><br><span class="line">    address public owner;</span><br><span class="line"></span><br><span class="line">    modifier onlyOwner() &#123;</span><br><span class="line">        if (msg.sender != owner) &#123;</span><br><span class="line">            throw;</span><br><span class="line">        &#125;</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function Relay(address initAddr) &#123;</span><br><span class="line">        currentVersion = initAddr;</span><br><span class="line">        owner = msg.sender; // this owner may be another contract with multisig, not a single contract owner</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function changeContract(address newVersion) public</span><br><span class="line">    onlyOwner()</span><br><span class="line">    &#123;</span><br><span class="line">        currentVersion = newVersion;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function() &#123;</span><br><span class="line">        if(!currentVersion.delegatecall(msg.data)) throw;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方法避免了先前的问题，但也有自己的问题。它使得你必须在合约里小心的存储数据。如果新的合约和先前的合约有不同的存储层，你的数据可能会被破坏。另外，这个例子中的模式没法从函数里返回值，只负责转发它们，由此限制了它的适用性。（这里有一个<a target="_blank" rel="noopener" href="https://github.com/ownage-ltd/ether-router">更复杂的实现</a> 想通过内联汇编和返回大小的注册表来解决这个问题）</p>
+<p>无论你的方法如何，重要的是要有一些方法来升级你的合约，否则当被发现不可避免的错误时合约将没法使用。</p>
+<h2 id="断路器（暂停合约功能）"><a href="#断路器（暂停合约功能）" class="headerlink" title="断路器（暂停合约功能）"></a>断路器（暂停合约功能）</h2><p>由于断路器在满足一定条件时将会停止执行，如果发现错误时可以使用断路器。例如，如果发现错误，大多数操作可能会在合约中被挂起，这是唯一的操作就是撤销。你可以授权给任何你受信任的一方，提供给他们触发断路器的能力，或者设计一个在满足某些条件时自动触发某个断路器的程序规则。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">bool private stopped = false;</span><br><span class="line">address private owner;</span><br><span class="line"></span><br><span class="line">modifier isAdmin() &#123;</span><br><span class="line">    if(msg.sender != owner) &#123;</span><br><span class="line">        throw;</span><br><span class="line">    &#125;</span><br><span class="line">    _;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function toggleContractActive() isAdmin public</span><br><span class="line">&#123;</span><br><span class="line">    // You can add an additional modifier that restricts stopping a contract to be based on another action, such as a vote of users</span><br><span class="line">    stopped = !stopped;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">modifier stopInEmergency &#123; if (!stopped) _; &#125;</span><br><span class="line">modifier onlyInEmergency &#123; if (stopped) _; &#125;</span><br><span class="line"></span><br><span class="line">function deposit() stopInEmergency public</span><br><span class="line">&#123;</span><br><span class="line">    // some code</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function withdraw() onlyInEmergency public</span><br><span class="line">&#123;</span><br><span class="line">    // some code</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="速度碰撞（延迟合约动作）"><a href="#速度碰撞（延迟合约动作）" class="headerlink" title="速度碰撞（延迟合约动作）"></a>速度碰撞（延迟合约动作）</h2><p>速度碰撞使动作变慢，所以如果发生了恶意操作便有时间恢复。例如，<a target="_blank" rel="noopener" href="https://github.com/slockit/DAO/">The DAO</a> 从发起分割DAO请求到真正执行动作需要27天。这样保证了资金在此期间被锁定在合约里，增加了系统的可恢复性。在DAO攻击事件中，虽然在速度碰撞给定的时间段内没有有效的措施可以采取，但结合我们其他的技术，它们是非常有效的。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">struct RequestedWithdrawal &#123;</span><br><span class="line">    uint amount;</span><br><span class="line">    uint time;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mapping (address =&gt; uint) private balances;</span><br><span class="line">mapping (address =&gt; RequestedWithdrawal) private requestedWithdrawals;</span><br><span class="line">uint constant withdrawalWaitPeriod = 28 days; // 4 weeks</span><br><span class="line"></span><br><span class="line">function requestWithdrawal() public &#123;</span><br><span class="line">    if (balances[msg.sender] &gt; 0) &#123;</span><br><span class="line">        uint amountToWithdraw = balances[msg.sender];</span><br><span class="line">        balances[msg.sender] = 0; // prevent from reentrence</span><br><span class="line"></span><br><span class="line">        requestedWithdrawals[msg.sender] = RequestedWithdrawal(&#123;</span><br><span class="line">            amount: amountToWithdraw,</span><br><span class="line">            time: now</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function withdraw() public &#123;</span><br><span class="line">    if(requestedWithdrawals[msg.sender].amount &gt; 0 &amp;&amp; now &gt; requestedWithdrawals[msg.sender].time + withdrawalWaitPeriod) &#123;</span><br><span class="line">        uint amountToWithdraw = requestedWithdrawals[msg.sender].amount;</span><br><span class="line">        requestedWithdrawals[msg.sender].amount = 0;</span><br><span class="line"></span><br><span class="line">        if(!msg.sender.send(amountToWithdraw)) &#123;</span><br><span class="line">            throw;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="速率限制"><a href="#速率限制" class="headerlink" title="速率限制"></a>速率限制</h2><p>速率限制暂停或需要批准进行实质性更改。 例如，只允许存款人在一段时间内提取总存款的一定数量或百分比（例如，1天内最多100个ether） - 该时间段内的额外提款可能会失败或需要某种特别批准。 或者将速率限制做在合约级别，合约期限内只能发出发送一定数量的代币。</p>
+<p><a target="_blank" rel="noopener" href="https://gist.github.com/PeterBorah/110c331dca7d23236f80e69c83a9d58c#file-circuitbreaker-sol">浏览例程</a></p>
+<h2 id="合约发布"><a href="#合约发布" class="headerlink" title="合约发布"></a>合约发布</h2><p>在将大量资金放入合约之前，合约应当进行大量的长时间的测试。</p>
+<p>至少应该：</p>
+<ul>
+<li>拥有100％测试覆盖率的完整测试套件（或接近它）</li>
+<li>在自己的testnet上部署</li>
+<li>在公共测试网上部署大量测试和错误奖励</li>
+<li>彻底的测试应该允许各种玩家与合约进行大规模互动</li>
+<li>在主网上部署beta版以限制风险总额</li>
+</ul>
+<p><strong>自动弃用</strong></p>
+<p>在合约测试期间，你可以在一段时间后强制执行自动弃用以阻止任何操作继续进行。例如，alpha版本的合约工作几周，然后自动关闭所有除最终退出操作的操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">modifier isActive() &#123;</span><br><span class="line">    if (block.number &gt; SOME_BLOCK_NUMBER) &#123;</span><br><span class="line">        throw;</span><br><span class="line">    &#125;</span><br><span class="line">    _;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function deposit() public</span><br><span class="line">isActive() &#123;</span><br><span class="line">    // some code</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function withdraw() public &#123;</span><br><span class="line">    // some code</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>限制每个用户/合约的Ether数量</strong></p>
+<p>在早期阶段，你可以限制任何用户（或整个合约）的Ether数量 - 以降低风险。</p>
+<h2 id="Bug赏金计划"><a href="#Bug赏金计划" class="headerlink" title="Bug赏金计划"></a>Bug赏金计划</h2><p>运行赏金计划的一些提示：</p>
+<ul>
+<li>决定赏金以哪一种代币分配（BTC和/或ETH）</li>
+<li>决定赏金奖励的预算总额</li>
+<li>从预算来看，确定三级奖励：<ul>
+<li>你愿意发放的最小奖励</li>
+<li>通常可发放的最高奖励</li>
+<li>设置额外的限额以避免非常严重的漏洞被发现</li>
+</ul>
+</li>
+<li>确定赏金发放给谁（3是一个典型）</li>
+<li>核心开发人员应该是赏金评委之一</li>
+<li>当收到错误报告时，核心开发人员应该评估bug的严重性</li>
+<li>在这个阶段的工作应该在私有仓库进行，并且在Github上的issue板块提出问题</li>
+<li>如果这个bug需要被修复，开发人员应该在私有仓库编写测试用例来复现这个bug</li>
+<li>开发人员需要修复bug并编写额外测试代码进行测试确保所有测试都通过</li>
+<li>展示赏金猎人的修复；并将修复合并回公共仓库也是一种方式</li>
+<li>确定赏金猎人是否有任何关于修复的其他反馈</li>
+<li>赏金评委根据bug的<em>可能性</em>和<em>影响</em>来确定奖励的大小</li>
+<li>在整个过程中保持赏金猎人参与讨论，并确保赏金发放不会延迟</li>
+</ul>
+<p>有关三级奖励的例子，参见 <a target="_blank" rel="noopener" href="https://bounty.ethereum.org/">Ethereum’s Bounty Program</a>：</p>
+<blockquote>
+<p>奖励的价值将根据影响的严重程度而变化。 奖励轻微的“无害”错误从0.05 BTC开始。 主要错误，例如导致协商一致的问题，将获得最多5个BTC的奖励。 在非常严重的漏洞的情况下，更高的奖励是可能的（高达25 BTC）。</p>
+</blockquote>
+<h2 id="安全相关的文件和程序"><a href="#安全相关的文件和程序" class="headerlink" title="安全相关的文件和程序"></a>安全相关的文件和程序</h2><p>当发布涉及大量资金或重要任务的合约时，必须包含适当的文档。有关安全性的文档包括：</p>
+<p><strong>规范和发布计划</strong></p>
+<ul>
+<li>规格说明文档，图表，状态机，模型和其他文档，帮助审核人员和社区了解系统打算做什么。</li>
+<li>许多bug从规格中就能找到，而且它们的修复成本最低。</li>
+<li>发布计划所涉及到的参考<a target="_blank" rel="noopener" href="https://github.com/ConsenSys/smart-contract-best-practices/blob/master/README-zh.md#contract-rollout">这里</a>列出的详细信息和完成日期。</li>
+</ul>
+<p><strong>状态</strong></p>
+<ul>
+<li>当前代码被部署到哪里</li>
+<li>编译器版本，使用的标志以及用于验证部署的字节码的步骤与源代码匹配</li>
+<li>将用于不同阶段的编译器版本和标志</li>
+<li>部署代码的当前状态（包括未决问题，性能统计信息等）</li>
+</ul>
+<p><strong>已知问题</strong></p>
+<ul>
+<li>合约的主要风险 (例如， 你可能会丢掉所有的钱，黑客可能会通过投票支持某些结果)</li>
+<li>所有已知的错误/限制</li>
+<li>潜在的攻击和解决办法</li>
+<li>潜在的利益冲突（例如，筹集的Ether将纳入自己的腰包，像Slock.it与DAO一样）</li>
+</ul>
+<p><strong>历史记录</strong></p>
+<ul>
+<li>测试（包括使用统计，发现的错误，测试时间）</li>
+<li>已审核代码的人员（及其关键反馈）</li>
+</ul>
+<p><strong>程序</strong></p>
+<ul>
+<li>发现错误的行动计划（例如紧急情况选项，公众通知程序等）</li>
+<li>如果出现问题，就可以降级程序（例如，资金拥有者在被攻击之前的剩余资金占现在剩余资金的比例）</li>
+<li>负责任的披露政策（例如，在哪里报告发现的bug，任何bug赏金计划的规则）</li>
+<li>在失败的情况下的追索权（例如，保险，罚款基金，无追索权）</li>
+</ul>
+<h2 id="安全工具"><a href="#安全工具" class="headerlink" title="安全工具"></a>安全工具</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/melonproject/oyente">Oyente</a> - 根据<a target="_blank" rel="noopener" href="http://www.comp.nus.edu.sg/~loiluu/papers/oyente.pdf">这篇文章</a>分析Ethereum代码以找到常见的漏洞。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/sc-forks/solidity-coverage">solidity-coverage</a> - Solidity代码覆盖率测试</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/raineorshine/solgraph">Solgraph</a> - 生成一个DOT图，显示了Solidity合约的功能控制流程，并highlight了潜在的安全漏洞。</li>
+</ul>
+<h2 id="Test-smart"><a href="#Test-smart" class="headerlink" title="Test smart"></a>Test smart</h2><p>The immutability of code running in the <a target="_blank" rel="noopener" href="https://ethereum.org/en/developers/docs/evm/">Ethereum Virtual Machine</a> means smart contracts demand a higher level of quality assessment during the development phase. Testing your contract extensively and observing it for any unexpected results will improve security a great deal and protect your users in the long run.</p>
+<p>The usual method is to write small unit tests using mock data that the contract is expected to receive from users. <a target="_blank" rel="noopener" href="https://ethereum.org/en/developers/docs/smart-contracts/testing/#unit-testing">Unit testing</a> is good for testing the functionality of certain functions and ensuring a smart contract works as expected.</p>
+<p>Unfortunately, unit testing is minimally effective for improving smart contract security when used in isolation. A unit test might prove a function executes properly for mock data, but unit tests are only as effective as the tests that are written. This makes it difficult to detect missed edge cases and vulnerabilities that could break the safety of your smart contract.</p>
+<p>A better approach is to combine unit testing with property-based testing performed using <a target="_blank" rel="noopener" href="https://ethereum.org/developers/docs/smart-contracts/testing/#static-dynamic-analysis">static and dynamic analysis(opens in a new tab)↗</a>. Static analysis relies on low-level representations, such as <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Control-flow_graph">control flow graphs(opens in a new tab)↗</a> and <a target="_blank" rel="noopener" href="https://deepsource.io/glossary/ast/">abstract syntax trees(opens in a new tab)↗</a> to analyze reachable program states and execution paths. Meanwhile, dynamic analysis techniques, such as fuzzing, execute contract code with random input values to detect operations that violate security properties.</p>
+<p><a target="_blank" rel="noopener" href="https://ethereum.org/en/developers/docs/smart-contracts/formal-verification/">Formal verification</a> is another technique for verifying security properties in smart contracts. Unlike regular testing, formal verification can conclusively prove the absence of errors in a smart contract. This is achieved by creating a formal specification that captures desired security properties and proving that a formal model of the contracts adheres to this specification.</p>
+<h2 id="on-chain-governance"><a href="#on-chain-governance" class="headerlink" title="on-chain governance"></a>on-chain governance</h2><p> <a target="_blank" rel="noopener" href="https://blog.openzeppelin.com/protect-your-users-with-smart-contract-timelocks/">use a timelock(opens in a new tab)</a></p>
+<h2 id="Reduce-complexity-in-code-to-a-minimum"><a href="#Reduce-complexity-in-code-to-a-minimum" class="headerlink" title="Reduce complexity in code to a minimum"></a>Reduce complexity in code to a minimum</h2><p>Keeping things simple is of particular importance when writing smart contracts, given that smart contracts are potentially controlling large amounts of value.</p>
+<h2 id="Oracle-manipulation"><a href="#Oracle-manipulation" class="headerlink" title="Oracle manipulation"></a>Oracle manipulation</h2><p> if the oracle is corrupted and sends incorrect information on-chain, smart contracts will execute based on erroneous inputs, which can cause problems.</p>
+<p>DEX prices are often accurate, largely due to arbitrageurs restoring parity in markets. However, they are open to manipulation, particularly if the on-chain oracle calculates asset prices based on historical trading patterns (as is usually the case).</p>
+<p>The minimum requirement to avoid oracle manipulation is to use a decentralized oracle network that queries information from multiple sources to avoid single points of failure. </p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/37.FlashLoanMain/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:19
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                        <b>#</b> 09.安全审计
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/41.%E9%87%8D%E5%85%A5&%E5%AD%98%E5%82%A8%E6%BA%A2%E5%87%BA&%E7%B1%BB%E5%9E%8B%E5%AD%98%E5%82%A8%E8%AE%A1%E7%AE%97/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Best-Practice"><span class="toc-text">Best Practice</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83"><span class="toc-text">代码规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%90%86%E5%BF%B5"><span class="toc-text">开发理念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#msg-value"><span class="toc-text">msg.value</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JUMPDEST"><span class="toc-text">JUMPDEST</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#encodePacked"><span class="toc-text">encodePacked</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#isContract"><span class="toc-text">isContract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF"><span class="toc-text">循环</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%96%E9%83%A8%E8%B0%83%E7%94%A8"><span class="toc-text">外部调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%8F%96%E6%AC%BE%E4%BB%A3%E6%9B%BF%E5%8F%91%E9%92%B1"><span class="toc-text">用户取款代替发钱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E7%9A%84%E5%90%88%E7%BA%A6"><span class="toc-text">标记不受信任的合约</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E9%99%A4%E6%B3%95%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5"><span class="toc-text">整数除法的四舍五入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%B0%E4%BD%8FEther%E5%8F%AF%E4%BB%A5%E8%A2%AB%E5%BC%BA%E5%88%B6%E5%8F%91%E9%80%81%E5%88%B0%E8%B4%A6%E6%88%B7"><span class="toc-text">记住Ether可以被强制发送到账户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E8%A6%81%E5%81%87%E8%AE%BE%E5%90%88%E7%BA%A6%E5%88%9B%E5%BB%BA%E6%97%B6%E4%BD%99%E9%A2%9D%E4%B8%BA%E9%9B%B6"><span class="toc-text">不要假设合约创建时余额为零</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BFFallback%E5%87%BD%E6%95%B0%E5%B0%BD%E9%87%8F%E7%AE%80%E5%8D%95"><span class="toc-text">使Fallback函数尽量简单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86%E7%A8%8B%E5%BA%8F%E9%94%81%E5%AE%9A%E5%88%B0%E7%89%B9%E5%AE%9A%E7%9A%84%E7%BC%96%E8%AF%91%E5%99%A8%E7%89%88%E6%9C%AC"><span class="toc-text">将程序锁定到特定的编译器版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E5%BF%83%E5%88%86%E6%AF%8D%E4%B8%BA%E9%9B%B6-Solidity-lt-0-4"><span class="toc-text">小心分母为零 (Solidity &lt; 0.4)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%87%BD%E6%95%B0%E7%AB%9E%E6%80%81"><span class="toc-text">跨函数竞态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%98%93%E9%A1%BA%E5%BA%8F%E4%BE%9D%E8%B5%96-TOD-%E5%89%8D%E9%9D%A2%E7%9A%84%E5%85%88%E8%BF%90%E8%A1%8C"><span class="toc-text">交易顺序依赖(TOD) &#x2F; 前面的先运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3%E4%BE%9D%E8%B5%96"><span class="toc-text">时间戳依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87-Unexpected-Throw%E5%8F%91%E5%8A%A8DoS"><span class="toc-text">通过(Unexpected) Throw发动DoS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%8C%BA%E5%9D%97Gas-Limit%E5%8F%91%E5%8A%A8DoS"><span class="toc-text">通过区块Gas Limit发动DoS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%87%E7%BA%A7%E6%9C%89%E9%97%AE%E9%A2%98%E7%9A%84%E5%90%88%E7%BA%A6"><span class="toc-text">升级有问题的合约</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%AD%E8%B7%AF%E5%99%A8%EF%BC%88%E6%9A%82%E5%81%9C%E5%90%88%E7%BA%A6%E5%8A%9F%E8%83%BD%EF%BC%89"><span class="toc-text">断路器（暂停合约功能）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9F%E5%BA%A6%E7%A2%B0%E6%92%9E%EF%BC%88%E5%BB%B6%E8%BF%9F%E5%90%88%E7%BA%A6%E5%8A%A8%E4%BD%9C%EF%BC%89"><span class="toc-text">速度碰撞（延迟合约动作）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9F%E7%8E%87%E9%99%90%E5%88%B6"><span class="toc-text">速率限制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E7%BA%A6%E5%8F%91%E5%B8%83"><span class="toc-text">合约发布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bug%E8%B5%8F%E9%87%91%E8%AE%A1%E5%88%92"><span class="toc-text">Bug赏金计划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E7%9B%B8%E5%85%B3%E7%9A%84%E6%96%87%E4%BB%B6%E5%92%8C%E7%A8%8B%E5%BA%8F"><span class="toc-text">安全相关的文件和程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7"><span class="toc-text">安全工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Test-smart"><span class="toc-text">Test smart</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#on-chain-governance"><span class="toc-text">on-chain governance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reduce-complexity-in-code-to-a-minimum"><span class="toc-text">Reduce complexity in code to a minimum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Oracle-manipulation"><span class="toc-text">Oracle manipulation</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 42.Best%20Practice + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F09.%25E5%25AE%2589%25E5%2585%25A8%25E5%25AE%25A1%25E8%25AE%25A1%2F42.Best%2520Practice%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/42.Best%20Practice/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

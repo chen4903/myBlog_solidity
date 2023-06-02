@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      22.ordinal protocol 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">22.ordinal protocol</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/23-%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/" title="23.知识扫盲">
+                    <b>#</b> 23.知识扫盲
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="ordinal-protocol"><a href="#ordinal-protocol" class="headerlink" title="ordinal protocol"></a>ordinal protocol</h1><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/S7xzEjingcmJ1KZZbWfRXA">内容转载自转载</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Ordinal NFT 于 2023 年 1 月 20 日由开发者 Casey Rodarmor 在 BTC 主网上推出，它是在 BTC上创建 NFT 的最新方式。虽然 BTC 上的 NFT 并不是一个新概念，BTC 之上的第 2 层网络（例如 Counterparty 和 Stacks）已经支持基于 BTC 的 NFT，但是 Ordinal NFT 具有与其他 BTC 上的 NFT 根本不同的架构。</p>
+<p>自从 Ordinal 出现以来，越来越多的用户、开发者和爱好者社区铸造了超过 20 万个 ordinal NFT，他们对 BTC 原生的 NFT 的潜力感到兴奋。但究竟什么是 Ordinal NFT，它们是如何工作的，以及它们为什么和其他的 NFT 不同？</p>
+<h2 id="什么是ordinal铭文"><a href="#什么是ordinal铭文" class="headerlink" title="什么是ordinal铭文"></a>什么是ordinal铭文</h2><p>Ordinal 是通过将图像、视频等数据附加到基础 BTC 区块链上的单个 satoshi（聪） 来创建比特币 NFT 的。与之前出现过的 BTC 的 NFT 不同，Ordinal NFT 不存在于与比特币不同的二层网络上。相反，他们使用一种称为 ordinal 理论的任意但合乎逻辑的排序系统来为每个比特币 satoshi 分配一个唯一的编号。在这方面，序数 NFT 完全是 BTC 原生的。它们在不改变比特币协议的情况下工作，不需要任何额外的二层网络，并且与 BTC 网络向后兼容。</p>
+<blockquote>
+<p>“satoshi”或“sat”相当于单个比特币的 1/100,000,000，比特币的最小面额。</p>
+</blockquote>
+<h2 id="Ordinal-NFT-的历史"><a href="#Ordinal-NFT-的历史" class="headerlink" title="Ordinal NFT 的历史"></a>Ordinal NFT 的历史</h2><p>虽然 Ordinal NFT 是基于 Ordinal 理论的，但现在的 Ordinal NFT 能够实现也有赖于 2017 年和 2021 年对比特币协议进行的隔离见证 (SegWit) 和 Taproot 的技术更新。</p>
+<p>值得注意的是，这些更新并不是为了启用这些新型 NFT 的目的而被开发的。但是，由于这两次更新都增加了一个区块存储数据量——这意味着现在有空间可以存储图像、视频，甚至游戏——无意中让Ordinal NFT 的部署成为了可能。</p>
+<h3 id="隔离见证-SegWit"><a href="#隔离见证-SegWit" class="headerlink" title="隔离见证 (SegWit)"></a>隔离见证 (SegWit)</h3><p>Segwit 是 2017 年的一次更新，导致了 BTC 的软分叉。该更新通过添加可以支持任意数据的“见证数据”部分，有效地将比特币交易分为两部分。</p>
+<p><img src="/2023/06/01/23.%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/22.ordinal%20protocol/640.png" alt="Image"></p>
+<p>见证数据最初是作为一种方式创建的：</p>
+<ol>
+<li>绕过块大小限制的严格限制</li>
+<li>允许可选的、任意数据传输</li>
+<li>防止无意的交易延展性</li>
+</ol>
+<p>在技术意义上，SegWit 的实施意味着交易不再需要包含见证数据（通常是发送者的数字签名）。相反，在块的末尾为见证数据创建了一个额外的空间，使其作为一个单独的结构。它支持任意数据传输，并且让“区块权重”变小（因为 segwit 中见证数据被存在了一个独立的数据结构中，所以交易签名数据不再计入区块权重中），巧妙地将大量数据保持在比特币的块大小限制内，以避免硬分叉。</p>
+<p>这是 Ordinal NFT 的第一个先决条件，因为它扩大了交易中可以包含多少任意数据的限制。</p>
+<h3 id="Taproot"><a href="#Taproot" class="headerlink" title="Taproot"></a>Taproot</h3><p>Taproot 于 2021 年 11 月实施，是一项多方面的升级，旨在提高比特币的隐私性、可扩展性和安全性。通过这个升级，Taproot 创建了一个更简单的系统来存储任意见证数据，并放宽了对比特币交易中可以放置多少任意数据的限制。此次升级的最初目标是进一步增强基于比特币的智能合约，例如见证数据中经常使用的时间锁定合约。</p>
+<p>这些变化是 Ordinal NFT 的关键推动因素，序数 NFT 将 NFT 数据存储在 Taproot 脚本中。升级使得构建和存储任意的见证数据变得更加容易，为“ord”标准奠定了基础。并且随着数据要求的放宽，假设单个交易可以用其交易和见证数据填满整个区块，达到 4MB 的区块大小限制——这极大地扩展了可以放在链上的媒体类型。</p>
+<h2 id="Bitcoin-NFTs-的原理是什么"><a href="#Bitcoin-NFTs-的原理是什么" class="headerlink" title="Bitcoin NFTs 的原理是什么?"></a>Bitcoin NFTs 的原理是什么?</h2><p>要理解 Ordinal NFT 是如何工作的，有必要区分 “Ordinal（序数）” 和 “inscription（铭文）” 这两个术语，它们都用于指代这种新型的基于 BTC 的 NFT。</p>
+<ul>
+<li>序数是一种对 sats（聪） 进行排序的系统，从而创建了 NFT 所必需的“<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU0MTgyMDQwNQ==&amp;mid=2247493165&amp;idx=1&amp;sn=69002d26f7f0dc170faa4e0a90592778&amp;chksm=fb26b2b7cc513ba1c6c262a36db519ace4c7408745639060e763a69aee24d4056c467c701b24&amp;scene=21#wechat_redirect">不可替代</a>”属性。铭文是 Ordinal NFT 本身的内容——图像、文本、视频或任何其他用户认为可以在 NFT 中使用的任意数据。</li>
+<li>通过类比非 BTC 的 NFT，可以更好地理解这些 NFT，它们是独特的一对一的 Token，通常有两个组成部分：TokenID 和元数据（metadata）。</li>
+</ul>
+<h3 id="TokenID"><a href="#TokenID" class="headerlink" title="TokenID"></a>TokenID</h3><p>可替代 Token 是可互换的。例如，无法区分两个不同的 ETH，就像无法区分一美元与另一美元一样。TokenID 将“不可替代”属性注入 NFT 中——它们为每个 NFT 提供了一个独特的条形码，使用户能够将 Token 从彼此区分开来。TokenID 是使得 NFT 能够独一无二的因素。</p>
+<p>如果由不同的智能合约创建，NFT 可以具有相同的 TokenID。在这种情况下，智能合约是区分一个 NFT 和另一个 NFT 的方法。</p>
+<h3 id="作为-TokenID-的-Ordinal-理论"><a href="#作为-TokenID-的-Ordinal-理论" class="headerlink" title="作为 TokenID 的 Ordinal 理论"></a>作为 TokenID 的 Ordinal 理论</h3><p>Bitcoin 是可替代的，这意味着一个 BTC 和另一个 BTC 是无法区分的。这就是序数理论的作用所在。</p>
+<p>Ordinal NFT 的关键创新在于，它们提供了一个对每个单独的 satoshi 进行编号的系统。结果是：比特币区块链上每个单独的 satoshi 都有一个唯一的 ID。每个 Ordinal，在其最基本的形式中，只是一个被分配了一个唯一编号的 satoshi。以下是它的工作原理。</p>
+<p>在 Ordinal 理论中，单独的 satoshi 按照它们被挖掘的顺序进行编号。第一个序数是追溯到2008年挖出的第一个 satoshi。当一个 satoshi 被转移时，其顺序通过基于交易顺序的先进先出系统进行保留。</p>
+<p><img src="/2023/06/01/23.%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/22.ordinal%20protocol/640-16836254753103.png" alt="Image"></p>
+<blockquote>
+<p>Ordinal 按照被挖掘的顺序进行编号。基于先进先出的流程，订单将在交易中得以保留</p>
+</blockquote>
+<p>Ordinal 理论并不违反 BTC 可替代性的本质。BTC 协议没有正式承认这种新颖的 satoshi 排序方式。相反，一个序数爱好者社区只是决定共同赋予这个编号系统重要性，并基于它构建了工具。</p>
+<h3 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h3><p>在非比特币区块链中，元数据是 NFT 的可选附件，可以存储任意数据。它用于代表和展示艺术、游戏内的广泛资产、个人资料图片、金融资产等，这些已成为 “NFT” 一词的同义词。</p>
+<h3 id="铭文作为元数据"><a href="#铭文作为元数据" class="headerlink" title="铭文作为元数据"></a>铭文作为元数据</h3><p>Ordinal NFT 没有像非 BTC 网络中的 NFT 那样的元数据指定位置。相反，Ordinal NFT 的元数据保存在交易的见证数据中。</p>
+<p><img src="/2023/06/01/23.%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/22.ordinal%20protocol/640-16836255104946.png" alt="Image"></p>
+<blockquote>
+<p>比特币铭文示例—— CryptoPunk 图像，该图像由其所有者重新利用</p>
+</blockquote>
+<p>这也是术语“铭文”的来源——附加到特定 satoshi 的数据被“铭刻”在比特币交易的特定部分中。要用数据刻写特定 satoshi 并创建 Ordinal NFT，用户必须将单个 satoshi 的交易发送到与 Taproot 兼容的钱包，并在交易中附加所需的元数据。他们还必须注意交易的顺序，以确保所需的 satoshi 不会用作网络费用。自动化此过程的工具有助于消除这些风险，并使非技术用户的过程更加容易。</p>
+<h2 id="比特币序数与-NFT-有何不同？"><a href="#比特币序数与-NFT-有何不同？" class="headerlink" title="比特币序数与 NFT 有何不同？"></a>比特币序数与 NFT 有何不同？</h2><p>比特币 Ordinal 和更标准的 NFT 类型之间的主要区别在于它们的流动性。因为比特币协议没有正式承认 ordinal 理论，所以 ordinal 可以是可替代的或不可替代的。这完全取决于谁拥有 ordinal 以及他们是否希望保留这个单一个的 satoshi。</p>
+<p>例如，如果 BTC 用户不认识或不关心 ordinal 或附加到它的数据，它可以像任何其他 BTC 一样简单地使用。序号以这种方式是可替代的——它们可以用来支付网络费用或作为付款发送，尽管任意数据仍将保持附加状态。以太坊 NFT 则不同。以太坊 NFT 与 ETH 完全不同，并且不可能将可替代通证与 NFT 混淆，因为以太坊网络对每种 token 类型的处理方式不同。</p>
+<h2 id="围绕-Ordinal-NFT-的争论"><a href="#围绕-Ordinal-NFT-的争论" class="headerlink" title="围绕 Ordinal NFT 的争论"></a>围绕 Ordinal NFT 的争论</h2><p>Ordinal NFT 的兴起在比特币社区内引发了关于 BTC 的基本作用和精神的讨论。</p>
+<p>一些人认为 BTC 应该于安全的金融交易，由 meme 推动的 ordinal 铭文的兴起不必要地填满了比特币的区块空间并推高了交易费用。其他人对有序 NFT 可以给比特币区块链带来的meme/文化价值以及比特币将其不可变的、去中心化的数据库扩展到金融交易之外的想法感到兴奋。</p>
+<p>因为序号在今天的比特币软件中是完全有效的，所以删除创建 Ordinal 铭文的能力需要更新比特币协议。因此，最终由比特币社区共同决定是否保留 Ordinal。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/23.%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/23.BRC20/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:21
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/23-%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/" title="23.知识扫盲">
+                        <b>#</b> 23.知识扫盲
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/24.tenderly%E7%B3%BB%E5%88%97/01.%E6%9A%82%E6%97%A0/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ordinal-protocol"><span class="toc-text">ordinal protocol</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFordinal%E9%93%AD%E6%96%87"><span class="toc-text">什么是ordinal铭文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ordinal-NFT-%E7%9A%84%E5%8E%86%E5%8F%B2"><span class="toc-text">Ordinal NFT 的历史</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%94%E7%A6%BB%E8%A7%81%E8%AF%81-SegWit"><span class="toc-text">隔离见证 (SegWit)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Taproot"><span class="toc-text">Taproot</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bitcoin-NFTs-%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">Bitcoin NFTs 的原理是什么?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TokenID"><span class="toc-text">TokenID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA-TokenID-%E7%9A%84-Ordinal-%E7%90%86%E8%AE%BA"><span class="toc-text">作为 TokenID 的 Ordinal 理论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E6%95%B0%E6%8D%AE"><span class="toc-text">元数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%AD%E6%96%87%E4%BD%9C%E4%B8%BA%E5%85%83%E6%95%B0%E6%8D%AE"><span class="toc-text">铭文作为元数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E7%89%B9%E5%B8%81%E5%BA%8F%E6%95%B0%E4%B8%8E-NFT-%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-text">比特币序数与 NFT 有何不同？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%B4%E7%BB%95-Ordinal-NFT-%E7%9A%84%E4%BA%89%E8%AE%BA"><span class="toc-text">围绕 Ordinal NFT 的争论</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 22.ordinal%20protocol + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F23.%25E7%259F%25A5%25E8%25AF%2586%25E6%2589%25AB%25E7%259B%25B2%2F22.ordinal%2520protocol%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/23.%E7%9F%A5%E8%AF%86%E6%89%AB%E7%9B%B2/22.ordinal%20protocol/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

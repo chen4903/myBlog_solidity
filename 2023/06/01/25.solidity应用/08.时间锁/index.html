@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      08.时间锁 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">08.时间锁</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/25-solidity%E5%BA%94%E7%94%A8/" title="25.solidity应用">
+                    <b>#</b> 25.solidity应用
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="时间锁"><a href="#时间锁" class="headerlink" title="时间锁"></a>时间锁</h1><p><a target="_blank" rel="noopener" href="https://wtf.academy/solidity-application/Timelock/">转载</a></p>
+<p>这一讲，我们介绍时间锁和时间锁合约。代码由Compound的<a target="_blank" rel="noopener" href="https://github.com/compound-finance/compound-protocol/blob/master/contracts/Timelock.sol">Timelock合约</a>简化而来。</p>
+<h2 id="时间锁-1"><a href="#时间锁-1" class="headerlink" title="时间锁"></a>时间锁</h2><p>时间锁（Timelock）是银行金库和其他高安全性容器中常见的锁定机制。它是一种计时器，旨在防止保险箱或保险库在预设时间之前被打开，即便开锁的人知道正确密码。</p>
+<p>在区块链，时间锁被<code>DeFi</code>和<code>DAO</code>大量采用。它是一段代码，他可以将智能合约的某些功能锁定一段时间。它可以大大改善智能合约的安全性，举个例子，假如一个黑客黑了<code>Uniswap</code>的多签，准备提走金库的钱，但金库合约加了2天锁定期的时间锁，那么黑客从创建提钱的交易，到实际把钱提走，需要2天的等待期。在这一段时间，项目方可以找应对办法，投资者可以提前抛售代币减少损失。</p>
+<h2 id="时间锁合约"><a href="#时间锁合约" class="headerlink" title="时间锁合约"></a>时间锁合约</h2><p>下面，我们介绍一下时间锁<code>Timelock</code>合约。它的逻辑并不复杂：</p>
+<ul>
+<li>在创建<code>Timelock</code>合约时，项目方可以设定锁定期，并把合约的管理员设为自己。</li>
+<li>时间锁主要有三个功能：<ul>
+<li>创建交易，并加入到时间锁队列。</li>
+<li>在交易的锁定期满后，执行交易。</li>
+<li>后悔了，取消时间锁队列中的某些交易。</li>
+</ul>
+</li>
+<li>项目方一般会把时间锁合约设为重要合约的管理员，例如金库合约，再通过时间锁操作他们。</li>
+<li>时间锁合约的管理员一般为项目的多签钱包，保证去中心化。</li>
+</ul>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><p><code>Timelock</code>合约中共有<code>4</code>个事件。</p>
+<ul>
+<li><code>QueueTransaction</code>：交易创建并进入时间锁队列的事件。</li>
+<li><code>ExecuteTransaction</code>：锁定期满后交易执行的事件。</li>
+<li><code>CancelTransaction</code>：交易取消事件。</li>
+<li><code>NewAdmin</code>：修改管理员地址的事件。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 事件</span><br><span class="line">// 交易取消事件</span><br><span class="line">event CancelTransaction(bytes32 indexed txHash, address indexed target, uint value, string signature,  bytes data, uint executeTime);</span><br><span class="line">// 交易执行事件</span><br><span class="line">event ExecuteTransaction(bytes32 indexed txHash, address indexed target, uint value, string signature,  bytes data, uint executeTime);</span><br><span class="line">// 交易创建并进入队列 事件</span><br><span class="line">event QueueTransaction(bytes32 indexed txHash, address indexed target, uint value, string signature, bytes data, uint executeTime);</span><br><span class="line">// 修改管理员地址的事件</span><br><span class="line">event NewAdmin(address indexed newAdmin);</span><br></pre></td></tr></table></figure>
+<h3 id="状态变量"><a href="#状态变量" class="headerlink" title="状态变量"></a>状态变量</h3><p><code>Timelock</code>合约中共有<code>4</code>个状态变量。</p>
+<ul>
+<li><code>admin</code>：管理员地址。</li>
+<li><code>delay</code>：锁定期。</li>
+<li><code>GRACE_PERIOD</code>：交易过期时间。如果交易到了执行的时间点，但在<code>GRACE_PERIOD</code>没有被执行，就会过期。</li>
+<li><code>queuedTransactions</code>：进入时间锁队列交易的标识符<code>txHash</code>到<code>bool</code>的映射，记录所有在时间锁队列中的交易。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 状态变量</span><br><span class="line">address public admin; // 管理员地址</span><br><span class="line">uint public constant GRACE_PERIOD = 7 days; // 交易有效期，过期的交易作废</span><br><span class="line">uint public delay; // 交易锁定时间 （秒）</span><br><span class="line">mapping (bytes32 =&gt; bool) public queuedTransactions; // txHash到bool，记录所有在时间锁队列中的交易</span><br></pre></td></tr></table></figure>
+<h3 id="修饰器"><a href="#修饰器" class="headerlink" title="修饰器"></a>修饰器</h3><p><code>Timelock</code>合约中共有<code>2</code>个<code>modifier</code>。</p>
+<ul>
+<li><code>onlyOwner()</code>：被修饰的函数只能被管理员执行。</li>
+<li><code>onlyTimelock()</code>：被修饰的函数只能被时间锁合约执行。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// onlyOwner modifier</span><br><span class="line">modifier onlyOwner() &#123;</span><br><span class="line">    require(msg.sender == admin, &quot;Timelock: Caller not admin&quot;);</span><br><span class="line">    _;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// onlyTimelock modifier</span><br><span class="line">modifier onlyTimelock() &#123;</span><br><span class="line">    require(msg.sender == address(this), &quot;Timelock: Caller not Timelock&quot;);</span><br><span class="line">    _;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p><code>Timelock</code>合约中共有<code>7</code>个函数。</p>
+<ul>
+<li><p>构造函数：初始化交易锁定时间（秒）和管理员地址。</p>
+</li>
+<li><p>```<br>queueTransaction()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  ：创建交易并添加到时间锁队列中。参数比较复杂，因为要描述一个完整的交易：</span><br><span class="line"></span><br><span class="line">  - `target`：目标合约地址</span><br><span class="line"></span><br><span class="line">  - `value`：发送ETH数额</span><br><span class="line"></span><br><span class="line">  - `signature`：调用的函数签名（function signature）</span><br><span class="line"></span><br><span class="line">  - `data`：交易的call data</span><br><span class="line"></span><br><span class="line">  - `executeTime`：交易执行的区块链时间戳。</span><br><span class="line"></span><br><span class="line">    调用这个函数时，要保证交易预计执行时间`executeTime`大于当前区块链时间戳+锁定时间`delay`。交易的唯一标识符为所有参数的哈希值，利用`getTxHash()`函数计算。进入队列的交易会更新在`queuedTransactions`变量中，并释放`QueueTransaction`事件。</span><br><span class="line"></span><br><span class="line">- `executeTransaction()`：执行交易。它的参数与`queueTransaction()`相同。要求被执行的交易在时间锁队列中，达到交易的执行时间，且没有过期。执行交易时用到了`solidity`的低级成员函数`call`，在[第22讲](https://github.com/AmazingAng/WTFSolidity/blob/main/22_Call/readme.md)中有介绍。</span><br><span class="line"></span><br><span class="line">- `cancelTransaction()`：取消交易。它的参数与`queueTransaction()`相同。它要求被取消的交易在队列中，会更新`queuedTransactions`并释放`CancelTransaction`事件。</span><br><span class="line"></span><br><span class="line">- `changeAdmin()`：修改管理员地址，只能被`Timelock`合约调用。</span><br><span class="line"></span><br><span class="line">- `getBlockTimestamp()`：获取当前区块链时间戳。</span><br><span class="line"></span><br><span class="line">- `getTxHash()`：返回交易的标识符，为很多交易参数的`hash`。</span><br><span class="line"></span><br><span class="line">```solidity</span><br><span class="line">    /**</span><br><span class="line">     * @dev 构造函数，初始化交易锁定时间 （秒）和管理员地址</span><br><span class="line">     */</span><br><span class="line">    constructor(uint delay_) &#123;</span><br><span class="line">        delay = delay_;</span><br><span class="line">        admin = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev 改变管理员地址，调用者必须是Timelock合约。</span><br><span class="line">     */</span><br><span class="line">    function changeAdmin(address newAdmin) public onlyTimelock &#123;</span><br><span class="line">        admin = newAdmin;</span><br><span class="line"></span><br><span class="line">        emit NewAdmin(newAdmin);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev 创建交易并添加到时间锁队列中。</span><br><span class="line">     * @param target: 目标合约地址</span><br><span class="line">     * @param value: 发送eth数额</span><br><span class="line">     * @param signature: 要调用的函数签名（function signature）</span><br><span class="line">     * @param data: call data，里面是一些参数</span><br><span class="line">     * @param executeTime: 交易执行的区块链时间戳</span><br><span class="line">     *</span><br><span class="line">     * 要求：executeTime 大于 当前区块链时间戳+delay</span><br><span class="line">     */</span><br><span class="line">    function queueTransaction(address target, uint256 value, string memory signature, bytes memory data, uint256 executeTime) public onlyOwner returns (bytes32) &#123;</span><br><span class="line">        // 检查：交易执行时间满足锁定时间</span><br><span class="line">        require(executeTime &gt;= getBlockTimestamp() + delay, &quot;Timelock::queueTransaction: Estimated execution block must satisfy delay.&quot;);</span><br><span class="line">        // 计算交易的唯一识别符：一堆东西的hash</span><br><span class="line">        bytes32 txHash = getTxHash(target, value, signature, data, executeTime);</span><br><span class="line">        // 将交易添加到队列</span><br><span class="line">        queuedTransactions[txHash] = true;</span><br><span class="line"></span><br><span class="line">        emit QueueTransaction(txHash, target, value, signature, data, executeTime);</span><br><span class="line">        return txHash;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev 取消特定交易。</span><br><span class="line">     *</span><br><span class="line">     * 要求：交易在时间锁队列中</span><br><span class="line">     */</span><br><span class="line">    function cancelTransaction(address target, uint256 value, string memory signature, bytes memory data, uint256 executeTime) public onlyOwner&#123;</span><br><span class="line">        // 计算交易的唯一识别符：一堆东西的hash</span><br><span class="line">        bytes32 txHash = getTxHash(target, value, signature, data, executeTime);</span><br><span class="line">        // 检查：交易在时间锁队列中</span><br><span class="line">        require(queuedTransactions[txHash], &quot;Timelock::cancelTransaction: Transaction hasn&#x27;t been queued.&quot;);</span><br><span class="line">        // 将交易移出队列</span><br><span class="line">        queuedTransactions[txHash] = false;</span><br><span class="line"></span><br><span class="line">        emit CancelTransaction(txHash, target, value, signature, data, executeTime);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev 执行特定交易。</span><br><span class="line">     *</span><br><span class="line">     * 要求：</span><br><span class="line">     * 1. 交易在时间锁队列中</span><br><span class="line">     * 2. 达到交易的执行时间</span><br><span class="line">     * 3. 交易没过期</span><br><span class="line">     */</span><br><span class="line">    function executeTransaction(address target, uint256 value, string memory signature, bytes memory data, uint256 executeTime) public payable onlyOwner returns (bytes memory) &#123;</span><br><span class="line">        bytes32 txHash = getTxHash(target, value, signature, data, executeTime);</span><br><span class="line">        // 检查：交易是否在时间锁队列中</span><br><span class="line">        require(queuedTransactions[txHash], &quot;Timelock::executeTransaction: Transaction hasn&#x27;t been queued.&quot;);</span><br><span class="line">        // 检查：达到交易的执行时间</span><br><span class="line">        require(getBlockTimestamp() &gt;= executeTime, &quot;Timelock::executeTransaction: Transaction hasn&#x27;t surpassed time lock.&quot;);</span><br><span class="line">        // 检查：交易没过期</span><br><span class="line">       require(getBlockTimestamp() &lt;= executeTime + GRACE_PERIOD, &quot;Timelock::executeTransaction: Transaction is stale.&quot;);</span><br><span class="line">        // 将交易移出队列</span><br><span class="line">        queuedTransactions[txHash] = false;</span><br><span class="line"></span><br><span class="line">        // 获取call data</span><br><span class="line">        bytes memory callData;</span><br><span class="line">        if (bytes(signature).length == 0) &#123;</span><br><span class="line">            callData = data;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            callData = abi.encodePacked(bytes4(keccak256(bytes(signature))), data);</span><br><span class="line">        &#125;</span><br><span class="line">        // 利用call执行交易</span><br><span class="line">        (bool success, bytes memory returnData) = target.call&#123;value: value&#125;(callData);</span><br><span class="line">        require(success, &quot;Timelock::executeTransaction: Transaction execution reverted.&quot;);</span><br><span class="line"></span><br><span class="line">        emit ExecuteTransaction(txHash, target, value, signature, data, executeTime);</span><br><span class="line"></span><br><span class="line">        return returnData;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev 获取当前区块链时间戳</span><br><span class="line">     */</span><br><span class="line">    function getBlockTimestamp() public view returns (uint) &#123;</span><br><span class="line">        return block.timestamp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev 将一堆东西拼成交易的标识符</span><br><span class="line">     */</span><br><span class="line">    function getTxHash(</span><br><span class="line">        address target,</span><br><span class="line">        uint value,</span><br><span class="line">        string memory signature,</span><br><span class="line">        bytes memory data,</span><br><span class="line">        uint executeTime</span><br><span class="line">    ) public pure returns (bytes32) &#123;</span><br><span class="line">        return keccak256(abi.encode(target, value, signature, data, executeTime));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Remix演示"><a href="#Remix演示" class="headerlink" title="Remix演示"></a>Remix演示</h2><h3 id="1-部署Timelock合约，锁定期设为120秒"><a href="#1-部署Timelock合约，锁定期设为120秒" class="headerlink" title="1. 部署Timelock合约，锁定期设为120秒"></a>1. 部署Timelock合约，锁定期设为120秒</h3><p><img src="https://moe.photo/images/2023/01/23/45-1-0b7a3de5da9a91bf99ca1ed820b9a810.jpg" alt></p>
+<h3 id="2-直接调用changeAdmin-将报错"><a href="#2-直接调用changeAdmin-将报错" class="headerlink" title="2. 直接调用changeAdmin()将报错"></a>2. 直接调用changeAdmin()将报错</h3><p><img src="https://moe.photo/images/2023/01/23/45-2-5ead07090a6a287e708513eb73680b7a.jpg" alt></p>
+<h3 id="3-构造更改管理员的交易"><a href="#3-构造更改管理员的交易" class="headerlink" title="3. 构造更改管理员的交易"></a>3. 构造更改管理员的交易</h3><p>为了构造交易，我们要分别填入以下参数： address target, uint256 value, string memory signature, bytes memory data, uint256 executeTime</p>
+<ul>
+<li><code>target</code>：因为调用的是<code>Timelock</code>自己的函数，填入合约地址。</li>
+<li><code>value</code>：不用转入ETH，这里填<code>0</code>。</li>
+<li><code>signature</code>：<code>changeAdmin()</code>的函数签名为：<code>&quot;changeAdmin(address)&quot;</code>。</li>
+<li><code>data</code>：这里填要传入的参数，也就是新管理员的地址。但是要把地址填充为32字节的数据，以满足<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/27_ABIEncode/readme.md">以太坊ABI编码标准</a>。可以使用<a target="_blank" rel="noopener" href="https://abi.hashex.org/">hashex</a>网站进行参数的ABI编码。例子：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">编码前地址：0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2</span><br><span class="line">编码后地址：0x000000000000000000000000ab8483f64d9c6d1ecf9b849ae677dd3315835cb2</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>executeTime</code>：先调用<code>getBlockTimestamp()</code>得到当前区块链时间，再在它的基础上加个150秒填入。</li>
+</ul>
+<p><img src="https://moe.photo/images/2023/01/23/45-3-8347d49319a57f0962e3003dd77a08a7.jpg" alt></p>
+<h3 id="4-调用queueTransaction，将交易放入时间锁队列"><a href="#4-调用queueTransaction，将交易放入时间锁队列" class="headerlink" title="4. 调用queueTransaction，将交易放入时间锁队列"></a>4. 调用queueTransaction，将交易放入时间锁队列</h3><p><img src="https://moe.photo/images/2023/01/23/45-4-e5b0acb46f8e3c0ea6ef8e91399e75e3.jpg" alt></p>
+<h3 id="5-在锁定期内调用executeTransaction，调用失败"><a href="#5-在锁定期内调用executeTransaction，调用失败" class="headerlink" title="5. 在锁定期内调用executeTransaction，调用失败"></a>5. 在锁定期内调用executeTransaction，调用失败</h3><p><img src="https://moe.photo/images/2023/01/23/45-5-27fbf0d02db930ce7cc1d5a987920d0c.jpg" alt></p>
+<h3 id="6-在锁定期满调用executeTransaction，交易成功"><a href="#6-在锁定期满调用executeTransaction，交易成功" class="headerlink" title="6. 在锁定期满调用executeTransaction，交易成功"></a>6. 在锁定期满调用executeTransaction，交易成功</h3><p><img src="https://moe.photo/images/2023/01/23/45-6-027a977e11d9d8d2f1e6a55108f09f39.jpg" alt></p>
+<h3 id="7-查看新的admin地址"><a href="#7-查看新的admin地址" class="headerlink" title="7. 查看新的admin地址"></a>7. 查看新的admin地址</h3><p><img src="https://moe.photo/images/2023/01/23/45-7-8f8df31229d87965ba19d94924591443.jpg" alt></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>时间锁可以将智能合约的某些功能锁定一段时间，大大减少项目方<code>rug pull</code>和黑客攻击的机会，增加去中心化应用的安全性。它被<code>DeFi</code>和<code>DAO</code>大量采用，其中包括<code>Uniswap</code>和<code>Compound</code>。你投资的项目有使用时间锁吗？</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/10.%E5%8F%AF%E5%8D%87%E7%BA%A7%E5%90%88%E7%BA%A6/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:21
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/25-solidity%E5%BA%94%E7%94%A8/" title="25.solidity应用">
+                        <b>#</b> 25.solidity应用
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/07.%E4%BB%A3%E5%B8%81%E9%94%81/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E9%94%81"><span class="toc-text">时间锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E9%94%81-1"><span class="toc-text">时间锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E9%94%81%E5%90%88%E7%BA%A6"><span class="toc-text">时间锁合约</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6"><span class="toc-text">事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-text">状态变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E9%A5%B0%E5%99%A8"><span class="toc-text">修饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-text">函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remix%E6%BC%94%E7%A4%BA"><span class="toc-text">Remix演示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%83%A8%E7%BD%B2Timelock%E5%90%88%E7%BA%A6%EF%BC%8C%E9%94%81%E5%AE%9A%E6%9C%9F%E8%AE%BE%E4%B8%BA120%E7%A7%92"><span class="toc-text">1. 部署Timelock合约，锁定期设为120秒</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8changeAdmin-%E5%B0%86%E6%8A%A5%E9%94%99"><span class="toc-text">2. 直接调用changeAdmin()将报错</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%9E%84%E9%80%A0%E6%9B%B4%E6%94%B9%E7%AE%A1%E7%90%86%E5%91%98%E7%9A%84%E4%BA%A4%E6%98%93"><span class="toc-text">3. 构造更改管理员的交易</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%B0%83%E7%94%A8queueTransaction%EF%BC%8C%E5%B0%86%E4%BA%A4%E6%98%93%E6%94%BE%E5%85%A5%E6%97%B6%E9%97%B4%E9%94%81%E9%98%9F%E5%88%97"><span class="toc-text">4. 调用queueTransaction，将交易放入时间锁队列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%9C%A8%E9%94%81%E5%AE%9A%E6%9C%9F%E5%86%85%E8%B0%83%E7%94%A8executeTransaction%EF%BC%8C%E8%B0%83%E7%94%A8%E5%A4%B1%E8%B4%A5"><span class="toc-text">5. 在锁定期内调用executeTransaction，调用失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%9C%A8%E9%94%81%E5%AE%9A%E6%9C%9F%E6%BB%A1%E8%B0%83%E7%94%A8executeTransaction%EF%BC%8C%E4%BA%A4%E6%98%93%E6%88%90%E5%8A%9F"><span class="toc-text">6. 在锁定期满调用executeTransaction，交易成功</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%9F%A5%E7%9C%8B%E6%96%B0%E7%9A%84admin%E5%9C%B0%E5%9D%80"><span class="toc-text">7. 查看新的admin地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 08.%E6%97%B6%E9%97%B4%E9%94%81 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F25.solidity%25E5%25BA%2594%25E7%2594%25A8%2F08.%25E6%2597%25B6%25E9%2597%25B4%25E9%2594%2581%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/08.%E6%97%B6%E9%97%B4%E9%94%81/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

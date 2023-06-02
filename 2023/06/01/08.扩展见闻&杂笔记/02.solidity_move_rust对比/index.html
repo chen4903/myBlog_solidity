@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      02.solidity_move_rust对比 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">02.solidity_move_rust对比</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:19
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/" title="08.扩展见闻&杂笔记">
+                    <b>#</b> 08.扩展见闻&杂笔记
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="solidity-VS-move-VS-rust"><a href="#solidity-VS-move-VS-rust" class="headerlink" title="solidity VS move VS rust"></a>solidity VS move VS rust</h1><p><img src="/2023/06/01/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&%E6%9D%82%E7%AC%94%E8%AE%B0/02.solidity_move_rust%E5%AF%B9%E6%AF%94/5a42990c18834709aff59074787d7278" alt></p>
+<p>区块链的安全性、速度和开发者活动都取决于其底层编程语言和虚拟机。两种最流行的编程语言是 Solidity 及 Rust，Solidity 用于为以太坊虚拟机（EVM）构建去中心化的应用程序，而 Rust 则用于 Solana 上的 dApps。</p>
+<p>然而，由于最新出现的智能合约的区块链，Aptos 和 Sui，使用 Move 作为他们的基础编程语言，以实现更安全和可扩展的第 1 层，所以对这三者做一个比较是非常合适的。</p>
+<h2 id="编码术语"><a href="#编码术语" class="headerlink" title="编码术语"></a>编码术语</h2><p><strong>高级语言(HLL)</strong></p>
+<p>高级语言通常对开发人员来说更容易阅读和编写，因为与更接近机器代码的低级语言相比，它们更接近人类语言。为了让计算机能够阅读和执行源代码，首先需要将其编译成机器语言。</p>
+<p><strong>低级语言(LLL)</strong></p>
+<p>LLL 对开发者来说更难读和写，因为它们类似于机器代码。因此，它们可以在没有中间编译器或解释器的情况下转换为机器代码。</p>
+<p><strong>运行时环境</strong></p>
+<p>在区块链上，虚拟机作为操作系统的运行时环境。</p>
+<p><strong>解释型或编译型编程语言</strong></p>
+<p>编程语言将自己区分为解释型或编译型语言。</p>
+<p>编译型编程语言需要从源代码转换为可执行的字节码。</p>
+<p>另一方面，解释型编程语言在运行时被解释器逐行读取和执行。</p>
+<p>因此，解释型语言通常比编译型语言要慢。然而，解释型语言不容易出现错误，因为代码的调试是在运行时进行的，而且中间的编译表示被删除了。</p>
+<p>在编译型语言中，即使源代码无缺陷，也可能出现编译器自身的错误而出现错误，所以它们更容易出错。</p>
+<p><strong>顺序或并行处理</strong></p>
+<p>今天，大多数主要的区块链使用交易顺序执行，这意味着运行时环境一次只能处理一个交易。这是网络吞吐量的一个主要瓶颈。</p>
+<p>相比之下，一些编程语言能够实现并行处理（或并行执行），与顺序处理相比，允许更高的 TPS，而不需要零知识证明等数学上的解决方案。</p>
+<p>并行执行可以识别独立的交易，以并发地执行它们。然而，依赖性交易会影响另一个交易的执行，因此必须依次执行。</p>
+<p><img src="/2023/06/01/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&%E6%9D%82%E7%AC%94%E8%AE%B0/02.solidity_move_rust%E5%AF%B9%E6%AF%94/839ab23d31a541c2a155d43d8939c8ab" alt></p>
+<h2 id="Solidity"><a href="#Solidity" class="headerlink" title="Solidity"></a>Solidity</h2><p>以太坊是第一个可编程的区块链，至今仍是 Web3 生态系统发展的基础性开发环境。为了在以太坊上编程，你需要首先利用 Solidity 创建一个 “智能合约”—这是 Gavin Wood 博士在 2014 年为以太坊的智能合约专门设计的定制语言。然后，智能合约在以太坊虚拟机（EVM）上运行。</p>
+<p>作为一个 HLL，Solidity 使软件开发更方便用户使用。此外，Solidity 受到其他流行语言（如 C++、Java 和 Python）的影响并与之相似，使新的开发人员更容易在 EVM 生态系统中开始开发。</p>
+<p>然而，作为一种编译型语言，Solidity 更容易出现错误，因为将其翻译成机器可读的字节码需要额外的步骤。因此，尽管智能合约经历了极其复杂和昂贵的审计，我们仍然看到智能合约漏洞在以太坊生态系统中被利用。</p>
+<p>今天，Solidity 是一个独立的开源项目，在 GitHub 上进一步完善和发展。虽然它不是唯一可以用来为以太坊写代码的语言，但 Solidity 的语法是专门针对 EVM 设计的。</p>
+<p><strong>优势</strong></p>
+<ul>
+<li>HLL，因此更容易学习和用户友好</li>
+<li>丰富的优秀开发者工具和开源库</li>
+<li>是 Web3 中使用最多的语言</li>
+<li>与 C++、Python 和 JavaScript 等语言类似</li>
+<li>开发人员在他们已经熟悉的语言中犯错误的可能性较小</li>
+<li>良好的社区支持</li>
+<li>现有的标准（ERC20 和 ERC721）</li>
+<li>多链兼容（Layer2、侧链和 EVM 兼容的第一层区块链）。</li>
+</ul>
+<p><strong>劣势</strong></p>
+<ul>
+<li>作为一种编译型语言，Solidity 更容易出现可利用的 bug</li>
+<li>顺序处理是网络吞吐量的一个瓶颈</li>
+<li>合约在EVM中串行执行，性能较差;</li>
+<li>跨合约调用会新建EVM，内存开销较大;</li>
+<li>合约变量和数据存在MPT数中，不便于合约升级;</li>
+<li>逻辑和数据耦合，不便于存储扩容。</li>
+</ul>
+<p><strong>采用</strong></p>
+<p>在撰写本报告时，Solidity 占所有智能合约锁定总价值的 87.45%，其次是 Vyper（8.95%）和 Rust（2.31%)</p>
+<p><img src="/2023/06/01/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&%E6%9D%82%E7%AC%94%E8%AE%B0/02.solidity_move_rust%E5%AF%B9%E6%AF%94/6cfeb2faed6f4d4bad6d6b41db401b8f" alt></p>
+<h2 id="Rust-Solana"><a href="#Rust-Solana" class="headerlink" title="Rust - Solana"></a>Rust - Solana</h2><p>当许多生态系统试图通过兼容 EVM 来吸引新的开发者时，Solana 采取了一条不同的道路，它有自己独特的编程语言，自推出以来，其采用率有了令人印象深刻的增长。</p>
+<p>Rust 于 2011 年推出，与 Solidity 不同，它从一开始就被设计为一种通用的编程语言，不限于智能合约程序。</p>
+<p>与 Solidity 相比，Rust 是一种经过编译的、低级别的、更复杂的编程语言。因此，它对新开发者的吸引力可能较小，因为它更难学习。然而，Web3 生态系统以外的许多开发人员已经熟练掌握了 Rust，使其更容易开始在 Solana 或 Near 项目上工作。</p>
+<p>Rust 最有名的是作为 Solana 的主要编程语言，它有助于实现其他区块链只能梦想的吞吐量。对许多人来说，与 Solidity 相比，它也是一种更强大、更通用的语言，因为它允许开发人员有效地管理内存并利用并行处理。</p>
+<p><strong>优势</strong></p>
+<ul>
+<li>作为一种面向机器的编译型语言，Rust 提供了高速度和良好的内存效率</li>
+<li>Rust 允许通过并行处理实现更高的贯穿性</li>
+<li>Rust 通过所有权和借用原则实现了内存安全，在编译时消除了与内存有关的错误。</li>
+<li>由于 Rust 的开发者通常是更有经验的开发者，因此可以预计 Solana 上的智能合约（称为程序）不容易出现错误。</li>
+</ul>
+<p><strong>劣势</strong></p>
+<ul>
+<li>作为一个 LLL，Rust 有一个陡峭的学习曲线，通常更难学习</li>
+<li>大型项目的程序编译可能需要 10 分钟。</li>
+<li>今天，只有少数几个区块链支持 Rust，即 Solana 和 Near</li>
+</ul>
+<p><strong>采用</strong></p>
+<p>虽然使用 Solidity 作为主要编程语言的区块链仍然拥有最大的活跃开发者份额，但增长速度较快。</p>
+<p><img src="/2023/06/01/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&%E6%9D%82%E7%AC%94%E8%AE%B0/02.solidity_move_rust%E5%AF%B9%E6%AF%94/32686903d39040c5931cbce41746a2a4" alt></p>
+<h2 id="Move"><a href="#Move" class="headerlink" title="Move"></a>Move</h2><p>Move 于 2019 年推出，是 Aptos 和 Sui 等新层一链中使用的最现代的编程语言之一。Move 以 Rust 为基础，但由 Meta 为其 Diem 区块链专门设计，以解决现有智能合约语言的问题。</p>
+<p>因此，Move 背后的团队有机会研究 Web3 空间的现有语言，并从它们的缺点中学习。</p>
+<p>最重要的是，Move 被设计为一种面向对象的语言，用于编写具有安全资源管理的智能合约或程序。资产被定义为一种 “资源”，它可以在账户之间移动，但不能被重复消费或复制。</p>
+<p>这使得编写无错误的代码非常容易，与 Solidity 相比，资产的转移必须手动指定，增加了编写错误代码的可能性。</p>
+<p>因此，Move 消除了重入攻击的可能性，这是对 Solidity 智能合约最糟糕的攻击之一。</p>
+<p>作为一种解释型语言，Move 的性能与编译型语言相比要慢一些。然而，由于缺乏编译器和编译器错误，Move 在本质上比 Solidity 更安全。</p>
+<p>此外，Move 继承了 Rust 的内存效率和并行处理，使其成为整体性能的可靠选择。</p>
+<p><strong>优势</strong></p>
+<ul>
+<li>与 Rust 一样，Move 允许用户通过并行处理实现更高的吞吐量</li>
+<li>作为一种解释型语言，Move 没有编译器，因此也就没有编译器的缺陷</li>
+<li>Move 在设计时考虑到了安全问题，旨在消除诸如重入性这样的漏洞。</li>
+</ul>
+<p><strong>劣势</strong></p>
+<ul>
+<li>新的语言，工具、资源和社区有限</li>
+<li>比高级语言更难学习</li>
+<li>解释型语言的性能通常比类似的编译型语言要弱一些</li>
+<li>没有多链兼容性，因为到目前为止还没有主要的区块链采用 Move。</li>
+</ul>
+<p><strong>采用</strong></p>
+<p>Aptos 和 Sui 是目前唯一使用 Move 作为其主要编程语言的区块链项目，现在说该语言的成功还为时过早。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Solidity 是区块链开发中最受欢迎的编程语言，因为它的用户友好性和在以太坊上的广泛使用。不过，在过去，Solidity 的一些漏洞，造成了昂贵的损失。相比之下，Rust 和 Move 由于其更高的安全性和效率而成为有趣的替代品。</p>
+<p>虽然 Rust 已经在 Solana 上提供了更好的性能，并显示出不错的采用率，而 Move 被设计为提供三者中最安全的解决方案，消除了 Solidity 的许多漏洞。</p>
+<p>重要的是要记住，这三种语言都是比较新的。潜在的安全隐患尚未被发现，它们的长期成功还有待观察。</p>
+<p>虽然提供了智能合约开发的基础，但编程语言只是决定区块链及其 dApps 的速度和安全性的一个因素。</p>
+<p>然而，像 Move 这样的新方法会在可扩展性和安全性的竞赛中推动竞争和创新，值得我们关注。</p>
+<p>引用：<a target="_blank" rel="noopener" href="https://yieldapplabs.medium.com/solidity-vs-rust-move-e6fec78f77df">https://yieldapplabs.medium.com/solidity-vs-rust-move-e6fec78f77df</a></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&%E6%9D%82%E7%AC%94%E8%AE%B0/03.%E8%84%8F%E6%95%B0%E6%8D%AE/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:19
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/08-%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB-%E6%9D%82%E7%AC%94%E8%AE%B0/" title="08.扩展见闻&杂笔记">
+                        <b>#</b> 08.扩展见闻&杂笔记
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/07.%E5%90%88%E7%BA%A6%E5%AE%A1%E8%AE%A1%E5%B7%A5%E5%85%B7/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#solidity-VS-move-VS-rust"><span class="toc-text">solidity VS move VS rust</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E6%9C%AF%E8%AF%AD"><span class="toc-text">编码术语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Solidity"><span class="toc-text">Solidity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rust-Solana"><span class="toc-text">Rust - Solana</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Move"><span class="toc-text">Move</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 02.solidity_move_rust%E5%AF%B9%E6%AF%94 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F08.%25E6%2589%25A9%25E5%25B1%2595%25E8%25A7%2581%25E9%2597%25BB%26%25E6%259D%2582%25E7%25AC%2594%25E8%25AE%25B0%2F02.solidity_move_rust%25E5%25AF%25B9%25E6%25AF%2594%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/08.%E6%89%A9%E5%B1%95%E8%A7%81%E9%97%BB&%E6%9D%82%E7%AC%94%E8%AE%B0/02.solidity_move_rust%E5%AF%B9%E6%AF%94/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

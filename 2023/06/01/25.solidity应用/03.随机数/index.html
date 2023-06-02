@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      03.随机数 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">03.随机数</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/25-solidity%E5%BA%94%E7%94%A8/" title="25.solidity应用">
+                    <b>#</b> 25.solidity应用
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h1><p>很多以太坊上的应用都需要用到随机数，例如<code>NFT</code>随机抽取<code>tokenId</code>、抽盲盒、<code>gamefi</code>战斗中随机分胜负等等。但是由于以太坊上所有数据都是公开透明（<code>public</code>）且确定性（<code>deterministic</code>）的，它没法像其他编程语言一样给开发者提供生成随机数的方法。这一讲我们将介绍链上（哈希函数）和链下（<code>chainlink</code>预言机）随机数生成的两种方法，并利用它们做一款<code>tokenId</code>随机铸造的<code>NFT</code>。</p>
+<h2 id="链上随机数生成"><a href="#链上随机数生成" class="headerlink" title="链上随机数生成"></a>链上随机数生成</h2><p>我们可以将一些链上的全局变量作为种子，利用<code>keccak256()</code>哈希函数来获取伪随机数。这是因为哈希函数具有灵敏性和均一性，可以得到“看似”随机的结果。下面的<code>getRandomOnchain()</code>函数利用全局变量<code>block.number</code>，<code>msg.sender</code>和<code>blockhash(block.timestamp-1)</code>作为种子来获取随机数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line">* 链上伪随机数生成</span><br><span class="line">* 利用keccak256()打包一些链上的全局变量/自定义变量</span><br><span class="line">* 返回时转换成uint256类型</span><br><span class="line">*/</span><br><span class="line">function getRandomOnchain() public view returns(uint256)&#123;</span><br><span class="line">    // remix运行blockhash会报错</span><br><span class="line">    bytes32 randomBytes = keccak256(abi.encodePacked(block.number, msg.sender, blockhash(block.timestamp-1)));</span><br><span class="line">    </span><br><span class="line">    return uint256(randomBytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意:</strong>，这个方法并不安全：</p>
+<ul>
+<li>首先，<code>block.number</code>，<code>msg.sender</code>和<code>blockhash(block.timestamp-1)</code>这些变量都是公开的，使用者可以预测出用这些种子生成出的随机数，并挑出他们想要的随机数执行合约。</li>
+<li>其次，矿工可以操纵<code>blockhash</code>和<code>block.timestamp</code>，使得生成的随机数符合他的利益。</li>
+</ul>
+<p>尽管如此，由于这种方法是最便捷的链上随机数生成方法，大量项目方依靠它来生成不安全的随机数，包括知名的项目<code>meebits</code>，<code>loots</code>等。当然，这些项目也无一例外的被<a target="_blank" rel="noopener" href="https://forum.openzeppelin.com/t/understanding-the-meebits-exploit/8281">攻击</a>了：攻击者可以铸造任何他们想要的稀有<code>NFT</code>，而非随机抽取。</p>
+<h2 id="链下随机数生成"><a href="#链下随机数生成" class="headerlink" title="链下随机数生成"></a>链下随机数生成</h2><p>我们可以在链下生成随机数，然后通过预言机把随机数上传到链上。<code>Chainlink</code>提供<code>VRF</code>（可验证随机函数）服务，链上开发者可以支付<code>LINK</code>代币来获取随机数。<code>Chainlink VRF</code>有两个版本，因为第二个版本需要官网注册并预付费，且用法类似，这里只介绍第一个版本<code>VRF v1</code>。</p>
+<h3 id="Chainlink-VRF使用步骤"><a href="#Chainlink-VRF使用步骤" class="headerlink" title="Chainlink VRF使用步骤"></a>Chainlink VRF使用步骤</h3><p><img src="https://moe.photo/images/2023/01/19/39-1-8ce51bfb6a4ef7e77b54af56022d402b.png" alt></p>
+<p>我们将用一个简单的合约介绍使用<code>Chainlink VRF</code>的步骤。<code>RandomNumberConsumer</code>合约可以向<code>VRF</code>请求一个随机数，并存储在状态变量<code>randomResult</code>中。</p>
+<p><strong>1. 用户合约继承<code>VRFConsumerBase</code>并转入<code>LINK</code>代币</strong></p>
+<p>为了使用<code>VRF</code>获取随机数，合约需要继承<code>VRFConsumerBase</code>合约，并在构造函数中初始化<code>VRF Coordinator</code>地址，<code>LINK</code>代币地址，唯一标识符<code>Key Hash</code>，和使用费用<code>fee</code>。</p>
+<p><strong>注意:</strong> 不同链对应不同的参数，在<a target="_blank" rel="noopener" href="https://docs.chain.link/docs/vrf-contracts/v1/">这里</a>查询。</p>
+<p>教程中我们使用<code>Rinkeby</code>测试网。部署好合约后，用户需要向合约转一些<code>LINK</code>代币，测试网的<code>LINK</code>代币可以从<a target="_blank" rel="noopener" href="https://faucets.chain.link/">LINK水龙头</a>领取。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.4;</span><br><span class="line"></span><br><span class="line">import &quot;@chainlink/contracts/src/v0.8/VRFConsumerBase.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract RandomNumberConsumer is VRFConsumerBase &#123;</span><br><span class="line">    </span><br><span class="line">    bytes32 internal keyHash; // VRF唯一标识符</span><br><span class="line">    uint256 internal fee; // VRF使用手续费</span><br><span class="line">    </span><br><span class="line">    uint256 public randomResult; // 存储随机数</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 使用chainlink VRF，构造函数需要继承 VRFConsumerBase </span><br><span class="line">     * 不同链参数填的不一样</span><br><span class="line">     * 网络: Rinkeby测试网</span><br><span class="line">     * Chainlink VRF Coordinator 地址: 0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B</span><br><span class="line">     * LINK 代币地址: 0x01BE23585060835E02B77ef475b0Cc51aA1e0709</span><br><span class="line">     * Key Hash: 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311</span><br><span class="line">     */</span><br><span class="line">    constructor() </span><br><span class="line">        VRFConsumerBase(</span><br><span class="line">            0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B, // VRF Coordinator</span><br><span class="line">            0x01BE23585060835E02B77ef475b0Cc51aA1e0709  // LINK Token</span><br><span class="line">        )</span><br><span class="line">    &#123;</span><br><span class="line">        keyHash = 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311;</span><br><span class="line">        fee = 0.1 * 10 ** 18; // 0.1 LINK (VRF使用费，Rinkeby测试网)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2. 用户合约申请随机数</strong></p>
+<p>用户可以调用从<code>VRFConsumerBase</code>合约继承来的<code>requestRandomness()</code>申请随机数，并返回申请标识符<code>requestId</code>。这个申请会传递给<code>VRF</code>合约。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line"> * 向VRF合约申请随机数 </span><br><span class="line"> */</span><br><span class="line">function getRandomNumber() public returns (bytes32 requestId) &#123;</span><br><span class="line">    // 合约中需要有足够的LINK</span><br><span class="line">    require(LINK.balanceOf(address(this)) &gt;= fee, &quot;Not enough LINK - fill contract with faucet&quot;);</span><br><span class="line"></span><br><span class="line">    return requestRandomness(keyHash, fee);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>3. <code>Chainlink</code>节点链下生成随机数和<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/37_Signature/readme.md">数字签名</a>，并发送给<code>VRF</code>合约</strong></p>
+<p><strong>4. <code>VRF</code>合约验证签名有效性</strong></p>
+<p><strong>5. 用户合约接收并使用随机数</strong></p>
+<p>在<code>VRF</code>合约验证签名有效之后，会自动调用用户合约的回退函数<code>fulfillRandomness()</code>，将链下生成的随机数发送过来。用户要把消耗随机数的逻辑写在这里。</p>
+<p><strong>注意:</strong> 用户申请随机数时调用的<code>requestRandomness()</code>和<code>VRF</code>合约返回随机数时调用的回退函数<code>fulfillRandomness()</code>是两笔交易，调用者分别是用户合约和<code>VRF</code>合约，后者比前者晚几分钟（不同链延迟不一样）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * VRF合约的回调函数，验证随机数有效之后会自动被调用</span><br><span class="line"> * 消耗随机数的逻辑写在这里</span><br><span class="line"> */</span><br><span class="line">function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override &#123;</span><br><span class="line">    randomResult = randomness;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="tokenId随机铸造的NFT"><a href="#tokenId随机铸造的NFT" class="headerlink" title="tokenId随机铸造的NFT"></a>tokenId随机铸造的NFT</h2><p>这一节，我们将利用链上和链下随机数来做一款<code>tokenId</code>随机铸造的<code>NFT</code>。<code>Random</code>合约继承<code>ERC721</code>和<code>VRFConsumerBase</code>合约。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.4;</span><br><span class="line"></span><br><span class="line">import &quot;https://github.com/AmazingAng/WTFSolidity/blob/main/34_ERC721/ERC721.sol&quot;;</span><br><span class="line">import &quot;@chainlink/contracts/src/v0.8/VRFConsumerBase.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract Random is ERC721, VRFConsumerBase&#123;</span><br></pre></td></tr></table></figure>
+<h3 id="状态变量"><a href="#状态变量" class="headerlink" title="状态变量"></a>状态变量</h3><ul>
+<li><p>```<br>NFT</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  相关</span><br><span class="line"></span><br><span class="line">  - `totalSupply`：`NFT`总供给。</span><br><span class="line">  - `ids`：数组，用于计算可供`mint`的`tokenId`，见`pickRandomUniqueId()`函数。</span><br><span class="line">  - `mintCount`：已经`mint`的数量。</span><br><span class="line"></span><br><span class="line">- ```</span><br><span class="line">  Chainlink VRF</span><br></pre></td></tr></table></figure>
+<p>相关</p>
+<ul>
+<li><code>keyHash</code>:<code>VRF</code>唯一标识符。</li>
+<li><code>fee</code>：<code>VRF</code>手续费。</li>
+<li><code>requestToSender</code>：记录申请<code>VRF</code>用于铸造的用户地址。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// NFT相关</span><br><span class="line">uint256 public totalSupply = 100; // 总供给</span><br><span class="line">uint256[100] public ids; // 用于计算可供mint的tokenId</span><br><span class="line">uint256 public mintCount; // 已mint数量</span><br><span class="line">// chainlink VRF相关</span><br><span class="line">bytes32 internal keyHash;</span><br><span class="line">uint256 internal fee;</span><br><span class="line">// 记录VRF申请标识对应的mint地址</span><br><span class="line">mapping(bytes32 =&gt; address) public requestToSender; </span><br></pre></td></tr></table></figure>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>初始化继承的<code>VRFConsumerBase</code>和<code>ERC721</code>合约的相关变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 使用chainlink VRF，构造函数需要继承 VRFConsumerBase </span><br><span class="line"> * 不同链参数填的不一样</span><br><span class="line"> * 网络: Rinkeby测试网</span><br><span class="line"> * Chainlink VRF Coordinator 地址: 0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B</span><br><span class="line"> * LINK 代币地址: 0x01BE23585060835E02B77ef475b0Cc51aA1e0709</span><br><span class="line"> * Key Hash: 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311</span><br><span class="line"> */</span><br><span class="line">constructor() </span><br><span class="line">    VRFConsumerBase(</span><br><span class="line">        0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B, // VRF Coordinator</span><br><span class="line">        0x01BE23585060835E02B77ef475b0Cc51aA1e0709  // LINK Token</span><br><span class="line">    )</span><br><span class="line">    ERC721(&quot;WTF Random&quot;, &quot;WTF&quot;)</span><br><span class="line">&#123;</span><br><span class="line">    keyHash = 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311;</span><br><span class="line">    fee = 0.1 * 10 ** 18; // 0.1 LINK (VRF使用费，Rinkeby测试网)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h3><p>除了构造函数以外，合约里还定义了<code>5</code>个函数。</p>
+<ul>
+<li><code>pickRandomUniqueId()</code>：输入随机数，获取可供<code>mint</code>的<code>tokenId</code>。</li>
+<li><code>getRandomOnchain()</code>：获取链上随机数（不安全）。</li>
+<li><code>mintRandomOnchain()</code>：利用链上随机数铸造<code>NFT</code>，调用了<code>getRandomOnchain()</code>和<code>pickRandomUniqueId()</code>。</li>
+<li><code>mintRandomVRF()</code>：申请<code>Chainlink VRF</code>用于铸造随机数。由于使用随机数铸造的逻辑在回调函数<code>fulfillRandomness()</code>，而回调函数的调用者是<code>VRF</code>合约，而非铸造<code>NFT</code>的用户，这里必须利用<code>requestToSender</code>状态变量记录<code>VRF</code>申请标识符对应的用户地址。</li>
+<li><code>fulfillRandomness()</code>：<code>VRF</code>的回调函数，由<code>VRF</code>合约在验证随机数真实性后自动调用，用返回的链下随机数铸造<code>NFT</code>。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line">* 输入uint256数字，返回一个可以mint的tokenId</span><br><span class="line">* 算法过程可理解为：totalSupply个空杯子（0初始化的ids）排成一排，每个杯子旁边放一个球，编号为[0, totalSupply - 1]。</span><br><span class="line">每次从场上随机拿走一个球（球可能在杯子旁边，这是初始状态；也可能是在杯子里，说明杯子旁边的球已经被拿走过，则此时新的球从末尾被放到了杯子里）</span><br><span class="line">再把末尾的一个球（依然是可能在杯子里也可能在杯子旁边）放进被拿走的球的杯子里，循环totalSupply次。相比传统的随机排列，省去了初始化ids[]的gas。</span><br><span class="line">*/</span><br><span class="line">function pickRandomUniqueId(uint256 random) private returns (uint256 tokenId) &#123;</span><br><span class="line">    uint256 len = totalSupply - mintCount++; // 可mint数量</span><br><span class="line">    require(len &gt; 0, &quot;mint close&quot;); // 所有tokenId被mint完了</span><br><span class="line">    uint256 randomIndex = random % len; // 获取链上随机数</span><br><span class="line">    </span><br><span class="line">    //随机数取模，得到tokenId，作为数组下标，同时记录value为len-1，如果取模得到的值已存在，则tokenId取该数组下标的value</span><br><span class="line">    tokenId = ids[randomIndex] != 0 ? ids[randomIndex] : randomIndex; // 获取tokenId</span><br><span class="line">    ids[randomIndex] = ids[len - 1] == 0 ? len - 1 : ids[len - 1]; // 更新ids 列表</span><br><span class="line">    ids[len - 1] = 0; // 删除最后一个元素，能返还gas</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/** </span><br><span class="line">* 链上伪随机数生成</span><br><span class="line">* keccak256(abi.encodePacked()中填上一些链上的全局变量/自定义变量</span><br><span class="line">* 返回时转换成uint256类型</span><br><span class="line">*/</span><br><span class="line">function getRandomOnchain() public view returns(uint256)&#123;</span><br><span class="line">    // remix跑blockhash会报错</span><br><span class="line">    bytes32 randomBytes = keccak256(abi.encodePacked(block.number, msg.sender, blockhash(block.timestamp-1)));</span><br><span class="line">    return uint256(randomBytes);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 利用链上伪随机数铸造NFT</span><br><span class="line">function mintRandomOnchain() public &#123;</span><br><span class="line">    uint256 _tokenId = pickRandomUniqueId(getRandomOnchain()); // 利用链上随机数生成tokenId</span><br><span class="line">    _mint(msg.sender, _tokenId);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/** </span><br><span class="line"> * 调用VRF获取随机数，并mintNFT</span><br><span class="line"> * 要调用requestRandomness()函数获取，消耗随机数的逻辑写在VRF的回调函数fulfillRandomness()中</span><br><span class="line"> * 调用前，把LINK代币转到本合约里</span><br><span class="line"> */</span><br><span class="line">function mintRandomVRF() public returns (bytes32 requestId) &#123;</span><br><span class="line">    // 检查合约中LINK余额</span><br><span class="line">    require(LINK.balanceOf(address(this)) &gt;= fee, &quot;Not enough LINK - fill contract with faucet&quot;);</span><br><span class="line">    // 调用requestRandomness获取随机数</span><br><span class="line">    requestId = requestRandomness(keyHash, fee);</span><br><span class="line">    requestToSender[requestId] = msg.sender;</span><br><span class="line">    return requestId;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * VRF的回调函数，由VRF Coordinator调用</span><br><span class="line"> * 消耗随机数的逻辑写在本函数中</span><br><span class="line"> */</span><br><span class="line">function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override &#123;</span><br><span class="line">    address sender = requestToSender[requestId]; // 从requestToSender中获取minter用户地址</span><br><span class="line">    uint256 _tokenId = pickRandomUniqueId(randomness); // 利用VRF返回的随机数生成tokenId</span><br><span class="line"></span><br><span class="line">    _mint(sender, _tokenId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="remix验证"><a href="#remix验证" class="headerlink" title="remix验证"></a>remix验证</h2><h3 id="1-在Rinkeby测试网部署Random合约"><a href="#1-在Rinkeby测试网部署Random合约" class="headerlink" title="1. 在Rinkeby测试网部署Random合约"></a>1. 在<code>Rinkeby</code>测试网部署<code>Random</code>合约</h3><p><img src="https://moe.photo/images/2023/01/19/39-2-59307c35c62485c0bbacd7d51a82a220.png" alt></p>
+<h3 id="2-利用Chainlink水龙头获取测试网的LINK和ETH"><a href="#2-利用Chainlink水龙头获取测试网的LINK和ETH" class="headerlink" title="2. 利用Chainlink水龙头获取测试网的LINK和ETH"></a>2. 利用<code>Chainlink</code>水龙头获取测试网的<code>LINK</code>和<code>ETH</code></h3><p><img src="https://moe.photo/images/2023/01/19/39-3-055b4ebbfe948364c88ed707b69d5b6b.png" alt></p>
+<h3 id="3-将LINK代币转入Random合约"><a href="#3-将LINK代币转入Random合约" class="headerlink" title="3. 将LINK代币转入Random合约"></a>3. 将<code>LINK</code>代币转入<code>Random</code>合约</h3><p>合约部署后，拷贝合约地址，像普通转账一样，通过小狐狸钱包转账<code>LINK</code>到合约地址</p>
+<p><img src="https://moe.photo/images/2023/01/19/39-4-1bed18e9350c623cafcede5cea7e44c2.png" alt></p>
+<h3 id="4-利用链上随机数铸造NFT"><a href="#4-利用链上随机数铸造NFT" class="headerlink" title="4. 利用链上随机数铸造NFT"></a>4. 利用链上随机数铸造<code>NFT</code></h3><p>在<code>remix</code>界面中，点击左侧橙色函数<code>mintRandomOnchain</code></p>
+<p><img src="https://moe.photo/images/2023/01/19/39-5-1-4425a38c4b891aaa740c4b3f7b1dbcd1.png" alt></p>
+<p>，在弹出的小狐狸钱包中点击确认，利用链上随机数铸造交易就开始了</p>
+<p><img src="https://moe.photo/images/2023/01/19/39-5-b97d3f0fd1b1b7ed101509bb50e9a695.png" alt></p>
+<h3 id="5-利用Chainlink-VRF链下随机数铸造NFT"><a href="#5-利用Chainlink-VRF链下随机数铸造NFT" class="headerlink" title="5. 利用Chainlink VRF链下随机数铸造NFT"></a>5. 利用<code>Chainlink VRF</code>链下随机数铸造<code>NFT</code></h3><p>同理，在<code>remix</code>界面中，点击左侧橙色函数<code>mintRandomVRF</code>，在弹出的小狐狸钱包中点击确认，利用<code>Chainlink VRF</code>链下随机数铸造交易就开始了</p>
+<p><strong>注意:</strong> 采用<code>VRF</code>铸造<code>NFT</code>时，发起交易和铸造成功不在同一个区块</p>
+<p><img src="https://moe.photo/images/2023/01/19/39-6-56a2cb649c207e65f3b4223c2e3e4ba6.png" alt></p>
+<p><img src="https://moe.photo/images/2023/01/19/39-7-d892ee9d61839dd4044c6e793c28d2c3.png" alt></p>
+<h3 id="6-验证NFT已被铸造"><a href="#6-验证NFT已被铸造" class="headerlink" title="6. 验证NFT已被铸造"></a>6. 验证<code>NFT</code>已被铸造</h3><p>通过以上截图可以看出，本例中，<code>tokenId=87</code>的<code>NFT</code>被链上随机铸造出来，<code>tokenId=77</code>的<code>NFT</code>被<code>VRF</code>铸造出来。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在<code>Solidity</code>中生成随机数没有其他编程语言那么容易。这一讲我们将介绍链上（哈希函数）和链下（<code>chainlink</code>预言机）随机数生成的两种方法，并利用它们做一款<code>tokenId</code>随机铸造的<code>NFT</code>。这两种方法各有利弊：使用链上随机数高效，但是不安全；而链下随机数生成依赖于第三方提供的预言机服务，比较安全，但是没那么简单经济。项目方要根据业务场景来选择适合自己的方案。</p>
+<p>除此以外，还有一些组织在尝试RNG(Random Number Generation)的新鲜方式，如<a target="_blank" rel="noopener" href="https://github.com/randao/randao">randao</a>就提出以DAO的模式来提供一个<code>on-chain</code>且<code>true randomness</code>的服务</p>
+<p><a target="_blank" rel="noopener" href="https://wtf.academy/solidity-application/Random/">引用</a></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/04.WETH/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:21
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/25-solidity%E5%BA%94%E7%94%A8/" title="25.solidity应用">
+                        <b>#</b> 25.solidity应用
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/02.NFT%E4%BA%A4%E6%98%93%E6%89%80/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%95%B0"><span class="toc-text">随机数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E4%B8%8A%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90"><span class="toc-text">链上随机数生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E4%B8%8B%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90"><span class="toc-text">链下随机数生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Chainlink-VRF%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-text">Chainlink VRF使用步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tokenId%E9%9A%8F%E6%9C%BA%E9%93%B8%E9%80%A0%E7%9A%84NFT"><span class="toc-text">tokenId随机铸造的NFT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-text">状态变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="toc-text">其他函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remix%E9%AA%8C%E8%AF%81"><span class="toc-text">remix验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9C%A8Rinkeby%E6%B5%8B%E8%AF%95%E7%BD%91%E9%83%A8%E7%BD%B2Random%E5%90%88%E7%BA%A6"><span class="toc-text">1. 在Rinkeby测试网部署Random合约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%A9%E7%94%A8Chainlink%E6%B0%B4%E9%BE%99%E5%A4%B4%E8%8E%B7%E5%8F%96%E6%B5%8B%E8%AF%95%E7%BD%91%E7%9A%84LINK%E5%92%8CETH"><span class="toc-text">2. 利用Chainlink水龙头获取测试网的LINK和ETH</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B0%86LINK%E4%BB%A3%E5%B8%81%E8%BD%AC%E5%85%A5Random%E5%90%88%E7%BA%A6"><span class="toc-text">3. 将LINK代币转入Random合约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%A9%E7%94%A8%E9%93%BE%E4%B8%8A%E9%9A%8F%E6%9C%BA%E6%95%B0%E9%93%B8%E9%80%A0NFT"><span class="toc-text">4. 利用链上随机数铸造NFT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%88%A9%E7%94%A8Chainlink-VRF%E9%93%BE%E4%B8%8B%E9%9A%8F%E6%9C%BA%E6%95%B0%E9%93%B8%E9%80%A0NFT"><span class="toc-text">5. 利用Chainlink VRF链下随机数铸造NFT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%AA%8C%E8%AF%81NFT%E5%B7%B2%E8%A2%AB%E9%93%B8%E9%80%A0"><span class="toc-text">6. 验证NFT已被铸造</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 03.%E9%9A%8F%E6%9C%BA%E6%95%B0 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F25.solidity%25E5%25BA%2594%25E7%2594%25A8%2F03.%25E9%259A%258F%25E6%259C%25BA%25E6%2595%25B0%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/03.%E9%9A%8F%E6%9C%BA%E6%95%B0/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

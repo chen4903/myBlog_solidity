@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      28.伪去中心化 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">28.伪去中心化</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:19
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                    <b>#</b> 09.安全审计
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="伪去中心化"><a href="#伪去中心化" class="headerlink" title="伪去中心化"></a>伪去中心化</h1><p><a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTF-Solidity/blob/main/S03_Centralization/readme.md">转载</a></p>
+<p>这一讲，我们将介绍智能合约中的中心化和伪去中心化所带来的风险。<code>Ronin</code>桥和<code>Harmony</code>桥因该漏洞被黑客攻击，分别被盗取了 6.24 亿美元和 1 亿美元。</p>
+<h2 id="中心化风险"><a href="#中心化风险" class="headerlink" title="中心化风险"></a>中心化风险</h2><p>我们经常以Web3的去中心化为骄傲，认为在Web3.0世界里，所有权和控制权都是去中心化。但实际上，中心化是Web3项目最常见的风险之一。知名区块链审计公司Certik在<a target="_blank" rel="noopener" href="https://f.hubspotusercontent40.net/hubfs/4972390/Marketing/defi security report 2021-v6.pdf">2021年DeFi安全报告</a>中指出：</p>
+<blockquote>
+<p>中心化风险是 DeFi 中最常见的漏洞，2021年中有 44 次 DeFi 黑客攻击与它相关，造成用户资金损失超过 13 亿美元。这强调了权力下放的重要性，许多项目仍需努力实现这一目标。</p>
+</blockquote>
+<p>中心化风险指智能合约的所有权是中心化的，例如合约的<code>owner</code>由一个地址控制，它可以随意修改合约参数，甚至提取用户资金。中心化的项目存在单点风险，可以被恶意开发者（内鬼）或黑客利用，只需要获取具有控制权限地址的私钥之后，就可以通过<code>rug-pull</code>，无限铸币，或其他类型方法盗取资金。</p>
+<p>链游项目<code>Vulcan Forged</code>在2021年12月因私钥泄露被盗 1.4 亿美元，DeFi项目<code>EasyFi</code>在2021年4月因私钥泄露被盗 5900 万美元，DeFi项目<code>bZx</code>在钓鱼攻击中私钥泄露被盗 5500 万美元。</p>
+<h2 id="伪去中心化风险"><a href="#伪去中心化风险" class="headerlink" title="伪去中心化风险"></a>伪去中心化风险</h2><p>伪去中心化的项目通常对外鼓吹自己是去中心化的，但实际上和中心化项目一样存在单点风险。比如使用多签钱包来管理智能合约，但几个多签人是一致行动人，背后由一个人控制。这类项目由于包装的很去中心化，容易得到投资者信任，所以当黑客事件发生时，被盗金额也往往更大。</p>
+<p>近两年爆火的链游项目 Axie 的 Ronin 链跨链桥项目在2022年3月被盗 6.24 亿美元，是历史上被盗金额最大的事件。Ronin 跨链桥由 9 个验证者维护，必须有 5 个人达成共识才能批准存款和提款交易。这看起来像多签一样，非常去中心化。但实际上其中 4 个验证者由 Axie 的开发公司 Sky Mavis 控制，而另 1 个由 Axie DAO 控制的验证者也批准了 Sky Mavis 验证节点代表他们签署交易。因此，在攻击者获取了 Sky Mavis 的私钥后（具体方法未披露），就可以控制 5 个验证节点，授权盗走了 173,600 ETH 和 2550 万USDC。</p>
+<p><code>Harmony</code>公链的跨链桥在2022年6月被盗 1 亿美元。<code>Harmony</code>桥由5 个多签人控制，很离谱的是只需其中 2 个人签名就可以批准一笔交易。在黑客设法盗取两个多签人的私钥后，将用户质押的资产盗空。</p>
+<p><img src="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/28.%E4%BC%AA%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96/S03-1.png" alt="img"></p>
+<h2 id="漏洞合约例子"><a href="#漏洞合约例子" class="headerlink" title="漏洞合约例子"></a>漏洞合约例子</h2><p>有中心化风险的合约多种多样，这里只举一个最常见的例子：<code>owner</code>地址可以任意铸造代币的<code>ERC20</code>合约。当项目内鬼或黑客取得<code>owner</code>的私钥后，可以无限铸币，造成投资人大量损失。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.4;</span><br><span class="line"></span><br><span class="line">import &quot;@openzeppelin/contracts/token/ERC20/ERC20.sol&quot;;</span><br><span class="line">import &quot;@openzeppelin/contracts/access/Ownable.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract Centralization is ERC20, Ownable &#123;</span><br><span class="line">    constructor() ERC20(&quot;Centralization&quot;, &quot;Cent&quot;) &#123;</span><br><span class="line">        address exposedAccount = 0xe16C1623c1AA7D919cd2241d8b36d9E79C1Be2A2;</span><br><span class="line">        transferOwnership(exposedAccount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function mint(address to, uint256 amount) external onlyOwner&#123;</span><br><span class="line">        _mint(to, amount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="如何减少中心化-伪去中心化风险？"><a href="#如何减少中心化-伪去中心化风险？" class="headerlink" title="如何减少中心化/伪去中心化风险？"></a>如何减少中心化/伪去中心化风险？</h2><ol>
+<li>使用多签钱包管理国库和控制合约参数。为了兼顾效率和去中心化，可以选择 4/7 或 6/9 多签。如果你不了解多签钱包，可以阅读<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/50_MultisigWallet/readme.md">WTF Solidity第50讲：多签钱包</a>。</li>
+<li>多签的持有人要多样化，分散在创始团队、投资人、社区领袖之间，并且不要相互授权签名。</li>
+<li>使用时间锁控制合约，在黑客或项目内鬼修改合约参数/盗取资产时，项目方和社区有一些时间来应对，将损失最小化。如果你不了解时间锁合约，可以阅读<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/45_TokenLocker/readme.md">WTF Solidity第45讲：时间锁</a>。</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>中心化/伪去中心化是区块链项目最大的风险，近两年造成用户资金损失超过 20 亿美元。中心化风险通过分析合约代码就可以发现，而伪去中心化风险藏的更深，需要对项目进行细致的尽职调查才能发现。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/27.%E9%80%89%E6%8B%A9%E5%99%A8%E7%A2%B0%E6%92%9E/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:19
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                        <b>#</b> 09.安全审计
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/29.%E7%AD%BE%E5%90%8D%E9%87%8D%E6%94%BE/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%AA%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96"><span class="toc-text">伪去中心化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E5%BF%83%E5%8C%96%E9%A3%8E%E9%99%A9"><span class="toc-text">中心化风险</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%AA%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96%E9%A3%8E%E9%99%A9"><span class="toc-text">伪去中心化风险</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%90%88%E7%BA%A6%E4%BE%8B%E5%AD%90"><span class="toc-text">漏洞合约例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E4%B8%AD%E5%BF%83%E5%8C%96-%E4%BC%AA%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96%E9%A3%8E%E9%99%A9%EF%BC%9F"><span class="toc-text">如何减少中心化&#x2F;伪去中心化风险？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 28.%E4%BC%AA%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F09.%25E5%25AE%2589%25E5%2585%25A8%25E5%25AE%25A1%25E8%25AE%25A1%2F28.%25E4%25BC%25AA%25E5%258E%25BB%25E4%25B8%25AD%25E5%25BF%2583%25E5%258C%2596%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/28.%E4%BC%AA%E5%8E%BB%E4%B8%AD%E5%BF%83%E5%8C%96/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

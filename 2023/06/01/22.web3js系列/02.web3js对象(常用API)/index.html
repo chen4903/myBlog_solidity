@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      02.web3js对象(常用API) 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">02.web3js对象(常用API)</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/22-web3js%E7%B3%BB%E5%88%97/" title="22.web3js系列">
+                    <b>#</b> 22.web3js系列
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="web3js对象-常用API"><a href="#web3js对象-常用API" class="headerlink" title="web3js对象(常用API)"></a>web3js对象(常用API)</h1><h2 id="获取web3对象"><a href="#获取web3对象" class="headerlink" title="获取web3对象"></a>获取web3对象</h2><ul>
+<li><p>子模块列表</p>
+<ul>
+<li>Eth - Function: Eth模块类，用来与以太坊网络进行交互。参见web3.eth</li>
+<li>Net - Function: Net模块类，用来与网络属性进行交互。参见web3.eth.net</li>
+<li>Personal- Function: Personal模块类，用来与以太坊账户进行交互。参见web3.eth.personal</li>
+<li>Shh - Function: Shh模块类，用来与whisper协议交互。参见we b3.shh</li>
+<li>Bzz - Function: Bzz模块类，用来与swarm网络交互。参见web3.bzz</li>
+</ul>
+</li>
+<li><p>要使用Web3.js访问以太坊网络，必须先创建Web3的实例，提供一个provider</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title class_">Web3</span> = <span class="built_in">require</span>(<span class="string">&#x27;web3&#x27;</span>);</span><br><span class="line">web3 = <span class="keyword">new</span> <span class="title class_">Web3</span>(<span class="keyword">new</span> <span class="title class_">Web3</span>.<span class="property">providers</span>.<span class="title class_">HttpProvider</span>(<span class="string">&quot;HTTP://127.0.0.1:8545&quot;</span>));</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h2><ul>
+<li><p>查看web3版本：<code>Web3.version</code></p>
+</li>
+<li><p>查看web3连接的节点信息</p>
+<ul>
+<li>web3.eth.getNodeInfo().then([callback]);</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">web3.<span class="property">eth</span>.<span class="title function_">getNodeInfo</span>().<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br><span class="line"><span class="comment">//输出结果</span></span><br><span class="line"><span class="comment">//EthereumJS TestRPC/v2.13.1/ethereum-js</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看是否连接到节点</p>
+<ul>
+<li>web3.eth.net.isListening([callback])</li>
+<li>web3.bzz.net.isListening([callback])</li>
+<li>web3.shh.net.isListening([callback])</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">web3.<span class="property">eth</span>.<span class="property">net</span>.<span class="title function_">isListening</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br><span class="line"><span class="comment">//输出结果</span></span><br><span class="line"><span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>获取Network id</p>
+<ul>
+<li>web3.eth.net.getId([callback])</li>
+<li>web3.bzz.net.getId([callback])</li>
+<li>web3.shh.net.getId([callback])</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">web3.<span class="property">eth</span>.<span class="property">net</span>.<span class="title function_">getId</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br><span class="line"><span class="comment">//输出结果</span></span><br><span class="line"><span class="comment">//5777</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>以太坊network id列表</p>
+<ul>
+<li>0 : Olympic, Ethereum public pre-release PoW testnet</li>
+<li>1 : Frontier, Homestead,Metropolis, the Ethereum public PoW main network</li>
+<li>1 : Classic, the (un)forked public Ethereum Classic PoW main network, chain lD 61</li>
+<li>1 : Expanse, an alternative Ethereum implementation, chain ID 2</li>
+<li>2 : Morden Classic, the public Ethereum Classic PoW testnet</li>
+<li>3 : Ropsten, the public cross-client Ethereum PoW testnet</li>
+<li>4 : Rinkeby, the public Geth-only PoA testnet</li>
+<li>5 : <strong>Goerli</strong>, the public cross-client PoA testnet</li>
+<li>6 : Kotti Classic, the public cross-client PoA testnet for Classic</li>
+<li>8 : Ubiq, the public Gubiq main network with flux difficulty chain ID 8</li>
+<li>10 : Quorum, the JP Morgan network</li>
+<li>42 : Kovan, the public Parity-only PoA testnet</li>
+<li>6e : GoChain, the GoChain networks mainnet</li>
+<li>77 : Sokol, the public POA Network testnet</li>
+<li>99 : Core, the public POA Network main network</li>
+<li>100 : xDai, the public MakerDAO/POA Network main network</li>
+<li>31337 : GoChain testnet, the GoChain networks public testnet</li>
+<li>481697 : Tobalaba, the public Energy Web Foundation testnet</li>
+<li>7762959 : Musicoin, the music blockchain</li>
+<li>61717561 :Aquachain,ASIC resistant chain</li>
+<li>[other] : Could indicate that your connected to a local development test network.</li>
+<li>5777：我们本地的测试环境</li>
+</ul>
+</blockquote>
+<ul>
+<li>获取节点的以太坊协议版本<ul>
+<li>web3.eth.getProtocolVersion([vallback])：返回节点的以太坊协议版本</li>
+</ul>
+</li>
+<li><p>查看当前连接的peer节点</p>
+<ul>
+<li>web3.eth.net.getPeerCount：返回当前节点上已经连接的其他节点数量。<code>web3.eth.net.getPeerCount().then(console.log);</code></li>
+</ul>
+</li>
+<li><p>查询当前有效的通信服务提供器: we3.providers</p>
+<ul>
+<li>web3.providers</li>
+<li>web3.eth.providers</li>
+<li>web3.shh.providers</li>
+<li>web3.bzz.providers</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(web3.<span class="property">providers</span>)</span><br><span class="line"><span class="comment">//运行结果</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="title class_">WebsocketProvider</span>: [<span class="title class_">Function</span>: <span class="title class_">WebsocketProvider</span>],</span><br><span class="line">  <span class="title class_">HttpProvider</span>: [<span class="title class_">Function</span>: <span class="title class_">HttpProvider</span>],</span><br><span class="line">  <span class="title class_">IpcProvider</span>: [<span class="title class_">Function</span>: <span class="title class_">IpcProvider</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看当前设置的web3 provider<ul>
+<li>web3.currentProvider属性返回当前在用的通信服务【通信服务可以理解为连接】提供器，如果没有的话返回null</li>
+<li>web3.currentProvider</li>
+<li>web3.eth.currentProvider</li>
+<li>web3.shh.currentProvider</li>
+<li>web3.bzz.currentProvider</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(web3.<span class="property">currentProvider</span>)</span><br><span class="line"><span class="comment">//输出结果</span></span><br><span class="line"><span class="title class_">HttpProvider</span> &#123;</span><br><span class="line">  <span class="attr">withCredentials</span>: <span class="literal">undefined</span>,</span><br><span class="line">  <span class="attr">timeout</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">headers</span>: <span class="literal">undefined</span>,</span><br><span class="line">  <span class="attr">agent</span>: <span class="literal">undefined</span>,</span><br><span class="line">  <span class="attr">connected</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">host</span>: <span class="string">&#x27;HTTP://127.0.0.1:8545&#x27;</span>,       </span><br><span class="line">  <span class="attr">httpAgent</span>: <span class="title class_">Agent</span> &#123;</span><br><span class="line">    <span class="attr">_events</span>: [<span class="title class_">Object</span>: <span class="literal">null</span> prototype] &#123;</span><br><span class="line">      <span class="attr">free</span>: [<span class="title class_">Function</span> (anonymous)],</span><br><span class="line">      <span class="attr">newListener</span>: [<span class="title class_">Function</span>: maybeEnableKeylog]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">_eventsCount</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">_maxListeners</span>: <span class="literal">undefined</span>,</span><br><span class="line">    <span class="attr">defaultPort</span>: <span class="number">80</span>,</span><br><span class="line">    <span class="attr">protocol</span>: <span class="string">&#x27;http:&#x27;</span>,</span><br><span class="line">    <span class="attr">options</span>: [<span class="title class_">Object</span>: <span class="literal">null</span> prototype] &#123; <span class="attr">keepAlive</span>: <span class="literal">true</span>, <span class="attr">path</span>: <span class="literal">null</span> &#125;,</span><br><span class="line">    <span class="attr">requests</span>: [<span class="title class_">Object</span>: <span class="literal">null</span> prototype] &#123;&#125;,</span><br><span class="line">    <span class="attr">sockets</span>: [<span class="title class_">Object</span>: <span class="literal">null</span> prototype] &#123;&#125;,</span><br><span class="line">    <span class="attr">freeSockets</span>: [<span class="title class_">Object</span>: <span class="literal">null</span> prototype] &#123;&#125;,</span><br><span class="line">    <span class="attr">keepAliveMsecs</span>: <span class="number">1000</span>,</span><br><span class="line">    <span class="attr">keepAlive</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">maxSockets</span>: <span class="title class_">Infinity</span>,</span><br><span class="line">    <span class="attr">maxFreeSockets</span>: <span class="number">256</span>,</span><br><span class="line">    <span class="attr">scheduling</span>: <span class="string">&#x27;lifo&#x27;</span>,</span><br><span class="line">    <span class="attr">maxTotalSockets</span>: <span class="title class_">Infinity</span>,</span><br><span class="line">    <span class="attr">totalSocketCount</span>: <span class="number">0</span>,</span><br><span class="line">    [<span class="title class_">Symbol</span>(kCapture)]: <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>查看浏览器环境设置的web3 provider</p>
+<ul>
+<li>在以太坊兼容的浏览器中使用web3.js时，web3.givenProvider属性将返回浏览器设置的原生服务提供器，否则返回null</li>
+<li>web3.givenProvider</li>
+<li>web3.eth.givenProvider</li>
+<li>web3.shh.givenProvider</li>
+<li>web3.bzz.givenProvider</li>
+</ul>
+</li>
+<li><p>设置/修改provider</p>
+<ul>
+<li>web3.setProvider()方法用来修改指定模块的底层通讯服务提供器</li>
+<li>web3.setProvider(myProvider)</li>
+<li>web3.eth.setProvider(myProvider)</li>
+<li>web3.shh.setProvider(myProvider)</li>
+<li>web3.bzz.setProvider(myProvider)</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/22.web3js%E7%B3%BB%E5%88%97/03.%E6%89%B9%E9%87%8F%E8%AF%B7%E6%B1%82/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:21
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/22-web3js%E7%B3%BB%E5%88%97/" title="22.web3js系列">
+                        <b>#</b> 22.web3js系列
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/22.web3js%E7%B3%BB%E5%88%97/01.web3js%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web3js%E5%AF%B9%E8%B1%A1-%E5%B8%B8%E7%94%A8API"><span class="toc-text">web3js对象(常用API)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96web3%E5%AF%B9%E8%B1%A1"><span class="toc-text">获取web3对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8API"><span class="toc-text">常用API</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 02.web3js%E5%AF%B9%E8%B1%A1(%E5%B8%B8%E7%94%A8API) + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F22.web3js%25E7%25B3%25BB%25E5%2588%2597%2F02.web3js%25E5%25AF%25B9%25E8%25B1%25A1(%25E5%25B8%25B8%25E7%2594%25A8API)%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/22.web3js%E7%B3%BB%E5%88%97/02.web3js%E5%AF%B9%E8%B1%A1(%E5%B8%B8%E7%94%A8API)/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

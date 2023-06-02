@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      20.memory&amp;storag&amp;calldata 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">20.memory&storag&calldata</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:23
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                    <b>#</b> 02.solidity语法
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="memory-amp-storag-amp-calldata"><a href="#memory-amp-storag-amp-calldata" class="headerlink" title="memory&amp;storag&amp;calldata"></a>memory&amp;storag&amp;calldata</h1><h2 id="digest"><a href="#digest" class="headerlink" title="digest"></a>digest</h2><p>Values of reference type can be modified through multiple different names. Contrast this with value types where you get an independent copy whenever a variable of value type is used. Because of that, reference types have to be handled more carefully than value types. Currently, reference types comprise structs, arrays and mappings. If you use a reference type, you always have to explicitly provide the data area where the type is stored: <code>memory</code> (whose lifetime is limited to an external function call), <code>storage</code> (the location where the state variables are stored, where the lifetime is limited to the lifetime of a contract) or <code>calldata</code> (special data location that contains the function arguments).</p>
+<p>An assignment or type conversion that changes the data location will always incur an automatic copy operation, while assignments inside the same data location only copy in some cases for storage types.</p>
+<p>Every reference type has an additional annotation, the “data location”, about where it is stored. There are three data locations: <code>memory</code>, <code>storage</code> and <code>calldata</code>. Calldata is a non-modifiable, non-persistent area where function arguments are stored, and behaves mostly like memory.</p>
+<p>If you can, try to use <code>calldata</code> as data location because it will avoid copies and also makes sure that the data cannot be modified. Arrays and structs with <code>calldata</code> data location can also be returned from functions, but it is not possible to allocate such types.</p>
+<p>Prior to version 0.6.9 data location for reference-type arguments was limited to <code>calldata</code> in external functions, <code>memory</code> in public functions and either <code>memory</code> or <code>storage</code> in internal and private ones. Now <code>memory</code> and <code>calldata</code> are allowed in all functions regardless of their visibility.</p>
+<p>Prior to version 0.5.0 the data location could be omitted, and would default to different locations depending on the kind of variable, function type, etc., but all complex types must now give an explicit data location.</p>
+<h2 id="Data-location-and-assignment-behaviour"><a href="#Data-location-and-assignment-behaviour" class="headerlink" title="Data location and assignment behaviour"></a>Data location and assignment behaviour</h2><p>Data locations are not only relevant for persistency of data, but also for the semantics of assignments:</p>
+<ul>
+<li>Assignments between <code>storage</code> and <code>memory</code> (or from <code>calldata</code>) always create an independent copy.</li>
+<li>Assignments from <code>memory</code> to <code>memory</code> only create references. This means that changes to one memory variable are also visible in all other memory variables that refer to the same data.</li>
+<li>Assignments from <code>storage</code> to a <strong>local</strong> storage variable also only assign a reference.</li>
+<li>All other assignments to <code>storage</code> always copy. Examples for this case are assignments to state variables or to members of local variables of storage struct type, even if the local variable itself is just a reference.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.5.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract C &#123;</span><br><span class="line">    // The data location of x is storage.</span><br><span class="line">    // This is the only place where the</span><br><span class="line">    // data location can be omitted.</span><br><span class="line">    uint[] x;</span><br><span class="line"></span><br><span class="line">    // The data location of memoryArray is memory.</span><br><span class="line">    function f(uint[] memory memoryArray) public &#123;</span><br><span class="line">        x = memoryArray; // works, copies the whole array to storage</span><br><span class="line">        uint[] storage y = x; // works, assigns a pointer, data location of y is storage</span><br><span class="line">        y[7]; // fine, returns the 8th element</span><br><span class="line">        y.pop(); // fine, modifies x through y</span><br><span class="line">        delete x; // fine, clears the array, also modifies y</span><br><span class="line">        // The following does not work; it would need to create a new temporary /</span><br><span class="line">        // unnamed array in storage, but storage is &quot;statically&quot; allocated:</span><br><span class="line">        // y = memoryArray;</span><br><span class="line">        // Similarly, &quot;delete y&quot; is not valid, as assignments to local variables</span><br><span class="line">        // referencing storage objects can only be made from existing storage objects.</span><br><span class="line">        // It would &quot;reset&quot; the pointer, but there is no sensible location it could point to.</span><br><span class="line">        // For more details see the documentation of the &quot;delete&quot; operator.</span><br><span class="line">        // delete y;</span><br><span class="line">        g(x); // calls g, handing over a reference to x</span><br><span class="line">        h(x); // calls h and creates an independent, temporary copy in memory</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function g(uint[] storage) internal pure &#123;&#125;</span><br><span class="line">    function h(uint[] memory) public pure &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="calldata"><a href="#calldata" class="headerlink" title="calldata"></a>calldata</h2><p>官方文档对calldata的描述：</p>
+<blockquote>
+<p>Calldata is a non-modifiable, non-persistent area where function arguments are stored, and behaves mostly like memory.</p>
+<p>翻译：Calldata是一个不可修改的、非持久化的区域，函数参数存储在这里，其行为主要类似于内存。</p>
+</blockquote>
+<ul>
+<li>它只能用于函数声明参数</li>
+<li>它是不可变的（不能被覆盖和更改），调用数据避免了数据拷贝，并确保数据不被修改</li>
+<li>它是临时的（该值在事务完成后会销毁）</li>
+<li>它是最便宜的存储位置，一般建议将函数参数声明为calldata，因为gas费会比较低。</li>
+<li>外部函数的参数（不包括返回参数）被强制指定为calldata</li>
+<li>和<code>memory</code>类似，存储在内存中，不上链。与<code>memory</code>的不同点在于<code>calldata</code>变量不能修改（<code>immutable</code>），一般用于函数的参数。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function fCalldata(uint[] calldata _x) public pure returns(uint[] calldata)&#123;</span><br><span class="line">    //参数为calldata数组，不能被修改</span><br><span class="line">    // _x[0] = 0 //这样修改会报错</span><br><span class="line">    return(_x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="memory"><a href="#memory" class="headerlink" title="memory"></a>memory</h2><p>简介：在合约中的本地内存变量。它的生命周期很短，当函数执行结束后就销毁了</p>
+<ul>
+<li>内存是一个字节数组，内存槽为256位（32字节）</li>
+<li>数据仅在函数执行期间存在，执行完毕后就被销毁，读或写一个内存槽都会消耗3gas</li>
+<li>为了避免矿工的工作量过大，22个操作之后的单操作成本会上涨</li>
+<li>函数里的参数和临时变量一般用<code>memory</code>，存储在内存中，不上链。</li>
+</ul>
+<h2 id="storage"><a href="#storage" class="headerlink" title="storage"></a>storage</h2><p>简介：在合约中可以被所有函数访问的全局变量。storage是永久的存储，意味着以太坊会把它保存到公链环境里的每一个节点</p>
+<ul>
+<li>存储中的数据是永久存在的。存储是一个key/value库- 存储中的数据写入区块链，因此会修改状态，这也是存储使用成本高的原因。 <ul>
+<li>占用一个256位的存储槽需要消耗20000 gas，</li>
+<li>修改一个已经使用的存储槽的值，需要消耗5000 gas，当清零一个存储槽时，会返还一定数量的gas，</li>
+<li>存储按256位的槽位分配，即使没有完全使用一个槽位，也需要支付其开销</li>
+<li>合约里的状态变量默认都是storage</li>
+</ul>
+</li>
+</ul>
+<h2 id="三者之间的转换"><a href="#三者之间的转换" class="headerlink" title="三者之间的转换"></a>三者之间的转换</h2><h3 id="storage作为参数，赋值到memory"><a href="#storage作为参数，赋值到memory" class="headerlink" title="storage作为参数，赋值到memory"></a>storage作为参数，赋值到memory</h3><h4 id="例1"><a href="#例1" class="headerlink" title="例1"></a>例1</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.24;</span><br><span class="line"></span><br><span class="line">contract Person &#123;</span><br><span class="line"></span><br><span class="line">    int public _age;</span><br><span class="line"></span><br><span class="line">    constructor (int age) public &#123;</span><br><span class="line">      _age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function f() public view&#123;</span><br><span class="line">      modifyAge(_age);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function modifyAge(int age) public pure&#123;</span><br><span class="line">      age = 100;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析 <ul>
+<li>在这里一开始deploy合约时，传入的age值为30，此时_age的值为30</li>
+<li>然后运行f()函数，在这里使用了为storage类型的_age作为函数modifyAge的参数，相当于创建了一个临时变量age（memory类型），将storage类型的变量_age赋值给memory类型的变量age，是值传递，所以在modifyAge函数中，age变量的值的变化并不会影响到_age变量的值</li>
+<li>所以再查看_age的值，还是为30</li>
+</ul>
+</li>
+</ul>
+<h4 id="例2"><a href="#例2" class="headerlink" title="例2"></a>例2</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.24;</span><br><span class="line"></span><br><span class="line">contract Person &#123;</span><br><span class="line"></span><br><span class="line">    string public  _name;</span><br><span class="line"></span><br><span class="line">    constructor() public &#123;</span><br><span class="line">        _name = &quot;chenqin&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function f() public view&#123;</span><br><span class="line">        modifyName(_name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function modifyName(string name) public pure&#123;</span><br><span class="line">        string memory name1 = name;</span><br><span class="line">        bytes(name1)[0] = &#x27;L&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析 <ul>
+<li>在这里一开始deploy合约时，设置的_name为”chenqin”</li>
+<li>然后，调用f()函数，将storage类型的状态变量_name作为参数，赋值给函数modifyName函数的memory类型的name，为值传递</li>
+<li>之后，在modifyName函数中，还将memory类型的name赋值给memory类型的name1，为引用传递！改变一个另一个也跟着改变，</li>
+<li>最后，因为先是进行了值传递，name与_name之间已经互不影响了，所以不会跟着改变_name。（标记）处的代码并不会修改_name的值</li>
+<li>因此，不管如何以上函数，_name始终为chenqin</li>
+</ul>
+</li>
+</ul>
+<h4 id="例3"><a href="#例3" class="headerlink" title="例3"></a>例3</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.24;</span><br><span class="line"></span><br><span class="line">contract Person &#123;</span><br><span class="line"></span><br><span class="line">    string public  _name;</span><br><span class="line">    string public changedName;</span><br><span class="line"></span><br><span class="line">    constructor() public &#123;</span><br><span class="line">        _name = &quot;chenqin&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function f() public&#123;//不能声明为view，因为改变了状态变量</span><br><span class="line">        modifyName(_name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function modifyName(string name) public&#123;//不能声明为view，因为改变了状态变量</span><br><span class="line">        changedName = name;</span><br><span class="line">        bytes(name)[0] = &#x27;L&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析 <ul>
+<li>调用f()函数，将storage类型的状态变量_name作为参数，赋值给函数modifyName(string) memory类型的name形参，为值传递</li>
+<li>然后，memory类型的name作为形参，赋值给storage类型的状态变量changedName，为值传递</li>
+<li>因此，（标记）的那行代码，name的值的改变不会导致changedName的值的改变，更不要说_name了</li>
+<li>调用f函数，最终的结果是：_name=chenqin，changeName=chenqin</li>
+</ul>
+</li>
+</ul>
+<h3 id="storage作为参数，赋值给storage"><a href="#storage作为参数，赋值给storage" class="headerlink" title="storage作为参数，赋值给storage"></a>storage作为参数，赋值给storage</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.24;</span><br><span class="line"></span><br><span class="line">contract Person &#123;</span><br><span class="line"></span><br><span class="line">    string public  _name;</span><br><span class="line"></span><br><span class="line">    constructor() public &#123;</span><br><span class="line">        _name = &quot;chenqin&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function f() public&#123;</span><br><span class="line">        modifyName(_name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function modifyName(string storage name) internal &#123;</span><br><span class="line">        string storage name1 = name;</span><br><span class="line">        bytes(name1)[0] = &#x27;L&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<blockquote>
+<p>PS：如果modifyName函数不声明为internal会报错：这是因为形参是默认为memory类型的，这里声明为storage，那么函数的类型就必须声明为internal或者private</p>
+</blockquote>
+<ul>
+<li>分析 <ul>
+<li>调用f()函数，首先会将为storage类型的_name变量，赋值给modifyName函数storage类型的name，为引用传递</li>
+<li>然后在modifyName函数中，将storage类型的name变量，赋值给storage类型的name1变量，为引用传递</li>
+<li>都为引用传递，所以最后name1值的变化会导致_name的值的变化</li>
+<li>调用f函数前：_name=chenqin。调用f函数后：_name=Lhenqin</li>
+</ul>
+</li>
+</ul>
+<p>引申：其实在这里如果将modifyName(string)函数改成如下，也是能够成功的，因为其实没必要进行两次引用传递</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function modifyName(string storage name) internal &#123;</span><br><span class="line">        bytes(name)[0] = &#x27;L&#x27;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="memory作为参数，赋值给memory"><a href="#memory作为参数，赋值给memory" class="headerlink" title="memory作为参数，赋值给memory"></a>memory作为参数，赋值给memory</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.24;</span><br><span class="line"></span><br><span class="line">contract Person &#123;</span><br><span class="line"></span><br><span class="line">    function modifyName(string name) public pure returns(string)&#123;</span><br><span class="line">        string memory name1 = name;</span><br><span class="line">        bytes(name1)[0] = &#x27;L&#x27;;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析 <ul>
+<li>这里调用modifyName函数，将memory类型的name，赋值给memory类型的name1，为引用传递</li>
+<li>这时候改变name1的值，它的值也随之改变</li>
+</ul>
+</li>
+</ul>
+<h3 id="memory作为参数，赋值给storage"><a href="#memory作为参数，赋值给storage" class="headerlink" title="memory作为参数，赋值给storage"></a>memory作为参数，赋值给storage</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.24;</span><br><span class="line"></span><br><span class="line">contract Person &#123;</span><br><span class="line"></span><br><span class="line">    string public  _name;</span><br><span class="line"></span><br><span class="line">    constructor() public &#123;</span><br><span class="line">        _name = &quot;chenqin&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function f(string name) public&#123;</span><br><span class="line">        _name = name//（x）</span><br><span class="line">        name = &quot;ikun&quot;(y)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析 <ul>
+<li>调用f函数，将memory类型的name，赋值给storage类型的_name，为值传递</li>
+<li>(x)处_name的值会被修改成name，然后不再随name的改变而改变，即（y）处代码对_name无影响。</li>
+<li>f函数执行完的结果还是：_name=chenqin</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/19.%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:23
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                        <b>#</b> 02.solidity语法
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/23.%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E5%B0%8F%E6%95%B0%E7%82%B9%E6%88%96%E7%99%BE%E5%88%86%E6%AF%94/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#memory-amp-storag-amp-calldata"><span class="toc-text">memory&amp;storag&amp;calldata</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#digest"><span class="toc-text">digest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Data-location-and-assignment-behaviour"><span class="toc-text">Data location and assignment behaviour</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#calldata"><span class="toc-text">calldata</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#memory"><span class="toc-text">memory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#storage"><span class="toc-text">storage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E8%80%85%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">三者之间的转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#storage%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%EF%BC%8C%E8%B5%8B%E5%80%BC%E5%88%B0memory"><span class="toc-text">storage作为参数，赋值到memory</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%8B1"><span class="toc-text">例1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%8B2"><span class="toc-text">例2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%8B3"><span class="toc-text">例3</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#storage%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%EF%BC%8C%E8%B5%8B%E5%80%BC%E7%BB%99storage"><span class="toc-text">storage作为参数，赋值给storage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#memory%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%EF%BC%8C%E8%B5%8B%E5%80%BC%E7%BB%99memory"><span class="toc-text">memory作为参数，赋值给memory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#memory%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0%EF%BC%8C%E8%B5%8B%E5%80%BC%E7%BB%99storage"><span class="toc-text">memory作为参数，赋值给storage</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 20.memory%26storag%26calldata + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F02.solidity%25E8%25AF%25AD%25E6%25B3%2595%2F20.memory%26storag%26calldata%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/20.memory&storag&calldata/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      02.uniswap_v1_code 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">02.uniswap_v1_code</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:20
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/17-Uniswap/" title="17.Uniswap">
+                    <b>#</b> 17.Uniswap
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="uniswap-v1-code"><a href="#uniswap-v1-code" class="headerlink" title="uniswap_v1_code"></a>uniswap_v1_code</h1><p>Uniswap V1是用Vyper言语进行开发的，Vyper是一种语法和Python非常挨近的言语。</p>
+<p><strong>V1的体系分为两个部分：</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Uniswap/v1-contracts/blob/master/contracts/uniswap_exchange.vy">Exchange</a>：用于进行ETH和ERC-20代币之间的兑换。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Uniswap/v1-contracts/blob/master/contracts/uniswap_factory.vy">Factory</a>：用于创立和记录一切的Exchange，也用于查询代币对应的Exchange。</li>
+</ul>
+<h2 id="Factory"><a href="#Factory" class="headerlink" title="Factory"></a>Factory</h2><ul>
+<li><code>initializeFactory</code>：只在创建的时候被调用，一旦设置了<code>template</code>参数后就无法更改，确保了用于创建Exchange的代码模板不会被修改。<code>template</code>是链上部署的合约，用于作为后续创建的Exchange的模板。</li>
+<li><code>createExchange</code>：用于从模板创建一个Exchange。在做一些必要的校验之后，代码调用内置函数<code>create_with_code_of</code>拷贝<code>exchangeTemplate</code>所指示的地址中的代码创建一个新的合约并返回其地址。随后调用新创建的Exchange的setup函数设置代币地址，并将新创建的Exchange记录在合约内。注意到在做验证的过程中，函数约束每一个代币只能对应一个Exchange，这是为了约束某个代币的所有流动性都划分在一个池子中，增加池子中对应的存储量，降低交易的滑点。</li>
+</ul>
+<h2 id="Exchange"><a href="#Exchange" class="headerlink" title="Exchange"></a>Exchange</h2><p>从Factory的代码可以看出，Uniswap的核心功能在Exchange中进行实现。Exchange的实现略有复杂，首先给出所有功能的接口，接下来按照每个接口的功能介绍其实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 只保留了Exchange的核心功能接口</span><br><span class="line">interface UniswapExchangeInterface &#123;</span><br><span class="line">    // 流动性</span><br><span class="line">    function addLiquidity(uint256 min_liquidity, uint256 max_tokens, uint256 deadline) external payable returns (uint256);</span><br><span class="line">    function removeLiquidity(uint256 amount, uint256 min_eth, uint256 min_tokens, uint256 deadline) external returns (uint256, uint256);</span><br><span class="line">    // 价格查询</span><br><span class="line">    function getEthToTokenInputPrice(uint256 eth_sold) external view returns (uint256 tokens_bought);</span><br><span class="line">    function getEthToTokenOutputPrice(uint256 tokens_bought) external view returns (uint256 eth_sold);</span><br><span class="line">    function getTokenToEthInputPrice(uint256 tokens_sold) external view returns (uint256 eth_bought);</span><br><span class="line">    function getTokenToEthOutputPrice(uint256 eth_bought) external view returns (uint256 tokens_sold);</span><br><span class="line">    // 提供ETH以兑换代币</span><br><span class="line">    function ethToTokenSwapInput(uint256 min_tokens, uint256 deadline) external payable returns (uint256  tokens_bought);</span><br><span class="line">    function ethToTokenTransferInput(uint256 min_tokens, uint256 deadline, address recipient) external payable returns (uint256  tokens_bought);</span><br><span class="line">    function ethToTokenSwapOutput(uint256 tokens_bought, uint256 deadline) external payable returns (uint256  eth_sold);</span><br><span class="line">    function ethToTokenTransferOutput(uint256 tokens_bought, uint256 deadline, address recipient) external payable returns (uint256  eth_sold);</span><br><span class="line">    // 提供代币以兑换ETH</span><br><span class="line">    function tokenToEthSwapInput(uint256 tokens_sold, uint256 min_eth, uint256 deadline) external returns (uint256  eth_bought);</span><br><span class="line">    function tokenToEthTransferInput(uint256 tokens_sold, uint256 min_eth, uint256 deadline, address recipient) external returns (uint256  eth_bought);</span><br><span class="line">    function tokenToEthSwapOutput(uint256 eth_bought, uint256 max_tokens, uint256 deadline) external returns (uint256  tokens_sold);</span><br><span class="line">    function tokenToEthTransferOutput(uint256 eth_bought, uint256 max_tokens, uint256 deadline, address recipient) external returns (uint256  tokens_sold);</span><br><span class="line">    // 代币之间的互换</span><br><span class="line">    function tokenToTokenSwapInput(uint256 tokens_sold, uint256 min_tokens_bought, uint256 min_eth_bought, uint256 deadline, address token_addr) external returns (uint256  tokens_bought);</span><br><span class="line">    function tokenToTokenTransferInput(uint256 tokens_sold, uint256 min_tokens_bought, uint256 min_eth_bought, uint256 deadline, address recipient, address token_addr) external returns (uint256  tokens_bought);</span><br><span class="line">    function tokenToTokenSwapOutput(uint256 tokens_bought, uint256 max_tokens_sold, uint256 max_eth_sold, uint256 deadline, address token_addr) external returns (uint256  tokens_sold);</span><br><span class="line">    function tokenToTokenTransferOutput(uint256 tokens_bought, uint256 max_tokens_sold, uint256 max_eth_sold, uint256 deadline, address recipient, address token_addr) external returns (uint256  tokens_sold);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="添加流动性"><a href="#添加流动性" class="headerlink" title="添加流动性"></a>添加流动性</h3><p>用户可以调用<code>addLiquidity</code>和<code>removeLiquidity</code>向资金池中添加和取回流动性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">addLiquidity(min_liquidity: uint256, max_tokens: uint256, deadline: timestamp) -&gt; uint256</span><br></pre></td></tr></table></figure>
+<p>向资金池添加流动性。Uniswap V1中添加流动性的过程简述如下： </p>
+<ol>
+<li>用户调用<code>addLiquidity</code>函数并发送一定量的ETH。</li>
+<li>Uniswap Exchange要求用户按照当前资金池中的ETH和代币的比例添加流动性。Uniswap通过比较发送的ETH量和池子中的ETH数量，计算用户需要发送的代币数量Token(deposit)，并将该数量的代币从用户（交易的Sender）转给自己。</li>
+<li>为了证明用户确实提供了流动性及用户流动性所占的份额，Uniswap Exchange将向用户发放LP（Liquidity Pool）代币，其数量为Amout(LPToken)。</li>
+</ol>
+<script type="math/tex; mode=display">
+Token_{Deposited}=Token_{Pool}{ {ETH_{Deposited} }\over ETH_{Pool} }</script><script type="math/tex; mode=display">
+Amout_{LPToken}=TotalSupplyLPToken{ {ETH_{Deposited} \over ETH_{Pool} } }</script><p>由于Uniswap去中心化的特性，添加流动性的交易发出时和确认时流动性池的兑换比例（或者说价格）可能不同。为了避免这个问题给用户造成的损失，<code>addLiquidity</code>函数提供了三个参数进行控制：</p>
+<ul>
+<li><code>min_liquidity</code>：用户期望的LP代币数量。如果最终产生的LP代币数量过少，则交易会回滚避免损失。</li>
+<li><code>max_tokens</code>：用户想要提供的最大代币量。如果计算得出的代币数量大于这个参数，代表用户不愿意提供更多代币，交易也会回滚。</li>
+<li><code>deadline</code>：时限。如果交易确认的区块时间大于deadline，也会回滚。</li>
+</ul>
+<h3 id="去除流动性"><a href="#去除流动性" class="headerlink" title="去除流动性"></a>去除流动性</h3><p>提供者可以随时销毁他们的流动性代币，以从池中提取他们按比例提供的 ETH 和 ERC20 代币。ETH 和 ERC20 代币按当前汇率（reserve ratio）提取，而不是其原始投资的比率。这意味着一些价值可能会因市场波动和套利而损失。</p>
+<h3 id="价格查询"><a href="#价格查询" class="headerlink" title="价格查询"></a>价格查询</h3><p>下面首先介绍Uniswap V1的价格机制。每个Exchange（或者说一个池子）中有且只有两种资产：ETH和代币，池子中两个资产存量（Reserve）的比率构成了价格，用户可以在ETH和代币以及代币和代币之间自由兑换。因此，用户有两种指定价格的方式：精确指定换出（Output）值，并限定最大的输入值（Input）；或者精确指定换入（Input）值，并设置最小的输出值（Output）。</p>
+<p>因此，Uniswap V1在实现中首先实现了两个私有函数作为定价体系：<code>getInputPrice</code>和<code>getOutputPrice</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getInputPrice(input_amount: uint256, input_reserve: uint256, output_reserve: uint256)</span><br></pre></td></tr></table></figure>
+<p>在确定池子中输入单位和输出单位的存量时，精确的输入数量能换出的输出数量。不难看出，该函数实现了这样一个公式：</p>
+<script type="math/tex; mode=display">
+Output=Reserve_{Output}{Input*997 \over Input*997 + Reserve_{Input} * 1000}</script><p>输入单位的0.3%作为交易费用，剩下的输入进入池子。因此分母为更新后池子中输入单位的存量，分子为除去交易费用后的输入，分式表达的是’ 输入进入池子后’ 输入在池子中所占的份额。该分式乘以输出池子的存量即为输入对应的输出量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getOutputPrice(output_amount: uint256, input_reserve: uint256, output_reserve: uint256)</span><br></pre></td></tr></table></figure>
+<p>在确定池子中输入单位和输出单位的存量时，精确的计算出一定的输出数量能换出的输入数量。不难看出，该函数实现的公式是由上面的式子变换而来：</p>
+<script type="math/tex; mode=display">
+Input=Reserve_{Input}{Output*1000 \over 997 * (Reserve_{Output} - Output)} + 1</script><p>Uniswap提供价格查询的四个函数：</p>
+<ul>
+<li><code>getEthToTokenInputPrice</code></li>
+<li><code>getEthToTokenOutputPrice</code></li>
+<li><code>getTokenToEthInputPrice</code></li>
+<li><code>getTokenToEthOutputPrice</code></li>
+</ul>
+<p>均在这两个函数的基础上进行实现。以<code>getEthToTokenInputPrice</code>为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def getEthToTokenInputPrice(eth_sold: uint256(wei)) -&gt; uint256:</span><br><span class="line">    assert eth_sold &gt; 0</span><br><span class="line">    token_reserve: uint256 = self.token.balanceOf(self)</span><br><span class="line">    return self.getInputPrice(as_unitless_number(eth_sold), as_unitless_number(self.balance), token_reserve)</span><br></pre></td></tr></table></figure>
+<p>可以看出，在实现时向<code>getInputPrice</code>中传入的存量参数<code>&#123;input,output&#125;_reserve</code>分别是Exchange本身的ETH数量和Exchange在代币合约中记录的代币存量。</p>
+<h3 id="兑换"><a href="#兑换" class="headerlink" title="兑换"></a>兑换</h3><h4 id="eth-gt-token"><a href="#eth-gt-token" class="headerlink" title="eth=&gt;token"></a>eth=&gt;token</h4><p>有了价格计算函数，ETH和代币间的互换就变得非常直观。</p>
+<p>通过精确的ETH输入量（<code>eth_sold</code>）计算价格并交换代币。通过<code>getInputPrice</code>计算输出的代币数量。同样包含了<code>min_tokens</code>最小代币输出量和<code>deadline</code>的时间限制。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@private</span><br><span class="line">def ethToTokenInput(eth_sold: uint256(wei), min_tokens: uint256, deadline: timestamp, buyer: address, recipient: address) -&gt; uint256:</span><br><span class="line">    # check</span><br><span class="line">    assert deadline &gt;= block.timestamp and (eth_sold &gt; 0 and min_tokens &gt; 0)</span><br><span class="line">    # calculate output token</span><br><span class="line">    token_reserve: uint256 = self.token.balanceOf(self)</span><br><span class="line">    tokens_bought: uint256 = self.getInputPrice(as_unitless_number(eth_sold), as_unitless_number(self.balance - eth_sold), token_reserve)</span><br><span class="line">    assert tokens_bought &gt;= min_tokens</span><br><span class="line">    # transfer token to recipient</span><br><span class="line">    assert self.token.transfer(recipient, tokens_bought)</span><br><span class="line">    log.TokenPurchase(buyer, eth_sold, tokens_bought)</span><br><span class="line">    return tokens_bought</span><br></pre></td></tr></table></figure>
+<p>通过精确的代币输出量（<code>tokens_bought</code>）计算价格并交换代币。通过<code>getOutputPrice</code>计算输入的ETH数量，并可能在ETH需求量小于用户发送量时产生Refund。同样包含了<code>min_tokens</code>最小代币输出量和<code>deadline</code>的时间限制。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@private</span><br><span class="line">def ethToTokenOutput(tokens_bought: uint256, max_eth: uint256(wei), deadline: timestamp, buyer: address, recipient: address) -&gt; uint256(wei):</span><br><span class="line">    # check</span><br><span class="line">    assert deadline &gt;= block.timestamp and (tokens_bought &gt; 0 and max_eth &gt; 0)</span><br><span class="line">    # calculate input ETH</span><br><span class="line">    token_reserve: uint256 = self.token.balanceOf(self)</span><br><span class="line">    eth_sold: uint256 = self.getOutputPrice(tokens_bought, as_unitless_number(self.balance - max_eth), token_reserve)</span><br><span class="line">    # may have refund, also check (revert) if eth_sold &gt; max_eth</span><br><span class="line">    eth_refund: uint256(wei) = max_eth - as_wei_value(eth_sold, &#x27;wei&#x27;)</span><br><span class="line">    if eth_refund &gt; 0:</span><br><span class="line">        send(buyer, eth_refund)</span><br><span class="line">    # transfer token</span><br><span class="line">    assert self.token.transfer(recipient, tokens_bought)</span><br><span class="line">    log.TokenPurchase(buyer, as_wei_value(eth_sold, &#x27;wei&#x27;), tokens_bought)</span><br><span class="line">    return as_wei_value(eth_sold, &#x27;wei&#x27;)</span><br></pre></td></tr></table></figure>
+<h4 id="token-gt-ETH"><a href="#token-gt-ETH" class="headerlink" title="token=&gt;ETH"></a>token=&gt;ETH</h4><p><code>tokenToEthInput</code>和<code>tokenToEthOutput</code>在实现上与上面两个函数基本一致。</p>
+<h4 id="token-gt-token"><a href="#token-gt-token" class="headerlink" title="token=&gt;token"></a>token=&gt;token</h4><p>由于 ETH 被用作所有 ERC20 代币的公共对，因此它可以用作直接 ERC20 到 ERC20 交换的中介。例如，可以在一个交易所从 OMG 转换为 ETH，然后在一个交易中从 ETH 转换为 KNC。</p>
+<p>要从 OMG 转换为 KNC（例如），买方调用<code>tokenToTokenSwap()</code>OMG 交换合约上的函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">contract Factory():</span><br><span class="line">    def getExchange(token_addr: address) -&gt; address: constant</span><br><span class="line"></span><br><span class="line">contract Exchange():</span><br><span class="line">    def ethToTokenTransfer(recipent: address) -&gt; bool: modifying</span><br><span class="line">    </span><br><span class="line">factory: Factory</span><br><span class="line"></span><br><span class="line">@public</span><br><span class="line">def tokenToTokenSwap(token_addr: address, tokens_sold: uint256):</span><br><span class="line">    exchange: address = self.factory.getExchange(token_addr)</span><br><span class="line">    fee: uint256 = tokens_sold / 500</span><br><span class="line">    invariant: uint256 = self.eth_pool * self.token_pool</span><br><span class="line">    new_token_pool: uint256 = self.token_pool + tokens_sold</span><br><span class="line">    new_eth_pool: uint256 = invariant / (new_token_pool - fee)</span><br><span class="line">    eth_out: uint256 = self.eth_pool - new_eth_pool</span><br><span class="line">    self.eth_pool = new_eth_pool</span><br><span class="line">    self.token_pool = new_token_pool</span><br><span class="line">    Exchange(exchange).ethToTokenTransfer(msg.sender, value=eth_out)</span><br></pre></td></tr></table></figure>
+<p>其中<code>token_addr</code>是 KNC 代币的地址，<code>tokens_sold</code>是出售的 OMG 数量。此函数首先检查工厂以检索 KNC 交换地址。接下来，交易所将输入的 OMG 转换为 ETH。然而，该函数并没有将购买的 ETH 返还给买家，而是调用了KNC 交易所的payable 函数：<code>ethToTokenTransfer()</code></p>
+<p><code>ethToTokenTransfer()</code>接收 ETH 和买家地址，验证调用是从注册表中的交易所进行的，将 ETH 转换为 KNC，并将 KNC 转发给原始买家。<code>ethToTokenTransfer()</code>功能相同，<code>ethToTokenSwap()</code>但有额外的输入参数<code>recipient: address</code>。这用于将购买的代币转发给原始买家而不是<code>msg.sender</code>，在这种情况下将是 OMG 交易所。</p>
+<h4 id="swap-amp-transfer"><a href="#swap-amp-transfer" class="headerlink" title="swap&amp;transfer"></a>swap&amp;transfer</h4><p>在交易机制上，Uniswap V1实现了两种交易方式：Swap和Transfer。两者的唯一差别在于，Swap调用的接收者固定为交易发送者（即<code>msg.sender</code>），而Transfer调用可以额外指定一个接收者。通过如下函数对可以清晰地看出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@public</span><br><span class="line">@payable</span><br><span class="line">def ethToTokenSwapInput(min_tokens: uint256, deadline: timestamp) -&gt; uint256:</span><br><span class="line">    # &#x27;receipient&#x27; is msg.sender</span><br><span class="line">    return self.ethToTokenInput(msg.value, min_tokens, deadline, msg.sender, msg.sender)</span><br><span class="line"></span><br><span class="line">@public</span><br><span class="line">@payable</span><br><span class="line">def ethToTokenTransferInput(min_tokens: uint256, deadline: timestamp, recipient: address) -&gt; uint256:</span><br><span class="line">    assert recipient != self and recipient != ZERO_ADDRESS</span><br><span class="line">    # &#x27;receipient&#x27; is specified as parameter</span><br><span class="line">    return self.ethToTokenInput(msg.value, min_tokens, deadline, msg.sender, recipient)</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/16.react%E7%B3%BB%E5%88%97/01.%E6%9A%82%E6%97%A0/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:20
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/17-Uniswap/" title="17.Uniswap">
+                        <b>#</b> 17.Uniswap
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/17.Uniswap/00.uniswap_digest/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#uniswap-v1-code"><span class="toc-text">uniswap_v1_code</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Factory"><span class="toc-text">Factory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Exchange"><span class="toc-text">Exchange</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%B5%81%E5%8A%A8%E6%80%A7"><span class="toc-text">添加流动性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E6%B5%81%E5%8A%A8%E6%80%A7"><span class="toc-text">去除流动性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%B7%E6%A0%BC%E6%9F%A5%E8%AF%A2"><span class="toc-text">价格查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%91%E6%8D%A2"><span class="toc-text">兑换</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#eth-gt-token"><span class="toc-text">eth&#x3D;&gt;token</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#token-gt-ETH"><span class="toc-text">token&#x3D;&gt;ETH</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#token-gt-token"><span class="toc-text">token&#x3D;&gt;token</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#swap-amp-transfer"><span class="toc-text">swap&amp;transfer</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 02.uniswap_v1_code + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F17.Uniswap%2F02.uniswap_v1_code%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/17.Uniswap/02.uniswap_v1_code/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

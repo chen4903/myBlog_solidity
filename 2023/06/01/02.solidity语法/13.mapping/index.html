@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      13.mapping 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">13.mapping</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:23
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                    <b>#</b> 02.solidity语法
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="mapping"><a href="#mapping" class="headerlink" title="mapping"></a>mapping</h1><h2 id="digest"><a href="#digest" class="headerlink" title="digest"></a>digest</h2><p>You can think of mappings as <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hash_table">hash tables</a>, which are virtually initialised such that every possible key exists and is mapped to a value whose byte-representation is all zeros, a type’s <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/control-structures.html#default-value">default value</a>. The similarity ends there, the key data is not stored in a mapping, only its <code>keccak256</code> hash is used to look up the value.</p>
+<p>Because of this, mappings do not have a length or a concept of a key or value being set, and therefore cannot be erased without extra information regarding the assigned keys (see <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/security-considerations.html#clearing-mappings">Clearing Mappings</a>).</p>
+<p>Mappings can only have a data location of <code>storage</code> and thus are allowed for state variables, as storage reference types in functions, or as parameters for library functions. They cannot be used as parameters or return parameters of contract functions that are publicly visible. These restrictions are also true for arrays and structs that contain mappings.</p>
+<p>You can mark state variables of mapping type as <code>public</code> and Solidity creates a <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#visibility-and-getters">getter</a> for you. The <code>KeyType</code> becomes a parameter for the getter. If <code>ValueType</code> is a value type or a struct, the getter returns <code>ValueType</code>. If <code>ValueType</code> is an array or a mapping, the getter has one parameter for each <code>KeyType</code>, recursively.</p>
+<h2 id="theory"><a href="#theory" class="headerlink" title="theory"></a>theory</h2><p>在 Solidity 中，value由key的哈希值表示。下面是例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">contract StorageTest &#123;</span><br><span class="line">    uint256 a;     // slot 0</span><br><span class="line">    uint256[2] b;  // slots 1-2</span><br><span class="line">    struct Entry &#123;</span><br><span class="line">        uint256 id;</span><br><span class="line">        uint256 value;</span><br><span class="line">    &#125;</span><br><span class="line">    Entry c;       // slots 3-4</span><br><span class="line">    Entry[] d;     // slot 5 for length, keccak256(5)+ for data</span><br><span class="line">    mapping(uint256 =&gt; uint256) e;</span><br><span class="line">    mapping(uint256 =&gt; uint256) f;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的代码示例中，变量e的插槽是slot 6，变量f的插槽是slot 7。但是实际上，这两个插槽并不需要存储长度，它实际的value存储在别的地方，mapping没有长度，key的值不会存储在mapping中，而是使用其keccak256哈希来存储键数据引用的值。</p>
+<p>查找mapping在存储中的位置规则如下图：<code>keccak256(bytes32(key)+bytes32(slot))</code></p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/13.mapping/1YKIFfJIaAlHpPrtPMXeCbA.png" alt="img"></p>
+<h2 id="rules"><a href="#rules" class="headerlink" title="rules"></a>rules</h2><ul>
+<li>规则：映射的存储位置必须是<code>storage</code>（也是默认位置），因此可以用于合约的状态变量，函数中的<code>storage</code>变量，和library函数的参数。不能用于<code>public</code>函数的参数或返回结果中，因为<code>mapping</code>记录的是一种关系 (key - value pair)。</li>
+<li>规则：如果映射声明为<code>public</code>，那么<code>solidity</code>会自动给你创建一个<code>getter</code>函数，可以通过<code>Key</code>来查询对应的<code>Value</code>。</li>
+<li>mapping的key, value允许的类型如下：</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>变量类型</th>
+<th>key类型</th>
+<th>value类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int/uint</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>string</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>byte/bytes</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>address</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>struct</td>
+<td></td>
+<td>T</td>
+</tr>
+<tr>
+<td>mapping</td>
+<td></td>
+<td>T</td>
+</tr>
+<tr>
+<td>enum</td>
+<td></td>
+<td>T</td>
+</tr>
+<tr>
+<td>contract</td>
+<td></td>
+<td>T</td>
+</tr>
+<tr>
+<td>定长数组</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>变长数组</td>
+<td></td>
+<td>T</td>
+</tr>
+<tr>
+<td>二维数组</td>
+<td></td>
+<td>T</td>
+</tr>
+<tr>
+<td>变量</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="search"><a href="#search" class="headerlink" title="search"></a>search</h2><p>根据一个给定的key值和mapping所在的插槽值，我们可以查询某个value的实际存储位置，进而可以查询到它</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function findMapLocation(uint256 slot, uint256 key) public pure returns (uint256) &#123;</span><br><span class="line">    return uint256(keccak256(abi.encode(key, slot)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>具体的查询例子</strong></p>
+<p>我们将下面的合约部署到goerli网络上，得到合约地址：<code>0xEAe4CbF91D51AFDf82B1918A227AE807fce556Af</code>。交易hash：<code>0xff2625290edca6390bb1cd4e8256dfff4df6c42dc767513a4840ed6b1cb23a0f</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity ^0.4.24;</span><br><span class="line"></span><br><span class="line">contract MyToken &#123;</span><br><span class="line">    mapping(address =&gt; uint256) balances;</span><br><span class="line">    </span><br><span class="line">    constructor() &#123;</span><br><span class="line">        balances[msg.sender] = 10;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function transfer(address _to,uint256 _value) public&#123;</span><br><span class="line">        require(balances[msg.sender] &gt;= _value);</span><br><span class="line">        require(balances[_to] + _value &gt;= balances[_to]);</span><br><span class="line">        </span><br><span class="line">        balances[msg.sender] -= _value;</span><br><span class="line">        balances[_to] += _value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>工具：将本合约地址作为参数输入<code>getStorageLocationForKey(address _key)</code>方法，得到key对应的value的索引位置：<code>0xba9c4669505d41dc0aadb354d6e0539f711569beeb21c63d30f31e5073ed2bc1</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//这是一个stackoverflow的一个代码示例</span><br><span class="line">//教我们如何根据key值来获得对应的索引</span><br><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.16;</span><br><span class="line"></span><br><span class="line">contract MappingStorage &#123;</span><br><span class="line"></span><br><span class="line">    mapping(address =&gt; uint) public balances;</span><br><span class="line">    uint8 constant balancesMappingIndex = 0;</span><br><span class="line"></span><br><span class="line">    constructor() &#123;</span><br><span class="line">        balances[0x6827b8f6cc60497d9bf5210d602C0EcaFDF7C405] = 678;</span><br><span class="line">        balances[0x66B0b1d2930059407DcC30F1A2305435fc37315E] = 501;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    function getStorageLocationForKey(address _key) public pure returns(bytes32) &#123;</span><br><span class="line">        // This works pretty well as concatenation. For the address 0x6827b8f6cc60497d9bf5210d602C0EcaFDF7C405, </span><br><span class="line">        // the storage slot index hash would be: 0x86dfc0930cb222883cc0138873d68c1c9864fc2fe59d208c17f3484f489bef04</span><br><span class="line">        return keccak256(abi.encode(_key, balancesMappingIndex));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getKeyEncodedWithMappingIndex(address _key) public pure returns(bytes memory) &#123;</span><br><span class="line">        // For the address 0x6827b8f6cc60497d9bf5210d602C0EcaFDF7C405, the encoded data would be:</span><br><span class="line">        // 0x0000000000000000000000006827b8f6cc60497d9bf5210d602c0ecafdf7c4050000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">      return abi.encode(_key, balancesMappingIndex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查询得到结果，a转化为十进制就是10。因此，在<code>mapping(address =&gt; uint256) balances</code>中，key<code>0xEAe4CbF91D51AFDf82B1918A227AE807fce556Af</code>的余额为10。</p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/13.mapping/image-20221220224028887.png" alt="image-20221220224028887"></p>
+<p><a target="_blank" rel="noopener" href="https://goerli.etherscan.io/address/0xeae4cbf91d51afdf82b1918a227ae807fce556af#code">此合约/交易在浏览器</a></p>
+<p>相关的文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ethereum.stackexchange.com/questions/133473/how-to-calculate-the-location-index-slot-in-storage-of-a-mapping-key">https://ethereum.stackexchange.com/questions/133473/how-to-calculate-the-location-index-slot-in-storage-of-a-mapping-key</a></li>
+<li><a target="_blank" rel="noopener" href="https://learnblockchain.cn/article/4574">https://learnblockchain.cn/article/4574</a></li>
+</ul>
+<blockquote>
+<p>另外</p>
+<p>假如是一个嵌套的mapping，那么是如何存储的呢？答案：嵌套映射遵循与常规映射相同的模式，但采用递归方式。做法如下：</p>
+<ol>
+<li>Take the hash of the key + slot =&gt; we get our resulting result (=key 2)</li>
+<li>Take the resulting hash and hash it with our key 2 result</li>
+</ol>
+</blockquote>
+<h2 id="为什么无法遍历mapping"><a href="#为什么无法遍历mapping" class="headerlink" title="为什么无法遍历mapping"></a>为什么无法遍历mapping</h2><p>因为通过hash得到的32字节数值是一个十六进制数，它可以转换为十进制，这就导致了它有一个很大的可能范围。得到的十进制数的范围是：0~2^256。这么大的空间，遍历是不科学的。</p>
+<p>默认情况下，当一个mapping声明的时候，它所有可能的key都被映射到了一个全为0的值，即：mapping一旦被声明，那么它的key都被初始化了。每个key都存在，只不过它映射的value是0。因为Ethereum会定义所有未使用的空间为0，所以未赋值（<code>Value</code>）的键（<code>Key</code>）初始值都是0。</p>
+<p>The Solidity type <code>mapping</code> (see <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/types.html#mapping-types">Mapping Types</a>) is a storage-only key-value data structure that does not keep track of the keys that were assigned a non-zero value. Because of that, cleaning a mapping without extra information about the written keys is not possible. If a <code>mapping</code> is used as the base type of a dynamic storage array, deleting or popping the array will have no effect over the <code>mapping</code> elements. The same happens, for example, if a <code>mapping</code> is used as the type of a member field of a <code>struct</code> that is the base type of a dynamic storage array. The <code>mapping</code> is also ignored in assignments of structs or arrays containing a <code>mapping</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.6.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract Map &#123;</span><br><span class="line">    mapping (uint =&gt; uint)[] array;</span><br><span class="line"></span><br><span class="line">    function allocate(uint newMaps) public &#123;</span><br><span class="line">        for (uint i = 0; i &lt; newMaps; i++)</span><br><span class="line">            array.push();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function writeMap(uint map, uint key, uint value) public &#123;</span><br><span class="line">        array[map][key] = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function readMap(uint map, uint key) public view returns (uint) &#123;</span><br><span class="line">        return array[map][key];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function eraseMaps() public &#123;</span><br><span class="line">        delete array;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Consider the example above and the following sequence of calls: <code>allocate(10)</code>, <code>writeMap(4, 128, 256)</code>. At this point, calling <code>readMap(4, 128)</code> returns 256. If we call <code>eraseMaps</code>, the length of state variable <code>array</code> is zeroed, but since its <code>mapping</code> elements cannot be zeroed, their information stays alive in the contract’s storage. After deleting <code>array</code>, calling <code>allocate(5)</code> allows us to access <code>array[4]</code> again, and calling <code>readMap(4, 128)</code> returns 256 even without another call to <code>writeMap</code>.</p>
+<p>If your <code>mapping</code> information must be deleted, consider using a library similar to <a target="_blank" rel="noopener" href="https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol">iterable mapping</a>, allowing you to traverse the keys and delete their values in the appropriate <code>mapping</code>.</p>
+<h2 id="count-mapping’s-length"><a href="#count-mapping’s-length" class="headerlink" title="count mapping’s length"></a>count mapping’s length</h2><p>但是我们可以这么设计一个数据结构，以便我们来计数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">contract IterableMapping &#123;</span><br><span class="line">    mapping(uint =&gt; address) someList;</span><br><span class="line">    uint public totalEntries = 0;</span><br><span class="line">    function addToList() public returns(uint) &#123;</span><br><span class="line">        someList[totalEntries] =</span><br><span class="line">            address(0xABaBaBaBABabABabAbAbABAbABabababaBaBABaB);</span><br><span class="line">        return ++totalEntries;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>more complicated</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity ^0.8.8;</span><br><span class="line"></span><br><span class="line">struct IndexValue &#123; uint keyIndex; uint value; &#125;</span><br><span class="line">struct KeyFlag &#123; uint key; bool deleted; &#125;</span><br><span class="line"></span><br><span class="line">struct itmap &#123;</span><br><span class="line">    mapping(uint =&gt; IndexValue) data;</span><br><span class="line">    KeyFlag[] keys;</span><br><span class="line">    uint size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Iterator is uint;</span><br><span class="line"></span><br><span class="line">library IterableMapping &#123;</span><br><span class="line">    function insert(itmap storage self, uint key, uint value) internal returns (bool replaced) &#123;</span><br><span class="line">        uint keyIndex = self.data[key].keyIndex;</span><br><span class="line">        self.data[key].value = value;</span><br><span class="line">        if (keyIndex &gt; 0)</span><br><span class="line">            return true;</span><br><span class="line">        else &#123;</span><br><span class="line">            keyIndex = self.keys.length;</span><br><span class="line">            self.keys.push();</span><br><span class="line">            self.data[key].keyIndex = keyIndex + 1;</span><br><span class="line">            self.keys[keyIndex].key = key;</span><br><span class="line">            self.size++;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function remove(itmap storage self, uint key) internal returns (bool success) &#123;</span><br><span class="line">        uint keyIndex = self.data[key].keyIndex;</span><br><span class="line">        if (keyIndex == 0)</span><br><span class="line">            return false;</span><br><span class="line">        delete self.data[key];</span><br><span class="line">        self.keys[keyIndex - 1].deleted = true;</span><br><span class="line">        self.size --;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function contains(itmap storage self, uint key) internal view returns (bool) &#123;</span><br><span class="line">        return self.data[key].keyIndex &gt; 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function iterateStart(itmap storage self) internal view returns (Iterator) &#123;</span><br><span class="line">        return iteratorSkipDeleted(self, 0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function iterateValid(itmap storage self, Iterator iterator) internal view returns (bool) &#123;</span><br><span class="line">        return Iterator.unwrap(iterator) &lt; self.keys.length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function iterateNext(itmap storage self, Iterator iterator) internal view returns (Iterator) &#123;</span><br><span class="line">        return iteratorSkipDeleted(self, Iterator.unwrap(iterator) + 1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function iterateGet(itmap storage self, Iterator iterator) internal view returns (uint key, uint value) &#123;</span><br><span class="line">        uint keyIndex = Iterator.unwrap(iterator);</span><br><span class="line">        key = self.keys[keyIndex].key;</span><br><span class="line">        value = self.data[key].value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function iteratorSkipDeleted(itmap storage self, uint keyIndex) private view returns (Iterator) &#123;</span><br><span class="line">        while (keyIndex &lt; self.keys.length &amp;&amp; self.keys[keyIndex].deleted)</span><br><span class="line">            keyIndex++;</span><br><span class="line">        return Iterator.wrap(keyIndex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// How to use it</span><br><span class="line">contract User &#123;</span><br><span class="line">    // Just a struct holding our data.</span><br><span class="line">    itmap data;</span><br><span class="line">    // Apply library functions to the data type.</span><br><span class="line">    using IterableMapping for itmap;</span><br><span class="line"></span><br><span class="line">    // Insert something</span><br><span class="line">    function insert(uint k, uint v) public returns (uint size) &#123;</span><br><span class="line">        // This calls IterableMapping.insert(data, k, v)</span><br><span class="line">        data.insert(k, v);</span><br><span class="line">        // We can still access members of the struct,</span><br><span class="line">        // but we should take care not to mess with them.</span><br><span class="line">        return data.size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Computes the sum of all stored data.</span><br><span class="line">    function sum() public view returns (uint s) &#123;</span><br><span class="line">        for (</span><br><span class="line">            Iterator i = data.iterateStart();</span><br><span class="line">            data.iterateValid(i);</span><br><span class="line">            i = data.iterateNext(i)</span><br><span class="line">        ) &#123;</span><br><span class="line">            (, uint value) = data.iterateGet(i);</span><br><span class="line">            s += value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p>mapping有内置的delete</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line"></span><br><span class="line">pragma solidity &gt;=0.7.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract MappingExmaple&#123;</span><br><span class="line">  </span><br><span class="line">    mapping(address =&gt; uint) account;</span><br><span class="line">    //根据班级和学生名称获取分数     </span><br><span class="line">    mapping(uint =&gt; mapping(string =&gt;uint)) score;</span><br><span class="line"></span><br><span class="line">    function get(address _address) public view returns(uint)&#123;</span><br><span class="line">        return account[_address];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function set(address _address, uint _balance) public &#123;</span><br><span class="line">        account[_address] = _balance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function remove(address _address) public &#123;</span><br><span class="line">        delete account[_address];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getScoreByClassAndName(uint _class,string memory _name) public view returns(uint)&#123;</span><br><span class="line">        return score[_class][_name];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function setScoreByClassAndName(uint _class,string memory _name,uint _score) public &#123;</span><br><span class="line">        score[_class][_name] = _score;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function deleteByClassAndName(uint _class,string memory _name) public &#123;</span><br><span class="line">        delete score[_class][_name];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/12.Library/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:23
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                        <b>#</b> 02.solidity语法
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/15.version/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mapping"><span class="toc-text">mapping</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#digest"><span class="toc-text">digest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#theory"><span class="toc-text">theory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rules"><span class="toc-text">rules</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#search"><span class="toc-text">search</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%97%A0%E6%B3%95%E9%81%8D%E5%8E%86mapping"><span class="toc-text">为什么无法遍历mapping</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#count-mapping%E2%80%99s-length"><span class="toc-text">count mapping’s length</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#example"><span class="toc-text">example</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 13.mapping + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F02.solidity%25E8%25AF%25AD%25E6%25B3%2595%2F13.mapping%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/13.mapping/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

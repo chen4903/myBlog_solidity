@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      01.flashloan 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">01.flashloan</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/29-DeFi/" title="29.DeFi">
+                    <b>#</b> 29.DeFi
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="flashloan"><a href="#flashloan" class="headerlink" title="flashloan"></a>flashloan</h1><h2 id="digest"><a href="#digest" class="headerlink" title="digest"></a>digest</h2><p>闪电贷，顾名思义就是在极短的时间内完成贷款与还款的操作。在DeFi领域，闪电贷为金融业务提供了免抵押借 款服务，是DeFi世界的一款利器。闪电贷的概念最早是由Marble协议提出来的，并由Aave、dYdX、Uniswap等协议 进行了普及，第一笔闪电贷操作来自于Aave协议。</p>
+<h2 id="theory"><a href="#theory" class="headerlink" title="theory"></a>theory</h2><p>闪电贷是通过智能合约的原子性，来完成零风险贷款的业务，因此闪电贷业务只能由智能合约来实现。简单来说， 就是在一个区块交易中，同时完成借款和还款操作这两个操作，无需抵押任何资产，只需支付手续费即可。用户在借到 款之后，可以利用借到的资产进行其他操作，比如套利、偿还抵押借款、自清算等操作。然后在交易结束的时候，用户 只要把借到的款项及手续费及时归还就可以，否则该笔交易就会回滚，就像什么也没有发生过一样。</p>
+<h2 id="Atomicity"><a href="#Atomicity" class="headerlink" title="Atomicity"></a>Atomicity</h2><p>原子性是指具有原子性的事务。以太坊的每比交易都是具有原子性的，原子事务是不可分割的，在事务执行完 毕之前，不会被任 何其他操作所中断。而该事务中的所有操作，要么全部被成功执行，要么全部执行失败，不会出现 一部分成功而另一部分失败的情况。</p>
+<ol>
+<li>向dYdX进行借款、还款; </li>
+<li>在Compound上提供ETH并借出DAI;</li>
+<li>在Curve上将借出的DAI的一半换成USDC;</li>
+<li>在Uniswap上为DAI/USDC池提供流动性等等。</li>
+</ol>
+<p>所有这些操作都可以同时在一个交易中完成，而其中只要有一个操作失败，则整笔交易都会失败回滚，就像什么都没有 发生一样。单笔交易只受Gas费用限制，以及以太坊区块容量的限制，所以理论上可以有成千上万个操作步骤。</p>
+<h2 id="Flashload-amp-Flashswap"><a href="#Flashload-amp-Flashswap" class="headerlink" title="Flashload &amp; Flashswap"></a>Flashload &amp; Flashswap</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Flash    Loan（以Aave为例）</th>
+<th>Flash    Swap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.09%    fee</td>
+<td>Swap    fee</td>
+</tr>
+<tr>
+<td>Minimum    3    operations</td>
+<td>More    flexibility</td>
+</tr>
+<tr>
+<td>Payback    same    asset</td>
+<td>Payback    pair    asset</td>
+</tr>
+<tr>
+<td>Optimistic    transfer</td>
+<td>Optimistic    transfer</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>闪电贷（Flash Loan）必须以你借入的同一资产偿还：如果借入Dai，就需要偿还Dai。生息协议Aave对闪电贷收取0.09％的费用。它至少需要进行三个操作：</p>
+<ol>
+<li>在Aave上借款</li>
+<li>使用从Aave通过闪电贷借来的资产（套利/更换抵押品/自清算）</li>
+<li>向Aave支付手续费，并还款</li>
+</ol>
+<p>闪电兑(Flash Swap) 就像在Uniswap上所做的那样，闪电交换没有固定费用，而是收取交换费。与闪电贷相比，闪电兑换可以看作是“免费”贷款，因为兑换 手续费是从交易订单中扣除的，我们不必单独付款。另一点区别：我们可以偿还兑换的任何资产，如果我们使用闪电兑换拿ETH买入Dai，那么用Dai或ETH偿 还都可以，这使我们可以执行更复杂的操作。 闪电兑换和闪电贷均采用乐观转帐（Optimistic Tranfer），乐观转账使用户可以进行无抵押贷款或兑换交易，只要用户在交易结束时还清借款，就可以执行交 易。乐观转账是闪电兑换和闪电贷的核心。</p>
+<h2 id="Flashload-Application"><a href="#Flashload-Application" class="headerlink" title="Flashload Application"></a>Flashload Application</h2><h3 id="arbitrage"><a href="#arbitrage" class="headerlink" title="arbitrage"></a>arbitrage</h3><p>套利，即闪电贷可以放大成功套利的利润。例如， Uniswap 和 Curve 之间的 DAI/USDC 池存在价格差 异。你可以在 Curve 上用 1 个 DAI 换取 1 个 USDC， 但在 Uniswap 上您只需要 0.99 个 DAI 就可以买到 1 个 USDC。现在你可以尝试执行以下套利: </p>
+<ol>
+<li>通过闪电贷向 Aave 借 100,000 DAI。</li>
+<li>在 Uniswap 上将 100,000 DAI 换成 USDC，收到 101,010 USDC。</li>
+<li>在 Curve 上将 101,010 USDC 换成 101,010 DAI</li>
+<li>偿还初始 100,000 DAI + 0.09% Fees = 100,090 DAI</li>
+<li>利润 101,010 DAI - 100,090 DAI = 920 DAI</li>
+</ol>
+<h3 id="swapping-collateral"><a href="#swapping-collateral" class="headerlink" title="swapping collateral"></a>swapping collateral</h3><p>假设你用 ETH 作为抵押品从 Compound 借了 DAI 。 你可以通过以下方式将抵押品从 ETH 换成例如BAT :</p>
+<ol>
+<li>发起一笔闪电贷借出 DAI </li>
+<li>用借来的 DAI 偿还 Compound 中的贷款</li>
+<li>提取你的 ETH </li>
+<li>在 Uniswap 上将你的 ETH 换成 BAT </li>
+<li>提供 BAT 作为 Compound 的抵押品 </li>
+<li>以你的 BAT 抵押品借出 DAI </li>
+<li>用借来的 DAI + Fees 偿还步骤1的闪电贷通过这 样一轮操作，额外付出借款金额的 0.09% 就能成 功把你的抵押品从 ETH 换成了 BAT</li>
+</ol>
+<h3 id="self-liquidation"><a href="#self-liquidation" class="headerlink" title="self-liquidation"></a>self-liquidation</h3><p>假设你在 Compound 上有一笔以 ETH 作为抵押借出 DAI 的贷款。ETH 价格不断下跌，已经接近清算水平。 你也没有或不想存入更多的 ETH 来降低你的清算水平， 你也没有偿还贷款所需的 DAI。现在，与其让 MakerDAO 合约清算你的抵押品并向你收取清算费， 不如采取以下步骤:</p>
+<ol>
+<li>发起闪电贷，借出一笔 DAI，金额是你在 Compound 上的欠债</li>
+<li>偿还 Compound 上的 DAI 贷款，提取 ETH </li>
+<li>将足够的 ETH 换成 DAI，以偿还步骤1的 闪电贷+ 费用</li>
+<li>拿住你剩下的 ETH 经过以上步骤，就可以实现自 我清算，避免了合约清算以及清算费用。</li>
+</ol>
+<h2 id="attack-event"><a href="#attack-event" class="headerlink" title="attack event"></a>attack event</h2><p><img src="https://moe.photo/images/2023/01/15/image-20230114161723914.png" alt></p>
+<ul>
+<li>uDeFi项目的业务逻辑设计复杂，涉及的经济学计算和参数较多，却 不同项目和协议之间可组合性极其丰富，很难预测，非常容易出现 安全漏洞。2020年以来，利用闪电贷这种新型产品进行攻击的 DeFi事件在过去的一年里层出不穷，已增加到27起。通常闪电贷攻 击包括“哄抬套利”、“操纵预言机”、“重入攻击”和“技术漏 洞”四种</li>
+<li>「哄抬套利」Pump and Arbitrage，先设法借助他人的资本抬高 自有资产的价格再高价卖出获利。DeFi 生态中此类经济攻击事件 之所以能够成功，与Flash loans（短时支配大量数字资产）和 AMM（价格滑点）紧密关联。</li>
+<li>「操纵预言机」攻击可以认为是「哄抬套利」攻击的一种对称操作， 其必要条件为：攻击目标依赖 AMM 提供的信息对其内部资产进行 定价。</li>
+<li>「重入攻击」恶意合约通过恶意的fallback函数对受害合约发起递 归调用，从而破坏操作的原子性，绕过检查以重复获得转账收益。</li>
+<li>「技术漏洞」开发人员和测试人员对数值计算、地址校验等实现层 面的疏忽而造成的漏洞。</li>
+</ul>
+<h2 id="Safety-precautions"><a href="#Safety-precautions" class="headerlink" title="Safety precautions"></a>Safety precautions</h2><p>Dragonfly：全面解读闪电贷，DeFi 安全模式全然改变 Flash Loans: Why Flash Attacks will be the New Normal</p>
+<p>闪电贷攻击的根本原因在于被攻击的项目的智能合约存在漏洞，黑客利用了其中的漏洞完成价格操纵或技术攻击，而闪电贷只是提供了攻击的资金，降低了黑客攻击的成 本。因此，闪电贷攻击并没有直接根除的防范措施，只能尽可能的通过多轮的智能合约审计让项目的业务逻辑和合约代码不存在漏洞。    </p>
+<p>解决闪电贷攻击的设想：</p>
+<ol>
+<li>说服所有的闪电贷协议停止提供这种服务 但这几乎是不可能的。提供闪电贷款符合每个协议的利益，并且其用户有合理原因的希望使用此功 能。 </li>
+<li>迫使关键交易跨越两个区块 如果一个资本密集型交易需要跨越至少两个区块，用户需要至少在两个区块时间段取出贷款，闪电攻击就成为不可能（如EOS中的 defer    transaction）。</li>
+<li>要求提供链上证明，证明完成闪电贷后用户的账户余额未出现变化 如果可以通过某种方法来检测用户的实际余额是多少 （即在他们贷款之前和 还款之后的余额分别是多少），我们就可以战胜闪电攻击。在原生 EVM 机制中无法执行此操作，但是可以对其进行修改。你要做的是：在用户与你的协议进行交互之前， 你要求其提供 Merkle 证明，证明在上一个区块末尾时他们有足够的余额来偿还当前使用的资金。 你需要针对每个区块中的每个用户跟踪此情况。 这种方法一定程度上 是奏效的。但验证这些链上证据在链上的成本极高 ，少有人会愿意提供这类证明，并为整个过程支付 gas 费用。另外用户完全可能有合理的原因，在上个区块想调整其 余额。</li>
+</ol>
+<p>防范闪电贷攻击的可行方法：</p>
+<ol>
+<li>加权平均价格（WAP），像 Uniswap 或 OasisDEX 等市场价预言机 , 由于闪电攻击的可能性，你任何情况下不能把当前市价中位数当成 喂价。 攻击者只需要一笔交易就能轻而易举地大幅改变市价中位数，让预言机失灵。对此最好的解决方案是通过时间加权平均价格（TWAP） 或 成交量加权平均价格 （VWAP） 计算上一批 X 区块的加权平均数。</li>
+<li>代币锁定期，通常如果治理代币进入某一贷款池，攻击者可以偷走大量选票，得到自己想要的结果。 我们应该要求所有 治理行动要有代币锁定期 ，以阻止闪电贷攻击。更关键的是，所有治理代币应该有时间锁 （timelocks） ，时间锁迫使所有的执行决策在生效前都有一段等候期。 （例 如 Compound 的时间锁是 2 天 ） 如果遭遇意料之外的治理攻击，这一机制让系统有了容错时间 。</li>
+<li>合约在上线前测试时，应设置闪电贷攻击的 test case，尽量放大 测试时的数值，并进行数学计算的核算。</li>
+</ol>
+<h2 id="Smart-contract-audit"><a href="#Smart-contract-audit" class="headerlink" title="Smart contract audit"></a>Smart contract audit</h2><ol>
+<li>闪电贷攻击并没有直接根除的防范措施，应尽可能的通过多轮审计让项目的业务逻辑和合约代码尽量 不存在漏洞。</li>
+<li>语法层面重点关注的审计项：重入、地址校验、权限控制等。</li>
+<li>业务和计算层面重点关注的审计项：预言机、铸币/销毁、推荐奖励、清算等涉及到净值计算的数学运 算逻辑，尤其重点检查计算中分母部分的安全性和可靠性。闪电贷实现逻辑、治理实现逻辑、分红实现逻 辑等。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://learnblockchain.cn/course/16">reference</a></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/26.geth/01.%E6%9A%82%E6%97%A0/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:21
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/29-DeFi/" title="29.DeFi">
+                        <b>#</b> 29.DeFi
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/28.NFT/01.%E6%9A%82%E6%97%A0/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#flashloan"><span class="toc-text">flashloan</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#digest"><span class="toc-text">digest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#theory"><span class="toc-text">theory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Atomicity"><span class="toc-text">Atomicity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flashload-amp-Flashswap"><span class="toc-text">Flashload &amp; Flashswap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flashload-Application"><span class="toc-text">Flashload Application</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#arbitrage"><span class="toc-text">arbitrage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swapping-collateral"><span class="toc-text">swapping collateral</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#self-liquidation"><span class="toc-text">self-liquidation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attack-event"><span class="toc-text">attack event</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Safety-precautions"><span class="toc-text">Safety precautions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Smart-contract-audit"><span class="toc-text">Smart contract audit</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01.flashloan + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F29.DeFi%2F01.flashloan%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/29.DeFi/01.flashloan/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

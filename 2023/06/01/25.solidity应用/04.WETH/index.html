@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      04.WETH 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">04.WETH</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/25-solidity%E5%BA%94%E7%94%A8/" title="25.solidity应用">
+                    <b>#</b> 25.solidity应用
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="WETH"><a href="#WETH" class="headerlink" title="WETH"></a>WETH</h1><p><a target="_blank" rel="noopener" href="https://wtf.academy/solidity-application/WETH/">转载</a></p>
+<h2 id="什么是WETH？"><a href="#什么是WETH？" class="headerlink" title="什么是WETH？"></a>什么是WETH？</h2><p><img src="https://moe.photo/images/2023/01/23/41-1-2a413f9fb4ab4ff14e0591f0dcdabd33.gif" alt></p>
+<p><code>WETH</code> (Wrapped ETH)是<code>ETH</code>的带包装版本。我们常见的<code>WETH</code>，<code>WBTC</code>，<code>WBNB</code>，都是带包装的原生代币。那么我们为什么要包装它们？</p>
+<p>在2015年，<a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/blob/main/20_SendETH/readme.md">ERC20</a>标准出现，该代币标准旨在为以太坊上的代币制定一套标准化的规则，从而简化了新代币的发布，并使区块链上的所有代币相互可比。不幸的是，以太币本身并不符合<code>ERC20</code>标准。<code>WETH</code>的开发是为了提高区块链之间的互操作性 ，并使<code>ETH</code>可用于去中心化应用程序（dApps）。它就像是给原生代币穿了一件智能合约做的衣服：穿上衣服的时候，就变成了<code>WETH</code>，符合<code>ERC20</code>同质化代币标准，可以跨链，可以用于<code>dApp</code>；脱下衣服，它可1:1兑换<code>ETH</code>。</p>
+<h2 id="WETH合约"><a href="#WETH合约" class="headerlink" title="WETH合约"></a>WETH合约</h2><p>目前在用的<a target="_blank" rel="noopener" href="https://rinkeby.etherscan.io/token/0xc778417e063141139fce010982780140aa0cd5ab?a=0xe16c1623c1aa7d919cd2241d8b36d9e79c1be2a2">主网WETH合约</a>写于2015年，非常老，那时候solidity是0.4版本。我们用0.8版本重新写一个<code>WETH</code>。</p>
+<p><code>WETH</code>符合<code>ERC20</code>标准，它比普通的<code>ERC20</code>多了两个功能：</p>
+<ol>
+<li>存款：包装，用户将<code>ETH</code>存入<code>WETH</code>合约，并获得等量的<code>WETH</code>。</li>
+<li>取款：拆包装，用户销毁<code>WETH</code>，并获得等量的<code>ETH</code>。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">import &quot;@openzeppelin/contracts/token/ERC20/ERC20.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract WETH is ERC20&#123;</span><br><span class="line">    // 事件：存款和取款</span><br><span class="line">    event  Deposit(address indexed dst, uint wad);</span><br><span class="line">    event  Withdrawal(address indexed src, uint wad);</span><br><span class="line"></span><br><span class="line">    // 构造函数，初始化ERC20的名字和代号</span><br><span class="line">    constructor() ERC20(&quot;WETH&quot;, &quot;WETH&quot;)&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 回调函数，当用户往WETH合约转ETH时，会触发deposit()函数</span><br><span class="line">    fallback() external payable &#123;</span><br><span class="line">        deposit();</span><br><span class="line">    &#125;</span><br><span class="line">    // 回调函数，当用户往WETH合约转ETH时，会触发deposit()函数</span><br><span class="line">    receive() external payable &#123;</span><br><span class="line">        deposit();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 存款函数，当用户存入ETH时，给他铸造等量的WETH</span><br><span class="line">    function deposit() public payable &#123;</span><br><span class="line">        _mint(msg.sender, msg.value);</span><br><span class="line">        emit Deposit(msg.sender, msg.value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 提款函数，用户销毁WETH，取回等量的ETH</span><br><span class="line">    function withdraw(uint amount) public &#123;</span><br><span class="line">        require(balanceOf(msg.sender) &gt;= amount);</span><br><span class="line">        _burn(msg.sender, amount);</span><br><span class="line">        payable(msg.sender).transfer(amount);</span><br><span class="line">        emit Withdrawal(msg.sender, amount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p><code>WETH</code>符合<code>ERC20</code>代币标准，因此<code>WETH</code>合约继承了<code>ERC20</code>合约。</p>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><p><code>WETH</code>合约共有<code>2</code>个事件：</p>
+<ol>
+<li><code>Deposit</code>：存款事件，在存款的时候释放。</li>
+<li><code>Withdraw</code>：取款事件，在取款的时候释放。</li>
+</ol>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>除了<code>ERC20</code>标准的函数外，<code>WETH</code>合约有<code>5</code>个函数：</p>
+<ul>
+<li>构造函数：初始化<code>WETH</code>的名字和代号。</li>
+<li>回调函数：<code>fallback()</code>和<code>receive()</code>，当用户往<code>WETH</code>合约转<code>ETH</code>的时候，会自动触发<code>deposit()</code>存款函数，获得等量的<code>WETH</code>。</li>
+<li><code>deposit()</code>：存款函数，当用户存入<code>ETH</code>时，给他铸造等量的<code>WETH</code>。</li>
+<li><code>withdraw()</code>：取款函数，让用户销毁<code>WETH</code>，并归还等量的<code>ETH</code>。</li>
+</ul>
+<h2 id="Remix演示"><a href="#Remix演示" class="headerlink" title="Remix演示"></a>Remix演示</h2><h3 id="1-部署WETH合约"><a href="#1-部署WETH合约" class="headerlink" title="1. 部署WETH合约"></a>1. 部署WETH合约</h3><p><img src="https://moe.photo/images/2023/01/23/41-2-c259dceb5a453204f7e474a8c3e8c9dd.jpg" alt></p>
+<h3 id="2-调用deposit，存入1-ETH，并查看WETH余额"><a href="#2-调用deposit，存入1-ETH，并查看WETH余额" class="headerlink" title="2. 调用deposit，存入1 ETH，并查看WETH余额"></a>2. 调用deposit，存入1 ETH，并查看WETH余额</h3><p><img src="https://moe.photo/images/2023/01/23/41-3-1e95478d5d721d1c0a1859355ac15995.jpg" alt></p>
+<p>此时<code>WETH</code>余额为<code>1 WETH</code>。</p>
+<h3 id="3-直接向WETH合约转入1-ETH，并查看WETH余额"><a href="#3-直接向WETH合约转入1-ETH，并查看WETH余额" class="headerlink" title="3. 直接向WETH合约转入1 ETH，并查看WETH余额"></a>3. 直接向WETH合约转入1 ETH，并查看WETH余额</h3><p><img src="https://moe.photo/images/2023/01/23/41-6-98c8d912644349925bd6109282be59ba.jpg" alt></p>
+<p>此时<code>WETH</code>余额为<code>2 WETH</code>。</p>
+<h3 id="4-调用withdraw，取出1-5-ETH，并查看WETH余额"><a href="#4-调用withdraw，取出1-5-ETH，并查看WETH余额" class="headerlink" title="4. 调用withdraw，取出1.5 ETH，并查看WETH余额"></a>4. 调用withdraw，取出1.5 ETH，并查看WETH余额</h3><p><img src="https://moe.photo/images/2023/01/23/41-7-743886b5bbfbc5b0c4de3cf1ab65bd2d.jpg" alt></p>
+<p>此时<code>WETH</code>余额为<code>0.5 WETH</code>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲，我们介绍了<code>WETH</code>并实现了<code>WETH</code>合约。它就像是给原生<code>ETH</code>穿了一件智能合约做的衣服：穿上衣服的时候，就变成了<code>WETH</code>，符合<code>ERC20</code>同质化代币标准，可以跨链，可以用于<code>dApp</code>；脱下衣服，它可以1:1兑换<code>ETH</code>。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/01.%E8%8D%B7%E5%85%B0%E6%8B%8D%E5%8D%96/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:21
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/25-solidity%E5%BA%94%E7%94%A8/" title="25.solidity应用">
+                        <b>#</b> 25.solidity应用
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/03.%E9%9A%8F%E6%9C%BA%E6%95%B0/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#WETH"><span class="toc-text">WETH</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFWETH%EF%BC%9F"><span class="toc-text">什么是WETH？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WETH%E5%90%88%E7%BA%A6"><span class="toc-text">WETH合约</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%A7%E6%89%BF"><span class="toc-text">继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6"><span class="toc-text">事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-text">函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remix%E6%BC%94%E7%A4%BA"><span class="toc-text">Remix演示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%83%A8%E7%BD%B2WETH%E5%90%88%E7%BA%A6"><span class="toc-text">1. 部署WETH合约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%B0%83%E7%94%A8deposit%EF%BC%8C%E5%AD%98%E5%85%A51-ETH%EF%BC%8C%E5%B9%B6%E6%9F%A5%E7%9C%8BWETH%E4%BD%99%E9%A2%9D"><span class="toc-text">2. 调用deposit，存入1 ETH，并查看WETH余额</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%9B%B4%E6%8E%A5%E5%90%91WETH%E5%90%88%E7%BA%A6%E8%BD%AC%E5%85%A51-ETH%EF%BC%8C%E5%B9%B6%E6%9F%A5%E7%9C%8BWETH%E4%BD%99%E9%A2%9D"><span class="toc-text">3. 直接向WETH合约转入1 ETH，并查看WETH余额</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%B0%83%E7%94%A8withdraw%EF%BC%8C%E5%8F%96%E5%87%BA1-5-ETH%EF%BC%8C%E5%B9%B6%E6%9F%A5%E7%9C%8BWETH%E4%BD%99%E9%A2%9D"><span class="toc-text">4. 调用withdraw，取出1.5 ETH，并查看WETH余额</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 04.WETH + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F25.solidity%25E5%25BA%2594%25E7%2594%25A8%2F04.WETH%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/04.WETH/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

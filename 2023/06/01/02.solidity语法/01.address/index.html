@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      01.address 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">01.address</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:23
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                    <b>#</b> 02.solidity语法
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="address"><a href="#address" class="headerlink" title="address"></a>address</h1><h2 id="feature"><a href="#feature" class="headerlink" title="feature"></a>feature</h2><ul>
+<li>不允许任何算数操作</li>
+<li>20 bytes ,160 bit</li>
+<li><code>payable</code>的地址拥有<code>balance</code>和<code>transfer()</code>两个成员</li>
+</ul>
+<p><strong>example</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 地址</span><br><span class="line">address public _address = 0x7A58c0Be72BE218B41C608b7Fe7C5bB630736C71;</span><br><span class="line">address payable public _address1 = payable(_address); // payable address，可以转账、查余额</span><br><span class="line">// 地址类型的成员</span><br><span class="line">uint256 public balance = _address1.balance; // balance of address</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.7.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract AddressFunctionExample &#123;</span><br><span class="line">    address ownerAddress;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">        ownerAddress = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line">    //合约的地址 以太坊生成,不可变</span><br><span class="line">    function getContractAddress() external view returns(address) &#123;</span><br><span class="line">        return address(this);</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	//创建合约的地址 ,不可变</span><br><span class="line">	function getOwnerAddress() external view returns(address)&#123;</span><br><span class="line">        return ownerAddress;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //操作合约的地址 ,可变	</span><br><span class="line">    function getSenderAddress() external view returns(address)&#123;</span><br><span class="line">        return msg.sender;</span><br><span class="line">    &#125; </span><br><span class="line">    </span><br><span class="line">    //获取地址的余额</span><br><span class="line">    function getBalance() external view returns(uint,uint,uint)&#123;</span><br><span class="line">         uint contractAddressBalance = address(this).balance;</span><br><span class="line">         uint ownerAddressBalance = ownerAddress.balance;</span><br><span class="line">         uint senderAddressBlance = msg.sender.balance;    </span><br><span class="line">         return(contractAddressBalance,ownerAddressBalance,senderAddressBlance);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="conversions"><a href="#conversions" class="headerlink" title="conversions"></a>conversions</h2><ul>
+<li>Implicit conversions from <code>address payable</code> to <code>address</code> are allowed, whereas conversions from <code>address</code> to <code>address payable</code> must be explicit via <code>payable(&lt;address&gt;)</code>.</li>
+<li>Explicit conversions to and from <code>address</code> are allowed for <code>uint160</code>, integer literals, <code>bytes20</code> and contract types.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bytes20 a = bytes20(address(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4));</span><br><span class="line">uint160 b = uin160(address(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4));</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Only expressions of type <code>address</code> and contract-type can be converted to the type <code>address payable</code> via the explicit conversion <code>payable(...)</code>. For contract-type, this conversion is only allowed if the contract can receive Ether, i.e., the contract either has a <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#receive-ether-function">receive</a> or a payable fallback function. Note that <code>payable(0)</code> is valid and is an exception to this rule.</li>
+</ul>
+<blockquote>
+<p>Note</p>
+<p>If you need a variable of type <code>address</code> and plan to send Ether to it, then declare its type as <code>address payable</code> to make this requirement visible. Also, try to make this distinction or conversion as early as possible.</p>
+<p>The distinction between <code>address</code> and <code>address payable</code> was introduced with version 0.5.0. Also starting from that version, contracts are not implicitly convertible to the <code>address</code> type, but can still be explicitly converted to <code>address</code> or to <code>address payable</code>, if they have a receive or payable fallback function.</p>
+</blockquote>
+<h2 id="Operators"><a href="#Operators" class="headerlink" title="Operators"></a>Operators</h2><ul>
+<li><code>&lt;=</code>, <code>&lt;</code>, <code>==</code>, <code>!=</code>, <code>&gt;=</code> and <code>&gt;</code></li>
+</ul>
+<blockquote>
+<p>Warning</p>
+<p>If you convert a type that uses a larger byte size to an <code>address</code>, for example <code>bytes32</code>, then the <code>address</code> is truncated. To reduce conversion ambiguity, starting with version 0.4.24, the compiler will force you to make the truncation explicit in the conversion. Take for example the 32-byte value <code>0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCCC</code>.</p>
+<p>You can use <code>address(uint160(bytes20(b)))</code>, which results in <code>0x111122223333444455556666777788889999aAaa</code>, or you can use <code>address(uint160(uint256(b)))</code>, which results in <code>0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc</code>.</p>
+<p>这里涉及截断的知识，可以看我这篇<a target="_blank" rel="noopener" href="https://www.levi104.com/2022/12/23/03.solidity%E8%BF%9B%E9%98%B6/06.%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E8%A7%84%E5%88%99/">文章</a></p>
+<p>Note</p>
+<p>Mixed-case hexadecimal numbers conforming to <a target="_blank" rel="noopener" href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md">EIP-55</a> are automatically treated as literals of the <code>address</code> type. See <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/types.html#address-literals">Address Literals</a>.</p>
+</blockquote>
+<h2 id="members-of-addresse"><a href="#members-of-addresse" class="headerlink" title="members of addresse"></a>members of addresse</h2><h3 id="call"><a href="#call" class="headerlink" title="call"></a>call</h3><p>call 是address类型的低级成员函数，它用来与其他合约交互。它的返回值为(bool, data)，分别对应call是否成功以及目标函数的返回值。</p>
+<ul>
+<li>call是solidity官方推荐的通过触发fallback或receive函数发送ETH的方法。</li>
+<li>不推荐用call来调用另一个合约，因为当你调用不安全合约的函数时，你就把主动权交给了它。推荐的方法仍是声明合约变量后调用函数</li>
+<li>当我们不知道对方合约的源代码或ABI，就没法生成合约变量；这时，我们仍可以通过call调用对方合约的函数。</li>
+<li>call函数指定的最大gas限制为20317。</li>
+<li>call()如果转账失败，不会revert。</li>
+<li>call()的返回值是(bool, data)，其中bool代表着转账成功或失败，需要额外代码处理一下。</li>
+</ul>
+<h4 id="syntax"><a href="#syntax" class="headerlink" title="syntax"></a>syntax</h4><p>call的使用规则如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">目标合约地址.call(二进制编码/函数标志符);</span><br><span class="line">//函数标志符是对于函数声明哈希之后的前4个字节的数据，例如：`c.call(bytes4(keccak256(“eat()”)))`</span><br></pre></td></tr></table></figure>
+<p>其中二进制编码利用结构化编码函数abi.encodeWithSignature获得：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">abi.encodeWithSignature(&quot;函数签名&quot;, 逗号分隔的具体参数)</span><br><span class="line">address(nameReg).call&#123;gas: 1000000, value: 1 ether&#125;(abi.encodeWithSignature(&quot;register(string)&quot;, &quot;MyName&quot;));</span><br></pre></td></tr></table></figure>
+<p>函数签名为”函数名(逗号分隔的参数类型)”。例如abi.encodeWithSignature(“f(uint256,address)”, _x, _addr)。</p>
+<p>另外call在调用合约时可以指定交易发送的ETH数额和gas：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">目标合约地址.call&#123;value:发送数额, gas:gas数额&#125;(二进制编码);</span><br></pre></td></tr></table></figure>
+<h4 id="attention"><a href="#attention" class="headerlink" title="attention"></a>attention</h4><p>All these functions are low-level functions and should be used with care. Specifically, any unknown contract might be malicious and if you call it, you hand over control to that contract which could in turn call back into your contract, so be prepared for changes to your state variables when the call returns. The regular way to interact with other contracts is to call a function on a contract object (<code>x.f()</code>).</p>
+<p>Previous versions of Solidity allowed these functions to receive arbitrary arguments and would also handle a first argument of type <code>bytes4</code> differently. These edge cases were removed in version 0.5.0.</p>
+<h4 id="example"><a href="#example" class="headerlink" title="example"></a>example</h4><h3 id="dalegatecall"><a href="#dalegatecall" class="headerlink" title="dalegatecall"></a>dalegatecall</h3><p>In a similar way, the function <code>delegatecall</code> can be used: the difference is that only the code of the given address is used, all other aspects (storage, balance, …) are taken from the current contract. The purpose of <code>delegatecall</code> is to use library code which is stored in another contract. The user has to ensure that the layout of storage in both contracts is suitable for delegatecall to be used.</p>
+<p>The <code>gas</code> option is available , while the <code>value</code> option is not.</p>
+<h4 id="syntax-1"><a href="#syntax-1" class="headerlink" title="syntax"></a>syntax</h4><p><code>delegatecall</code>语法和<code>call</code>类似，也是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">目标合约地址.delegatecall(二进制编码);</span><br></pre></td></tr></table></figure>
+<p>其中<code>二进制编码</code>利用结构化编码函数<code>abi.encodeWithSignature</code>获得：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abi.encodeWithSignature(&quot;函数签名&quot;, 逗号分隔的具体参数)</span><br></pre></td></tr></table></figure>
+<p><code>函数签名</code>为<code>&quot;函数名（逗号分隔的参数类型)&quot;</code>。例如<code>abi.encodeWithSignature(&quot;f(uint256,address)&quot;, _x, _addr)</code>。</p>
+<p>和<code>call</code>不一样，<code>delegatecall</code>在调用合约时可以指定交易发送的<code>gas</code>，但不能指定发送的<code>ETH</code>数额</p>
+<blockquote>
+<p><strong>注意</strong>：<code>delegatecall</code>有安全隐患，使用时要保证当前合约和目标合约的状态变量存储结构相同，并且目标合约安全，不然会造成资产损失。</p>
+</blockquote>
+<h4 id="when-to-use"><a href="#when-to-use" class="headerlink" title="when to use?"></a>when to use?</h4><p>目前<code>delegatecall</code>主要有两个应用场景：</p>
+<ol>
+<li>代理合约（<code>Proxy Contract</code>）：将智能合约的存储合约和逻辑合约分开：代理合约（<code>Proxy Contract</code>）存储所有相关的变量，并且保存逻辑合约的地址；所有函数存在逻辑合约（<code>Logic Contract</code>）里，通过<code>delegatecall</code>执行。当升级时，只需要将代理合约指向新的逻辑合约即可。</li>
+<li>EIP-2535 Diamonds（钻石）：钻石是一个支持构建可在生产中扩展的模块化智能合约系统的标准。钻石是具有多个实施合同的代理合同。 更多信息请查看：<a target="_blank" rel="noopener" href="https://eip2535diamonds.substack.com/p/introduction-to-the-diamond-standard">钻石标准简介</a>。</li>
+</ol>
+<h3 id="transfer"><a href="#transfer" class="headerlink" title="transfer"></a>transfer</h3><ul>
+<li>用法是<code>接收方地址.transfer(发送ETH数额)</code>。</li>
+<li><code>transfer()</code>的<code>gas</code>限制是<code>2300</code>，足够用于转账，但对方合约的<code>fallback()</code>或<code>receive()</code>函数不能实现太复杂的逻辑。防止了重入攻击</li>
+<li><code>transfer()</code>如果转账失败，会自动<code>revert</code>（回滚交易）。</li>
+</ul>
+<p>代码样例，注意里面的<code>_to</code>填<code>ReceiveETH</code>合约的地址，<code>amount</code>是<code>ETH</code>转账金额：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 用transfer()发送ETH</span><br><span class="line">function transferETH(address payable _to, uint256 amount) external payable&#123;</span><br><span class="line">    _to.transfer(amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="send"><a href="#send" class="headerlink" title="send"></a>send</h3><ul>
+<li>用法是<code>接收方地址.send(发送ETH数额)</code>。</li>
+<li><code>send()</code>的<code>gas</code>限制是<code>2300</code>，足够用于转账，但对方合约的<code>fallback()</code>或<code>receive()</code>函数不能实现太复杂的逻辑。防止了重入攻击</li>
+<li><code>send()</code>如果转账失败，不会<code>revert</code>。</li>
+<li><code>send()</code>的返回值是<code>bool</code>，代表着转账成功或失败，需要额外代码处理一下。</li>
+</ul>
+<p>代码样例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// send()发送ETH</span><br><span class="line">function sendETH(address payable _to, uint256 amount) external payable&#123;</span><br><span class="line">    // 处理下send的返回值，如果失败，revert交易并发送error</span><br><span class="line">    bool success = _to.send(amount);</span><br><span class="line">    if(!success)&#123;</span><br><span class="line">        revert SendFailed();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Warning</p>
+<p>There are some dangers in using <code>send</code>: The transfer fails if the call stack depth is at 1024 (this can always be forced by the caller) and it also fails if the recipient runs out of gas. So in order to make safe Ether transfers, always check the return value of <code>send</code>, use <code>transfer</code> or even better: use a pattern where the recipient withdraws the money.callcode</p>
+<p>Prior to homestead, only a limited variant called <code>callcode</code> was available that did not provide access to the original <code>msg.sender</code> and <code>msg.value</code> values. This function was removed in version 0.5.0.</p>
+</blockquote>
+<h3 id="staticcall"><a href="#staticcall" class="headerlink" title="staticcall"></a>staticcall</h3><p>Since byzantium <code>staticcall</code> can be used as well. This is basically the same as <code>call</code>, but will revert if the called function modifies the state in any way.</p>
+<p>The <code>gas</code> option is available , while the <code>value</code> option is not.</p>
+<h3 id="code-and-codehash"><a href="#code-and-codehash" class="headerlink" title="code and codehash"></a>code and codehash</h3><p>You can query the deployed code for any smart contract. Use <code>.code</code> to get the EVM bytecode as a <code>bytes memory</code>, which might be empty. Use <code>.codehash</code> to get the Keccak-256 hash of that code (as a <code>bytes32</code>). Note that <code>addr.codehash</code> is cheaper than using <code>keccak256(addr.code)</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">contract Recurse &#123;</span><br><span class="line">   bytes public a = address(0xDA07165D4f7c84EEEfa7a4Ff439e039B7925d3dF).code;</span><br><span class="line">   //0x6080604052348015600f57600080fd5b506004361060325760003560e01c80638a054ac2146037578063ffae15ba146051575b600080fd5b603d606b565b60405160489190609b565b60405180910390f35b60576071565b6040516062919060ce565b60405180910390f35b60005481565b600160009054906101000a900460000b81565b6000819050919050565b6095816084565b82525050565b600060208201905060ae6000830184608e565b92915050565b60008160000b9050919050565b60c88160b4565b82525050565b600060208201905060e1600083018460c1565b9291505056fea26469706673582212201aadab598349950cd73060c7b7e72b58ec7a922bb4028139478a4fa0f202e27164736f6c63430008110033</span><br><span class="line">   bytes32 public b = address(0xDA07165D4f7c84EEEfa7a4Ff439e039B7925d3dF).codehash;</span><br><span class="line">   //0x353e9fb1a1677ea0f5d90c9d07a97d0632ed54740cd5497f056d0a56043e931d</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="assignment"><a href="#assignment" class="headerlink" title="assignment"></a>assignment</h3><p>（1）</p>
+<p>vitalik写了一个合约，并且该合约在被部署时可以转ETH进去，那么该合约的构造函数可能为？</p>
+<ul>
+<li>constructor() payable{}</li>
+<li>constructor(uint256 amount) payable{ (address(this)).transfer(amount); }</li>
+<li>constructor() {}</li>
+</ul>
+<p>答案：第一个。部署的时候直接在msg.value中输入值即可</p>
+<p>（2）假设存在如下两个合约(sendETH和ReceiveETH)，两个合约目前ETH余额皆为0，现在vitalik想通过SendETH合约的callETH函数往ReceiveETH合约转入1ETH，他将交易的value设置为2ETH，同时交易成功执行，那么此时sendETH合约和ReceiveETH的ETH余额分别为？</p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/01.address/0ad9cc488cff4d0499110fa901e3e3c4.jpeg" alt="0ad9cc488cff4d0499110fa901e3e3c4"></p>
+<p>答案：1ETH，1ETH。原因：msg.value设置为2，callETH(address,uint256)的amount设置为1，那么发送1ETH之后，还剩余1ETH留在sendETH合约</p>
+<h2 id="call-delegatecall-and-callcode"><a href="#call-delegatecall-and-callcode" class="headerlink" title="call, delegatecall and callcode"></a>call, delegatecall and callcode</h2><p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/01.address/640.png" alt="640"></p>
+<p>在以太坊中，若需要合约与合约之间的调用，则可以使用call、callcode和delegatecall方法，它们之间的联系如下:</p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/01.address/03.1.png" alt="03.1"></p>
+<h2 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h2><blockquote>
+<p>It is best to avoid relying on hardcoded gas values in your smart contract code, regardless of whether state is read from or written to, as this can have many pitfalls. Also, access to gas might change in the future.</p>
+<p>The low-level functions <code>call</code>, <code>delegatecall</code> and <code>staticcall</code> return <code>true</code> as their first return value if the account called is non-existent, as part of the design of the EVM. Account existence must be checked prior to calling if needed.</p>
+</blockquote>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/01.%E4%BB%A5%E5%A4%AA%E5%9D%8A/04.%E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%8F%8A%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:23
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                        <b>#</b> 02.solidity语法
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/07.Enum/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#address"><span class="toc-text">address</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#feature"><span class="toc-text">feature</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#conversions"><span class="toc-text">conversions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Operators"><span class="toc-text">Operators</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#members-of-addresse"><span class="toc-text">members of addresse</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#call"><span class="toc-text">call</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#syntax"><span class="toc-text">syntax</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#attention"><span class="toc-text">attention</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#example"><span class="toc-text">example</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dalegatecall"><span class="toc-text">dalegatecall</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#syntax-1"><span class="toc-text">syntax</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#when-to-use"><span class="toc-text">when to use?</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#transfer"><span class="toc-text">transfer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#send"><span class="toc-text">send</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#staticcall"><span class="toc-text">staticcall</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#code-and-codehash"><span class="toc-text">code and codehash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#assignment"><span class="toc-text">assignment</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#call-delegatecall-and-callcode"><span class="toc-text">call, delegatecall and callcode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tips"><span class="toc-text">tips</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01.address + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F02.solidity%25E8%25AF%25AD%25E6%25B3%2595%2F01.address%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/01.address/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

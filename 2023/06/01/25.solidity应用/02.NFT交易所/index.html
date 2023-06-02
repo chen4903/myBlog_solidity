@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      02.NFT交易所 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">02.NFT交易所</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/25-solidity%E5%BA%94%E7%94%A8/" title="25.solidity应用">
+                    <b>#</b> 25.solidity应用
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="NFT交易所"><a href="#NFT交易所" class="headerlink" title="NFT交易所"></a>NFT交易所</h2><p><code>Opensea</code>是以太坊上最大的<code>NFT</code>交易平台，总交易总量达到了<code>$300亿</code>。<code>Opensea</code>在交易中抽成<code>2.5%</code>，因此它通过用户交易至少获利了<code>$7.5亿</code>。另外，它的运作并不去中心化，且不准备发币补偿用户。<code>NFT</code>玩家苦<code>Opensea</code>久已，今天我们就利用智能合约搭建一个零手续费的去中心化<code>NFT</code>交易所：<code>NFTSwap</code>。</p>
+<h2 id="设计逻辑"><a href="#设计逻辑" class="headerlink" title="设计逻辑"></a>设计逻辑</h2><ul>
+<li>卖家：出售<code>NFT</code>的一方，可以挂单<code>list</code>、撤单<code>revoke</code>、修改价格<code>update</code>。</li>
+<li>买家：购买<code>NFT</code>的一方，可以购买<code>purchase</code>。</li>
+<li>订单：卖家发布的<code>NFT</code>链上订单，一个系列的同一<code>tokenId</code>最多存在一个订单，其中包含挂单价格<code>price</code>和持有人<code>owner</code>信息。当一个订单交易完成或被撤单后，其中信息清零。</li>
+</ul>
+<h2 id="NFTSwap合约"><a href="#NFTSwap合约" class="headerlink" title="NFTSwap合约"></a>NFTSwap合约</h2><h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><p>合约包含<code>4</code>个事件，对应挂单<code>list</code>、撤单<code>revoke</code>、修改价格<code>update</code>、购买<code>purchase</code>这四个行为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">event List(address indexed seller, address indexed nftAddr, uint256 indexed tokenId, uint256 price);</span><br><span class="line">event Purchase(address indexed buyer, address indexed nftAddr, uint256 indexed tokenId, uint256 price);</span><br><span class="line">event Revoke(address indexed seller, address indexed nftAddr, uint256 indexed tokenId);    </span><br><span class="line">event Update(address indexed seller, address indexed nftAddr, uint256 indexed tokenId, uint256 newPrice);</span><br></pre></td></tr></table></figure>
+<h3 id="订单"><a href="#订单" class="headerlink" title="订单"></a>订单</h3><p><code>NFT</code>订单抽象为<code>Order</code>结构体，包含挂单价格<code>price</code>和持有人<code>owner</code>信息。<code>nftList</code>映射记录了订单是对应的<code>NFT</code>系列（合约地址）和<code>tokenId</code>信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 定义order结构体</span><br><span class="line">struct Order&#123;</span><br><span class="line">    address owner;</span><br><span class="line">    uint256 price; </span><br><span class="line">&#125;</span><br><span class="line">// NFT Order映射</span><br><span class="line">mapping(address =&gt; mapping(uint256 =&gt; Order)) public nftList;</span><br></pre></td></tr></table></figure>
+<h3 id="回退函数"><a href="#回退函数" class="headerlink" title="回退函数"></a>回退函数</h3><p>在<code>NFTSwap</code>中，用户使用<code>ETH</code>购买<code>NFT</code>。因此，合约需要实现<code>fallback()</code>函数来接收<code>ETH</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fallback() external payable&#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="onERC721Received"><a href="#onERC721Received" class="headerlink" title="onERC721Received"></a>onERC721Received</h3><p><code>ERC721</code>的安全转账函数会检查接收合约是否实现了<code>onERC721Received()</code>函数，并返回正确的选择器<code>selector</code>。用户下单之后，需要将<code>NFT</code>发送给<code>NFTSwap</code>合约。因此<code>NFTSwap</code>继承<code>IERC721Receiver</code>接口，并实现<code>onERC721Received()</code>函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">contract NFTSwap is IERC721Receiver&#123;</span><br><span class="line"></span><br><span class="line">    // 实现&#123;IERC721Receiver&#125;的onERC721Received，能够接收ERC721代币</span><br><span class="line">    function onERC721Received(</span><br><span class="line">        address operator,</span><br><span class="line">        address from,</span><br><span class="line">        uint tokenId,</span><br><span class="line">        bytes calldata data</span><br><span class="line">    ) external override returns (bytes4)&#123;</span><br><span class="line">        return IERC721Receiver.onERC721Received.selector;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="交易"><a href="#交易" class="headerlink" title="交易"></a>交易</h3><p>合约实现了<code>4</code>个交易相关的函数：</p>
+<ul>
+<li>挂单<code>list()</code>：卖家创建<code>NFT</code>并创建订单，并释放<code>List</code>事件。参数为<code>NFT</code>合约地址<code>_nftAddr</code>，<code>NFT</code>对应的<code>_tokenId</code>，挂单价格<code>_price</code>（<strong>注意：单位是<code>wei</code></strong>）。成功后，<code>NFT</code>会从卖家转到<code>NFTSwap</code>合约中。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 挂单: 卖家上架NFT，合约地址为_nftAddr，tokenId为_tokenId，价格_price为以太坊（单位是wei）</span><br><span class="line">function list(address _nftAddr, uint256 _tokenId, uint256 _price) public&#123;</span><br><span class="line">    IERC721 _nft = IERC721(_nftAddr); // 声明IERC721接口合约变量</span><br><span class="line">    require(_nft.getApproved(_tokenId) == address(this), &quot;Need Approval&quot;); // 合约得到授权</span><br><span class="line">    require(_price &gt; 0); // 价格大于0</span><br><span class="line"></span><br><span class="line">    Order storage _order = nftList[_nftAddr][_tokenId]; //设置NF持有人和价格</span><br><span class="line">    _order.owner = msg.sender;</span><br><span class="line">    _order.price = _price;</span><br><span class="line">    // 将NFT转账到合约</span><br><span class="line">    _nft.safeTransferFrom(msg.sender, address(this), _tokenId);</span><br><span class="line"></span><br><span class="line">    // 释放List事件</span><br><span class="line">    emit List(msg.sender, _nftAddr, _tokenId, _price);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>撤单<code>revoke()</code>：卖家撤回挂单，并释放<code>Revoke</code>事件。参数为<code>NFT</code>合约地址<code>_nftAddr</code>，<code>NFT</code>对应的<code>_tokenId</code>。成功后，<code>NFT</code>会从<code>NFTSwap</code>合约转回卖家。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 撤单： 卖家取消挂单</span><br><span class="line">function revoke(address _nftAddr, uint256 _tokenId) public &#123;</span><br><span class="line">    Order storage _order = nftList[_nftAddr][_tokenId]; // 取得Order        </span><br><span class="line">    require(_order.owner == msg.sender, &quot;Not Owner&quot;); // 必须由持有人发起</span><br><span class="line">    // 声明IERC721接口合约变量</span><br><span class="line">    IERC721 _nft = IERC721(_nftAddr);</span><br><span class="line">    require(_nft.ownerOf(_tokenId) == address(this), &quot;Invalid Order&quot;); // NFT在合约中</span><br><span class="line">    </span><br><span class="line">    // 将NFT转给卖家</span><br><span class="line">    _nft.safeTransferFrom(address(this), msg.sender, _tokenId);</span><br><span class="line">    delete nftList[_nftAddr][_tokenId]; // 删除order</span><br><span class="line">  </span><br><span class="line">    // 释放Revoke事件</span><br><span class="line">    emit Revoke(msg.sender, _nftAddr, _tokenId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改价格<code>update()</code>：卖家修改<code>NFT</code>订单价格，并释放<code>Update</code>事件。参数为<code>NFT</code>合约地址<code>_nftAddr</code>，<code>NFT</code>对应的<code>_tokenId</code>，更新后的挂单价格<code>_newPrice</code>（<strong>注意：单位是<code>wei</code></strong>）。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 调整价格: 卖家调整挂单价格</span><br><span class="line">function update(address _nftAddr, uint256 _tokenId, uint256 _newPrice) public &#123;</span><br><span class="line">    require(_newPrice &gt; 0, &quot;Invalid Price&quot;); // NFT价格大于0</span><br><span class="line">    Order storage _order = nftList[_nftAddr][_tokenId]; // 取得Order        </span><br><span class="line">    require(_order.owner == msg.sender, &quot;Not Owner&quot;); // 必须由持有人发起</span><br><span class="line">    // 声明IERC721接口合约变量</span><br><span class="line">    IERC721 _nft = IERC721(_nftAddr);</span><br><span class="line">    require(_nft.ownerOf(_tokenId) == address(this), &quot;Invalid Order&quot;); // NFT在合约中</span><br><span class="line">    </span><br><span class="line">    // 调整NFT价格</span><br><span class="line">    _order.price = _newPrice;</span><br><span class="line">  </span><br><span class="line">    // 释放Update事件</span><br><span class="line">    emit Update(msg.sender, _nftAddr, _tokenId, _newPrice);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>购买<code>purchase</code>：买家支付<code>ETH</code>购买挂单的<code>NFT</code>，并释放<code>Purchase</code>事件。参数为<code>NFT</code>合约地址<code>_nftAddr</code>，<code>NFT</code>对应的<code>_tokenId</code>。成功后，<code>ETH</code>将转给卖家，<code>NFT</code>将从<code>NFTSwap</code>合约转给买家。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 购买: 买家购买NFT，合约为_nftAddr，tokenId为_tokenId，调用函数时要附带ETH</span><br><span class="line">function purchase(address _nftAddr, uint256 _tokenId) payable public &#123;</span><br><span class="line">    Order storage _order = nftList[_nftAddr][_tokenId]; // 取得Order        </span><br><span class="line">    require(_order.price &gt; 0, &quot;Invalid Price&quot;); // NFT价格大于0</span><br><span class="line">    require(msg.value &gt;= _order.price, &quot;Increase price&quot;); // 购买价格大于标价</span><br><span class="line">    // 声明IERC721接口合约变量</span><br><span class="line">    IERC721 _nft = IERC721(_nftAddr);</span><br><span class="line">    require(_nft.ownerOf(_tokenId) == address(this), &quot;Invalid Order&quot;); // NFT在合约中</span><br><span class="line"></span><br><span class="line">    // 将NFT转给买家</span><br><span class="line">    _nft.safeTransferFrom(address(this), msg.sender, _tokenId);</span><br><span class="line">    // 将ETH转给卖家，多余ETH给买家退款</span><br><span class="line">    payable(_order.owner).transfer(_order.price);</span><br><span class="line">    payable(msg.sender).transfer(msg.value-_order.price);</span><br><span class="line"></span><br><span class="line">    delete nftList[_nftAddr][_tokenId]; // 删除order</span><br><span class="line"></span><br><span class="line">    // 释放Purchase事件</span><br><span class="line">    emit Purchase(msg.sender, _nftAddr, _tokenId, msg.value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Remix实现"><a href="#Remix实现" class="headerlink" title="Remix实现"></a>Remix实现</h2><h3 id="1-部署NFT合约"><a href="#1-部署NFT合约" class="headerlink" title="1. 部署NFT合约"></a>1. 部署NFT合约</h3><p>参考 <a target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTFSolidity/tree/main/34_ERC721">ERC721</a> 教程了解NFT，并部署<code>WTFApe</code> NFT合约。</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-1-14006b39caba3a0382fbc426dddaf3a2.png" alt></p>
+<p>将首个NFT mint给自己，这里mint给自己是为了之后能够上架NFT、修改价格等一系类操作。</p>
+<p><code>mint(address to, uint tokenId)</code>方法有2个参数:</p>
+<p><code>to</code>:将 NFT mint给指定的地址，这里通常是自己的钱包地址。</p>
+<p><code>tokenId</code>: <code>WTFApe</code>合约定义了总量为10000个NFT，图中mint它的的第一个和第二个NFT，<code>tokenId</code>分别为<code>0</code>和<code>1</code>。</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-2-da734d42ee99962cf47240bd3d0a55ce.png" alt></p>
+<p>在<code>WTFApe</code>合约中，利用<code>ownerOf</code>确认自己已经获得<code>tokenId</code>为0的NFT。</p>
+<p><code>ownerOf(uint tokenId)</code>方法有1个参数:</p>
+<p><code>tokenId</code>: <code>tokenId</code>为NFT的id，本案例中为上述mint的<code>0</code>Id。</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-3-ad0008ffbdb6bfaf971c6aa45e5642fd.png" alt></p>
+<p>按照上述方法，将TokenId为 <code>0</code> 和 <code>1</code> 的NFT都mint给自己，其中<code>tokenId</code>为<code>0</code>的，我们执行更新购买操作，<code>tokenId</code>为<code>1</code>的，我们执行下架操作。</p>
+<h3 id="2-部署NFTSwap合约"><a href="#2-部署NFTSwap合约" class="headerlink" title="2. 部署NFTSwap合约"></a>2. 部署NFTSwap合约</h3><p>部署<code>NFTSwap</code>合约。</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-4-627b2f13382d4c07e6002c99147db0d5.png" alt></p>
+<h3 id="3-将要上架的NFT授权给NFTSwap合约"><a href="#3-将要上架的NFT授权给NFTSwap合约" class="headerlink" title="3. 将要上架的NFT授权给NFTSwap合约"></a>3. 将要上架的NFT授权给NFTSwap合约</h3><p>在<code>WTFApe</code>合约中调用 <code>approve()</code>授权函数，将自己持有的<code>tokenId</code>为0的NFT授权给<code>NFTSwap</code>合约地址。</p>
+<p><code>approve(address to, uint tokenId)</code>方法有2个参数:</p>
+<p><code>to</code>: 将tokenId授权给 <code>to</code> 地址，本案例中将授权给<code>NFTSwap</code>合约地址。</p>
+<p><code>tokenId</code>: <code>tokenId</code>为NFT的id，本案例中为上述mint的<code>0</code>Id。</p>
+<p><img src="https://moe.photo/images/2023/01/19/225a3da1964f6314862a274df4bc4a60.png" alt></p>
+<p>按照上述方法，同理将<code>tokenId</code>为<code>1</code>的NFT也授权给<code>NFTSwap</code>合约地址。</p>
+<h3 id="4-上架NFT"><a href="#4-上架NFT" class="headerlink" title="4. 上架NFT"></a>4. 上架NFT</h3><p>调用<code>NFTSwap</code>合约的<code>list()</code>函数，将自己持有的<code>tokenId</code>为0的NFT上架到<code>NFTSwap</code>，价格设为1 <code>wei</code>。</p>
+<p><code>list(address _nftAddr, uint256 _tokenId, uint256 _price)</code>方法有3个参数:</p>
+<p><code>_nftAddr</code>: <code>_nftAddr</code>为NFT合约地址，本案例中为<code>WTFApe</code>合约地址。</p>
+<p><code>_tokenId</code>: <code>_tokenId</code>为NFT的id，本案例中为上述mint的<code>0</code>Id。</p>
+<p><code>_price</code>: <code>_price</code>为NFT的价格，本案例中为1 <code>wei</code>。</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-6-dfd1a514dbcd3e198ff3b070038d1da6.png" alt></p>
+<p>按照上述方法，同理将自己持有的<code>tokenId</code>为1的NFT上架到<code>NFTSwap</code>，价格设为1 <code>wei</code>。</p>
+<h3 id="5-查看上架NFT"><a href="#5-查看上架NFT" class="headerlink" title="5. 查看上架NFT"></a>5. 查看上架NFT</h3><p>调用<code>NFTSwap</code>合约的<code>nftList()</code>函数查看上架的NFT。</p>
+<p><code>nftList</code>:是一个NFT Order的映射，结构如下：</p>
+<p><code>nftList[_nftAddr][_tokenId]</code>: 输入<code>_nftAddr</code>和<code>_tokenId</code>，返回一个NFT订单。</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-7-19f2c648c2fdbacc765dc516031098f2.png" alt></p>
+<h3 id="6-更新NFT价格"><a href="#6-更新NFT价格" class="headerlink" title="6. 更新NFT价格"></a>6. 更新<code>NFT</code>价格</h3><p>调用<code>NFTSwap</code>合约的<code>update()</code>函数，将<code>tokenId</code>为0的NFT价格更新为77 <code>wei</code></p>
+<p><code>update(address _nftAddr, uint256 _tokenId, uint256 _newPrice)</code>方法有3个参数:</p>
+<p><code>_nftAddr</code>: <code>_nftAddr</code>为NFT合约地址，本案例中为<code>WTFApe</code>合约地址。</p>
+<p><code>_tokenId</code>: <code>_tokenId</code>为NFT的id，本案例中为上述mint的<code>0</code>Id。</p>
+<p><code>_newPrice</code>: <code>_newPrice</code>为NFT的新价格，本案例中为77 <code>wei</code>。</p>
+<p>执行<code>update</code>之后，调用<code>nftList</code> 查看更新后的价格</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-8-886e56ee15d1b57973679cfe537b9384.png" alt></p>
+<h3 id="6-下架NFT"><a href="#6-下架NFT" class="headerlink" title="6. 下架NFT"></a>6. 下架NFT</h3><p>调用<code>NFTSwap</code>合约的<code>revoke()</code>函数下架NFT。</p>
+<p>上述文章中，我们上架了2个NFT，<code>tokenId</code>分别为 <code>0</code> 和 <code>1</code>。本次方法中，我们下架<code>tokenId</code>为<code>1</code>的NFT。</p>
+<p><code>revoke(address _nftAddr, uint256 _tokenId)</code>方法有2个参数:</p>
+<p><code>_nftAddr</code>: <code>_nftAddr</code>为NFT合约地址，本案例中为<code>WTFApe</code>合约地址。</p>
+<p><code>_tokenId</code>: <code>_tokenId</code>为NFT的id，本案例中为上述mint的<code>1</code>Id。</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-9-8910ff75f2b8ff7d24a7b9e5fe092375.png" alt></p>
+<p>调用<code>NFTSwap</code>合约的<code>nftList()</code>函数，可以看到<code>NFT</code>已经下架。再次上架需要重新授权。</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-10-15c0167c6dd2f0b92c547f30628e1688.png" alt></p>
+<p><strong>注意下架NFT之后，需要重新从步骤3开始，重新授权和上架NFT之后，才能进行购买</strong></p>
+<h3 id="7-购买NFT"><a href="#7-购买NFT" class="headerlink" title="7. 购买NFT"></a>7. 购买NFT</h3><p>切换账号，调用<code>NFTSwap</code>合约的<code>purchase()</code>函数购买NFT，购买时需要输入<code>NFT</code>合约地址，<code>tokenId</code>，并输入支付的<code>ETH</code>。</p>
+<p>我们下架了<code>tokenId</code>为<code>1</code>的NFT，现在还存在<code>tokenId</code>为<code>0</code>的NFT，所以我们可以购买<code>tokenId</code>为<code>0</code>的NFT。</p>
+<p><code>purchase(address _nftAddr, uint256 _tokenId, uint256 _wei)</code>方法有3个参数:</p>
+<p><code>_nftAddr</code>: <code>_nftAddr</code>为NFT合约地址，本案例中为<code>WTFApe</code>合约地址。</p>
+<p><code>_tokenId</code>: <code>_tokenId</code>为NFT的id，本案例中为上述mint的<code>0</code>Id。</p>
+<p><code>_wei</code>: <code>_wei</code>为支付的<code>ETH</code>数量，本案例中为1 <code>wei</code>。</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-11-81e8539b32ea5d18eb8097690b760b71.png" alt></p>
+<h3 id="8-验证NFT持有人改变"><a href="#8-验证NFT持有人改变" class="headerlink" title="8. 验证NFT持有人改变"></a>8. 验证NFT持有人改变</h3><p>购买成功之后，调用<code>WTFApe</code>合约的<code>ownerOf()</code>函数，可以看到<code>NFT</code>持有者发生变化，购买成功！</p>
+<p><img src="https://moe.photo/images/2023/01/19/38-12-8dc7ed34b675548a77d9b60e229d1d13.png" alt></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲，我们建立了一个零手续费的去中心化<code>NFT</code>交易所。<code>OpenSea</code>虽然对<code>NFT</code>的发展做了很大贡献，但它的缺点也非常明显：高手续费、不发币回馈用户、交易机制容易被钓鱼导致用户资产丢失。目前<code>Looksrare</code>和<code>dydx</code>等新的<code>NFT</code>交易平台正在挑战<code>OpenSea</code>的位置，<code>Uniswap</code>也在研究新的<code>NFT</code>交易所。相信不久的将来，我们会用到更好的<code>NFT</code>交易所。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/03.%E9%9A%8F%E6%9C%BA%E6%95%B0/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:21
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/25-solidity%E5%BA%94%E7%94%A8/" title="25.solidity应用">
+                        <b>#</b> 25.solidity应用
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/09.%E4%BB%A3%E7%90%86%E5%90%88%E7%BA%A6/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#NFT%E4%BA%A4%E6%98%93%E6%89%80"><span class="toc-text">NFT交易所</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E9%80%BB%E8%BE%91"><span class="toc-text">设计逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NFTSwap%E5%90%88%E7%BA%A6"><span class="toc-text">NFTSwap合约</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6"><span class="toc-text">事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A2%E5%8D%95"><span class="toc-text">订单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E9%80%80%E5%87%BD%E6%95%B0"><span class="toc-text">回退函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#onERC721Received"><span class="toc-text">onERC721Received</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E6%98%93"><span class="toc-text">交易</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remix%E5%AE%9E%E7%8E%B0"><span class="toc-text">Remix实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%83%A8%E7%BD%B2NFT%E5%90%88%E7%BA%A6"><span class="toc-text">1. 部署NFT合约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%83%A8%E7%BD%B2NFTSwap%E5%90%88%E7%BA%A6"><span class="toc-text">2. 部署NFTSwap合约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B0%86%E8%A6%81%E4%B8%8A%E6%9E%B6%E7%9A%84NFT%E6%8E%88%E6%9D%83%E7%BB%99NFTSwap%E5%90%88%E7%BA%A6"><span class="toc-text">3. 将要上架的NFT授权给NFTSwap合约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%B8%8A%E6%9E%B6NFT"><span class="toc-text">4. 上架NFT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9F%A5%E7%9C%8B%E4%B8%8A%E6%9E%B6NFT"><span class="toc-text">5. 查看上架NFT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%9B%B4%E6%96%B0NFT%E4%BB%B7%E6%A0%BC"><span class="toc-text">6. 更新NFT价格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E4%B8%8B%E6%9E%B6NFT"><span class="toc-text">6. 下架NFT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%B4%AD%E4%B9%B0NFT"><span class="toc-text">7. 购买NFT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E9%AA%8C%E8%AF%81NFT%E6%8C%81%E6%9C%89%E4%BA%BA%E6%94%B9%E5%8F%98"><span class="toc-text">8. 验证NFT持有人改变</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 02.NFT%E4%BA%A4%E6%98%93%E6%89%80 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F25.solidity%25E5%25BA%2594%25E7%2594%25A8%2F02.NFT%25E4%25BA%25A4%25E6%2598%2593%25E6%2589%2580%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/25.solidity%E5%BA%94%E7%94%A8/02.NFT%E4%BA%A4%E6%98%93%E6%89%80/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

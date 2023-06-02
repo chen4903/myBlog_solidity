@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      11.拒绝服务攻击 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">11.拒绝服务攻击</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:19
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                    <b>#</b> 09.安全审计
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="拒绝服务攻击"><a href="#拒绝服务攻击" class="headerlink" title="拒绝服务攻击"></a>拒绝服务攻击</h1><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p><strong>传统网络安全拒绝服务攻击（DoS）</strong>：DoS 是 Denial of service 的简称，即拒绝服务，任何对服务的干涉，使得其可用性降低或者失去可用性均称为拒绝服务。常见的针对网络协议造成拒绝服务的攻击手段大致有以下几种：SYN Flood，IP 欺骗性攻击，UDP 洪水攻击，Ping 洪流攻击，Teardrop 攻击，Land 攻击，Smurf 攻击，Fraggle 攻击等。</p>
+<p><strong>智能合约拒绝服务攻击</strong>：可以导致智能合约无法正常使用的代码逻辑错误，兼容性错误或调用深度过大（区块链虚拟机的特性）的安全问题。智能合约中的拒绝服务攻击手法就相对比较简单，包括但不限于以下三种：</p>
+<ul>
+<li>基于代码逻辑的拒绝服务攻击：这种类型的拒绝服务攻击一般情况下是因为合约代码逻辑的不严谨造成的，最典型的是：当合约中存在对传入的映射或数组循环遍历的逻辑、没有限制传入的映射或数组的长度时，攻击者可以通过传入超长的映射或者数组进行循环遍历，大量消耗 Gas， 从而该笔交易的 Gas 溢出，最后使得智能合约暂时或永久不可操作。</li>
+<li>基于外部调用的拒绝服务攻击：这种拒绝服务攻击是建立在合约中对外部调用处理不当导致的。例如：智能合约中存在基于外部函数执行的结果来改变合约状态，且没有对交易一直失败的情况做出处理，攻击者会利用这个特点故意使交易失败，智能合约则会一直重复这笔失败的交易，从而造成智能合约逻辑卡在这里不能继续执行，最后使得智能合约暂时或永久不可操作。</li>
+<li>基于运营管理的拒绝服务攻击：这种拒绝服务攻击就是建立在后期运营情况下，例如：在智能合约中通常会存在以 Owner 账户作为管理员角色，该角色通常会持有很高的权限，例如开启或暂停转账功能，当 Owner 角色操作失误或私钥丢失可能会受到非主观意义上的拒绝服务攻击。</li>
+</ul>
+<h2 id="漏洞示例"><a href="#漏洞示例" class="headerlink" title="漏洞示例"></a>漏洞示例</h2><p>通过前置知识相信大家已经对拒绝服务这类攻击有一定的了解了，在触发拒绝服务攻击的三种手法中最典型的就是基于外部调用的拒绝服务攻击。下面我们就通过一段典型的代码示例来带大家深入了解：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.13;</span><br><span class="line"></span><br><span class="line">contract KingOfEther &#123;</span><br><span class="line">    address public king;</span><br><span class="line">    uint public balance;</span><br><span class="line"></span><br><span class="line">    function claimThrone() external payable &#123;</span><br><span class="line">        require(msg.value &gt; balance, &quot;Need to pay more to become the king&quot;);</span><br><span class="line">		//退钱给旧王</span><br><span class="line">        (bool sent, ) = king.call&#123;value: balance&#125;(&quot;&quot;);</span><br><span class="line">        require(sent, &quot;Failed to send Ether&quot;);</span><br><span class="line">		//产生新王</span><br><span class="line">        balance = msg.value;</span><br><span class="line">        king = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>我们可以看到上述合约的目的是选取“以太之王”，玩家可以通过 claimThrone() 合约中打入大于之前用户的任意数量的以太币来竞争“以太之王”的称号，当打入的以太币高于之前玩家时打入的以太币留在合约中并获得“以太之王”称号，之前玩家的以太币会原路退回。</p>
+<p>我们可以看到，生成新王和退回旧王的逻辑是在同一函数内完成的，并且 claimThrone() 中还检查了退款的返回值 sent，下面我们来结合这个特点来完成攻击。</p>
+<h2 id="攻击合约"><a href="#攻击合约" class="headerlink" title="攻击合约"></a>攻击合约</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.13;</span><br><span class="line"></span><br><span class="line">contract Attack &#123;</span><br><span class="line">    KingOfEther kingOfEther;</span><br><span class="line"></span><br><span class="line">    constructor(KingOfEther _kingOfEther) &#123;</span><br><span class="line">        kingOfEther = KingOfEther(_kingOfEther);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function attack() public payable &#123;</span><br><span class="line">        kingOfEther.claimThrone&#123;value: msg.value&#125;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>首先我们先来分析攻击流程：</p>
+<ol>
+<li>Alice 部署 KingOfEther 合约。</li>
+<li>Alice 调用 KingOfEther.claimThrone() 发送 1 个以太到 KingOfEther 合约中成为“以太之王”。</li>
+<li>高富帅 Bob 调用 KingOfEther.claimThrone() 发送 2 个以太到 KingOfEther 合约中成为新王。</li>
+<li>Alice 收到 1 个以太币的退款。</li>
+<li>Eve 使用 KingOfEther 的地址部署攻击合约 Attack。</li>
+<li>Eve 调用 Attack.attack() 向 KingOfEther 合约中发送 3 个以太。</li>
+<li>Attack 合约成为新王。</li>
+<li>高富帅 Bob 觉得不服，再次调用 KingOfEther.claimThrone() 向 KingOfEther 合约中发送了 20 个以太展现自己的“钞能力”。</li>
+<li>Bob 发现自己的交易一直被 revert，无法成为新王。至此，Eve 的攻击使 KingOfEther 合约永久失效，Attack 合约成为了永远的“以太之王”。</li>
+</ol>
+<p>高富帅 Bob 觉得不可思议，为啥自己这么有钱还不能称王呢？我们来看看到底是为什么。</p>
+<ol>
+<li>当 Bob 调用 KingOfEther.claimThrone() 发送 20 个以太到 KingOfEther 合约时，会触发 KingOfEther.claimThrone() 的退款逻辑，将之前 Eve 通过 Attack.attack() 向 KingOfEther 合约中发送的 3 个以太原路退回到 Attack 合约。</li>
+<li>我们再来看 Attack 合约，该合约中没有实现 payable 的 fallback() 所以不能接收以太币，这将导致 KingOfEther.claimThrone() 的退款逻辑一直失败，退款返回值 sent 将一直为 false 无法通过 require(sent, “Failed to send Ether”) 检查一直被 revert。</li>
+<li>因为只要触发退款就会被 revert 导致 KingOfEther 合约中继 Attack 合约后无人能成为新王，Eve 成功完成了拒绝服务攻击。</li>
+</ol>
+<h2 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h2><p><strong>作为开发者</strong></p>
+<ul>
+<li>在智能合约开发中应当注意处理连续失败的情况，例如将可能出现失败的外部调用逻辑异步处理。</li>
+<li>在使用 call 进行外部调用以及使用循环和遍历时应当注意 Gas 消耗。</li>
+<li>避免对单个角色过度授权的情况，处理合约权限时应做到合理的权限划分，对拥有权限的角色使用多签钱包管理，防止由于私钥泄漏导致权限丢失。</li>
+</ul>
+<p>下面是针对上面漏洞合约的修复示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.13;</span><br><span class="line"></span><br><span class="line">contract KingOfEther &#123;</span><br><span class="line">    address public king;</span><br><span class="line">    uint public KingValue;</span><br><span class="line">    mapping(address =&gt; uint) public balances;</span><br><span class="line"></span><br><span class="line">    function claimThrone() external payable &#123;</span><br><span class="line">        balances[msg.sender] += msg.value;</span><br><span class="line"></span><br><span class="line">        require(balances[msg.sender] &gt; balance, &quot;Need to pay more to become the king&quot;);</span><br><span class="line">        </span><br><span class="line">        KingValue = balances[msg.sender];</span><br><span class="line">        king = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function withdraw() public &#123;</span><br><span class="line">        require(msg.sender != king, &quot;Current king cannot withdraw&quot;);</span><br><span class="line">		//这么写防止重入攻击</span><br><span class="line">        uint amount = balances[msg.sender];</span><br><span class="line">        balances[msg.sender] = 0;</span><br><span class="line"></span><br><span class="line">        (bool sent, ) = msg.sender.call&#123;value: amount&#125;(&quot;&quot;);</span><br><span class="line">        require(sent, &quot;Failed to send Ether&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到修复合约中添加了 balances 映射，它记录了每个人向合约中打入以太的总数量，相较于之前合约的优势是玩家失去王位后可以追加以太重新获得王位。修复版本的关键点是将退款逻辑作异步处理，需要玩家手动调用 withdraw() 来自助退款，就算遇到恶意玩家拒收以太也只能影响到自己，不会再造成之前的拒绝服务了。</p>
+<p><strong>作为审计者</strong></p>
+<ul>
+<li><p>内部合约进行分析：</p>
+<ul>
+<li>注意合约中是否存在逻辑上的错误导致影响了可用性。</li>
+<li>注意是否存在由于虚拟机调用深度过大导致的 DoS（深度最大 1024）。</li>
+<li>重点关注在代码逻辑中是否存在大量消耗 Gas 的逻辑。</li>
+</ul>
+</li>
+<li><p>外部合约进行分析：</p>
+<ul>
+<li>关注与外部合约进行交互的时候没有考虑好兼容性的问题，如：未处理 TRC20-USDT 的返回值的兼容性，导致代币被锁定。</li>
+<li>重点检查有没有判断外部合约调用的返回值是否符合预期的效果。</li>
+</ul>
+</li>
+<li>对权限管理进行分析：<ul>
+<li>在审计中需要检查和确认所有函数方法的可见性及调用权限，需要结合项目方提供设计文档在审计中根据设计文档中的描述一一确认权限。如果发现过度授权或权限划分不清晰的需要与项目方交流改进方法，并且与项目方沟通运营操作的流程，确保流程上能够避免合约在运营的时候管理员操作失误或配置错误的情况。</li>
+</ul>
+</li>
+</ul>
+<p>引用：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/SPc96mQs3VO_OdDLKL1Vow">慢雾科技</a></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/10.GitHub%E7%9B%97%E5%8F%96%E7%A7%81%E9%92%A5/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:19
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/09-%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/" title="09.安全审计">
+                        <b>#</b> 09.安全审计
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/12.%E9%9A%8F%E6%9C%BA%E6%95%B0%E6%94%BB%E5%87%BB/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB"><span class="toc-text">拒绝服务攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E7%A4%BA%E4%BE%8B"><span class="toc-text">漏洞示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%90%88%E7%BA%A6"><span class="toc-text">攻击合约</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-text">修复建议</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 11.%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F09.%25E5%25AE%2589%25E5%2585%25A8%25E5%25AE%25A1%25E8%25AE%25A1%2F11.%25E6%258B%2592%25E7%25BB%259D%25E6%259C%258D%25E5%258A%25A1%25E6%2594%25BB%25E5%2587%25BB%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/09.%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/11.%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

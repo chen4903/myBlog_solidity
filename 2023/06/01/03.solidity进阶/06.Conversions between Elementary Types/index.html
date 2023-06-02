@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      06.Conversions between Elementary Types 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">06.Conversions between Elementary Types</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:18
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                    <b>#</b> 03.solidity进阶
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Conversions-between-Elementary-Types"><a href="#Conversions-between-Elementary-Types" class="headerlink" title="Conversions between Elementary Types"></a>Conversions between Elementary Types</h1><h2 id="Implicit-Conversions"><a href="#Implicit-Conversions" class="headerlink" title="Implicit Conversions"></a>Implicit Conversions</h2><p>An implicit type conversion is automatically applied by the compiler in some cases during assignments, when passing arguments to functions and when applying operators. In general, an implicit conversion between value-types is possible if it makes sense semantically and no information is lost.</p>
+<p>For example, <code>uint8</code> is convertible to <code>uint16</code> and <code>int128</code> to <code>int256</code>, but <code>int8</code> is not convertible to <code>uint256</code>, because <code>uint256</code> cannot hold values such as <code>-1</code>.</p>
+<p>If an operator is applied to different types, the compiler tries to implicitly convert one of the operands to the type of the other (the same is true for assignments). This means that operations are always performed in the type of one of the operands.</p>
+<p>For more details about which implicit conversions are possible, please consult the sections about the types themselves.</p>
+<p>In the example below, <code>y</code> and <code>z</code>, the operands of the addition, do not have the same type, but <code>uint8</code> can be implicitly converted to <code>uint16</code> and not vice-versa. Because of that, <code>y</code> is converted to the type of <code>z</code> before the addition is performed in the <code>uint16</code> type. The resulting type of the expression <code>y + z</code> is <code>uint16</code>. Because it is assigned to a variable of type <code>uint32</code> another implicit conversion is performed after the addition.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">uint8 y;</span><br><span class="line">uint16 z;</span><br><span class="line">uint32 x = y + z;</span><br></pre></td></tr></table></figure>
+<h2 id="Explicit-Conversions"><a href="#Explicit-Conversions" class="headerlink" title="Explicit Conversions"></a>Explicit Conversions</h2><p>If the compiler does not allow implicit conversion but you are confident a conversion will work, an explicit type conversion is sometimes possible. This may result in unexpected behaviour and allows you to bypass some security features of the compiler, so be sure to test that the result is what you want and expect!</p>
+<p>Take the following example that converts a negative <code>int</code> to a <code>uint</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int  y = -3;</span><br><span class="line">uint x = uint(y);</span><br></pre></td></tr></table></figure>
+<p>At the end of this code snippet, <code>x</code> will have the value <code>0xfffff..fd</code> (64 hex characters), which is -3 in the two’s complement representation of 256 bits.</p>
+<p>If an integer is explicitly converted to a smaller type, higher-order bits are cut off:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">uint32 a = 0x12345678;</span><br><span class="line">uint16 b = uint16(a); // b will be 0x5678 now</span><br></pre></td></tr></table></figure>
+<p>If an integer is explicitly converted to a larger type, it is padded on the left (i.e., at the higher order end). The result of the conversion will compare equal to the original integer:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">uint16 a = 0x1234;</span><br><span class="line">uint32 b = uint32(a); // b will be 0x00001234 now</span><br><span class="line">assert(a == b);</span><br></pre></td></tr></table></figure>
+<p>Fixed-size bytes types behave differently during conversions. They can be thought of as sequences of individual bytes and converting to a smaller type will cut off the sequence:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bytes2 a = 0x1234;</span><br><span class="line">bytes1 b = bytes1(a); // b will be 0x12</span><br></pre></td></tr></table></figure>
+<p>If a fixed-size bytes type is explicitly converted to a larger type, it is padded on the right. Accessing the byte at a fixed index will result in the same value before and after the conversion (if the index is still in range):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bytes2 a = 0x1234;</span><br><span class="line">bytes4 b = bytes4(a); // b will be 0x12340000</span><br><span class="line">assert(a[0] == b[0]);</span><br><span class="line">assert(a[1] == b[1]);</span><br></pre></td></tr></table></figure>
+<p>Since integers and fixed-size byte arrays behave differently when truncating or padding, explicit conversions between integers and fixed-size byte arrays are only allowed, if both have the same size. If you want to convert between integers and fixed-size byte arrays of different size, you have to use intermediate conversions that make the desired truncation and padding rules explicit:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bytes2 a = 0x1234;</span><br><span class="line">uint32 b = uint16(a); // b will be 0x00001234</span><br><span class="line">uint32 c = uint32(bytes4(a)); // c will be 0x12340000</span><br><span class="line">uint8 d = uint8(uint16(a)); // d will be 0x34</span><br><span class="line">uint8 e = uint8(bytes1(a)); // e will be 0x12</span><br></pre></td></tr></table></figure>
+<p><code>bytes</code> arrays and <code>bytes</code> calldata slices can be converted explicitly to fixed bytes types (<code>bytes1</code>/…/<code>bytes32</code>). In case the array is longer than the target fixed bytes type, truncation at the end will happen. If the array is shorter than the target type, it will be padded with zeros at the end.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity ^0.8.5;</span><br><span class="line"></span><br><span class="line">contract C &#123;</span><br><span class="line">    bytes s = &quot;abcdefgh&quot;;</span><br><span class="line">    function f(bytes calldata c, bytes memory m) public view returns (bytes16, bytes3) &#123;</span><br><span class="line">        require(c.length == 16, &quot;&quot;);</span><br><span class="line">        bytes16 b = bytes16(m);  // if length of m is greater than 16, truncation will happen</span><br><span class="line">        b = bytes16(s);  // padded on the right, so result is &quot;abcdefgh\0\0\0\0\0\0\0\0&quot;</span><br><span class="line">        bytes3 b1 = bytes3(s); // truncated, b1 equals to &quot;abc&quot;</span><br><span class="line">        b = bytes16(c[:8]);  // also padded with zeros</span><br><span class="line">        return (b, b1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Conversions-between-Literals-and-Elementary-Types"><a href="#Conversions-between-Literals-and-Elementary-Types" class="headerlink" title="Conversions between Literals and Elementary Types"></a>Conversions between Literals and Elementary Types</h2><h3 id="Integer-Types"><a href="#Integer-Types" class="headerlink" title="Integer Types"></a>Integer Types</h3><p>Decimal and hexadecimal number literals can be implicitly converted to any integer type that is large enough to represent it without truncation:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">uint8 a = 12; // fine</span><br><span class="line">uint32 b = 1234; // fine</span><br><span class="line">uint16 c = 0x123456; // fails, since it would have to truncate to 0x3456</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Note</p>
+<p>Prior to version 0.8.0, any decimal or hexadecimal number literals could be explicitly converted to an integer type. From 0.8.0, such explicit conversions are as strict as implicit conversions, i.e., they are only allowed if the literal fits in the resulting range.</p>
+</blockquote>
+<h3 id="Fixed-Size-Byte-Arrays"><a href="#Fixed-Size-Byte-Arrays" class="headerlink" title="Fixed-Size Byte Arrays"></a>Fixed-Size Byte Arrays</h3><p>Decimal number literals cannot be implicitly converted to fixed-size byte arrays. Hexadecimal number literals can be, but only if the number of hex digits exactly fits the size of the bytes type. As an exception both decimal and hexadecimal literals which have a value of zero can be converted to any fixed-size bytes type:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bytes2 a = 54321; // not allowed</span><br><span class="line">bytes2 b = 0x12; // not allowed</span><br><span class="line">bytes2 c = 0x123; // not allowed</span><br><span class="line">bytes2 d = 0x1234; // fine</span><br><span class="line">bytes2 e = 0x0012; // fine</span><br><span class="line">bytes4 f = 0; // fine</span><br><span class="line">bytes4 g = 0x0; // fine</span><br></pre></td></tr></table></figure>
+<p>String literals and hex string literals can be implicitly converted to fixed-size byte arrays, if their number of characters matches the size of the bytes type:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bytes2 a = hex&quot;1234&quot;; // fine</span><br><span class="line">bytes2 b = &quot;xy&quot;; // fine</span><br><span class="line">bytes2 c = hex&quot;12&quot;; // not allowed</span><br><span class="line">bytes2 d = hex&quot;123&quot;; // not allowed</span><br><span class="line">bytes2 e = &quot;x&quot;; // not allowed</span><br><span class="line">bytes2 f = &quot;xyz&quot;; // not allowed</span><br></pre></td></tr></table></figure>
+<h2 id="Addresses"><a href="#Addresses" class="headerlink" title="Addresses"></a>Addresses</h2><p>As described in <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/types.html#address-literals">Address Literals</a>, hex literals of the correct size that pass the checksum test are of <code>address</code> type. No other literals can be implicitly converted to the <code>address</code> type.</p>
+<p>Explicit conversions to <code>address</code> are allowed only from <code>bytes20</code> and <code>uint160</code>.</p>
+<p>An <code>address a</code> can be converted explicitly to <code>address payable</code> via <code>payable(a)</code>.</p>
+<blockquote>
+<p>Note</p>
+<p>Prior to version 0.8.0, it was possible to explicitly convert from any integer type (of any size, signed or unsigned) to <code>address</code> or <code>address payable</code>. Starting with in 0.8.0 only conversion from <code>uint160</code> is allowed.</p>
+</blockquote>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/03.solidity%E8%BF%9B%E9%98%B6/05.ABI/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:18
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                        <b>#</b> 03.solidity进阶
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/03.solidity%E8%BF%9B%E9%98%B6/07.Contract%20initialization/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Conversions-between-Elementary-Types"><span class="toc-text">Conversions between Elementary Types</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Implicit-Conversions"><span class="toc-text">Implicit Conversions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Explicit-Conversions"><span class="toc-text">Explicit Conversions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conversions-between-Literals-and-Elementary-Types"><span class="toc-text">Conversions between Literals and Elementary Types</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Integer-Types"><span class="toc-text">Integer Types</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fixed-Size-Byte-Arrays"><span class="toc-text">Fixed-Size Byte Arrays</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Addresses"><span class="toc-text">Addresses</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 06.Conversions%20between%20Elementary%20Types + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F03.solidity%25E8%25BF%259B%25E9%2598%25B6%2F06.Conversions%2520between%2520Elementary%2520Types%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/03.solidity%E8%BF%9B%E9%98%B6/06.Conversions%20between%20Elementary%20Types/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

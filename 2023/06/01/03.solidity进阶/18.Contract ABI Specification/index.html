@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      18.Contract ABI Specification 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">18.Contract ABI Specification</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:18
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                    <b>#</b> 03.solidity进阶
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Contract-ABI-Specification"><a href="#Contract-ABI-Specification" class="headerlink" title="Contract ABI Specification"></a>Contract ABI Specification</h1><h2 id="Basic-Design"><a href="#Basic-Design" class="headerlink" title="Basic Design"></a>Basic Design</h2><p>The Contract Application Binary Interface (ABI) is the standard way to interact with contracts in the Ethereum ecosystem, both from outside the blockchain and for contract-to-contract interaction. Data is encoded according to its type, as described in this specification. The encoding is not self describing and thus requires a schema in order to decode.</p>
+<p>We assume that the interface functions of a contract are strongly typed, known at compilation time and static. We assume that all contracts will have the interface definitions of any contracts they call available at compile-time.</p>
+<p>This specification does not address contracts whose interface is dynamic or otherwise known only at run-time.</p>
+<h2 id="Function-Selector"><a href="#Function-Selector" class="headerlink" title="Function Selector"></a>Function Selector</h2><p>The first four bytes of the call data for a function call specifies the function to be called. It is the first (left, high-order in big-endian) four bytes of the Keccak-256 hash of the signature of the function. The signature is defined as the canonical expression of the basic prototype without data location specifier, i.e. the function name with the parenthesised list of parameter types. Parameter types are split by a single comma — no spaces are used.</p>
+<p>The return type of a function is not part of this signature. In <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#overload-function">Solidity’s function overloading</a> return types are not considered. The reason is to keep function call resolution context-independent. The <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/abi-spec.html#abi-json">JSON description of the ABI</a> however contains both inputs and outputs.</p>
+<h2 id="Argument-Encoding"><a href="#Argument-Encoding" class="headerlink" title="Argument Encoding"></a>Argument Encoding</h2><p>Starting from the fifth byte, the encoded arguments follow. This encoding is also used in other places, e.g. the return values and also event arguments are encoded in the same way, without the four bytes specifying the function.</p>
+<h2 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h2><p>The following elementary types exist:</p>
+<ul>
+<li><code>uint&lt;M&gt;</code>: unsigned integer type of <code>M</code> bits, <code>0 &lt; M &lt;= 256</code>, <code>M % 8 == 0</code>. e.g. <code>uint32</code>, <code>uint8</code>, <code>uint256</code>.</li>
+<li><code>int&lt;M&gt;</code>: two’s complement signed integer type of <code>M</code> bits, <code>0 &lt; M &lt;= 256</code>, <code>M % 8 == 0</code>.</li>
+<li><code>address</code>: equivalent to <code>uint160</code>, except for the assumed interpretation and language typing. For computing the function selector, <code>address</code> is used.</li>
+<li><code>uint</code>, <code>int</code>: synonyms for <code>uint256</code>, <code>int256</code> respectively. For computing the function selector, <code>uint256</code> and <code>int256</code> have to be used.</li>
+<li><code>bool</code>: equivalent to <code>uint8</code> restricted to the values 0 and 1. For computing the function selector, <code>bool</code> is used.</li>
+<li><code>fixed&lt;M&gt;x&lt;N&gt;</code>: signed fixed-point decimal number of <code>M</code> bits, <code>8 &lt;= M &lt;= 256</code>, <code>M % 8 == 0</code>, and <code>0 &lt; N &lt;= 80</code>, which denotes the value <code>v</code> as <code>v / (10 ** N)</code>.</li>
+<li><code>ufixed&lt;M&gt;x&lt;N&gt;</code>: unsigned variant of <code>fixed&lt;M&gt;x&lt;N&gt;</code>.</li>
+<li><code>fixed</code>, <code>ufixed</code>: synonyms for <code>fixed128x18</code>, <code>ufixed128x18</code> respectively. For computing the function selector, <code>fixed128x18</code> and <code>ufixed128x18</code> have to be used.</li>
+<li><code>bytes&lt;M&gt;</code>: binary type of <code>M</code> bytes, <code>0 &lt; M &lt;= 32</code>.</li>
+<li><code>function</code>: an address (20 bytes) followed by a function selector (4 bytes). Encoded identical to <code>bytes24</code>.</li>
+</ul>
+<p>The following (fixed-size) array type exists:</p>
+<ul>
+<li><code>&lt;type&gt;[M]</code>: a fixed-length array of <code>M</code> elements, <code>M &gt;= 0</code>, of the given type.</li>
+</ul>
+<blockquote>
+<p>Note</p>
+<p>While this ABI specification can express fixed-length arrays with zero elements, they’re not supported by the compiler.</p>
+</blockquote>
+<p>The following non-fixed-size types exist:</p>
+<ul>
+<li><code>bytes</code>: dynamic sized byte sequence.</li>
+<li><code>string</code>: dynamic sized unicode string assumed to be UTF-8 encoded.</li>
+<li><code>&lt;type&gt;[]</code>: a variable-length array of elements of the given type.</li>
+</ul>
+<p>Types can be combined to a tuple by enclosing them inside parentheses, separated by commas:</p>
+<ul>
+<li><code>(T1,T2,...,Tn)</code>: tuple consisting of the types <code>T1</code>, …, <code>Tn</code>, <code>n &gt;= 0</code></li>
+</ul>
+<p>It is possible to form tuples of tuples, arrays of tuples and so on. It is also possible to form zero-tuples (where <code>n == 0</code>).</p>
+<h2 id="Mapping-Solidity-to-ABI-types"><a href="#Mapping-Solidity-to-ABI-types" class="headerlink" title="Mapping Solidity to ABI types"></a>Mapping Solidity to ABI types</h2><p>Solidity supports all the types presented above with the same names with the exception of tuples. On the other hand, some Solidity types are not supported by the ABI. The following table shows on the left column Solidity types that are not part of the ABI, and on the right column the ABI types that represent them.</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Solidity</th>
+<th>ABI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/types.html#address">address payable</a></td>
+<td><code>address</code></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#contracts">contract</a></td>
+<td><code>address</code></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/types.html#enums">enum</a></td>
+<td><code>uint8</code></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/types.html#user-defined-value-types">user defined value types</a></td>
+<td>its underlying value type</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/types.html#structs">struct</a></td>
+<td><code>tuple</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Design-Criteria-for-the-Encoding"><a href="#Design-Criteria-for-the-Encoding" class="headerlink" title="Design Criteria for the Encoding"></a>Design Criteria for the Encoding</h2><p>The encoding is designed to have the following properties, which are especially useful if some arguments are nested arrays:</p>
+<ol>
+<li>The number of reads necessary to access a value is at most the depth of the value inside the argument array structure, i.e. four reads are needed to retrieve <code>a_i[k][l][r]</code>. In a previous version of the ABI, the number of reads scaled linearly with the total number of dynamic parameters in the worst case.</li>
+<li>The data of a variable or an array element is not interleaved with other data and it is relocatable, i.e. it only uses relative “addresses”.</li>
+</ol>
+<h2 id="Formal-Specification-of-the-Encoding"><a href="#Formal-Specification-of-the-Encoding" class="headerlink" title="Formal Specification of the Encoding"></a>Formal Specification of the Encoding</h2><p>We distinguish static and dynamic types. Static types are encoded in-place and dynamic types are encoded at a separately allocated location after the current block.</p>
+<p><strong>Definition:</strong> The following types are called “dynamic”:</p>
+<ul>
+<li><code>bytes</code></li>
+<li><code>string</code></li>
+<li><code>T[]</code> for any <code>T</code></li>
+<li><code>T[k]</code> for any dynamic <code>T</code> and any <code>k &gt;= 0</code></li>
+<li><code>(T1,...,Tk)</code> if <code>Ti</code> is dynamic for some <code>1 &lt;= i &lt;= k</code></li>
+</ul>
+<p>All other types are called “static”.</p>
+<p><strong>Definition:</strong> <code>len(a)</code> is the number of bytes in a binary string <code>a</code>. The type of <code>len(a)</code> is assumed to be <code>uint256</code>.</p>
+<p>We define <code>enc</code>, the actual encoding, as a mapping of values of the ABI types to binary strings such that <code>len(enc(X))</code> depends on the value of <code>X</code> if and only if the type of <code>X</code> is dynamic.【我的理解：  一元数组 a[] 需要 2 次， 才能找到变量， 第一次是定位到整个变量空间的位置， 然后是从对应的槽位置读取值。 普通的变量是直接从对应的槽读取，对于变长的变量，   槽对应的值是 变量空间的位置】</p>
+<p><strong>Definition:</strong> For any ABI value <code>X</code>, we recursively define <code>enc(X)</code>, depending on the type of <code>X</code> being</p>
+<ul>
+<li><p><code>(T1,...,Tk)</code> for <code>k &gt;= 0</code> and any types <code>T1</code>, …, <code>Tk</code></p>
+<p><code>enc(X) = head(X(1)) ... head(X(k)) tail(X(1)) ... tail(X(k))</code></p>
+<p>where <code>X = (X(1), ..., X(k))</code> and <code>head</code> and <code>tail</code> are defined for <code>Ti</code> as follows:</p>
+<p>if <code>Ti</code> is static:</p>
+<blockquote>
+<p><code>head(X(i)) = enc(X(i))</code> and <code>tail(X(i)) = &quot;&quot;</code> (the empty string)</p>
+</blockquote>
+<p>otherwise, i.e. if <code>Ti</code> is dynamic:</p>
+<blockquote>
+<p><code>head(X(i)) = enc(len( head(X(1)) ... head(X(k)) tail(X(1)) ... tail(X(i-1)) ))</code> <code>tail(X(i)) = enc(X(i))</code></p>
+</blockquote>
+<p>Note that in the dynamic case, <code>head(X(i))</code> is well-defined since the lengths of the head parts only depend on the types and not the values. The value of <code>head(X(i))</code> is the offset of the beginning of <code>tail(X(i))</code> relative to the start of <code>enc(X)</code>.</p>
+</li>
+<li><p><code>T[k]</code> for any <code>T</code> and <code>k</code>:</p>
+<p><code>enc(X) = enc((X[0], ..., X[k-1]))</code></p>
+<p>i.e. it is encoded as if it were a tuple with <code>k</code> elements of the same type.</p>
+</li>
+<li><p><code>T[]</code> where <code>X</code> has <code>k</code> elements (<code>k</code> is assumed to be of type <code>uint256</code>):</p>
+<p><code>enc(X) = enc(k) enc((X[0], ..., X[k-1]))</code></p>
+<p>i.e. it is encoded as if it were a tuple with <code>k</code> elements of the same type (resp. an array of static size <code>k</code>), prefixed with the number of elements.</p>
+</li>
+<li><p><code>bytes</code>, of length <code>k</code> (which is assumed to be of type <code>uint256</code>):</p>
+<p><code>enc(X) = enc(k) pad_right(X)</code>, i.e. the number of bytes is encoded as a <code>uint256</code> followed by the actual value of <code>X</code> as a byte sequence, followed by the minimum number of zero-bytes such that <code>len(enc(X))</code> is a multiple of 32.</p>
+</li>
+<li><p><code>string</code>:</p>
+<p><code>enc(X) = enc(enc_utf8(X))</code>, i.e. <code>X</code> is UTF-8 encoded and this value is interpreted as of <code>bytes</code> type and encoded further. Note that the length used in this subsequent encoding is the number of bytes of the UTF-8 encoded string, not its number of characters.</p>
+</li>
+<li><p><code>uint&lt;M&gt;</code>: <code>enc(X)</code> is the big-endian encoding of <code>X</code>, padded on the higher-order (left) side with zero-bytes such that the length is 32 bytes.</p>
+</li>
+<li><p><code>address</code>: as in the <code>uint160</code> case</p>
+</li>
+<li><p><code>int&lt;M&gt;</code>: <code>enc(X)</code> is the big-endian two’s complement encoding of <code>X</code>, padded on the higher-order (left) side with <code>0xff</code> bytes for negative <code>X</code> and with zero-bytes for non-negative <code>X</code> such that the length is 32 bytes.</p>
+</li>
+<li><p><code>bool</code>: as in the <code>uint8</code> case, where <code>1</code> is used for <code>true</code> and <code>0</code> for <code>false</code></p>
+</li>
+<li><p><code>fixed&lt;M&gt;x&lt;N&gt;</code>: <code>enc(X)</code> is <code>enc(X * 10**N)</code> where <code>X * 10**N</code> is interpreted as a <code>int256</code>.</p>
+</li>
+<li><p><code>fixed</code>: as in the <code>fixed128x18</code> case</p>
+</li>
+<li><p><code>ufixed&lt;M&gt;x&lt;N&gt;</code>: <code>enc(X)</code> is <code>enc(X * 10**N)</code> where <code>X * 10**N</code> is interpreted as a <code>uint256</code>.</p>
+</li>
+<li><p><code>ufixed</code>: as in the <code>ufixed128x18</code> case</p>
+</li>
+<li><p><code>bytes&lt;M&gt;</code>: <code>enc(X)</code> is the sequence of bytes in <code>X</code> padded with trailing zero-bytes to a length of 32 bytes.</p>
+</li>
+</ul>
+<p>Note that for any <code>X</code>, <code>len(enc(X))</code> is a multiple of 32.</p>
+<h2 id="Function-Selector-and-Argument-Encoding"><a href="#Function-Selector-and-Argument-Encoding" class="headerlink" title="Function Selector and Argument Encoding"></a>Function Selector and Argument Encoding</h2><p>All in all, a call to the function <code>f</code> with parameters <code>a_1, ..., a_n</code> is encoded as</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function_selector(f) enc((a_1, ..., a_n))</span><br></pre></td></tr></table></figure>
+<p>and the return values <code>v_1, ..., v_k</code> of <code>f</code> are encoded as</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enc((v_1, ..., v_k))</span><br></pre></td></tr></table></figure>
+<p>i.e. the values are combined into a tuple and encoded.</p>
+<h3 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h3><p>Given the contract:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.4.16 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract Foo &#123;</span><br><span class="line">    function bar(bytes3[2] memory) public pure &#123;&#125;</span><br><span class="line">    function baz(uint32 x, bool y) public pure returns (bool r) &#123;</span><br><span class="line">    	r = x &gt; 32 || y; </span><br><span class="line">    &#125;</span><br><span class="line">    function sam(bytes memory, bool, uint[] memory) public pure &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1"><a href="#1" class="headerlink" title="(1)"></a>(1)</h3><p>Thus, for our <code>Foo</code> example if we wanted to call <code>baz</code> with the parameters <code>69</code> and <code>true</code>, we would pass 68 bytes total, which can be broken down into:</p>
+<ul>
+<li><code>0xcdcd77c0</code>: the Method ID. This is derived as the first 4 bytes of the Keccak hash of the ASCII form of the signature <code>baz(uint32,bool)</code>.</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000045</code>: the first parameter, a uint32 value <code>69</code> padded to 32 bytes</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000001</code>: the second parameter - boolean <code>true</code>, padded to 32 bytes</li>
+</ul>
+<p>In total:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0xcdcd77c000000000000000000000000000000000000000000000000000000000000000450000000000000000000000000000000000000000000000000000000000000001</span><br></pre></td></tr></table></figure>
+<p>It returns a single <code>bool</code>. If, for example, it were to return <code>false</code>, its output would be the single byte array <code>0x0000000000000000000000000000000000000000000000000000000000000000</code>, a single bool.</p>
+<h3 id="2"><a href="#2" class="headerlink" title="(2)"></a>(2)</h3><p>If we wanted to call <code>bar</code> with the argument <code>[&quot;abc&quot;, &quot;def&quot;]</code>, we would pass 68 bytes total, broken down into:</p>
+<ul>
+<li><code>0xfce353f6</code>: the Method ID. This is derived from the signature <code>bar(bytes3[2])</code>.</li>
+<li><code>0x6162630000000000000000000000000000000000000000000000000000000000</code>: the first part of the first parameter, a <code>bytes3</code> value <code>&quot;abc&quot;</code> (left-aligned).</li>
+<li><code>0x6465660000000000000000000000000000000000000000000000000000000000</code>: the second part of the first parameter, a <code>bytes3</code> value <code>&quot;def&quot;</code> (left-aligned).</li>
+</ul>
+<p>In total:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0xfce353f661626300000000000000000000000000000000000000000000000000000000006465660000000000000000000000000000000000000000000000000000000000</span><br></pre></td></tr></table></figure>
+<h3 id="3"><a href="#3" class="headerlink" title="(3)"></a>(3)</h3><p>If we wanted to call <code>sam</code> with the arguments <code>&quot;dave&quot;</code>, <code>true</code> and <code>[1,2,3]</code>, we would pass 292 bytes total, broken down into:</p>
+<ul>
+<li><code>0xa5643bf2</code>: the Method ID. This is derived from the signature <code>sam(bytes,bool,uint256[])</code>. Note that <code>uint</code> is replaced with its canonical representation <code>uint256</code>.</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000060</code>: the location of the data part of the first parameter (dynamic type), measured in bytes from the start of the arguments block. In this case, <code>0x60</code>.【因为第一个参数bytes的数据的实际存放位置是在：32bytes(参数bytes)+32bytes(参数bool)+32bytes(参数uint256[])的后面，相加得96，即0x60，从0x60往后的32字节是bytes数据的存放位置】</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000001</code>: the second parameter: boolean true.</li>
+<li><code>0x00000000000000000000000000000000000000000000000000000000000000a0</code>: the location of the data part of the third parameter (dynamic type), measured in bytes. In this case, <code>0xa0</code>.【第三个数据的数据存放位置是在：32bytes(参数bytes)+32bytes(参数bool)+32bytes(参数uint256[]+32bytes(bytes的长度)+32bytes(bytes的实际数据)，相加得160即0xa0】</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000004</code>: the data part of the first argument, it starts with the length of the byte array in elements, in this case, 4.</li>
+<li><code>0x6461766500000000000000000000000000000000000000000000000000000000</code>: the contents of the first argument: the UTF-8 (equal to ASCII in this case) encoding of <code>&quot;dave&quot;</code>, padded on the right to 32 bytes.</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000003</code>: the data part of the third argument, it starts with the length of the array in elements, in this case, 3.</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000001</code>: the first entry of the third parameter.</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000002</code>: the second entry of the third parameter.</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000003</code>: the third entry of the third parameter.</li>
+</ul>
+<p>In total:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0xa5643bf20000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000464617665000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003</span><br></pre></td></tr></table></figure>
+<h2 id="Use-of-Dynamic-Types"><a href="#Use-of-Dynamic-Types" class="headerlink" title="Use of Dynamic Types"></a>Use of Dynamic Types</h2><h3 id="example1"><a href="#example1" class="headerlink" title="example1"></a>example1</h3><p>A call to a function with the signature <code>f(uint256,uint32[],bytes10,bytes)</code> with values <code>(0x123, [0x456, 0x789], &quot;1234567890&quot;, &quot;Hello, world!&quot;)</code> is encoded in the following way:</p>
+<p>We take the first four bytes of <code>sha3(&quot;f(uint256,uint32[],bytes10,bytes)&quot;)</code>, i.e. <code>0x8be65246</code>. Then we encode the head parts of all four arguments. For the static types <code>uint256</code> and <code>bytes10</code>, these are directly the values we want to pass, whereas for the dynamic types <code>uint32[]</code> and <code>bytes</code>, we use the offset in bytes to the start of their data area, measured from the start of the value encoding (i.e. not counting the first four bytes containing the hash of the function signature). These are:</p>
+<ul>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000123</code> (<code>0x123</code> padded to 32 bytes)</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000080</code> (offset to start of data part of second parameter, 4*32 bytes, exactly the size of the head part)</li>
+<li><code>0x3132333435363738393000000000000000000000000000000000000000000000</code> (<code>&quot;1234567890&quot;</code> padded to 32 bytes on the right)</li>
+<li><code>0x00000000000000000000000000000000000000000000000000000000000000e0</code> (offset to start of data part of fourth parameter = offset to start of data part of first dynamic parameter + size of data part of first dynamic parameter = 4<em>32 + 3</em>32 (see below))</li>
+</ul>
+<p>After this, the data part of the first dynamic argument, <code>[0x456, 0x789]</code> follows:</p>
+<ul>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000002</code> (number of elements of the array, 2)</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000456</code> (first element)</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000789</code> (second element)</li>
+</ul>
+<p>Finally, we encode the data part of the second dynamic argument, <code>&quot;Hello, world!&quot;</code>:</p>
+<ul>
+<li><code>0x000000000000000000000000000000000000000000000000000000000000000d</code> (number of elements (bytes in this case): 13)</li>
+<li><code>0x48656c6c6f2c20776f726c642100000000000000000000000000000000000000</code> (<code>&quot;Hello, world!&quot;</code> padded to 32 bytes on the right)</li>
+</ul>
+<p>All together, the encoding is (newline after function selector and each 32-bytes for clarity):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">0x8be65246</span><br><span class="line">  0000000000000000000000000000000000000000000000000000000000000123</span><br><span class="line">  0000000000000000000000000000000000000000000000000000000000000080</span><br><span class="line">  3132333435363738393000000000000000000000000000000000000000000000</span><br><span class="line">  00000000000000000000000000000000000000000000000000000000000000e0</span><br><span class="line">  </span><br><span class="line">  0000000000000000000000000000000000000000000000000000000000000002</span><br><span class="line">  0000000000000000000000000000000000000000000000000000000000000456</span><br><span class="line">  0000000000000000000000000000000000000000000000000000000000000789</span><br><span class="line">  000000000000000000000000000000000000000000000000000000000000000d</span><br><span class="line">  48656c6c6f2c20776f726c642100000000000000000000000000000000000000</span><br></pre></td></tr></table></figure>
+<h3 id="example2"><a href="#example2" class="headerlink" title="example2"></a>example2</h3><p>Let us apply the same principle to encode the data for a function with a signature <code>g(uint256[][],string[])</code> with values <code>([[1, 2], [3]], [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;])</code> but start from the most atomic parts of the encoding:</p>
+<p>First we encode the length and data of the first embedded dynamic array <code>[1, 2]</code> of the first root array <code>[[1, 2], [3]]</code>:</p>
+<ul>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000002</code> (number of elements in the first array, 2; the elements themselves are <code>1</code> and <code>2</code>)</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000001</code> (first element)</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000002</code> (second element)</li>
+</ul>
+<p>Then we encode the length and data of the second embedded dynamic array <code>[3]</code> of the first root array <code>[[1, 2], [3]]</code>:</p>
+<ul>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000001</code> (number of elements in the second array, 1; the element is <code>3</code>)</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000003</code> (first element)</li>
+</ul>
+<p>Then we need to find the offsets <code>a</code> and <code>b</code> for their respective dynamic arrays <code>[1, 2]</code> and <code>[3]</code>. To calculate the offsets we can take a look at the encoded data of the first root array <code>[[1, 2], [3]]</code> enumerating each line in the encoding:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0 - a                                                                - offset of [1, 2]</span><br><span class="line">1 - b                                                                - offset of [3]</span><br><span class="line">2 - 0000000000000000000000000000000000000000000000000000000000000002 - count for [1, 2]</span><br><span class="line">3 - 0000000000000000000000000000000000000000000000000000000000000001 - encoding of 1</span><br><span class="line">4 - 0000000000000000000000000000000000000000000000000000000000000002 - encoding of 2</span><br><span class="line">5 - 0000000000000000000000000000000000000000000000000000000000000001 - count for [3]</span><br><span class="line">6 - 0000000000000000000000000000000000000000000000000000000000000003 - encoding of 3</span><br></pre></td></tr></table></figure>
+<p>Offset <code>a</code> points to the start of the content of the array <code>[1, 2]</code> which is line 2 (64 bytes); thus <code>a = 0x0000000000000000000000000000000000000000000000000000000000000040</code>.</p>
+<p>Offset <code>b</code> points to the start of the content of the array <code>[3]</code> which is line 5 (160 bytes); thus <code>b = 0x00000000000000000000000000000000000000000000000000000000000000a0</code>.</p>
+<p>Then we encode the embedded strings of the second root array:</p>
+<ul>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000003</code> (number of characters in word <code>&quot;one&quot;</code>)</li>
+<li><code>0x6f6e650000000000000000000000000000000000000000000000000000000000</code> (utf8 representation of word <code>&quot;one&quot;</code>)</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000003</code> (number of characters in word <code>&quot;two&quot;</code>)</li>
+<li><code>0x74776f0000000000000000000000000000000000000000000000000000000000</code> (utf8 representation of word <code>&quot;two&quot;</code>)</li>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000005</code> (number of characters in word <code>&quot;three&quot;</code>)</li>
+<li><code>0x7468726565000000000000000000000000000000000000000000000000000000</code> (utf8 representation of word <code>&quot;three&quot;</code>)</li>
+</ul>
+<p>In parallel to the first root array, since strings are dynamic elements we need to find their offsets <code>c</code>, <code>d</code> and <code>e</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0 - c                                                                - offset for &quot;one&quot;</span><br><span class="line">1 - d                                                                - offset for &quot;two&quot;</span><br><span class="line">2 - e                                                                - offset for &quot;three&quot;</span><br><span class="line">3 - 0000000000000000000000000000000000000000000000000000000000000003 - count for &quot;one&quot;</span><br><span class="line">4 - 6f6e650000000000000000000000000000000000000000000000000000000000 - encoding of &quot;one&quot;</span><br><span class="line">5 - 0000000000000000000000000000000000000000000000000000000000000003 - count for &quot;two&quot;</span><br><span class="line">6 - 74776f0000000000000000000000000000000000000000000000000000000000 - encoding of &quot;two&quot;</span><br><span class="line">7 - 0000000000000000000000000000000000000000000000000000000000000005 - count for &quot;three&quot;</span><br><span class="line">8 - 7468726565000000000000000000000000000000000000000000000000000000 - encoding of &quot;three&quot;</span><br></pre></td></tr></table></figure>
+<p>Offset <code>c</code> points to the start of the content of the string <code>&quot;one&quot;</code> which is line 3 (96 bytes); thus <code>c = 0x0000000000000000000000000000000000000000000000000000000000000060</code>.</p>
+<p>Offset <code>d</code> points to the start of the content of the string <code>&quot;two&quot;</code> which is line 5 (160 bytes); thus <code>d = 0x00000000000000000000000000000000000000000000000000000000000000a0</code>.</p>
+<p>Offset <code>e</code> points to the start of the content of the string <code>&quot;three&quot;</code> which is line 7 (224 bytes); thus <code>e = 0x00000000000000000000000000000000000000000000000000000000000000e0</code>.</p>
+<p>Note that the encodings of the embedded elements of the root arrays are not dependent on each other and have the same encodings for a function with a signature <code>g(string[],uint256[][])</code>.</p>
+<p>Then we encode the length of the first root array:</p>
+<ul>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000002</code> (number of elements in the first root array, 2; the elements themselves are <code>[1, 2]</code> and <code>[3]</code>)</li>
+</ul>
+<p>Then we encode the length of the second root array:</p>
+<ul>
+<li><code>0x0000000000000000000000000000000000000000000000000000000000000003</code> (number of strings in the second root array, 3; the strings themselves are <code>&quot;one&quot;</code>, <code>&quot;two&quot;</code> and <code>&quot;three&quot;</code>)</li>
+</ul>
+<p>Finally we find the offsets <code>f</code> and <code>g</code> for their respective root dynamic arrays <code>[[1, 2], [3]]</code> and <code>[&quot;one&quot;, &quot;two&quot;, &quot;three&quot;]</code>, and assemble parts in the correct order:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">0x2289b18c                                                            - function signature</span><br><span class="line"> 0 - f                                                                - offset of [[1, 2], [3]]</span><br><span class="line"> 1 - g                                                                - offset of [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;]</span><br><span class="line"> 2 - 0000000000000000000000000000000000000000000000000000000000000002 - count for [[1, 2], [3]]</span><br><span class="line"> 3 - 0000000000000000000000000000000000000000000000000000000000000040 - offset of [1, 2]</span><br><span class="line"> 4 - 00000000000000000000000000000000000000000000000000000000000000a0 - offset of [3]</span><br><span class="line"> 5 - 0000000000000000000000000000000000000000000000000000000000000002 - count for [1, 2]</span><br><span class="line"> 6 - 0000000000000000000000000000000000000000000000000000000000000001 - encoding of 1</span><br><span class="line"> 7 - 0000000000000000000000000000000000000000000000000000000000000002 - encoding of 2</span><br><span class="line"> 8 - 0000000000000000000000000000000000000000000000000000000000000001 - count for [3]</span><br><span class="line"> 9 - 0000000000000000000000000000000000000000000000000000000000000003 - encoding of 3</span><br><span class="line">10 - 0000000000000000000000000000000000000000000000000000000000000003 - count for [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;]</span><br><span class="line">11 - 0000000000000000000000000000000000000000000000000000000000000060 - offset for &quot;one&quot;</span><br><span class="line">12 - 00000000000000000000000000000000000000000000000000000000000000a0 - offset for &quot;two&quot;</span><br><span class="line">13 - 00000000000000000000000000000000000000000000000000000000000000e0 - offset for &quot;three&quot;</span><br><span class="line">14 - 0000000000000000000000000000000000000000000000000000000000000003 - count for &quot;one&quot;</span><br><span class="line">15 - 6f6e650000000000000000000000000000000000000000000000000000000000 - encoding of &quot;one&quot;</span><br><span class="line">16 - 0000000000000000000000000000000000000000000000000000000000000003 - count for &quot;two&quot;</span><br><span class="line">17 - 74776f0000000000000000000000000000000000000000000000000000000000 - encoding of &quot;two&quot;</span><br><span class="line">18 - 0000000000000000000000000000000000000000000000000000000000000005 - count for &quot;three&quot;</span><br><span class="line">19 - 7468726565000000000000000000000000000000000000000000000000000000 - encoding of &quot;three&quot;</span><br></pre></td></tr></table></figure>
+<p>Offset <code>f</code> points to the start of the content of the array <code>[[1, 2], [3]]</code> which is line 2 (64 bytes); thus <code>f = 0x0000000000000000000000000000000000000000000000000000000000000040</code>.</p>
+<p>Offset <code>g</code> points to the start of the content of the array <code>[&quot;one&quot;, &quot;two&quot;, &quot;three&quot;]</code> which is line 10 (320 bytes); thus <code>g = 0x0000000000000000000000000000000000000000000000000000000000000140</code>.</p>
+<h2 id="Events"><a href="#Events" class="headerlink" title="Events"></a>Events</h2><p>Events are an abstraction of the Ethereum logging/event-watching protocol. Log entries provide the contract’s address, a series of up to four topics and some arbitrary length binary data. Events leverage the existing function ABI in order to interpret this (together with an interface spec) as a properly typed structure.</p>
+<p>Given an event name and series of event parameters, we split them into two sub-series: those which are indexed and those which are not. Those which are indexed, which may number up to 3 (for non-anonymous events) or 4 (for anonymous ones), are used alongside the Keccak hash of the event signature to form the topics of the log entry. Those which are not indexed form the byte array of the event.</p>
+<p>In effect, a log entry using this ABI is described as:</p>
+<ul>
+<li><code>address</code>: the address of the contract (intrinsically provided by Ethereum);</li>
+<li><code>topics[0]</code>: <code>keccak(EVENT_NAME+&quot;(&quot;+EVENT_ARGS.map(canonical_type_of).join(&quot;,&quot;)+&quot;)&quot;)</code> (<code>canonical_type_of</code> is a function that simply returns the canonical type of a given argument, e.g. for <code>uint indexed foo</code>, it would return <code>uint256</code>). This value is only present in <code>topics[0]</code> if the event is not declared as <code>anonymous</code>;</li>
+<li><code>topics[n]</code>: <code>abi_encode(EVENT_INDEXED_ARGS[n - 1])</code> if the event is not declared as <code>anonymous</code> or <code>abi_encode(EVENT_INDEXED_ARGS[n])</code> if it is (<code>EVENT_INDEXED_ARGS</code> is the series of <code>EVENT_ARGS</code> that are indexed);</li>
+<li><code>data</code>: ABI encoding of <code>EVENT_NON_INDEXED_ARGS</code> (<code>EVENT_NON_INDEXED_ARGS</code> is the series of <code>EVENT_ARGS</code> that are not indexed, <code>abi_encode</code> is the ABI encoding function used for returning a series of typed values from a function, as described above).</li>
+</ul>
+<p>For all types of length at most 32 bytes, the <code>EVENT_INDEXED_ARGS</code> array contains the value directly, padded or sign-extended (for signed integers) to 32 bytes, just as for regular ABI encoding. However, for all “complex” types or types of dynamic length, including all arrays, <code>string</code>, <code>bytes</code> and structs, <code>EVENT_INDEXED_ARGS</code> will contain the <em>Keccak hash</em> of a special in-place encoded value (see <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/abi-spec.html#indexed-event-encoding">Encoding of Indexed Event Parameters</a>), rather than the encoded value directly. This allows applications to efficiently query for values of dynamic-length types (by setting the hash of the encoded value as the topic), but leaves applications unable to decode indexed values they have not queried for. For dynamic-length types, application developers face a trade-off between fast search for predetermined values (if the argument is indexed) and legibility of arbitrary values (which requires that the arguments not be indexed). Developers may overcome this tradeoff and achieve both efficient search and arbitrary legibility by defining events with two arguments — one indexed, one not — intended to hold the same value.</p>
+<h2 id="Errors"><a href="#Errors" class="headerlink" title="Errors"></a>Errors</h2><p>In case of a failure inside a contract, the contract can use a special opcode to abort execution and revert all state changes. In addition to these effects, descriptive data can be returned to the caller. This descriptive data is the encoding of an error and its arguments in the same way as data for a function call.</p>
+<p>As an example, let us consider the following contract whose <code>transfer</code> function always reverts with a custom error of “insufficient balance”:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity ^0.8.4;</span><br><span class="line"></span><br><span class="line">contract TestToken &#123;</span><br><span class="line">    error InsufficientBalance(uint256 available, uint256 required);</span><br><span class="line">    function transfer(address _to, uint amount) public pure &#123;</span><br><span class="line">        revert InsufficientBalance(0, amount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The return data would be encoded in the same way as the function call <code>InsufficientBalance(0, amount)</code> to the function <code>InsufficientBalance(uint256,uint256)</code>, i.e. <code>0xcf479181</code>, <code>uint256(0)</code>, <code>uint256(amount)</code>.</p>
+<p>The error selectors <code>0x00000000</code> and <code>0xffffffff</code> are reserved for future use.</p>
+<blockquote>
+<p>Warning</p>
+<p>Never trust error data. The error data by default bubbles up through the chain of external calls, which means that a contract may receive an error not defined in any of the contracts it calls directly. Furthermore, any contract can fake any error by returning data that matches an error signature, even if the error is not defined anywhere.</p>
+</blockquote>
+<h2 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h2><p>The JSON format for a contract’s interface is given by an array of function, event and error descriptions. A function description is a JSON object with the fields:</p>
+<ul>
+<li><code>type</code>: <code>&quot;function&quot;</code>, <code>&quot;constructor&quot;</code>, <code>&quot;receive&quot;</code> (the <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#receive-ether-function">“receive Ether” function</a>) or <code>&quot;fallback&quot;</code> (the <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#fallback-function">“default” function</a>);</li>
+<li><code>name</code>: the name of the function;</li>
+<li><code>inputs</code>: an array of objects, each of which contains:<ul>
+<li><code>name</code>: the name of the parameter.</li>
+<li><code>type</code>: the canonical type of the parameter (more below).</li>
+<li><code>components</code>: used for tuple types (more below).</li>
+</ul>
+</li>
+<li><code>outputs</code>: an array of objects similar to <code>inputs</code>.</li>
+<li><code>stateMutability</code>: a string with one of the following values: <code>pure</code> (<a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#pure-functions">specified to not read blockchain state</a>), <code>view</code> (<a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#view-functions">specified to not modify the blockchain state</a>), <code>nonpayable</code> (function does not accept Ether - the default) and <code>payable</code> (function accepts Ether).</li>
+</ul>
+<p>Constructor and fallback function never have <code>name</code> or <code>outputs</code>. Fallback function doesn’t have <code>inputs</code> either.</p>
+<blockquote>
+<p>Note</p>
+<p>Sending non-zero Ether to non-payable function will revert the transaction.</p>
+<p>The state mutability <code>nonpayable</code> is reflected in Solidity by not specifying a state mutability modifier at all.</p>
+</blockquote>
+<p>An event description is a JSON object with fairly similar fields:</p>
+<ul>
+<li><code>type</code>: always <code>&quot;event&quot;</code></li>
+<li><code>name</code>: the name of the event.</li>
+<li><code>inputs</code>: an array of objects, each of which contains:<ul>
+<li><code>name</code>: the name of the parameter.</li>
+<li><code>type</code>: the canonical type of the parameter (more below).</li>
+<li><code>components</code>: used for tuple types (more below).</li>
+<li><code>indexed</code>: <code>true</code> if the field is part of the log’s topics, <code>false</code> if it one of the log’s data segment.</li>
+</ul>
+</li>
+<li><code>anonymous</code>: <code>true</code> if the event was declared as <code>anonymous</code>.</li>
+</ul>
+<p>Errors look as follows:</p>
+<ul>
+<li><code>type</code>: always <code>&quot;error&quot;</code></li>
+<li><code>name</code>: the name of the error.</li>
+<li><code>inputs</code>: an array of objects, each of which contains:<ul>
+<li><code>name</code>: the name of the parameter.</li>
+<li><code>type</code>: the canonical type of the parameter (more below).</li>
+<li><code>components</code>: used for tuple types (more below).</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Note</p>
+<p>There can be multiple errors with the same name and even with identical signature in the JSON array; for example, if the errors originate from different files in the smart contract or are referenced from another smart contract. For the ABI, only the name of the error itself is relevant and not where it is defined.</p>
+</blockquote>
+<p>For example,</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity ^0.8.4;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    constructor() &#123; b = hex&quot;12345678901234567890123456789012&quot;; &#125;</span><br><span class="line">    </span><br><span class="line">    event Event(uint indexed a, bytes32 b);</span><br><span class="line">    event Event2(uint indexed a, bytes32 b);</span><br><span class="line">    </span><br><span class="line">    error InsufficientBalance(uint256 available, uint256 required);</span><br><span class="line">    </span><br><span class="line">    function foo(uint a) public &#123; emit Event(a, b); &#125;</span><br><span class="line">    bytes32 b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>would result in the JSON:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;error&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;inputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;available&quot;</span><span class="punctuation">,</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;uint256&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;required&quot;</span><span class="punctuation">,</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;uint256&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;InsufficientBalance&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span> <span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;event&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;inputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;a&quot;</span><span class="punctuation">,</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;uint256&quot;</span><span class="punctuation">,</span><span class="attr">&quot;indexed&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;b&quot;</span><span class="punctuation">,</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;bytes32&quot;</span><span class="punctuation">,</span><span class="attr">&quot;indexed&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;Event&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span> <span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;event&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;inputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;a&quot;</span><span class="punctuation">,</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;uint256&quot;</span><span class="punctuation">,</span><span class="attr">&quot;indexed&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;b&quot;</span><span class="punctuation">,</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;bytes32&quot;</span><span class="punctuation">,</span><span class="attr">&quot;indexed&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;Event2&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span> <span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;function&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;inputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;a&quot;</span><span class="punctuation">,</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;uint256&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;foo&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;outputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+<h2 id="Handling-tuple-types"><a href="#Handling-tuple-types" class="headerlink" title="Handling tuple types"></a>Handling tuple types</h2><p>Despite the fact that names are intentionally not part of the ABI encoding, they do make a lot of sense to be included in the JSON to enable displaying it to the end user. The structure is nested in the following way:</p>
+<p>An object with members <code>name</code>, <code>type</code> and potentially <code>components</code> describes a typed variable. The canonical type is determined until a tuple type is reached and the string description up to that point is stored in <code>type</code> prefix with the word <code>tuple</code>, i.e. it will be <code>tuple</code> followed by a sequence of <code>[]</code> and <code>[k]</code> with integers <code>k</code>. The components of the tuple are then stored in the member <code>components</code>, which is of an array type and has the same structure as the top-level object except that <code>indexed</code> is not allowed there.</p>
+<p>As an example, the code</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.7.5 &lt;0.9.0;</span><br><span class="line">pragma abicoder v2;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    struct S &#123; uint a; uint[] b; T[] c; &#125;</span><br><span class="line">    struct T &#123; uint x; uint y; &#125;</span><br><span class="line">    function f(S memory, T memory, uint) public pure &#123;&#125;</span><br><span class="line">    function g() public pure returns (S memory, T memory, uint) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>would result in the JSON:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;f&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;function&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;inputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;s&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tuple&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;components&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;a&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;uint256&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;b&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;uint256[]&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tuple[]&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;components&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">              <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;x&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;uint256&quot;</span></span><br><span class="line">              <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;y&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;uint256&quot;</span></span><br><span class="line">              <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;t&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tuple&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;components&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;x&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;uint256&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;y&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;uint256&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;a&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;uint256&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;outputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+<h2 id="Strict-Encoding-Mode"><a href="#Strict-Encoding-Mode" class="headerlink" title="Strict Encoding Mode"></a>Strict Encoding Mode</h2><p>Strict encoding mode is the mode that leads to exactly the same encoding as defined in the formal specification above. This means that offsets have to be as small as possible while still not creating overlaps in the data areas, and thus no gaps are allowed.</p>
+<p>Usually, ABI decoders are written in a straightforward way by just following offset pointers, but some decoders might enforce strict mode. The Solidity ABI decoder currently does not enforce strict mode, but the encoder always creates data in strict mode.</p>
+<h2 id="Non-standard-Packed-Mode"><a href="#Non-standard-Packed-Mode" class="headerlink" title="Non-standard Packed Mode"></a>Non-standard Packed Mode</h2><p>Through <code>abi.encodePacked()</code>, Solidity supports a non-standard packed mode where:</p>
+<ul>
+<li>types shorter than 32 bytes are concatenated directly, without padding or sign extension</li>
+<li>dynamic types are encoded in-place and without the length.</li>
+<li>array elements are padded, but still encoded in-place</li>
+</ul>
+<p>Furthermore, structs as well as nested arrays are not supported.</p>
+<p>As an example, the encoding of <code>int16(-1), bytes1(0x42), uint16(0x03), string(&quot;Hello, world!&quot;)</code> results in:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0xffff42000348656c6c6f2c20776f726c6421</span><br><span class="line">  ^^^^                                 int16(-1)</span><br><span class="line">      ^^                               bytes1(0x42)</span><br><span class="line">        ^^^^                           uint16(0x03)</span><br><span class="line">            ^^^^^^^^^^^^^^^^^^^^^^^^^^ string(&quot;Hello, world!&quot;) without a length field</span><br></pre></td></tr></table></figure>
+<p>More specifically:</p>
+<ul>
+<li>During the encoding, everything is encoded in-place. This means that there is no distinction between head and tail, as in the ABI encoding, and the length of an array is not encoded.</li>
+<li>The direct arguments of <code>abi.encodePacked</code> are encoded without padding, as long as they are not arrays (or <code>string</code> or <code>bytes</code>).</li>
+<li>The encoding of an array is the concatenation of the encoding of its elements <strong>with</strong> padding.</li>
+<li>Dynamically-sized types like <code>string</code>, <code>bytes</code> or <code>uint[]</code> are encoded without their length field.</li>
+<li>The encoding of <code>string</code> or <code>bytes</code> does not apply padding at the end, unless it is part of an array or struct (then it is padded to a multiple of 32 bytes).</li>
+</ul>
+<p>In general, the encoding is ambiguous as soon as there are two dynamically-sized elements, because of the missing length field.</p>
+<p>If padding is needed, explicit type conversions can be used: <code>abi.encodePacked(uint16(0x12)) == hex&quot;0012&quot;</code>.</p>
+<p>Since packed encoding is not used when calling functions, there is no special support for prepending a function selector. Since the encoding is ambiguous, there is no decoding function.</p>
+<blockquote>
+<p>Warning</p>
+<p>If you use <code>keccak256(abi.encodePacked(a, b))</code> and both <code>a</code> and <code>b</code> are dynamic types, it is easy to craft collisions in the hash value by moving parts of <code>a</code> into <code>b</code> and vice-versa. More specifically, <code>abi.encodePacked(&quot;a&quot;, &quot;bc&quot;) == abi.encodePacked(&quot;ab&quot;, &quot;c&quot;)</code>. If you use <code>abi.encodePacked</code> for signatures, authentication or data integrity, make sure to always use the same types and check that at most one of them is dynamic. Unless there is a compelling reason, <code>abi.encode</code> should be preferred.</p>
+</blockquote>
+<h2 id="Encoding-of-Indexed-Event-Parameters"><a href="#Encoding-of-Indexed-Event-Parameters" class="headerlink" title="Encoding of Indexed Event Parameters"></a>Encoding of Indexed Event Parameters</h2><p>Indexed event parameters that are not value types, i.e. arrays and structs are not stored directly but instead a Keccak-256 hash of an encoding is stored. This encoding is defined as follows:</p>
+<ul>
+<li>the encoding of a <code>bytes</code> and <code>string</code> value is just the string contents without any padding or length prefix.</li>
+<li>the encoding of a struct is the concatenation of the encoding of its members, always padded to a multiple of 32 bytes (even <code>bytes</code> and <code>string</code>).</li>
+<li>the encoding of an array (both dynamically- and statically-sized) is the concatenation of the encoding of its elements, always padded to a multiple of 32 bytes (even <code>bytes</code> and <code>string</code>) and without any length prefix</li>
+</ul>
+<p>In the above, as usual, a negative number is padded by sign extension and not zero padded. <code>bytesNN</code> types are padded on the right while <code>uintNN</code> / <code>intNN</code> are padded on the left.</p>
+<blockquote>
+<p>Warning</p>
+<p>The encoding of a struct is ambiguous if it contains more than one dynamically-sized array. Because of that, always re-check the event data and do not rely on the search result based on the indexed parameters alone.</p>
+</blockquote>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/03.solidity%E8%BF%9B%E9%98%B6/14.JSON%20Output%20of%20State%20Variables%20/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:18
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                        <b>#</b> 03.solidity进阶
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/03.solidity%E8%BF%9B%E9%98%B6/17.Cleaning%20Up%20Variables/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Contract-ABI-Specification"><span class="toc-text">Contract ABI Specification</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Basic-Design"><span class="toc-text">Basic Design</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Function-Selector"><span class="toc-text">Function Selector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Argument-Encoding"><span class="toc-text">Argument Encoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Types"><span class="toc-text">Types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mapping-Solidity-to-ABI-types"><span class="toc-text">Mapping Solidity to ABI types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Design-Criteria-for-the-Encoding"><span class="toc-text">Design Criteria for the Encoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Formal-Specification-of-the-Encoding"><span class="toc-text">Formal Specification of the Encoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Function-Selector-and-Argument-Encoding"><span class="toc-text">Function Selector and Argument Encoding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Examples"><span class="toc-text">Examples</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1"><span class="toc-text">(1)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2"><span class="toc-text">(2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3"><span class="toc-text">(3)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Use-of-Dynamic-Types"><span class="toc-text">Use of Dynamic Types</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#example1"><span class="toc-text">example1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#example2"><span class="toc-text">example2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Events"><span class="toc-text">Events</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Errors"><span class="toc-text">Errors</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON"><span class="toc-text">JSON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Handling-tuple-types"><span class="toc-text">Handling tuple types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Strict-Encoding-Mode"><span class="toc-text">Strict Encoding Mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Non-standard-Packed-Mode"><span class="toc-text">Non-standard Packed Mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Encoding-of-Indexed-Event-Parameters"><span class="toc-text">Encoding of Indexed Event Parameters</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 18.Contract%20ABI%20Specification + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F03.solidity%25E8%25BF%259B%25E9%2598%25B6%2F18.Contract%2520ABI%2520Specification%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/03.solidity%E8%BF%9B%E9%98%B6/18.Contract%20ABI%20Specification/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

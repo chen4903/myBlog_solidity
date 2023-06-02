@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      17.Inheritance 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">17.Inheritance</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:23
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                    <b>#</b> 02.solidity语法
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="Inheritance"><a href="#Inheritance" class="headerlink" title="Inheritance"></a>Inheritance</h2><h2 id="digest"><a href="#digest" class="headerlink" title="digest"></a>digest</h2><p>Solidity supports multiple inheritance including polymorphism.</p>
+<p>Polymorphism means that a function call (internal and external) always executes the function of the same name (and parameter types) in the most derived contract in the inheritance hierarchy. This has to be explicitly enabled on each function in the hierarchy using the <code>virtual</code> and <code>override</code> keywords. See <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/latest/contracts.html#function-overriding">Function Overriding</a> for more details.</p>
+<ul>
+<li><code>virtual</code>: 父合约中的函数，如果希望子合约重写，需要加上<code>virtual</code>关键字。</li>
+<li><code>override</code>：子合约重写了父合约中的函数，需要加上<code>override</code>关键字。</li>
+</ul>
+<h2 id="feature"><a href="#feature" class="headerlink" title="feature"></a>feature</h2><ul>
+<li>It is possible to call functions further up in the inheritance hierarchy internally by explicitly specifying the contract using <code>ContractName.functionName()</code> or using <code>super.functionName()</code> if you want to call the function one level higher up in the flattened inheritance hierarchy .</li>
+<li>When a contract inherits from other contracts, only a single contract is created on the blockchain, and the code from all the base contracts is compiled into the created contract. This means that all internal calls to functions of base contracts also just use internal function calls (<code>super.f(..)</code> will use JUMP and not a message call).</li>
+<li>After solidity 0.6 shadowing state variable is not allowed anymore!”State variable shadowing is considered as an error. A derived contract can only declare a state variable <code>x</code>, if there is no visible state variable with the same name in any of its bases.”</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//pragma solidity 0.4.17;   //T</span><br><span class="line">pragma solidity 0.8.17;   //F</span><br><span class="line">    </span><br><span class="line">contract A&#123;</span><br><span class="line">    uint256 a = 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract B is A&#123;</span><br><span class="line">    uint256 a = 2;</span><br><span class="line">&#125;</span><br><span class="line">报错内容：</span><br><span class="line">from solidity:</span><br><span class="line">aaa.sol:2:1: SyntaxError: Source file requires different compiler version (current compiler is 0.4.17+commit.bdeb9e52.Emscripten.clang - note that nightly builds are considered to be strictly less than the released version</span><br><span class="line">pragma solidity 0.8.17;</span><br><span class="line">^---------------------^</span><br></pre></td></tr></table></figure>
+<h2 id="单继承"><a href="#单继承" class="headerlink" title="单继承"></a>单继承</h2><p>特点：子合约只可以继承public类型的函数，但可以继承public和internal类型的属性。不做演示</p>
+<p>单继承可以通过两个方式实现：</p>
+<p>(方式1）直接在继承列表中使用<code>is a1(7)</code>，适用于构造器是常量的情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.0;</span><br><span class="line"></span><br><span class="line">contract a1 &#123;</span><br><span class="line">    uint x;</span><br><span class="line">    function a1(uint _x)&#123;</span><br><span class="line">        x = _x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract a2 is a1(7)&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>（方式2）作为派生构造器定义头的一部分<code>a1(_y*_y)</code>，适用于构造的参数值由派生合约指定的情况。如下代码示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.0;</span><br><span class="line"></span><br><span class="line">contract a1 &#123;</span><br><span class="line">    uint x;</span><br><span class="line">    function a1(uint _x)&#123;</span><br><span class="line">        x = _x;</span><br><span class="line">    &#125;</span><br><span class="line">    function f() returns(uint)&#123;</span><br><span class="line">        return x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract a2 is a1&#123;</span><br><span class="line">    uint y;</span><br><span class="line">    function a2(uint _y) a1(_y*_y)&#123;</span><br><span class="line">    //特别之处：a1(_y*_y)中，_y*_y得到一个值，传给a1合约的构造器。</span><br><span class="line">    //         在部署的时候，传给Remix用来部署的值是_y</span><br><span class="line">        y = _y;</span><br><span class="line">    &#125;</span><br><span class="line">    function h() returns(uint)&#123;</span><br><span class="line">        return y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析<ul>
+<li>在Remix部署a2合约时输入值2，就会自动生成两个方法：f（）和h（）。</li>
+<li>调用f（），返回4。调用h（），返回2。</li>
+</ul>
+</li>
+</ul>
+<p>总结：在两种方式都可以用的情况下，优先使用第二种方式（一般情况下使用第一种即可）</p>
+<h2 id="多继承"><a href="#多继承" class="headerlink" title="多继承"></a>多继承</h2><p><code>solidity</code>的合约可以继承多个合约。规则：</p>
+<p>继承时要按辈分最高到最低的顺序排。比如我们写一个<code>Erzi</code>合约，继承<code>Yeye</code>合约和<code>Baba</code>合约，那么就要写成<code>contract Erzi is Yeye, Baba</code>，而不能写成<code>contract Erzi is Baba, Yeye</code>，不然就会报错。 如果某一个函数在多个继承的合约里都存在，比如例子中的<code>hip()</code>和<code>pop()</code>，在子合约里必须重写，不然会报错。 重写在多个父合约中都重名的函数时，<code>override</code>关键字后面要加上所有父合约名字，例如<code>override(Yeye, Baba)</code>。 例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">contract Erzi is Yeye, Baba&#123;</span><br><span class="line">    // 继承两个function: hip()和pop()，输出值为Erzi。</span><br><span class="line">    function hip() public virtual override(Yeye, Baba)&#123;</span><br><span class="line">        emit Log(&quot;Erzi&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function pop() public virtual override(Yeye, Baba) &#123;</span><br><span class="line">        emit Log(&quot;Erzi&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以看到，<code>Erzi</code>合约里面重写了<code>hip()</code>和<code>pop()</code>两个函数，将输出改为<code>”Erzi”</code>，并且还分别从<code>Yeye</code>和<code>Baba</code>合约继承了<code>yeye()</code>和<code>baba()</code>两个函数。</p>
+<p>当一个合约从多个合约继承时，在区块链上只有一个合约被创建，所有基类合约的代码被复制到创建的合约中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.8.10;</span><br><span class="line"></span><br><span class="line">/* Graph of inheritance</span><br><span class="line">    A</span><br><span class="line">   / \</span><br><span class="line">  B   C</span><br><span class="line"> / \ /</span><br><span class="line">F  D,E</span><br><span class="line"></span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">contract A &#123;</span><br><span class="line">    function foo() public pure virtual returns (string memory) &#123;</span><br><span class="line">        return &quot;A&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Contracts inherit other contracts by using the keyword &#x27;is&#x27;.</span><br><span class="line">contract B is A &#123;</span><br><span class="line">    // Override A.foo()</span><br><span class="line">    function foo() public pure virtual override returns (string memory) &#123;</span><br><span class="line">        return &quot;B&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract C is A &#123;</span><br><span class="line">    // Override A.foo()</span><br><span class="line">    function foo() public pure virtual override returns (string memory) &#123;</span><br><span class="line">        return &quot;C&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 合同可以从多个父合同中继承。</span><br><span class="line">// 当一个函数被调用时，它在不同的合同中被多次定义。</span><br><span class="line">// 不同合约中多次定义的函数时，父合约将从右到左，以深度优先的方式搜索。</span><br><span class="line">contract D is B, C &#123;</span><br><span class="line">    // D.foo() returns &quot;C&quot;</span><br><span class="line">    // since C is the right most parent contract with function foo()</span><br><span class="line">    function foo() public pure override(B, C) returns (string memory) &#123;</span><br><span class="line">        return super.foo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract E is C, B &#123;</span><br><span class="line">    // E.foo() returns &quot;B&quot;</span><br><span class="line">    // since B is the right most parent contract with function foo()</span><br><span class="line">    function foo() public pure override(C, B) returns (string memory) &#123;</span><br><span class="line">        return super.foo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 继承的顺序必须是从 &quot;最基本 &quot;到 &quot;最派生&quot;。</span><br><span class="line">// 调换A和B的顺序会产生一个编译错误。</span><br><span class="line">// 即：contract F is B, A 会编译出错</span><br><span class="line">//	代码编译出错的原因是 C 要求 X 重写 A （因为定义的顺序是 A, X ）， 但是 A 本身要求重写 //   X，无法解决这种冲突。</span><br><span class="line">contract F is A, B &#123;</span><br><span class="line">    function foo() public pure override(A, B) returns (string memory) &#123;</span><br><span class="line">        return super.foo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="修饰器的继承"><a href="#修饰器的继承" class="headerlink" title="修饰器的继承"></a>修饰器的继承</h2><p><code>Solidity</code>中的修饰器（<code>Modifier</code>）同样可以继承，用法与函数继承类似，在相应的地方加<code>virtual</code>和<code>override</code>关键字即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.6.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract Base</span><br><span class="line">&#123;</span><br><span class="line">    modifier foo() virtual &#123;_;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Inherited is Base</span><br><span class="line">&#123;</span><br><span class="line">    modifier foo() override &#123;_;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In case of multiple inheritance, all direct base contracts must be specified explicitly:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.6.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract Base1</span><br><span class="line">&#123;</span><br><span class="line">    modifier foo() virtual &#123;_;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Base2</span><br><span class="line">&#123;</span><br><span class="line">    modifier foo() virtual &#123;_;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Inherited is Base1, Base2</span><br><span class="line">&#123;</span><br><span class="line">    modifier foo() override(Base1, Base2) &#123;_;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="构造器的继承"><a href="#构造器的继承" class="headerlink" title="构造器的继承"></a>构造器的继承</h2><p>子合约有两种方法继承父合约的构造函数。举个简单的例子，父合约<code>A</code>里面有一个状态变量<code>a</code>，并由构造函数的参数来确定：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 构造函数的继承</span><br><span class="line">abstract contract A &#123;</span><br><span class="line">    uint public a;</span><br><span class="line"></span><br><span class="line">    constructor(uint _a) &#123;</span><br><span class="line">        a = _a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在继承时声明父构造函数的参数，例如：<code>contract B is A(1)</code></li>
+<li>在子合约的构造函数中声明构造函数的参数，例如：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">contract C is A &#123;</span><br><span class="line">    constructor(uint _c) A(_c * _c) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>One area where inheritance linearization is especially important and perhaps not as clear is when there are multiple constructors in the inheritance hierarchy. The constructors will always be executed in the linearized order, regardless of the order in which their arguments are provided in the inheriting contract’s constructor. For example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: GPL-3.0</span><br><span class="line">pragma solidity &gt;=0.7.0 &lt;0.9.0;</span><br><span class="line"></span><br><span class="line">contract Base1 &#123;</span><br><span class="line">    constructor() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Base2 &#123;</span><br><span class="line">    constructor() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Constructors are executed in the following order:</span><br><span class="line">//  1 - Base1</span><br><span class="line">//  2 - Base2</span><br><span class="line">//  3 - Derived1</span><br><span class="line">contract Derived1 is Base1, Base2 &#123;</span><br><span class="line">    constructor() Base1() Base2() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Constructors are executed in the following order:</span><br><span class="line">//  1 - Base2</span><br><span class="line">//  2 - Base1</span><br><span class="line">//  3 - Derived2</span><br><span class="line">contract Derived2 is Base2, Base1 &#123;</span><br><span class="line">    constructor() Base2() Base1() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Constructors are still executed in the following order:</span><br><span class="line">//  1 - Base2</span><br><span class="line">//  2 - Base1</span><br><span class="line">//  3 - Derived3</span><br><span class="line">contract Derived3 is Base2, Base1 &#123;</span><br><span class="line">    constructor() Base1() Base2() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="调用父合约的函数"><a href="#调用父合约的函数" class="headerlink" title="调用父合约的函数"></a>调用父合约的函数</h2><p>子合约有两种方式调用父合约的函数，直接调用和利用<code>super</code>关键字。</p>
+<ol>
+<li>直接调用：子合约可以直接用<code>父合约名.函数名()</code>的方式来调用父合约函数，例如<code>Yeye.pop()</code>。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function callParent() public&#123;</span><br><span class="line">    Yeye.pop();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>super</code>关键字：子合约可以利用<code>super.函数名()</code>来调用最近的父合约函数。<code>solidity</code>继承关系按声明时从右到左的顺序是：<code>contract Erzi is Yeye, Baba</code>，那么<code>Baba</code>是最近的父合约，<code>super.pop()</code>将调用<code>Baba.pop()</code>而不是<code>Yeye.pop()</code>：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function callParentSuper() public&#123;</span><br><span class="line">    // 将调用最近的父合约函数，Baba.pop()</span><br><span class="line">    super.pop();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="特殊地"><a href="#特殊地" class="headerlink" title="特殊地"></a>特殊地</h2><p>不可如下这样继承</p>
+<ul>
+<li>a function and a modifier</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.0;</span><br><span class="line"></span><br><span class="line">contract a1 &#123;</span><br><span class="line">   function f() pure public &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract a2 is a1&#123;</span><br><span class="line">    modifier f()&#123;</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>a function and an event</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.0;</span><br><span class="line">//当事件和修饰器modifier 同名</span><br><span class="line">contract a1 &#123;</span><br><span class="line">   event f();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract a2 is a1&#123;</span><br><span class="line">    modifier f()&#123;</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>an event and a modifier</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.0;</span><br><span class="line">//或者函数和事件同名时</span><br><span class="line">contract a1 &#123;</span><br><span class="line">   event f();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract a2 is a1&#123;</span><br><span class="line">    function f() pure public &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有一种例外情况，状态变量的 getter 可以覆盖一个 external 函数。</p>
+<h2 id="Remix验证"><a href="#Remix验证" class="headerlink" title="Remix验证"></a>Remix验证</h2><p>合约简单继承示例, 可以观察到Baba合约多了Yeye的函数</p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/17.1.png" alt></p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/17.2.png" alt></p>
+<p>合约多重继承可以参考简单继承的操作步骤来增加部署Erzi合约，然后观察暴露的函数以及尝试调用来查看日志</p>
+<p>修饰器继承示例</p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/17.3.png" alt></p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/17.4.png" alt></p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/17.5.png" alt></p>
+<p>构造函数继承示例</p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/17.6.png" alt></p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/17.7.png" alt></p>
+<p>调用父合约示例</p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/17.8.png" alt></p>
+<p><img src="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/17.9.png" alt></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/18.State%20Variable/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:23
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/02-solidity%E8%AF%AD%E6%B3%95/" title="02.solidity语法">
+                        <b>#</b> 02.solidity语法
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/19.%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Inheritance"><span class="toc-text">Inheritance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#digest"><span class="toc-text">digest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#feature"><span class="toc-text">feature</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%BB%A7%E6%89%BF"><span class="toc-text">单继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BB%A7%E6%89%BF"><span class="toc-text">多继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E9%A5%B0%E5%99%A8%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-text">修饰器的继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-text">构造器的继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E7%88%B6%E5%90%88%E7%BA%A6%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-text">调用父合约的函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%9C%B0"><span class="toc-text">特殊地</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remix%E9%AA%8C%E8%AF%81"><span class="toc-text">Remix验证</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 17.Inheritance + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F02.solidity%25E8%25AF%25AD%25E6%25B3%2595%2F17.Inheritance%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/02.solidity%E8%AF%AD%E6%B3%95/17.Inheritance/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

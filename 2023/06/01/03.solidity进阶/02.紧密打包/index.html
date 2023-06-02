@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      02.紧密打包 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">02.紧密打包</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-01 15:03:18
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                    <b>#</b> 03.solidity进阶
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>优化存储加载定长变量的gas消耗</p>
+<h3 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h3><p>这个模式的主要目的就是节约gas。这种特殊模式很容易应用，它不会影响任何合约逻辑。所要做的就是按照正确顺序声明状态变量。我们利用EVM分配存储的方式，减少合约部署gas，以及方法调用成本。以太坊存储是一个键值存储，键值都为32字节。分配存储时，所有定长变量（除了映射和动态数组）都会按声明顺序从位置0开始依次写下。最常用数据类型（例如<code>byte32</code>, <code>uint</code>, <code>int</code>）只占用一个32字节插槽。此模式介绍如何尽可能使用较小的数据类型（例如<code>byte16</code>，<code>uint32</code>）来节省gas，因为EVM可以将它们打包在一个32字节的插槽里，从而减少存储。EVM也会将多个多个读写合并到一个操作中，从而节约gas。这个底层行为被称为”紧密打包”，不幸的是，目前，优化器还不会自动实现这种行为。</p>
+<h3 id="适用性"><a href="#适用性" class="headerlink" title="适用性"></a>适用性</h3><p>在以下条件时使用紧密变量打包模式</p>
+<ul>
+<li>希望降低合约交互成本。</li>
+<li>使用多个状态变量，并且可以使用较小的数据类型代替。</li>
+<li>使用由多个变量构成的结构，并且可以使用较小的数据类型代替。</li>
+<li>使用静态数组，并且可以使用较小的数据类型代替。</li>
+</ul>
+<h3 id="参与者和协作"><a href="#参与者和协作" class="headerlink" title="参与者和协作"></a>参与者和协作</h3><p>一般来说，这个模式唯一的参与者是实现它的合约。与合约交互的其它所有实体都不会受到影响，因为只改变了数据的存储方式。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>正如”适用性”一节所述，此模式可用于状态变量，结构体内部和静态数组。它的实现非常直接，分为两步：</p>
+<ol>
+<li>使用保证代码正确执行的最小数据类型。例如，德国的邮政编码最多有5为数字。因此，<code>uint16</code>数据类型（<code>uint16</code>最多表示数字216-1=65535）不够，需要使用<code>uint24</code>类型的变量（<code>uint24</code>最多表示数字224-1=16777215），足够保存所有邮政编码。</li>
+<li>将同一组的数据类型放到一个32字节的插槽中，并在代码中逐个声明它们。将数据类型分组很重要，因为EVM按照给定顺序逐个保存变量。这只适用于状态变量和结构体内部。数组只有一种数据类型，不需要顺序。<br>将尽量多的变量存储在一个插槽中，只要它们的存储总小于等于32字节大小。例如，一个bool变量占用一个字节，uint8也是一个字节，uint16是两个字节，uint32是四个字节，依次类推。字节数据类型的存储大小更容易，例如，byte4就是四个字节。所以32个uint8变量的存储空间和1个uint256变量相同。只有当变量依次声明才有效，因为如果必须在变量间保存一个大数据类型，则需要新插槽。</li>
+</ol>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><p>下面例子展示了本模式在结构体中的应用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//costs 20150 + 2000 gas during creation.因为要把32bytes改成uint8，需要额外的gas</span><br><span class="line">contract A &#123;</span><br><span class="line">  uint8 a = 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//costing 5050 + 2000 gas during creation</span><br><span class="line">contract A &#123;</span><br><span class="line">  uint a = 0;   // or uint256</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// This code has not been professionally audited, therefore I cannot make any promises about</span><br><span class="line">// safety or correctness. Use at own risk.</span><br><span class="line">contract StructPackingExample &#123;</span><br><span class="line">    </span><br><span class="line">    struct CheapStruct &#123;//这8个变量会被紧密打包到一个slot里面，占用32分之8的slot</span><br><span class="line">        uint8 a;</span><br><span class="line">        uint8 b;</span><br><span class="line">        uint8 c;</span><br><span class="line">        uint8 d;</span><br><span class="line">        bytes1 e;</span><br><span class="line">        bytes1 f;</span><br><span class="line">        bytes1 g;</span><br><span class="line">        bytes1 h;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    CheapStruct example;</span><br><span class="line">    </span><br><span class="line">    function addCheapStruct() public &#123;</span><br><span class="line">        CheapStruct memory someStruct = CheapStruct(1,2,3,4,&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;);</span><br><span class="line">        example = someStruct;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第5行声明了一个使用本模式的结构体对象。这8个变量每个需要一个字节的存储空间，并且没有被更大的数据类型打断，因此它们会被打包进一个存储槽中，并使用32个字节中的8个。这意味着我们在这个存储槽中还可以添加更多的变量。第19行，首先初始化一个结构体对象，然后写入第20行的存储器中。</p>
+<h3 id="Gas分析"><a href="#Gas分析" class="headerlink" title="Gas分析"></a>Gas分析</h3><p>为了量化所需gas的潜在减少量，使用在线Solidity编译器Remix进行测试。上面示例代码与存储相同输入数据但不使用最小数据类型方案进行对比，并改变变量顺序以阻止EVM采用紧密打包的方式。因此，8个变量将使用8个存储槽。实验代码可以在<a target="_blank" rel="noopener" href="https://github.com/fravoll/solidity-patterns/blob/master/TightVariablePacking/TightVariablePackingGasExample.sol">GitHub</a>上。结果如下表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Tightly Packed Struct</th>
+<th>Struct without Tight Packing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Contract Creation</td>
+<td>133172</td>
+<td>116560</td>
+</tr>
+<tr>
+<td>Saving Struct to Storage</td>
+<td>57821</td>
+<td>161636</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>当不使用最小数据类型时，合约创建的gas成本大约便宜12%。这可以解释，因为EVM通常一次操作32个字节。它需要额外的操作来将变量大小变为最小数据类型大小，这个例子中是从<code>byte32</code>变为<code>byte1</code>，这需要额外的gas。当合约保存结构体变量时，这个成本得到补偿。这个示例中，我们节省了7个存储槽，相当于节省了大约64%的gas。这些gas不仅只节省一次，每次保存一个新结构体都会节省一次。</p>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>在盲目实施之前，必须评估采用本模式的结果。巨大的好处是在合约生命周期内可能节省大量的gas。但如果没有实现正确，也可能达到相反的，花费更多gas的结果。它只适用于静态大小的状态变量。方法参数和动态大小的数组并不能获益。相反，正如<strong>Gas分析</strong>部分合约创建成本显示，EVM操作最小数据类型成本更高。重新排列变量的顺序会导致另个问题，降低可读性。变量通常按照逻辑顺序声明，更改这个顺序会使审核代码更加困难，并使用户和开发人员感到困惑。</p>
+<h3 id="已知应用"><a href="#已知应用" class="headerlink" title="已知应用"></a>已知应用</h3><p>这种模式的实现很难被发现，因为很难区分变量类型和顺序的选择是基于紧密打包还是其它原因。直到目前，还没有一个合约被发现是经过深思熟虑使用这个模式。一个值得注意的例子是<a target="_blank" rel="noopener" href="https://etherscan.io/address/0xad01fab133e6b9a3308a68931f768ec86e1ad281/#code">Roshambo</a>，一个石头剪刀布的游戏，移动和决胜局保存在一个结构体的<code>uint8</code>变量中，这允许紧密打包。但是看起来这个设计决策并没有考虑本模式，因为它还可以做进一步优化。</p>
+<p>另个例子是<a target="_blank" rel="noopener" href="https://etherscan.io/address/0x3f593a15eb60672687c32492b62ed3e10e149ec6/#code">Etherization合约</a>，一个类似文明游戏的去中心化应用。在这个合约中，每个玩家保存在一个结构体中。它可以采用最小数据类型，甚至可能不用破坏游戏逻辑。如果这样做，保存一个新玩家的gas消耗会显著降低。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/01/03.solidity%E8%BF%9B%E9%98%B6/01.RPL%E7%BC%96%E7%A0%81/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-01 15:03:18
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/03-solidity%E8%BF%9B%E9%98%B6/" title="03.solidity进阶">
+                        <b>#</b> 03.solidity进阶
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/01/03.solidity%E8%BF%9B%E9%98%B6/03.%E6%B7%B1%E5%85%A5Solidity%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84"><span class="toc-text">目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA"><span class="toc-text">动机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E6%80%A7"><span class="toc-text">适用性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E4%B8%8E%E8%80%85%E5%92%8C%E5%8D%8F%E4%BD%9C"><span class="toc-text">参与者和协作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-text">代码示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gas%E5%88%86%E6%9E%90"><span class="toc-text">Gas分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-text">结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E7%9F%A5%E5%BA%94%E7%94%A8"><span class="toc-text">已知应用</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 02.%E7%B4%A7%E5%AF%86%E6%89%93%E5%8C%85 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F01%2F03.solidity%25E8%25BF%259B%25E9%2598%25B6%2F02.%25E7%25B4%25A7%25E5%25AF%2586%25E6%2589%2593%25E5%258C%2585%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/01/03.solidity%E8%BF%9B%E9%98%B6/02.%E7%B4%A7%E5%AF%86%E6%89%93%E5%8C%85/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
