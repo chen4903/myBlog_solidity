@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      01.uniswap_v1_theory 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">01.uniswap_v1_theory</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-23 20:21:52
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/03-Uniswap/" title="03.Uniswap">
+                    <b>#</b> 03.Uniswap
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="uniswap-v1-theory"><a href="#uniswap-v1-theory" class="headerlink" title="uniswap_v1_theory"></a>uniswap_v1_theory</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Uniswap 由一系列 ETH-ERC20 兑换合约组成。每个 ERC20 代币只有一个交换合约，原因是鼓励供应商将他们的流动性汇集到一个储备中。如果代币还没有交易所，任何人都可以使用 Uniswap 工厂合约创建它。该工厂充当公共注册表，用于查找添加到系统中的所有令牌和交换地址。</p>
+<p>uniswap v1提出了通过常量乘积的自动做市商，<code>x * y = k</code>，即第一象限的双曲线。目的：uniswap v1能够支持任意ERC Token与ETH进行swap。</p>
+<p>一开始交易所没有任何的ERC代币以及ETH，但是需要有本金才能swap，所以提出了流动性的概念。让一些手中有钱的人向合约中充值 ETH和ERC Token，然后才能让交易者进行swap。</p>
+<p>那么大户都是免费拿钱给你用么？当然不是，交易者进行的每笔swap，都需要支付手续费，而大户，就会享受这些手续费。同时，这些手续费会按提供流动性多少的比例进行分配，流动性的多少，可以用LP Token来表示。</p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><h3 id="兑换"><a href="#兑换" class="headerlink" title="兑换"></a>兑换</h3><p><strong>不考虑手续费</strong></p>
+<p>公式：XY=K，K是常数，因此变化有以下：</p>
+<script type="math/tex; mode=display">
+XY=(X+\Delta X)(Y-\Delta Y)</script><script type="math/tex; mode=display">
+{\Delta X}={X\Delta Y \over Y - \Delta Y}</script><p><strong>考虑手续费</strong></p>
+<p>设手续费为ρ，0≦ρ﹤1，γ=1-ρ。uniswap的手续费为0.3%</p>
+<script type="math/tex; mode=display">
+XY=(X+\gamma \Delta X)(Y-\Delta Y)</script><script type="math/tex; mode=display">
+{\Delta X}={X\Delta Y \over {(Y - \Delta Y)}\gamma}</script><h3 id="流动性"><a href="#流动性" class="headerlink" title="流动性"></a>流动性</h3><ul>
+<li><p>添加流动性时，合约为流动性提供者铸造流动性代币。持有多少流动性代币，就表示为流动性池贡献了多少份额，也表示享有流动性池多少权益。当他们取消做市的时候，把LP Token换成token和ETH，并同时取得做市期间取得的买卖手续费。买卖的过程中，需求给流动性供给者付出手续费，现在是收取付出币种的0.3%。</p>
+</li>
+<li><p>第一个加入池的流动性提供者通过存入他们认为等值的 ETH 和 ERC20 代币来设置初始汇率。如果这个比率关闭，套利交易者将以牺牲初始流动性提供者为代价使价格达到平衡。</p>
+</li>
+<li><p>所有未来的流动性提供者都使用存款时的汇率存入 ETH 和 ERC20。如果汇率不好，就会有一个有利可图的套利机会来纠正价格。</p>
+</li>
+</ul>
+<p>提供流动性：</p>
+<script type="math/tex; mode=display">
+Token_{Deposited}=Token_{Pool}{ {ETH_{Deposited} }\over ETH_{Pool} }</script><script type="math/tex; mode=display">
+Amout_{LPToken}=TotalSupplyLPToken{ {ETH_{Deposited} \over ETH_{Pool} } }</script><p>去除流动性：</p>
+<script type="math/tex; mode=display">
+ETH_{Withdraw}=ETH_{Pool}{amountBurned \over totalAmount}</script><script type="math/tex; mode=display">
+Token_{Withdrawn}=Token_{Pool}{amountBurned \over totalAmount}</script><h3 id="代币兑换代币"><a href="#代币兑换代币" class="headerlink" title="代币兑换代币"></a>代币兑换代币</h3><p><img src="/2023/06/23/03.Uniswap/01.uniswap_v1_theory/image-20230301085151567.png" alt="image-20230301085151567"></p>
+<p><strong>例子</strong></p>
+<p>假如最初池子里有10ETH和500TokenCQ</p>
+<ol>
+<li>K = 10 * 500 = 5000</li>
+<li>TokenCQ购买者发送：1ETH</li>
+<li>手续费：1 * 0.25% = 0.0025ETH</li>
+<li>ETH_POOL = 10 + 1 - 0.0025 = 10.9975 ETH</li>
+<li>TokenCQ _POOL = 5000 / 10.9975 = 454.65 TokenCQ</li>
+<li>购买者得到TokenCQ = 500 - 454.65 = 45.35 TokenCQ</li>
+</ol>
+<p>由于手续费会在计算后被添加到资金池中，所以不变量<code>K</code>会随着每次交易稍微变大，为流动性提供者提供系统性盈利。故此，不变量表示的是上次交易结束后<code>ETH_POOL（ETH 资金池） * TokenCQ_POOL（TokenCQ 资金池）</code>的值。</p>
+<ol>
+<li>ETH_POOL（ETH 资金池） = 10.9975 + 0.0025 = 11</li>
+<li>Token_POOL（TokenCQ 资金池） = 454.65</li>
+<li>K（新的不变量） = 11 * 454.65 = 5,001.15</li>
+</ol>
+<h3 id="滑点"><a href="#滑点" class="headerlink" title="滑点"></a>滑点</h3><p><img src="/2023/06/23/03.Uniswap/01.uniswap_v1_theory/滑点.png" alt="滑点"></p>
+<p>滑点是您提交交易时与交易在区块链上确认时之间的价格差，在 DEX 上交易时，有两种情况会造成滑点：</p>
+<h4 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h4><h5 id="高交易量导致价格下滑"><a href="#高交易量导致价格下滑" class="headerlink" title="高交易量导致价格下滑"></a>高交易量导致价格下滑</h5><p>举个具体的例子，想想在 Uniswap 上用 ETH 交换 UNI。</p>
+<p>当您连接到 Uniswap 应用程序并用您的交易填充字段时，交换界面会告诉您您将收到多少 ETH 金额的 UNI 代币。</p>
+<p><img src="/2023/06/23/03.Uniswap/01.uniswap_v1_theory/image-20230301104832301.png" alt="image-20230301104832301"></p>
+<p>在上面的屏幕截图中，如果您立即交换，您可以预期大约 122 个 UNI 代币换取 1 个 ETH </p>
+<p>你看，去中心化交易所都托管在以太坊、币安智能链和 Solana 等区块链上。因此，与中心化交易所不同，DEX 交易不会立即处理。关键是在您确认交易和区块链确认交易之间存在滞后时间。在这两个确认之间，资产的价格可能会发生轻微或很大的变化。</p>
+<p>大多数时候，滑点对价格的影响很小。以上面的 Uniswap 为例，也许应用程序给你报价了 ~122 个 UNI 代币，但你最终得到了 121 个 UNI，或者如果你幸运的话，比报价的掉期还多。</p>
+<p>但是，当特定加密货币的市场火爆时，或者存在大量交易活动时（即在牛市期间），滑点会变得更加明显。你可能会得到 118 个，而不是 122 个 UNI 代币。</p>
+<h5 id="流动性低导致价格下滑"><a href="#流动性低导致价格下滑" class="headerlink" title="流动性低导致价格下滑"></a>流动性低导致价格下滑</h5><p>当您在 DEX 上进行交易时，您实际上是在将一个代币存入池中并提取另一个代币。您的交易量越大，或者与池的整体交易量越大，池中的流动性就越不平衡并造成价格下滑。</p>
+<p>例如，如果您想将 10,000 ETH 换成 UNI，每个 UNI 代币的价格将相对于报价上涨，具体取决于池中持有的流动性。资金池中的流动性越低，您的交易受滑点的影响就越大。</p>
+<h4 id="避免滑点"><a href="#避免滑点" class="headerlink" title="避免滑点"></a>避免滑点</h4><p>请记住，价格滑点发生在您确认交易和该交易在区块链上确认之间的时刻。</p>
+<p>如果区块链有大量交易支持，矿工会优先处理支付最多 gas 的交易。根据这个简单的事实，遵循一些非常有效的方法来减少滑点。</p>
+<h5 id="使用更多的gas"><a href="#使用更多的gas" class="headerlink" title="使用更多的gas"></a>使用更多的gas</h5><p>当区块空间稀缺时，滑点很常见，每个人都在努力处理他们的交易。如果你在这样的时候使用少量或标准量的 gas，你的 Uniswap 交易可能会停滞<em>几个</em>小时。</p>
+<p>你的交易停留在处理模式的时间越长，价格变化就越大，可能会让你获得的代币更少。为避免出现此类情况，请提高交易的 gas。</p>
+<p>您不必过度使用它并使高 gas 量翻倍，但<em>至少</em>与当前的快速 gas 费用相匹配并没有什么坏处。在试图计算出要支付多少 gas 时，有两个宝贵的资源是：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://etherscan.io/gastracker">Etherscan 气体追踪器</a></li>
+<li><a target="_blank" rel="noopener" href="https://ethgasstation.info/">ETH加油站</a></li>
+</ul>
+<p>使用快速 gas 支付意味着您的交易可以立即结算，从而减少滑点影响您交易的回旋余地。</p>
+<h5 id="在lay-2解决方案上进行交易"><a href="#在lay-2解决方案上进行交易" class="headerlink" title="在lay 2解决方案上进行交易"></a>在lay 2解决方案上进行交易</h5><p>如果您觉得价格下滑与您的交易得到确认的速度有<em>很大</em>关系，那么您就对了。之前的提示建议您支付更多的汽油费，这虽然有帮助，但也会使您的交易整体成本更高。</p>
+<p>由于第 2 层扩展解决方案的兴起，您无需支付更多费用即可获得快速交易。第 2 层具有相反的效果，使您的交易比在以太坊上<strong>便宜得多</strong>。</p>
+<p><em>Layer 2 所做的是从主以太坊链中</em>汇总大量以太坊交易，然后在稍后批量提交。这样，每个人都分摊了大笔交易的成本，使单笔交易本身变得非常便宜。</p>
+<p>L2 解决方案的另一个结果是它们可以立即处理交易。通过将微交易从以太坊主链中移除，L2 不依赖于以太坊的处理速度。</p>
+<p><a target="_blank" rel="noopener" href="https://academy.shrimpy.io/post/what-is-polygon-matic-and-how-can-it-save-ethereum">Polygon</a>、<a target="_blank" rel="noopener" href="https://offchainlabs.com/">Arbitrum</a>和<a target="_blank" rel="noopener" href="http://optimism.io/">Optimism</a>是与您最喜欢的去中心化交易所集成的流行第 2 层汇总的示例。Uniswap V3 已经<a target="_blank" rel="noopener" href="https://uniswap.org/blog/uniswap-v3/">承诺使用 Optimism</a>，而基于多边形的<a target="_blank" rel="noopener" href="https://quickswap.exchange/">Quickswap</a>是另一个可靠的选择，可以最大限度地减少除最大交易外的所有交易的滑点。</p>
+<h5 id="调整滑点容忍水平"><a href="#调整滑点容忍水平" class="headerlink" title="调整滑点容忍水平"></a>调整滑点容忍水平</h5><p>大多数去中心化交易所都为您提供了调整滑点容忍度的选项。您可以针对不同情况增加或减少滑点容忍度百分比，以确保您的交易得到处理。</p>
+<p><a target="_blank" rel="noopener" href="https://app.uniswap.org/#/swap">Uniswap 让您可以通过点击掉期界面</a>上的设置符号轻松调整您的滑点。</p>
+<p><img src="/2023/06/23/03.Uniswap/01.uniswap_v1_theory/image-20230301105349360.png" alt="image-20230301105349360"></p>
+<p>如果您在给定市场的高峰时段进行交易，预计滑点百分比将大幅波动。如果您将滑点容忍度设置得太低，您的交易将不会得到确认，因为它总是超出您的标记。</p>
+<p>另一方面，将滑点容忍度设置得太高可能会使您容易为每个代币支付比预期更多的费用。适合您的滑点容忍度是高度个人化的，取决于您的更大策略。</p>
+<p>需要记住的是，如果你的滑点设置得太低，它可能会导致重复失败的交易，这<em>仍然</em>会消耗你的 gas。因此，请注意确保您的交易第一次成功——尤其是在交易所繁忙的情况下。</p>
+<p>另一种避免滑点的简单方法是利用 Shrimpy 的代币交换和智能订单路由系统。我们将您连接到最好的流动性池，让您以最快、最便宜的方式获得 DeFi 流动性。<a target="_blank" rel="noopener" href="https://www.shrimpy.io/">在 Shrimpy 上注册并交换代币，</a>以了解是什么让我们如此擅长与 DeFi 市场互动。</p>
+<h5 id="提醒"><a href="#提醒" class="headerlink" title="提醒"></a>提醒</h5><p>如果您按规模进行交易，滑点可能会让您损失一大笔现金。在某些情况下，交易 1 ETH 与 100 ETH 时<a target="_blank" rel="noopener" href="https://www.reddit.com/r/ethtrader/comments/ljtjf3/how_to_avoid_slippage_on_uniswap1inch_for_large/">的滑点差异</a>可能高达 10%。</p>
+<p>一些加密货币交易员已经成功地将大笔交易分成几笔较小的交易。与单笔交易相比，您在进行多笔交易时会支付更多的汽油费，但在考虑到避免滑点的节省后可能会领先。</p>
+<p>为了最大限度地提高这种方法的有效性，请在天然气价格较低的非高峰时段进行交易，或者使用具有良好流动性的基于lay 2的去中心化交易所。</p>
+<h3 id="无常损失"><a href="#无常损失" class="headerlink" title="无常损失"></a>无常损失</h3><p>向某个流动性挖矿池中提供流动性，结果拿回来的时候，发现自己的币变少了？</p>
+<p>本质上，无常损失是提供流动性时发生的资金暂时损失/非永久性损失。之所以叫做非永久性损失，是因为只要在AMM中的代币相对价格恢复到其初始状态，那么，该损失就消失了。但是，这种情况很少发生。通常，无常损失会变成永久性损失，吞掉你的交易费用收入甚至导致负回报。</p>
+<p>当AMM中的代币市场价格在涨或跌时，就会产生无常损失。波动越大，无常损失越大。</p>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>假设此时DAI=1 USD, ETH=500 USD， 你需要提供20个ETH，和10000个DAI。你提供流动性后，此时，两个token的价值是相同的。</p>
+<p>假设，ETH的价格在外部的交易所中开始上涨。中心化交易所的ETH价格从500涨到了550美元。于是其他市场参与者（称为套利者）就开始工作了。套利者注意到中心化交易所和Uniswap之间的价格差异，并将其视为套利机会。</p>
+<p>随着套利者从池中购走更多的ETH（即取走ETH流动性），ETH的价格就变得越高。套利者不断在Uniswap上购买更便宜的ETH，直到交易所之间不再存在价格差异为止。</p>
+<p>使用恒定乘积公式，我们可以看到Uniswap ETH价格将达到550美元的时候，池中的情况会被套利者变为有10488.09个DAI和19.07 个ETH。</p>
+<p>也就是说套利者花费488.09个 DAI买走了0.93 ETH，以实现Uniswap和Coinbase的ETH价格之间的平衡。此时，套利者的成本是1 ETH = 524.83 DAI 。套利者购买的ETH可以在外部的中心化交易所以DAI或任何其他基于美元的稳定币即时出售，价格为550美元。于是套利者从中赚取了约25美元（减去手续费）。</p>
+<p>让我们看看这如何影响我们的流动资金提供者（LP）。</p>
+<p>我们可以看到，如果流动性提供者一开始不提供流动性，而是把ETH和DAI放在钱包里面，他们将拥有$ 23.41的收益。这23.41美元基本上是LP的无常损失。</p>
+<p>无常损失被称为非永久性，因为在此时此刻，LP只是在账面上损失了23.41美元。如果LP选择不撤回其流动性，当之后用户后面以太坊的价格回到500美元时再取出来，此时无常损失被抵消为0。</p>
+<p>另一方面，如果LP决定在以太坊550美元时决定撤回其流动性，他们将永久性的损失23.41美元。</p>
+<p>当然了，上述情况没有包含流动性提供者（LP）在提供流动性期间所赚取的手续费（0.4%每笔交易），以及流动性挖矿的收益（不是每一个流动性提供者都有此收益，而且流动性挖矿的收益是随时变化的）。</p>
+<p>也就是说，即使你参加的流动性挖矿，可能展示出来极高的收益，但是如果挖矿的资产价格突然暴跌，并永远回不到你提供流动性时的水平，你的无常损失就会变成永久损失。而且你的永久损失，可能大于你的挖矿收益。</p>
+<p>一般情况下，价格暴跌的资产就是你挖矿所得的资产，一旦其价格暴跌，挖矿收益率也会暴跌，同时无常损失会剧增。这会引发其他流动性提供者停止提供流动性，一旦流动性撤走，资产的价格就更容易继续暴跌。这就是所谓的“死亡螺旋”，或者说“矿难”。</p>
+<h4 id="无常损失计算器"><a href="#无常损失计算器" class="headerlink" title="无常损失计算器"></a>无常损失计算器</h4><p><a target="_blank" rel="noopener" href="https://yieldfarmingtools.com/tools">计算器</a></p>
+<h4 id="无常损失手动计算"><a href="#无常损失手动计算" class="headerlink" title="无常损失手动计算"></a>无常损失手动计算</h4><p>Uniswap的矿池价值比例都为50/50。假设你在UniSwap上代币A/B矿池中按照1A = 50B的价格存入了10个A和500个B。而这个池中一共有100个A和5000个B，你的份额占10%。</p>
+<p>交易前</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>代币</th>
+<th>数量</th>
+<th>价格</th>
+<th>价值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>100</td>
+<td>50</td>
+<td>5000</td>
+</tr>
+<tr>
+<td>B</td>
+<td>5000</td>
+<td>1</td>
+<td>5000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>因为K=10085000=500000</p>
+<p>当市场价格波动至1A=100B，而此时Uniswap中的A/B流动性池价格还是1A = 50B。这时套利者就会进入，在流动性池中用B换取A，再在其它中心化交易所卖出。这样就会造成A数量下降，B数量升高，从而重新达到一个平衡，使价格稳定在1A=100B。</p>
+<p>而AMA的固定乘积公式中，K为定值，保持不变。假设在稳定后池总A总数数量变成X，B的数量变成Y，那么：</p>
+<p>X*Y=K=500,000</p>
+<p>100X=Y</p>
+<p>解出X,Y，得到交易后：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>代币</th>
+<th>数量</th>
+<th>价格</th>
+<th>价值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>70.71</td>
+<td>100</td>
+<td>7071</td>
+</tr>
+<tr>
+<td>B</td>
+<td>7071</td>
+<td>1</td>
+<td>7071</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>价格波动后，由于你的份额占据池中的10%，你的持有代币价值为：</p>
+<p>7.071A+707.1B = 7.071A + 7.071A = 14.142A</p>
+<p>你的无常损失为：</p>
+<p>15A-14.142A = 0.858A</p>
+<p>因此，可以发现，因为你提供了流动性，代币对价格波动后，你的资产价值反而缩水了。当然了，因为的流动性中做市商可以收取手续费，手续费是否能跑赢无常损失就是一个未知数了。</p>
+<h3 id="气体消耗"><a href="#气体消耗" class="headerlink" title="气体消耗"></a>气体消耗</h3><p>由于其简约的设计，Uniswap 的 gas 效率非常高。对于 ETH 到 ERC20 的交易，它使用的 gas 比 Bancor 少近 10 倍。它可以比 0x 更有效地执行 ERC20 到 ERC20 的交易，并且与 EtherDelta 和 IDEX 等链上订单簿交易所相比具有显着的气体减少。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Exchange</th>
+<th>Uniswap</th>
+<th>EtherDelta</th>
+<th>Bancor</th>
+<th>Radar Relay(0x)</th>
+<th>IDEX</th>
+<th>Airswap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ETH to ERC20</td>
+<td>46000</td>
+<td>108000</td>
+<td>440000</td>
+<td>113000</td>
+<td>143000</td>
+<td>90000</td>
+</tr>
+<tr>
+<td>ERC20 to ETH</td>
+<td>60000</td>
+<td>93000</td>
+<td>403000</td>
+<td>113000</td>
+<td>143000</td>
+<td>120000</td>
+</tr>
+<tr>
+<td>ERC20 to ERC20</td>
+<td>88000</td>
+<td>/</td>
+<td>538000</td>
+<td>113000</td>
+<td>/</td>
+<td>/</td>
+</tr>
+<tr>
+<td>WETH</td>
+<td>/</td>
+<td>/</td>
+<td>/</td>
+<td>/</td>
+<td>/</td>
+<td>/</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="自定义池"><a href="#自定义池" class="headerlink" title="自定义池"></a>自定义池</h3><p>附加功能<code>tokenToExchangeSwap()</code>和<code>tokenToExchangeTransfer()</code>增加了 Uniswap 的灵活性。这些函数将 ERC20 代币转换为 ETH，并尝试用<code>ethToTokenTransfer()</code>在用户输入的地址上进行转换。这允许 ERC20 到 ERC20 与来自不同工厂的自定义 Uniswap 交易所进行交易，只要它们实现适当的接口即可。自定义交易所可以有不同的曲线、经理、私人流动资金池、基于 FOMO 的庞氏骗局，或任何你能想到的。</p>
+<h3 id="uniswap-v1存在的问题"><a href="#uniswap-v1存在的问题" class="headerlink" title="uniswap v1存在的问题"></a>uniswap v1存在的问题</h3><ol>
+<li>不能直接创立两种ERC20代币的流动性池，只能创立ETH和ERC20代币的流动性池。这样两种ERC20代币就不能直接兑换，需要经过ETH转化，导致了当交易者需要将代币A换成代币B时，中间还需要买入卖出ETH并支付两笔交易费和gas费，成本高昂。</li>
+<li>在实践的运行过程中，受制于以太坊吞吐量和速度的问题，Uniswap也遭遇过价格操作的状况。</li>
+<li>刚开始起阶段，交易规模在整个加密世界还非常小，流动性深度不足，容易出现价格剧烈波动的情况。</li>
+<li>也不能支持链式的兑换，例如：ETH-JCB-USDT-DAI </li>
+<li>作为一个DEX，v1也没有提供价格预言的机制</li>
+</ol>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/23/03.Uniswap/00.uniswap_digest/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-23 20:21:52
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/03-Uniswap/" title="03.Uniswap">
+                        <b>#</b> 03.Uniswap
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/23/03.Uniswap/02.uniswap_v1_code/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#uniswap-v1-theory"><span class="toc-text">uniswap_v1_theory</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%91%E6%8D%A2"><span class="toc-text">兑换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E5%8A%A8%E6%80%A7"><span class="toc-text">流动性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E5%B8%81%E5%85%91%E6%8D%A2%E4%BB%A3%E5%B8%81"><span class="toc-text">代币兑换代币</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BB%91%E7%82%B9"><span class="toc-text">滑点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A7%E7%94%9F%E5%8E%9F%E5%9B%A0"><span class="toc-text">产生原因</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%AB%98%E4%BA%A4%E6%98%93%E9%87%8F%E5%AF%BC%E8%87%B4%E4%BB%B7%E6%A0%BC%E4%B8%8B%E6%BB%91"><span class="toc-text">高交易量导致价格下滑</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%81%E5%8A%A8%E6%80%A7%E4%BD%8E%E5%AF%BC%E8%87%B4%E4%BB%B7%E6%A0%BC%E4%B8%8B%E6%BB%91"><span class="toc-text">流动性低导致价格下滑</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%BF%E5%85%8D%E6%BB%91%E7%82%B9"><span class="toc-text">避免滑点</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%9B%B4%E5%A4%9A%E7%9A%84gas"><span class="toc-text">使用更多的gas</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9C%A8lay-2%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E4%B8%8A%E8%BF%9B%E8%A1%8C%E4%BA%A4%E6%98%93"><span class="toc-text">在lay 2解决方案上进行交易</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B0%83%E6%95%B4%E6%BB%91%E7%82%B9%E5%AE%B9%E5%BF%8D%E6%B0%B4%E5%B9%B3"><span class="toc-text">调整滑点容忍水平</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%90%E9%86%92"><span class="toc-text">提醒</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%B8%B8%E6%8D%9F%E5%A4%B1"><span class="toc-text">无常损失</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-text">例子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E5%B8%B8%E6%8D%9F%E5%A4%B1%E8%AE%A1%E7%AE%97%E5%99%A8"><span class="toc-text">无常损失计算器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E5%B8%B8%E6%8D%9F%E5%A4%B1%E6%89%8B%E5%8A%A8%E8%AE%A1%E7%AE%97"><span class="toc-text">无常损失手动计算</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B0%94%E4%BD%93%E6%B6%88%E8%80%97"><span class="toc-text">气体消耗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B1%A0"><span class="toc-text">自定义池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uniswap-v1%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">uniswap v1存在的问题</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01.uniswap_v1_theory + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F23%2F03.Uniswap%2F01.uniswap_v1_theory%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/23/03.Uniswap/01.uniswap_v1_theory/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

