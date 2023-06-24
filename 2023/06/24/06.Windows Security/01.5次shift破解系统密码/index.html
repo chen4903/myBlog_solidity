@@ -8,10 +8,13 @@
   <meta name="author" content="LEVI_104" />
   <meta name="description" content="始生有物，其形必丑" />
   
-    <meta name="robots" content="noindex" />
-  
   
   <title>
+    
+      01.5次shift破解系统密码 
+      
+      
+      |
     
      solidity life
   </title>
@@ -99,150 +102,164 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="09.Puppet V2">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/09.Puppet%20V2/">
-            
-              
-                <span>09.Puppet V2</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">01.5次shift破解系统密码</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-24 15:32:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/06-Windows-Security/" title="06.Windows Security">
+                    <b>#</b> 06.Windows Security
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
-    
-      <div class="post-item" title="08.Puppet">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/08.Puppet/">
-            
-              
-                <span>08.Puppet</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <h1 id="01-5次shift破解系统密码"><a href="#01-5次shift破解系统密码" class="headerlink" title="01.5次shift破解系统密码"></a>01.5次shift破解系统密码</h1><p>在一些Win7和win10中，未登录系统时存在连续按5次shift漏洞，可以通过补丁来修复此漏洞</p>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><ul>
+<li>cmd工具路径：<code>c:\windows\system32\cmd</code></li>
+<li>用户/账户密码存储位置：<code>c:\windows\system32\config\SAM</code></li>
+<li>粘滞键：<code>c:\windows\system32\sethc.exe</code></li>
+<li>修改账户密码：<code>net user 用户名 新密码</code></li>
+</ul>
+<h2 id="破解过程"><a href="#破解过程" class="headerlink" title="破解过程"></a>破解过程</h2><p>1.按五次shift键，弹出一个提示“粘滞键”。</p>
+<p>2.启动电脑，在Windows启动界面加载的时候强制关机</p>
+<p>3.再次启动电脑，直到出现下图(启动修复)，选择启动启动修复</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619010023099.png" alt="image-20230619010023099"></p>
+<p>4.遇到启动修复，选择取消！！！</p>
+<p>5.选择查看问题详细信息，点击记事本内容</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619011058547.png" alt="image-20230619011058547"></p>
+<p>6.找到sethc程序</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619011333749.png" alt="image-20230619011333749"></p>
+<p>7.重命名为任意内容</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619011419291.png" alt="image-20230619011419291"></p>
+<p>8.找到cmd，复制粘贴</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619011519894.png" alt="image-20230619011519894"></p>
+<p>9.重命名为sethc</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619011544251.png" alt="image-20230619011544251"></p>
+<p>10.点击完成</p>
+<p>11.重启电脑，连续按五次shift，从图中的system32可以看出，这是以system用户打开的，即管理员账户打开的</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619011729604.png" alt="image-20230619011729604"></p>
+<p>12.重设密码，这里以chenqin为例</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619011857520.png" alt="image-20230619011857520"></p>
+<p>13.点击确认即可进入</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>为了防止账户主人知道我们改了密码，我们可以新建用户登录</p>
+<p>1.五次shift</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619012208459.png" alt="image-20230619012208459"></p>
+<p>2.重启电脑</p>
+<p><img src="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230619012256755.png" alt="image-20230619012256755"></p>
+<p>3.干完坏事之后，记得删除此用户哦</p>
+<p>4.后期，还可以继续毁尸灭迹，将log日志也清空</p>
+
       </div>
-    
-      <div class="post-item" title="07.Compromised">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/07.Compromised/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>07.Compromised</span>
-              
+              <a href="/2023/06/23/00.security/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/06.%E6%8F%90%E6%A1%88%E6%94%BB%E5%87%BB/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-24 15:32:21
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/06-Windows-Security/" title="06.Windows Security">
+                        <b>#</b> 06.Windows Security
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
-      </div>
+      
+    </div>
     
-      <div class="post-item" title="06.Selfie">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/06.Selfie/">
-            
-              
-                <span>06.Selfie</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="05.The Rewarder">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/05.The%20Rewarder/">
-            
-              
-                <span>05.The Rewarder</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="04.Side Entrance">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/04.Side%20Entrance/">
-            
-              
-                <span>04.Side Entrance</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="03.Truster">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/03.Truster/">
-            
-              
-                <span>03.Truster</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="02.Naive receiver">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/02.Naive%20receiver/">
-            
-              
-                <span>02.Naive receiver</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="01.unstoppable">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/01.unstoppable/">
-            
-              
-                <span>01.unstoppable</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="00.digest">
-        <div class="time-m-d">2023-06-23</div>
-        <div class="title">
-          <a href="/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/00.digest/">
-            
-              
-                <span>00.digest</span>
-              
-            
-          </a>
-        </div>
-      </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#01-5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81"><span class="toc-text">01.5次shift破解系统密码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%B4%E8%A7%A3%E8%BF%87%E7%A8%8B"><span class="toc-text">破解过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%96"><span class="toc-text">优化</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
     
   </div>
-  <nav class="post-navigation">
-    
-      <a href="/page/6/"><i class="iconfont icon-angleleft"></i></a>
-    
-    <span class="page-num">7 / 12</span>    
-      <a href="/page/8/"><i class="iconfont icon-angleright"></i></a>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -509,6 +526,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F24%2F06.Windows%2520Security%2F01.5%25E6%25AC%25A1shift%25E7%25A0%25B4%25E8%25A7%25A3%25E7%25B3%25BB%25E7%25BB%259F%25E5%25AF%2586%25E7%25A0%2581%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
