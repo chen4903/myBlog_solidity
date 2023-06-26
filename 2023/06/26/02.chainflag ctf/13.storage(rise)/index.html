@@ -11,7 +11,7 @@
   
   <title>
     
-      分类 
+      13.storage(rise) 
       
       
       |
@@ -138,19 +138,103 @@
 
 
   
-  <!-- 分类页 url形式：https://yoursite/categories/ -->
-  <div class="container category-index">
-    <div>
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/00-security/">00.security</a><span class="category-list-count">40</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/04-Ethernaut-CTF/">04.Ethernaut CTF</a><span class="category-list-count">23</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/01-Capturetheether-CTF/">01.Capturetheether CTF</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/02-chainflag-ctf/">02.chainflag ctf</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/05-Damn-Vulnerable-DeFi-v2-CTF/">05.Damn Vulnerable DeFi v2 CTF</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/03-Uniswap/">03.Uniswap</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/06-Windows-Security/">06.Windows Security</a><span class="category-list-count">1</span></li></ul>
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">13.storage(rise)</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-26 15:58:47
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/02-chainflag-ctf/" title="02.chainflag ctf">
+                    <b>#</b> 02.chainflag ctf
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="storage-rise"><a href="#storage-rise" class="headerlink" title="storage(rise)"></a>storage(rise)</h1><h2 id="contract"><a href="#contract" class="headerlink" title="contract"></a>contract</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.2;</span><br><span class="line">contract rise &#123;</span><br><span class="line">    address referee;</span><br><span class="line">    uint secret;</span><br><span class="line">    uint bl;</span><br><span class="line">    mapping(address =&gt; uint) public balance;</span><br><span class="line">    mapping(address =&gt; uint) public gift;</span><br><span class="line">    address owner;</span><br><span class="line">    </span><br><span class="line">    struct hacker &#123; </span><br><span class="line">        address hackeraddress;</span><br><span class="line">        uint value;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    constructor()public&#123;</span><br><span class="line">        owner = msg.sender;</span><br><span class="line">        referee = msg.sender;</span><br><span class="line">        balance[msg.sender]=10000000;</span><br><span class="line">        bl=1;</span><br><span class="line">        secret=18487187377722;</span><br><span class="line">    &#125;</span><br><span class="line">    event SendFlag(string b64email);</span><br><span class="line">    </span><br><span class="line">    modifier onlyOwner()&#123;</span><br><span class="line">        require(msg.sender == owner);</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    modifier onlyRefer()&#123;</span><br><span class="line">        require(msg.sender == referee);</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function payforflag(string b64email) public</span><br><span class="line">    &#123;</span><br><span class="line">        require(balance[msg.sender]&gt;1000000);</span><br><span class="line">        balance[msg.sender]=0;</span><br><span class="line">        bl=1;</span><br><span class="line">        owner.transfer(address(this).balance);</span><br><span class="line">        emit SendFlag(b64email);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function airdrop() public</span><br><span class="line">    &#123;</span><br><span class="line">        require(gift[msg.sender]==0);</span><br><span class="line">        gift[msg.sender]==1;</span><br><span class="line">        balance[msg.sender]+=1;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function deposit() public payable</span><br><span class="line">    &#123;</span><br><span class="line">        uint geteth=msg.value/1000000000000000000;</span><br><span class="line">        balance[msg.sender]+=geteth;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function set_secret(uint target_secret) public onlyOwner</span><br><span class="line">    &#123;</span><br><span class="line">        secret=target_secret;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function set_bl(uint target_bl) public onlyRefer</span><br><span class="line">    &#123;</span><br><span class="line">        bl=target_bl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function risegame(uint guessnumber) public payable</span><br><span class="line">    &#123;</span><br><span class="line">        require(balance[msg.sender]&gt;0);</span><br><span class="line">        uint geteth=msg.value/1000000000000000000;</span><br><span class="line">        if (guessnumber==secret)</span><br><span class="line">        &#123;</span><br><span class="line">            balance[msg.sender]+=geteth*bl;</span><br><span class="line">            bl=1;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            balance[msg.sender]=0;</span><br><span class="line">            bl=1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function transferto(address to) public</span><br><span class="line">    &#123;</span><br><span class="line">        require(balance[msg.sender]&gt;0);</span><br><span class="line">        if (to !=0)</span><br><span class="line">        &#123;</span><br><span class="line">            balance[to]=balance[msg.sender];</span><br><span class="line">            balance[msg.sender]=0;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            hacker storage h;</span><br><span class="line">            h.hackeraddress=msg.sender;</span><br><span class="line">            h.value=balance[msg.sender];</span><br><span class="line">            balance[msg.sender]=0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="analyses"><a href="#analyses" class="headerlink" title="analyses"></a>analyses</h2><p>Uninitialized <code>struct</code> pointer</p>
+<ol>
+<li>call <code>airdrop()</code></li>
+<li>call <code>transferto(0x0000000000000000000000000000000000000000)</code> </li>
+<li>call <code>set_bl(9999999999999999999)</code></li>
+<li>call <code>deposit()</code> with 1 ether</li>
+<li>call <code>risegame(1)</code> with 1 ether</li>
+<li>call <code>payforflat(&quot;successfully&quot;)</code></li>
+</ol>
+<h2 id="solve"><a href="#solve" class="headerlink" title="solve"></a>solve</h2>
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/24/06.Windows%20Security/01.5%E6%AC%A1shift%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-26 15:58:47
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/02-chainflag-ctf/" title="02.chainflag ctf">
+                        <b>#</b> 02.chainflag ctf
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#storage-rise"><span class="toc-text">storage(rise)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#contract"><span class="toc-text">contract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#analyses"><span class="toc-text">analyses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solve"><span class="toc-text">solve</span></a></li></ol></li></ol>
+      
     </div>
   </div>
-  
 
   
+<script src="/js/catalog.js"></script>
 
-  
 
-  
+
+
+    
+  </div>
+
 
         
 <div class="footer">
@@ -424,12 +508,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%88%86%E7%B1%BB + '&url=' + http%3A%2F%2Fexample.com%2Fcategories%2Findex.html + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 13.storage(rise) + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F26%2F02.chainflag%2520ctf%2F13.storage(rise)%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/categories/index.html" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/26/02.chainflag%20ctf/13.storage(rise)/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
