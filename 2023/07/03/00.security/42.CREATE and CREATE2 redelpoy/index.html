@@ -11,7 +11,7 @@
   
   <title>
     
-      41.Owner change 
+      42.CREATE and CREATE2 redelpoy 
       
       
       |
@@ -147,11 +147,11 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">41.Owner change</div>
+      <div class="post-title">42.CREATE and CREATE2 redelpoy</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2023-06-30 16:15:02
+          2023-07-03 21:00:41
         </span>
         
               <span class="post-categories">
@@ -167,17 +167,33 @@
           
       </div>
       <div class="markdown-body">
-        <h1 id="Owner-change"><a href="#Owner-change" class="headerlink" title="Owner change"></a>Owner change</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">contract Owned &#123;</span><br><span class="line"></span><br><span class="line">  address public owner;</span><br><span class="line">  </span><br><span class="line">  modifier onlyOwner() &#123;</span><br><span class="line">    require(msg.sender == owner);</span><br><span class="line">    _;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  constructor() public &#123;</span><br><span class="line">    owner = msg.sender;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function transferOwnership(address newOwner) public onlyOwner &#123;</span><br><span class="line">    require(newOwner != 0);</span><br><span class="line">    owner = newOwner;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>The contract above is unsafe: DoS! What if I call <code>transferOwnership()</code> with 0? The owner can no longer change.</p>
-<p>Fix it: </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">contract Owned &#123;</span><br><span class="line"></span><br><span class="line">  address public owner;</span><br><span class="line">  address public ownerTransf; // temporary storage</span><br><span class="line"></span><br><span class="line">  modifier onlyOwner() &#123;</span><br><span class="line">    require(msg.sender == owner);</span><br><span class="line">    _;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  constructor() public &#123;</span><br><span class="line">    owner = msg.sender;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function transferOwnership(address newOwner) public onlyOwner &#123;</span><br><span class="line">    require(newOwner != 0);</span><br><span class="line">    // Instead of swapping owner, we store the &#x27;newOwner&#x27; address in the &#x27;ownerTransf&#x27; variable.</span><br><span class="line">    ownerTransf = newOwner;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  // New functions</span><br><span class="line">  </span><br><span class="line">  // Cancel any on-going transfer.</span><br><span class="line">  function cancelOwnershipTransfer() public onlyOwner &#123;</span><br><span class="line">    ownerTransf = 0;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  // Lets the new owner claim ownership.</span><br><span class="line">  function claimOwnership() public &#123;</span><br><span class="line">    require(msg.sender == ownerTransf);</span><br><span class="line">    owner = ownerTransf;</span><br><span class="line">    ownerTransf = 0;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="CREATE-and-CREATE2-redelpoy"><a href="#CREATE-and-CREATE2-redelpoy" class="headerlink" title="CREATE and CREATE2 redelpoy"></a>CREATE and CREATE2 redelpoy</h1><h2 id="theory"><a href="#theory" class="headerlink" title="theory"></a>theory</h2><p>To begin with, there is an attack event about this article: <a target="_blank" rel="noopener" href="https://www.tuoniaox.com/news/p-562673.html">Tornado.Cash DAO attack</a>. Its attack logic is that:</p>
+<p>Using CREATE2 to deploy an contract and returning a address, the rumtimecode will be deployed to EVM. If this contract has a <code>selfdestruct()</code>, it can remove the runtimecode, balance, <strong>nonce</strong> and so on in this address. As we know, the theory of using CREATE to create a contract is:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keccak256(rlp(senderAddress, nonce))[12:31]</span><br></pre></td></tr></table></figure>
+<p>Because the senderAddress isn’t change and nonce is reset to zero again, we can deploy different bytecode in the same address.</p>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p>This is all the contract we need.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity 0.8.16;</span><br><span class="line"></span><br><span class="line">contract A&#123;</span><br><span class="line">	// _bytecode: contract B</span><br><span class="line">    bytes _bytecode = hex&quot;6080604052600a60005534801561001557600080fd5b50610425806100256000396000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c80630c55699c1461005157806335f469941461006f57806345c8159014610079578063517cf1ca14610097575b600080fd5b6100596100b5565b6040516100669190610172565b60405180910390f35b6100776100bb565b005b6100816100d5565b60405161008e91906101ce565b60405180910390f35b61009f61010a565b6040516100ac91906101ce565b60405180910390f35b60005481565b600073ffffffffffffffffffffffffffffffffffffffff16ff5b6000806040516100e49061013f565b604051809103906000f080158015610100573d6000803e3d6000fd5b5090508091505090565b6000806040516101199061014c565b604051809103906000f080158015610135573d6000803e3d6000fd5b5090508091505090565b610103806101ea83390190565b610103806102ed83390190565b6000819050919050565b61016c81610159565b82525050565b60006020820190506101876000830184610163565b92915050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b60006101b88261018d565b9050919050565b6101c8816101ad565b82525050565b60006020820190506101e360008301846101bf565b9291505056fe6080604052600b60005534801561001557600080fd5b5060df806100246000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c806335f46994146037578063a56dfe4a14603f575b600080fd5b603d6059565b005b60456073565b604051605091906090565b60405180910390f35b600073ffffffffffffffffffffffffffffffffffffffff16ff5b60005481565b6000819050919050565b608a816079565b82525050565b600060208201905060a360008301846083565b9291505056fea264697066735822122031f4cde3577d87814c482dd53e9673d6b0c8232c6ad9ea609b9c1ed776d8ae3964736f6c634300081000336080604052600c60005534801561001557600080fd5b5060df806100246000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c806335f46994146037578063c5d7802e14603f575b600080fd5b603d6059565b005b60456073565b604051605091906090565b60405180910390f35b600073ffffffffffffffffffffffffffffffffffffffff16ff5b60005481565b6000819050919050565b608a816079565b82525050565b600060208201905060a360008301846083565b9291505056fea2646970667358221220b2a0ebd03886067eb14fc3cac337f335ec2f7423f81bb506a317c0ddb7cb419a64736f6c63430008100033a2646970667358221220cb864211dc25005a67499d35383b700ead9a1148c4d299691a4ba5d7ec9c0a0964736f6c63430008100033&quot;;</span><br><span class="line">    </span><br><span class="line">    function deploy(bytes32 _salt) public returns(address)&#123;</span><br><span class="line">        bytes memory bytecode = _bytecode;</span><br><span class="line">        address addr;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            addr := create2(0, add(bytecode, 0x20), mload(bytecode), _salt)</span><br><span class="line">        &#125;</span><br><span class="line">        return addr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function getHash()public view returns(bytes32)&#123;</span><br><span class="line">        return keccak256(_bytecode);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract B&#123;</span><br><span class="line">    uint256 public x = 10;</span><br><span class="line"></span><br><span class="line">    function die() public&#123;</span><br><span class="line">        selfdestruct(payable(0));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function createC_1() public returns(address)&#123;</span><br><span class="line">        C_1 c_1 = new C_1();</span><br><span class="line">        return address(c_1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function createC_2() public returns(address)&#123;</span><br><span class="line">        C_2 c_2 = new C_2();</span><br><span class="line">        return address(c_2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract C_1&#123; </span><br><span class="line">    uint256 public y = 11;</span><br><span class="line"></span><br><span class="line">    function die() public&#123;</span><br><span class="line">        selfdestruct(payable(0));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract C_2&#123;</span><br><span class="line">    uint256 public z = 12;</span><br><span class="line"></span><br><span class="line">    function die() public&#123;</span><br><span class="line">        selfdestruct(payable(0));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Deploy contract A</li>
+<li>calculate bytecodehash and deploy the contract B</li>
+<li>contract B: call <code>createC_1()</code> to deploy C_1, now we can get y in contract C_1. Attention, contract use CREATE to create a contract:  <code>keccak256(rlp(contract B, 0))[12:31]</code>, nonce=0. After that, the nonce turns to 1.</li>
+<li>contract C_1: call <code>die()</code>, and then we can’t get y. Now there is no code in the contract C_1’s address.</li>
+<li>contract B: call <code>die()</code>, now the nonce of contract B is reset to 0 and no code in the contract B’s address.</li>
+<li>use the contract A and the same salt to call <code>deploy()</code>, because the salt and senderAddress are the same, <code>deploy()</code> returns the same address of B in step 5.</li>
+<li>contract B: call <code>createC_2()</code> to deploy C_2. Because <code>keccak256(rlp(contract B, 0))[12:31]</code> is the same as step 3, so CREATE returns the same address of step 3. Now we make it: deploy the same address with different bytecodes by CREATE, CREATE2 and <code>selfdestruct().</code></li>
+</ol>
+<h2 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h2><p>By these seven steps, we understand the advanced technique of CREATE, CREATE2 and <code>selfdestruct()</code>. All in all, the main idea is that:</p>
+<ul>
+<li>the same address can be deployed with different bytecode, the code in other words.</li>
+<li>an address can arbitrarily add and remove bytecode.</li>
+</ul>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2023/06/29/02.ChainflagCTF/16.reentrancy%20@babybank/" target="_self">
+              <a href="/2023/07/02/99.coordinate/01.Diary%20@Kernel/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -186,7 +202,7 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2023-06-30 16:15:02
+              2023-07-03 21:00:41
             </span>
             
                   <span class="post-categories">
@@ -203,7 +219,7 @@
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2023/07/02/99.coordinate/01.Diary%20@Kernel/" target="_self">
+              <a href="/2023/07/04/02.ChainflagCTF/15.storage%20@Happy_DOuble_Eleven%20-%20%E5%89%AF%E6%9C%AC/" target="_self">
                 <span>Next</span>
                 <i class="iconfont icon-chevronright"></i>
               </a>
@@ -220,7 +236,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Owner-change"><span class="toc-text">Owner change</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CREATE-and-CREATE2-redelpoy"><span class="toc-text">CREATE and CREATE2 redelpoy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#theory"><span class="toc-text">theory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#example"><span class="toc-text">example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#summary"><span class="toc-text">summary</span></a></li></ol></li></ol>
       
     </div>
   </div>
@@ -507,12 +523,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 41.Owner%20change + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F06%2F30%2F00.security%2F41.Owner%2520change%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 42.CREATE%20and%20CREATE2%20redelpoy + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F03%2F00.security%2F42.CREATE%2520and%2520CREATE2%2520redelpoy%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/06/30/00.security/41.Owner%20change/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/03/00.security/42.CREATE%20and%20CREATE2%20redelpoy/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
