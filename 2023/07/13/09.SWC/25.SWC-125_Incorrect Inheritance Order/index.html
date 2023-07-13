@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      25.SWC-125_Incorrect Inheritance Order 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">25.SWC-125_Incorrect Inheritance Order</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-07-13 15:55:14
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/15-SWC/" title="15.SWC">
+                    <b>#</b> 15.SWC
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="SWC-125-Incorrect-Inheritance-Order"><a href="#SWC-125-Incorrect-Inheritance-Order" class="headerlink" title="SWC-125_Incorrect Inheritance Order"></a>SWC-125_Incorrect Inheritance Order</h1><p>Incorrect Inheritance Order</p>
+<ul>
+<li><p><strong>Description</strong>: Solidity supports multiple inheritance, meaning that one contract can inherit several contracts. Multiple inheritance introduces ambiguity called <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem">Diamond Problem</a>: if two or more base contracts define the same function, which one should be called in the child contract? Solidity deals with this ambiguity by using reverse <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/C3_linearization">C3 Linearization</a>, which sets a priority between base contracts.</p>
+<p>That way, base contracts have different priorities, so the order of inheritance matters. Neglecting inheritance order can lead to unexpected behavior.</p>
+</li>
+<li><p><strong>Remediation</strong>: When inheriting multiple contracts, especially if they have identical functions, a developer should carefully specify inheritance in the correct order. The rule of thumb is to inherit contracts from more /general/ to more /specific/.</p>
+</li>
+</ul>
+<p>contract: 该文件书写的继承关系存在钻石问题，很有可能出现潜在的问题。做项目的时候尽量不要出现此继承。关于多继承的钻石继承，<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1n94y1B7bS/?spm_id_from=444.41.list.card_archive.click&amp;vd_source=0cc0401ee122346d6680e90658b0ed1a">我录了一个视频</a>，另外关于多继承的<a target="_blank" rel="noopener" href="https://consensys.github.io/smart-contract-best-practices/development-recommendations/solidity-specific/complex-inheritance/">教程</a></p>
+<p><img src="https://moe.photo/images/2023/07/13/QQ20230713160317.png" alt></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * @source: https://github.com/Arachnid/uscc/blob/master/submissions-2017/philipdaian/MDTCrowdsale.sol</span><br><span class="line"> * @author: Philip Daian</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">pragma solidity ^0.4.25;</span><br><span class="line"></span><br><span class="line">//import &quot;https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/math/SafeMath.sol&quot;;</span><br><span class="line">/**</span><br><span class="line"> * @title SafeMath</span><br><span class="line"> * @dev Math operations with safety checks that revert on error</span><br><span class="line"> */</span><br><span class="line">library SafeMath &#123;</span><br><span class="line">    /**</span><br><span class="line">    * @dev Multiplies two numbers, reverts on overflow.</span><br><span class="line">    */</span><br><span class="line">    function mul(uint256 a, uint256 b) internal pure returns (uint256) &#123;</span><br><span class="line">        // Gas optimization: this is cheaper than requiring &#x27;a&#x27; not being zero, but the</span><br><span class="line">        // benefit is lost if &#x27;b&#x27; is also tested.</span><br><span class="line">        // See: https://github.com/OpenZeppelin/openzeppelin-solidity/pull/522</span><br><span class="line">        if (a == 0) &#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        uint256 c = a * b;</span><br><span class="line">        require(c / a == b);</span><br><span class="line"></span><br><span class="line">        return c;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * @dev Integer division of two numbers truncating the quotient, reverts on division by zero.</span><br><span class="line">    */</span><br><span class="line">    function div(uint256 a, uint256 b) internal pure returns (uint256) &#123;</span><br><span class="line">        // Solidity only automatically asserts when dividing by 0</span><br><span class="line">        require(b &gt; 0);</span><br><span class="line">        uint256 c = a / b;</span><br><span class="line">        // assert(a == b * c + a % b); // There is no case in which this doesn&#x27;t hold</span><br><span class="line"></span><br><span class="line">        return c;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * @dev Subtracts two numbers, reverts on overflow (i.e. if subtrahend is greater than minuend).</span><br><span class="line">    */</span><br><span class="line">    function sub(uint256 a, uint256 b) internal pure returns (uint256) &#123;</span><br><span class="line">        require(b &lt;= a);</span><br><span class="line">        uint256 c = a - b;</span><br><span class="line"></span><br><span class="line">        return c;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * @dev Adds two numbers, reverts on overflow.</span><br><span class="line">    */</span><br><span class="line">    function add(uint256 a, uint256 b) internal pure returns (uint256) &#123;</span><br><span class="line">        uint256 c = a + b;</span><br><span class="line">        require(c &gt;= a);</span><br><span class="line"></span><br><span class="line">        return c;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * @dev Divides two numbers and returns the remainder (unsigned integer modulo),</span><br><span class="line">    * reverts when dividing by zero.</span><br><span class="line">    */</span><br><span class="line">    function mod(uint256 a, uint256 b) internal pure returns (uint256) &#123;</span><br><span class="line">        require(b != 0);</span><br><span class="line">        return a % b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//import &quot;https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol&quot;;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @title ERC20 interface</span><br><span class="line"> * @dev see https://github.com/ethereum/EIPs/issues/20</span><br><span class="line"> */</span><br><span class="line">interface IERC20 &#123;</span><br><span class="line">    function totalSupply() external view returns (uint256);</span><br><span class="line"></span><br><span class="line">    function balanceOf(address who) external view returns (uint256);</span><br><span class="line"></span><br><span class="line">    function allowance(address owner, address spender) external view returns (uint256);</span><br><span class="line"></span><br><span class="line">    function transfer(address to, uint256 value) external returns (bool);</span><br><span class="line"></span><br><span class="line">    function approve(address spender, uint256 value) external returns (bool);</span><br><span class="line"></span><br><span class="line">    function transferFrom(address from, address to, uint256 value) external returns (bool);</span><br><span class="line"></span><br><span class="line">    event Transfer(address indexed from, address indexed to, uint256 value);</span><br><span class="line"></span><br><span class="line">    event Approval(address indexed owner, address indexed spender, uint256 value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @title Standard ERC20 token</span><br><span class="line"> *</span><br><span class="line"> * @dev Implementation of the basic standard token.</span><br><span class="line"> * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md</span><br><span class="line"> * Originally based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol</span><br><span class="line"> *</span><br><span class="line"> * This implementation emits additional Approval events, allowing applications to reconstruct the allowance status for</span><br><span class="line"> * all accounts just by listening to said events. Note that this isn&#x27;t required by the specification, and other</span><br><span class="line"> * compliant implementations may not do it.</span><br><span class="line"> */</span><br><span class="line">contract ERC20 is IERC20 &#123;</span><br><span class="line">    using SafeMath for uint256;</span><br><span class="line"></span><br><span class="line">    mapping (address =&gt; uint256) private _balances;</span><br><span class="line"></span><br><span class="line">    mapping (address =&gt; mapping (address =&gt; uint256)) private _allowed;</span><br><span class="line"></span><br><span class="line">    uint256 private _totalSupply;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * @dev Total number of tokens in existence</span><br><span class="line">    */</span><br><span class="line">    function totalSupply() public view returns (uint256) &#123;</span><br><span class="line">        return _totalSupply;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * @dev Gets the balance of the specified address.</span><br><span class="line">    * @param owner The address to query the balance of.</span><br><span class="line">    * @return An uint256 representing the amount owned by the passed address.</span><br><span class="line">    */</span><br><span class="line">    function balanceOf(address owner) public view returns (uint256) &#123;</span><br><span class="line">        return _balances[owner];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev Function to check the amount of tokens that an owner allowed to a spender.</span><br><span class="line">     * @param owner address The address which owns the funds.</span><br><span class="line">     * @param spender address The address which will spend the funds.</span><br><span class="line">     * @return A uint256 specifying the amount of tokens still available for the spender.</span><br><span class="line">     */</span><br><span class="line">    function allowance(address owner, address spender) public view returns (uint256) &#123;</span><br><span class="line">        return _allowed[owner][spender];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * @dev Transfer token for a specified address</span><br><span class="line">    * @param to The address to transfer to.</span><br><span class="line">    * @param value The amount to be transferred.</span><br><span class="line">    */</span><br><span class="line">    function transfer(address to, uint256 value) public returns (bool) &#123;</span><br><span class="line">        _transfer(msg.sender, to, value);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.</span><br><span class="line">     * Beware that changing an allowance with this method brings the risk that someone may use both the old</span><br><span class="line">     * and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this</span><br><span class="line">     * race condition is to first reduce the spender&#x27;s allowance to 0 and set the desired value afterwards:</span><br><span class="line">     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729</span><br><span class="line">     * @param spender The address which will spend the funds.</span><br><span class="line">     * @param value The amount of tokens to be spent.</span><br><span class="line">     */</span><br><span class="line">    function approve(address spender, uint256 value) public returns (bool) &#123;</span><br><span class="line">        require(spender != address(0));</span><br><span class="line"></span><br><span class="line">        _allowed[msg.sender][spender] = value;</span><br><span class="line">        emit Approval(msg.sender, spender, value);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev Transfer tokens from one address to another.</span><br><span class="line">     * Note that while this function emits an Approval event, this is not required as per the specification,</span><br><span class="line">     * and other compliant implementations may not emit the event.</span><br><span class="line">     * @param from address The address which you want to send tokens from</span><br><span class="line">     * @param to address The address which you want to transfer to</span><br><span class="line">     * @param value uint256 the amount of tokens to be transferred</span><br><span class="line">     */</span><br><span class="line">    function transferFrom(address from, address to, uint256 value) public returns (bool) &#123;</span><br><span class="line">        _allowed[from][msg.sender] = _allowed[from][msg.sender].sub(value);</span><br><span class="line">        _transfer(from, to, value);</span><br><span class="line">        emit Approval(from, msg.sender, _allowed[from][msg.sender]);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev Increase the amount of tokens that an owner allowed to a spender.</span><br><span class="line">     * approve should be called when allowed_[_spender] == 0. To increment</span><br><span class="line">     * allowed value is better to use this function to avoid 2 calls (and wait until</span><br><span class="line">     * the first transaction is mined)</span><br><span class="line">     * From MonolithDAO Token.sol</span><br><span class="line">     * Emits an Approval event.</span><br><span class="line">     * @param spender The address which will spend the funds.</span><br><span class="line">     * @param addedValue The amount of tokens to increase the allowance by.</span><br><span class="line">     */</span><br><span class="line">    function increaseAllowance(address spender, uint256 addedValue) public returns (bool) &#123;</span><br><span class="line">        require(spender != address(0));</span><br><span class="line"></span><br><span class="line">        _allowed[msg.sender][spender] = _allowed[msg.sender][spender].add(addedValue);</span><br><span class="line">        emit Approval(msg.sender, spender, _allowed[msg.sender][spender]);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev Decrease the amount of tokens that an owner allowed to a spender.</span><br><span class="line">     * approve should be called when allowed_[_spender] == 0. To decrement</span><br><span class="line">     * allowed value is better to use this function to avoid 2 calls (and wait until</span><br><span class="line">     * the first transaction is mined)</span><br><span class="line">     * From MonolithDAO Token.sol</span><br><span class="line">     * Emits an Approval event.</span><br><span class="line">     * @param spender The address which will spend the funds.</span><br><span class="line">     * @param subtractedValue The amount of tokens to decrease the allowance by.</span><br><span class="line">     */</span><br><span class="line">    function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) &#123;</span><br><span class="line">        require(spender != address(0));</span><br><span class="line"></span><br><span class="line">        _allowed[msg.sender][spender] = _allowed[msg.sender][spender].sub(subtractedValue);</span><br><span class="line">        emit Approval(msg.sender, spender, _allowed[msg.sender][spender]);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * @dev Transfer token for a specified addresses</span><br><span class="line">    * @param from The address to transfer from.</span><br><span class="line">    * @param to The address to transfer to.</span><br><span class="line">    * @param value The amount to be transferred.</span><br><span class="line">    */</span><br><span class="line">    function _transfer(address from, address to, uint256 value) internal &#123;</span><br><span class="line">        require(to != address(0));</span><br><span class="line"></span><br><span class="line">        _balances[from] = _balances[from].sub(value);</span><br><span class="line">        _balances[to] = _balances[to].add(value);</span><br><span class="line">        emit Transfer(from, to, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev Internal function that mints an amount of the token and assigns it to</span><br><span class="line">     * an account. This encapsulates the modification of balances such that the</span><br><span class="line">     * proper events are emitted.</span><br><span class="line">     * @param account The account that will receive the created tokens.</span><br><span class="line">     * @param value The amount that will be created.</span><br><span class="line">     */</span><br><span class="line">    function _mint(address account, uint256 value) internal &#123;</span><br><span class="line">        require(account != address(0));</span><br><span class="line"></span><br><span class="line">        _totalSupply = _totalSupply.add(value);</span><br><span class="line">        _balances[account] = _balances[account].add(value);</span><br><span class="line">        emit Transfer(address(0), account, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev Internal function that burns an amount of the token of a given</span><br><span class="line">     * account.</span><br><span class="line">     * @param account The account whose tokens will be burnt.</span><br><span class="line">     * @param value The amount that will be burnt.</span><br><span class="line">     */</span><br><span class="line">    function _burn(address account, uint256 value) internal &#123;</span><br><span class="line">        require(account != address(0));</span><br><span class="line"></span><br><span class="line">        _totalSupply = _totalSupply.sub(value);</span><br><span class="line">        _balances[account] = _balances[account].sub(value);</span><br><span class="line">        emit Transfer(account, address(0), value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev Internal function that burns an amount of the token of a given</span><br><span class="line">     * account, deducting from the sender&#x27;s allowance for said account. Uses the</span><br><span class="line">     * internal burn function.</span><br><span class="line">     * Emits an Approval event (reflecting the reduced allowance).</span><br><span class="line">     * @param account The account whose tokens will be burnt.</span><br><span class="line">     * @param value The amount that will be burnt.</span><br><span class="line">     */</span><br><span class="line">    function _burnFrom(address account, uint256 value) internal &#123;</span><br><span class="line">        _allowed[account][msg.sender] = _allowed[account][msg.sender].sub(value);</span><br><span class="line">        _burn(account, value);</span><br><span class="line">        emit Approval(account, msg.sender, _allowed[account][msg.sender]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @title Roles</span><br><span class="line"> * @dev Library for managing addresses assigned to a Role.</span><br><span class="line"> */</span><br><span class="line">library Roles &#123;</span><br><span class="line">    struct Role &#123;</span><br><span class="line">        mapping (address =&gt; bool) bearer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev give an account access to this role</span><br><span class="line">     */</span><br><span class="line">    function add(Role storage role, address account) internal &#123;</span><br><span class="line">        require(account != address(0));</span><br><span class="line">        require(!has(role, account));</span><br><span class="line"></span><br><span class="line">        role.bearer[account] = true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev remove an account&#x27;s access to this role</span><br><span class="line">     */</span><br><span class="line">    function remove(Role storage role, address account) internal &#123;</span><br><span class="line">        require(account != address(0));</span><br><span class="line">        require(has(role, account));</span><br><span class="line"></span><br><span class="line">        role.bearer[account] = false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @dev check if an account has this role</span><br><span class="line">     * @return bool</span><br><span class="line">     */</span><br><span class="line">    function has(Role storage role, address account) internal view returns (bool) &#123;</span><br><span class="line">        require(account != address(0));</span><br><span class="line">        return role.bearer[account];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract MinterRole &#123;</span><br><span class="line">    using Roles for Roles.Role;</span><br><span class="line"></span><br><span class="line">    event MinterAdded(address indexed account);</span><br><span class="line">    event MinterRemoved(address indexed account);</span><br><span class="line"></span><br><span class="line">    Roles.Role private _minters;</span><br><span class="line"></span><br><span class="line">    constructor () internal &#123;</span><br><span class="line">        _addMinter(msg.sender);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modifier onlyMinter() &#123;</span><br><span class="line">        require(isMinter(msg.sender));</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function isMinter(address account) public view returns (bool) &#123;</span><br><span class="line">        return _minters.has(account);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function addMinter(address account) public onlyMinter &#123;</span><br><span class="line">        _addMinter(account);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function renounceMinter() public &#123;</span><br><span class="line">        _removeMinter(msg.sender);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function _addMinter(address account) internal &#123;</span><br><span class="line">        _minters.add(account);</span><br><span class="line">        emit MinterAdded(account);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function _removeMinter(address account) internal &#123;</span><br><span class="line">        _minters.remove(account);</span><br><span class="line">        emit MinterRemoved(account);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @title ERC20Mintable</span><br><span class="line"> * @dev ERC20 minting logic</span><br><span class="line"> */</span><br><span class="line">contract ERC20Mintable is ERC20, MinterRole &#123;</span><br><span class="line">    /**</span><br><span class="line">     * @dev Function to mint tokens</span><br><span class="line">     * @param to The address that will receive the minted tokens.</span><br><span class="line">     * @param value The amount of tokens to mint.</span><br><span class="line">     * @return A boolean that indicates if the operation was successful.</span><br><span class="line">     */</span><br><span class="line">    function mint(address to, uint256 value) public onlyMinter returns (bool) &#123;</span><br><span class="line">        _mint(to, value);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line"> * @title Crowdsale</span><br><span class="line"> * @dev Crowdsale is a base contract for managing a token crowdsale.</span><br><span class="line"> * Crowdsales have a start and end block, where investors can make</span><br><span class="line"> * token purchases and the crowdsale will assign them tokens based</span><br><span class="line"> * on a token per ETH rate. Funds collected are forwarded to a wallet</span><br><span class="line"> * as they arrive.</span><br><span class="line"> */</span><br><span class="line">contract Crowdsale &#123;</span><br><span class="line">    using SafeMath for uint256;</span><br><span class="line"></span><br><span class="line">    // The token being sold</span><br><span class="line">    ERC20Mintable public token;</span><br><span class="line"></span><br><span class="line">    // start and end block where investments are allowed (both inclusive)</span><br><span class="line">    uint256 public startBlock;</span><br><span class="line">    uint256 public endBlock;</span><br><span class="line"></span><br><span class="line">    // address where funds are collected</span><br><span class="line">    address public wallet;</span><br><span class="line"></span><br><span class="line">    // how many token units a buyer gets per wei</span><br><span class="line">    uint256 public rate;</span><br><span class="line"></span><br><span class="line">    // amount of raised money in wei</span><br><span class="line">    uint256 public weiRaised;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">    * event for token purchase logging</span><br><span class="line">    * @param purchaser who paid for the tokens</span><br><span class="line">    * @param beneficiary who got the tokens</span><br><span class="line">    * @param value weis paid for purchase</span><br><span class="line">    * @param amount amount of tokens purchased</span><br><span class="line">    */</span><br><span class="line">    event TokenPurchase(address indexed purchaser, address indexed beneficiary, uint256 value, uint256 amount);</span><br><span class="line"></span><br><span class="line">    function Crowdsale(uint256 _startBlock, uint256 _endBlock, uint256 _rate, address _wallet) &#123;</span><br><span class="line">        require(_startBlock &gt;= block.number);</span><br><span class="line">        require(_endBlock &gt;= _startBlock);</span><br><span class="line">        require(_rate &gt; 0);</span><br><span class="line">        require(_wallet != 0x0);</span><br><span class="line"></span><br><span class="line">        token = createTokenContract();</span><br><span class="line">        startBlock = _startBlock;</span><br><span class="line">        endBlock = _endBlock;</span><br><span class="line">        rate = _rate;</span><br><span class="line">        wallet = _wallet;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // creates the token to be sold.</span><br><span class="line">    // override this method to have crowdsale of a specific mintable token.</span><br><span class="line">    function createTokenContract() internal returns (ERC20Mintable) &#123;</span><br><span class="line">        return new ERC20Mintable();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // fallback function can be used to buy tokens</span><br><span class="line">    function () payable &#123;</span><br><span class="line">        buyTokens(msg.sender);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // low level token purchase function</span><br><span class="line">    function buyTokens(address beneficiary) payable &#123;</span><br><span class="line">        require(beneficiary != 0x0);</span><br><span class="line">        require(validPurchase());</span><br><span class="line"></span><br><span class="line">        uint256 weiAmount = msg.value;</span><br><span class="line"></span><br><span class="line">        // calculate token amount to be created</span><br><span class="line">        uint256 tokens = weiAmount.mul(rate);</span><br><span class="line"></span><br><span class="line">        // update state</span><br><span class="line">        weiRaised = weiRaised.add(weiAmount);</span><br><span class="line"></span><br><span class="line">        token.mint(beneficiary, tokens);</span><br><span class="line">        TokenPurchase(msg.sender, beneficiary, weiAmount, tokens);</span><br><span class="line"></span><br><span class="line">        forwardFunds();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // send ether to the fund collection wallet</span><br><span class="line">    // override to create custom fund forwarding mechanisms</span><br><span class="line">    function forwardFunds() internal &#123;</span><br><span class="line">        wallet.transfer(msg.value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // @return true if the transaction can buy tokens</span><br><span class="line">    function validPurchase() internal constant returns (bool) &#123;</span><br><span class="line">        uint256 current = block.number;</span><br><span class="line">        bool withinPeriod = current &gt;= startBlock &amp;&amp; current &lt;= endBlock;</span><br><span class="line">        bool nonZeroPurchase = msg.value != 0;</span><br><span class="line">        return withinPeriod &amp;&amp; nonZeroPurchase;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // @return true if crowdsale event has ended</span><br><span class="line">    function hasEnded() public constant returns (bool) &#123;</span><br><span class="line">        return block.number &gt; endBlock;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @title CappedCrowdsale</span><br><span class="line"> * @dev Extension of Crowsdale with a max amount of funds raised</span><br><span class="line"> */</span><br><span class="line"> contract CappedCrowdsale is Crowdsale &#123;</span><br><span class="line">    using SafeMath for uint256;</span><br><span class="line">    uint256 public cap;</span><br><span class="line"></span><br><span class="line">    function CappedCrowdsale(uint256 _cap) &#123;</span><br><span class="line">        require(_cap &gt; 0);</span><br><span class="line">        cap = _cap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // overriding Crowdsale#validPurchase to add extra cap logic</span><br><span class="line">    // @return true if investors can buy at the moment</span><br><span class="line">    function validPurchase() internal constant returns (bool) &#123;</span><br><span class="line">        bool withinCap = weiRaised.add(msg.value) &lt;= cap;</span><br><span class="line">        return super.validPurchase() &amp;&amp; withinCap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // overriding Crowdsale#hasEnded to add cap logic</span><br><span class="line">    // @return true if crowdsale event has ended</span><br><span class="line">    function hasEnded() public constant returns (bool) &#123;</span><br><span class="line">        bool capReached = weiRaised &gt;= cap;</span><br><span class="line">        return super.hasEnded() || capReached;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @title WhitelistedCrowdsale</span><br><span class="line"> * @dev Extension of Crowsdale with a whitelist of investors that</span><br><span class="line"> * can buy before the start block</span><br><span class="line"> */</span><br><span class="line">contract WhitelistedCrowdsale is Crowdsale &#123;</span><br><span class="line">    using SafeMath for uint256;</span><br><span class="line"></span><br><span class="line">    mapping (address =&gt; bool) public whitelist;</span><br><span class="line"></span><br><span class="line">    function addToWhitelist(address addr) &#123;</span><br><span class="line">        require(msg.sender != address(this));</span><br><span class="line">        whitelist[addr] = true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // overriding Crowdsale#validPurchase to add extra whitelit logic</span><br><span class="line">    // @return true if investors can buy at the moment</span><br><span class="line">    function validPurchase() internal constant returns (bool) &#123;</span><br><span class="line">        return super.validPurchase() || (whitelist[msg.sender] &amp;&amp; !hasEnded());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract MDTCrowdsale is CappedCrowdsale, WhitelistedCrowdsale &#123;</span><br><span class="line"></span><br><span class="line">    function MDTCrowdsale()</span><br><span class="line">    CappedCrowdsale(50000000000000000000000)</span><br><span class="line">    Crowdsale(block.number, block.number + 100000, 1, msg.sender) &#123; // Wallet is the contract creator, to whom funds will be sent</span><br><span class="line">        addToWhitelist(msg.sender);</span><br><span class="line">        addToWhitelist(0x0d5bda9db5dd36278c6a40683960ba58cac0149b);</span><br><span class="line">        addToWhitelist(0x1b6ddc637c24305b354d7c337f9126f68aad4886);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/13/09.SWC/24.SWC-124_storage/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-07-13 15:55:14
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/15-SWC/" title="15.SWC">
+                        <b>#</b> 15.SWC
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/13/09.SWC/26.SWC-126_Insufficient%20Gas%20Griefing/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SWC-125-Incorrect-Inheritance-Order"><span class="toc-text">SWC-125_Incorrect Inheritance Order</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 25.SWC-125_Incorrect%20Inheritance%20Order + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F13%2F09.SWC%2F25.SWC-125_Incorrect%2520Inheritance%2520Order%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/13/09.SWC/25.SWC-125_Incorrect%20Inheritance%20Order/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
