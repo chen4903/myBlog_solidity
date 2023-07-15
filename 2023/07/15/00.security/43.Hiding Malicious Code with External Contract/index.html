@@ -11,9 +11,9 @@
   
   <title>
     
-      Category 
+      43.Hiding Malicious Code with External Contract 
       
-       : 08.Cases
+      
       |
     
      Sec Life
@@ -102,38 +102,143 @@
 
 
       <div class="flex-container">
-        <!-- 标签详情页，展示某个标签下的文章列表，url形式：https://yoursite/tags/某个标签/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<div class="container category-details">
-  <div class="content-title">
-    <h2>
-      <span>08.Cases</span>
-    </h2>
-  </div>
+
+  <!-- LaTex Display -->
+
   
-    <div class="post-list">
-      <div class="post-item" title="02.A mythical wild animal">
-        <span class="time-m-d">2023-07-14</span>
-        <a href="/2023/07/14/08.Cases/02.A%20mythical%20wild%20animal/">
-          <span>02.A mythical wild animal</span>
-        </a>
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">43.Hiding Malicious Code with External Contract</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-07-15 16:49:06
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/00-security/" title="00.security">
+                    <b>#</b> 00.security
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
-    </div>
-  
-    <div class="post-list">
-      <div class="post-item" title="01.Phishing scam">
-        <span class="time-m-d">2023-07-05</span>
-        <a href="/2023/07/05/08.Cases/01.Phishing%20scam/">
-          <span>01.Phishing scam</span>
-        </a>
+      <div class="markdown-body">
+        <h1 id="Hiding-Malicious-Code-with-External-Contract"><a href="#Hiding-Malicious-Code-with-External-Contract" class="headerlink" title="Hiding Malicious Code with External Contract"></a>Hiding Malicious Code with External Contract</h1><p>In Solidity any address can be casted into specific contract, even if the contract at the address is not the one being casted.</p>
+<p>This can be exploited to hide malicious code. Let’s see how.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.17;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">Let&#x27;s say Alice can see the code of Foo and Bar but not Mal.</span><br><span class="line">It is obvious to Alice that Foo.callBar() executes the code inside Bar.log().</span><br><span class="line">However Eve deploys Foo with the address of Mal, so that calling Foo.callBar()</span><br><span class="line">will actually execute the code at Mal.</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">1. Eve deploys Mal</span><br><span class="line">2. Eve deploys Foo with the address of Mal</span><br><span class="line">3. Alice calls Foo.callBar() after reading the code and judging that it is</span><br><span class="line">   safe to call.</span><br><span class="line">4. Although Alice expected Bar.log() to be execute, Mal.log() was executed.</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">contract Foo &#123;</span><br><span class="line">    Bar bar;</span><br><span class="line"></span><br><span class="line">    constructor(address _bar) &#123;</span><br><span class="line">        bar = Bar(_bar);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function callBar() public &#123;</span><br><span class="line">        bar.log();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Bar &#123;</span><br><span class="line">    event Log(string message);</span><br><span class="line"></span><br><span class="line">    function log() public &#123;</span><br><span class="line">        emit Log(&quot;Bar was called&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// This code is hidden in a separate file</span><br><span class="line">contract Mal &#123;</span><br><span class="line">    event Log(string message);</span><br><span class="line"></span><br><span class="line">    // function () external &#123;</span><br><span class="line">    //     emit Log(&quot;Mal was called&quot;);</span><br><span class="line">    // &#125;</span><br><span class="line"></span><br><span class="line">    // Actually we can execute the same exploit even if this function does</span><br><span class="line">    // not exist by using the fallback</span><br><span class="line">    function log() public &#123;</span><br><span class="line">        emit Log(&quot;Mal was called&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Remediation</p>
+<ul>
+<li>Initialize a new contract inside the constructor</li>
+<li>Make the address of external contract <code>public</code> so that the code of the external contract can be reviewed</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Bar public bar;</span><br><span class="line"></span><br><span class="line">constructor() public &#123;</span><br><span class="line">    bar = new Bar();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
       </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/14/08.PoC/02.A%20mythical%20wild%20animal/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-07-15 16:49:06
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/00-security/" title="00.security">
+                        <b>#</b> 00.security
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/15/08.PoC/03.DFX%20Finance%20@Reentrancy@flashloan/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
     </div>
-  
-  <nav class="post-navigation">
     
-    <span class="page-num">1 / 1</span>    
-  </nav>
-</div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Hiding-Malicious-Code-with-External-Contract"><span class="toc-text">Hiding Malicious Code with External Contract</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
 
         
 <div class="footer">
@@ -400,6 +505,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 43.Hiding%20Malicious%20Code%20with%20External%20Contract + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F15%2F00.security%2F43.Hiding%2520Malicious%2520Code%2520with%2520External%2520Contract%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/15/00.security/43.Hiding%20Malicious%20Code%20with%20External%20Contract/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
