@@ -197,7 +197,7 @@
 </ul>
 <p><img src="https://moe.photo/images/2023/07/15/image-20230715233935474.png" alt></p>
 <h2 id="Attack-Process"><a href="#Attack-Process" class="headerlink" title="Attack Process"></a>Attack Process</h2><h3 id="The-entire-attack-process"><a href="#The-entire-attack-process" class="headerlink" title="The entire attack process"></a>The entire attack process</h3><p><img src="https://moe.photo/images/2023/07/15/image-20230715213612801.png" alt></p>
-<h3 id="1-preparation"><a href="#1-preparation" class="headerlink" title="1.preparation"></a>1.preparation</h3><p>why hackercall viewDeposit()?</p>
+<h3 id="1-preparation"><a href="#1-preparation" class="headerlink" title="1.preparation"></a>1.preparation</h3><p>why hacker called viewDeposit()?</p>
 <p>Hacker wanted to know how much token pair  he should deposit to get <code>200,000*1e18</code> <code>token dfx-xidr-v2</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/// @notice view deposits and curves minted a given deposit would return</span><br><span class="line">    /// @param _deposit the full amount of stablecoins you want to deposit. Divided evenly according to the</span><br><span class="line">    ///                 prevailing proportions of the numeraire assets of the pool</span><br><span class="line">    /// @return (the amount of curves you receive in return for your deposit,</span><br><span class="line">    ///          the amount deposited for each numeraire)</span><br><span class="line">    function viewDeposit(uint256 _deposit) external view transactable returns (uint256, uint256[] memory) &#123;</span><br><span class="line">        // curvesToMint_, depositsToMake_</span><br><span class="line">        return ProportionalLiquidity.viewProportionalDeposit(curve, _deposit);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h3 id="2-flashloan"><a href="#2-flashloan" class="headerlink" title="2.flashloan"></a>2.flashloan</h3><p><img src="https://moe.photo/images/2023/07/15/image-20230715211603181.png" alt></p>
@@ -220,7 +220,7 @@
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2023/07/15/00.security/43.Hiding%20Malicious%20Code%20with%20External%20Contract/" target="_self">
+              <a href="/2023/07/15/10.solidity%20compiler%20bug/01.ABIEncoderV2%20Array/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -245,6 +245,11 @@
               
           </div>
           <div class="post-foot-prev">
+            
+              <a href="/2023/07/16/00.security/43.Hiding%20Malicious%20Code%20with%20External%20Contract%20-%20%E5%89%AF%E6%9C%AC/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
             
           </div>
         </div>
