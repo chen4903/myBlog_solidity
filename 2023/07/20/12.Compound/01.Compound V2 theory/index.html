@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      01.Compound V2 theory 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">01.Compound V2 theory</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-07-20 17:54:36
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/12-Compound/" title="12.Compound">
+                    <b>#</b> 12.Compound
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Compound-V2-theory"><a href="#Compound-V2-theory" class="headerlink" title="Compound V2 theory"></a>Compound V2 theory</h1><p>使用Compound的<a target="_blank" rel="noopener" href="https://github.com/chen4903/Compound-Example">快速入门</a>，用foundry写测试，包含upgrade, borrow, repay, supply, redeem 和计算流动性</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
+<li>Compound定义<ul>
+<li>Compound是运行在以太坊上的数字资产理财和贷款服务平台。</li>
+<li>通过一个开源的、去中心化的Compound协议，自动建立市场化的利率定价，为用户提供类似银行的数字货币存贷业务。</li>
+<li>用户存入对应的数字资产回立即产生收益，也可以通过抵押的方式借出数字资产（需要支付利息，利率根据市场供需水平浮动定价），并且按照以太坊区块产生的时间（也就是大概每15秒结算一次利息）。用户的存款可以随时连本带息的取出</li>
+</ul>
+</li>
+</ul>
+<p>Compound认为大多数用户的数字资产都闲置在交易所和钱包里，没有任何收益，它的使命就是改变这一切。</p>
+<h2 id="一些名词"><a href="#一些名词" class="headerlink" title="一些名词"></a>一些名词</h2><ul>
+<li><p>Supply Balance：存款量，折算为USD为单位</p>
+</li>
+<li><p>Borrow Balance：借款量，折算为USD为单位</p>
+</li>
+<li><p>APY：存款或借款的年利率，为复利利率。</p>
+</li>
+<li><p>Collateral Factor：抵押因子（该币种的最大抵押率），为 <code>借款价值 / 抵押价值</code>。比如你提供了价值 100USDT的Dai进行抵押，你最多只能借到价值83.5USDT的其他数字资产。</p>
+</li>
+<li><p>Earn APR：存款利率，对应Dashboard页面的数据。</p>
+</li>
+<li><p>Borrow APR：借款利率，对应Dashboard页面的数据。</p>
+</li>
+<li><p>Reserve Factor：储备因子（储备率），就是存款中的一部分钱要作为储备金，不对外借出的。</p>
+</li>
+<li><p>Reserves：储备金金额，来源于利息积累的一部分</p>
+</li>
+<li><p>Borrow Cap：借出上限</p>
+</li>
+<li><p>Utilization: 资金利用率</p>
+</li>
+<li><p>标的资产(underlying token)：是我们真正进行借贷的资产，比如 ETH、USDT、USDC、WBTC 等。</p>
+</li>
+<li><p>资产利用率：在货币市场的资金池中，借款金额的占比。资产利用率在于度量资金的使用效率，越高越好，代表资金的效率越高。公式如下：</p>
+<ul>
+<li><script type="math/tex; mode=display">
+资产利用率={\frac{totalBorrows}{(totalCash+totalBorrows-totalReserves)}}</script></li>
+<li><p>totalCash: 放入智能合约中，但是还没有被借走的标的资产总量</p>
+</li>
+<li><p>totalBorrows: 所有借款人应该偿还的所有标的资产总量（包含本金和利息）</p>
+</li>
+<li><p>totalReserves: 储备金是每个<code>cToken</code>合约中的一个会计条目，代表作为现金留出的历史利息的一部分，可以通过协议的治理提取或转移。</p>
+</li>
+</ul>
+</li>
+<li><p>备用金：Compound 会对每一笔借款的利息收益，按照备用金因子计提一笔备用金，作为平台收益。</p>
+</li>
+</ul>
+<h2 id="compound架构"><a href="#compound架构" class="headerlink" title="compound架构"></a>compound架构</h2><ul>
+<li>放贷人/借款人存入资产到 Compound 智能合约的货币市场。放贷人/借款人存入的资产为底层资产（也称为标的资产）。</li>
+<li>智能合约按照兑换率发放对应底层资产的 Compound 代币 cTokens 到用户账户。这里的 cTokens 可以为 cDAI/cETH/cUSDC/cREP/cSAI/cWBTC/cBAT/cZRX 等。</li>
+<li>放贷人存入资产到 Compound 的货币市场中可以享受放贷利息收益，由 Compound 自动撮合贷款需求。</li>
+<li>借款人超额抵押资产后，可以从货币市场借款。不同于P2P借款，借款人不需要和贷款人协商，只要对应货币市场的流动性足够，由 Compound 智能合约自动撮合。借款利率由 Compound 智能合约根据市场对资金的供需关系实时确定。同一区块内，所有借款人的借款利率都是相同的。</li>
+<li>Compound 按照区块数为单位累积借款人利息。</li>
+<li>Compound 对每一笔借款都会计提准备金。</li>
+<li>放贷人可以随时赎回自己存入的底层资产</li>
+<li>借款人可以随时偿还贷款</li>
+<li>如果借款人抵押资产价值低于清算阀值，Compound 智能合约会自动发起清算操作，以保证用户的资产总额大于借贷总额。</li>
+</ul>
+<p><img src="/2023/07/20/12.Compound/01.Compound%20V2%20theory/image-20230722010058305-16899592755661.png" alt></p>
+<ul>
+<li>借款人可以抵押 Compound 支持的任何资产，但为了防止借款人付不出利息，借出的总资产必须小于抵押资产的一定数量。</li>
+<li>借款人支付的利息按照每个放贷者的资产比例平均分配给所有的放贷者。</li>
+<li>借款人可以随时还款，还款时依据借款利率与时间，决定总的还款数量。同样，放贷人可以随时连本带利提出 DAI，但前提是智能合约中必须有足够的 DAI，由于备用金机制，几乎不可能有提不出资产的情况。</li>
+</ul>
+<h2 id="cToken"><a href="#cToken" class="headerlink" title="cToken"></a>cToken</h2><ul>
+<li><p>cToken是我们在 Compound 上存入资产的凭证。取款时就可以用 cToken 换回标的资产</p>
+</li>
+<li><p>所有cToken只有8位小数，而underlying token可能有所不同 </p>
+</li>
+<li><p>每一种标的资产都有对应的一种 cToken，比如，ETH 对应 cETH，USDT 对应 cUSDT，当用户向 Compound 存入 ETH 则会返回 cETH。</p>
+</li>
+<li><p>存入token之后，会得到cToken（比如cDAI），我们的存币本息就体现在账户里增长的从DAI的价值，它是我们在Compound存款和提供流动性的凭证，账户里有了cToken，就会按时收到利息。比如：cETH 的兑换率为 0.02，即 1 个 cETH 可以兑换 0.02 个 ETH。</p>
+</li>
+<li><p>cToken 与标的资产的兑换率会随着时间推移不断上涨，上涨的部分正是用户存入资产所生成的利息。因为cToken的价值会越来越高，因为每一个区块会结算一次利息，然后继续升值</p>
+</li>
+<li><p>cToken也可以转账或交易。cToken和标定Token的兑换比例不是1：1，有一个兑换公式。它是ERC20兼容的代币。总体上来说，借款量越高，cToken和标定资产的兑换比例越高。兑换比例公式如下：</p>
+</li>
+<li><p>放贷人将标的资产存入货币市场时候，平台会按照平台实时兑换率 exchangeRate，将标的兑换为平台的 cToken，此过程称之为铸币（Mint Token）：</p>
+</li>
+<li><script type="math/tex; mode=display">
+exchangeRate = {\frac{getCash()+totalBorrows()-totalReserves()}{totalSupply()} }</script></li>
+</ul>
+<pre><code>- getCash(): 放入智能合约中，但是还没有被借走的标的资产总量
+
+
+- totalBorrows(): 所有借款人应该偿还的所有标的资产总量（包含本金和利息）
+
+
+- totalReserves(): 储备金是每个`cToken`合约中的一个会计条目，代表作为现金留出的历史利息的一部分，可以通过协议的治理提取或转移。
+
+
+- totalSupply()：所有放贷人（存款）获得的 cToken 总量
+</code></pre><h2 id="利率"><a href="#利率" class="headerlink" title="利率"></a>利率</h2><ul>
+<li><p>只要借入资产与供应资产的比率发生变化，利率就会在每个区块上更新，也就是平均15秒出一个块，15秒更新一次。利率的数量取决于智能合约的具体实施。具体查看LegacyJumpRateModelV2.sol</p>
+</li>
+<li><p>Interest Rate Model：黑线代表市场的资金利用率（也就是借款需求），绿线代表存币市场的利率，紫线代表借币市场的利率。Compound对不同市场采用不同的利率定价模型</p>
+</li>
+<li><p>Compound的利率模型有两种：直线型和拐点型。</p>
+<ul>
+<li>黑色线：利用率。紫线：借款利率。绿线：存款利率</li>
+<li>借款利率的变化都是线性的，符合公式 <code>y = k * x</code>，而存款利率是根据借款利率计算的</li>
+<li>核心逻辑：本质上是要反映借贷供求关系的一个量化指标，利用率低说明存款的多，但借款的太少，即供给大于需求。这时候就需要鼓励用户多借款少存款，所以借款利率偏低，存款利率也偏低。而利用率高的时候则相反，借款利率和存款利率偏高，就能鼓励大家多存款少借款。</li>
+<li>利用率过高的话，那说明资金池里剩下的钱就比较少了，会面临资金池枯竭的风险。资金池枯竭的话，那存款用户就没资金可取，也没资金可借，这就可能会导致系统性风险了。一般资金使用率在 80% 以内比较安全。</li>
+<li>而为了控制利用率在安全范围内，Compound 大多数抵押品都使用拐点型利率模型。对应合约为 BaseJumpRateModelV2。</li>
+<li>拐点型利率模型其实是是两个直线型利率的合成，在达到临界点前使用一条直接，在达到临界点之后使用另一条斜率更高的直线，只所以这么做是为了保护资金池，防止资金池中的资金被借空。</li>
+</ul>
+</li>
+<li><p>借款利率</p>
+<ul>
+<li><p>直线型借款利率公式</p>
+<ul>
+<li><script type="math/tex; mode=display">
+借款利率=baseRate+utilizationRate*multiplier</script></li>
+</ul>
+</li>
+<li><p>拐点型借款利率公式</p>
+<ul>
+<li><script type="math/tex; mode=display">
+借款利率=baseRate+utilizationRate*multiplier+(utilizationRate-kink)*jumpMultiplier</script></li>
+<li><p>baseRate:基础利率。</p>
+</li>
+<li><p>utilizationRate:资产利用率</p>
+</li>
+<li><p>multiplier、jumpMultiplier，为对应的乘数</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>存款利率</p>
+<ul>
+<li><p>存款利率与借款利率、资产利用率都有关系，公式如下：</p>
+<ul>
+<li><script type="math/tex; mode=display">
+存款利率=borrowRate*(1-reserveFactor)*utilizationRate</script></li>
+</ul>
+</li>
+<li><p>borrowRate: 借款利率</p>
+</li>
+<li><p>reserveFactor: 备用金因子</p>
+</li>
+<li><p>utilizationRate: 就是资产利用率</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/07/20/12.Compound/01.Compound%20V2%20theory/image-20230720233658258-16899592755663.png" alt></p>
+<h2 id="清算"><a href="#清算" class="headerlink" title="清算"></a>清算</h2><ul>
+<li>借款的时候，如果在我们还款前，市场产生波动导致抵押率达到最大抵押率（清算阈值），那么第三方清算人就会介入，替借款人偿还全部或部分借款，然后该清算人就会得到对应价值的抵押物，并额外获得8%的抵押物激励，也就是将抵押物的价格打了8%的折扣计价给清算人</li>
+<li>系统并不保证会发生清算。它提供了激励措施，以便用户（清算人）不断寻找清算机会，以便他们调用清算功能并获得一些钱作为回报。</li>
+</ul>
+<h2 id="质押"><a href="#质押" class="headerlink" title="质押"></a>质押</h2><ul>
+<li><p>抵押因子，每种标的资产都有一个抵押因子，代表用户抵押的资产价值对应可得到的借款的比率，即用来衡量可借额度的。</p>
+</li>
+<li><p>抵押因子取值范围 0-1，当为 0 时，表示该类资产不能作为抵押品去借贷其他资产。一般最高设为 0.75，比如 ETH，假如用户存入了 0.1 个 ETH 并开启作为抵押品，当时的 ETH 价值为 2000 美元，则可借额度为 0.1 <em> 2000 </em> 0.75 = 150 美元，可最多借出价值 150 美元的其他资产。</p>
+</li>
+</ul>
+<h2 id="审计"><a href="#审计" class="headerlink" title="审计"></a>审计</h2><p><img src="/2023/07/20/12.Compound/01.Compound%20V2%20theory/image-20230721140935499-16899592755665.png" alt></p>
+<ul>
+<li><p>Comptroller是Compound协议的风险管理层；它决定了用户需要维持多少抵押品，以及用户是否可以（以及多少）可以被清算。每次用户与 cToken 交互时，都会要求Comptroller批准或拒绝该交易。</p>
+</li>
+<li><p>可以将 Comptroller 视为提供者和验证者合约，它向用户提供信息cTokens并检查用户是否可以执行给定的交易。</p>
+</li>
+</ul>
+<h2 id="治理"><a href="#治理" class="headerlink" title="治理"></a>治理</h2><p><img src="/2023/07/20/12.Compound/01.Compound%20V2%20theory/image-20230721143031120-16899592755667.png" alt></p>
+<ul>
+<li><p>一些概念</p>
+<ul>
+<li><p>治理代币COMP，拥有COMP的用户可以参与社区投票，拥有1%以上COMP的地址可以发起提案并开启投票。发行量为1000万，42.3%留给了Compound协议使用。所有参与存贷业务的用户都能够得到COMP激励。Distribution APY是当前市场存贷的挖矿收益率，存贷越多，COMP奖励越多，也就是常说的流动性挖矿</p>
+</li>
+<li><p>Comproller采用可升级代理模式，实际的proxy合约叫做Unitroller。Unitroller拥有一些方法比如设置实现类、设置Admin等，一般的调用请求都会进入到fallback中然后进行delegate调用。因此这里存在一些安全问题，比如提出一个恶意提案，通过之后，该恶意提案将实现类合约升级为恶意合约。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>下面给出发起提案、投票、执行的完整流程</p>
+<ol>
+<li><p>发出提案</p>
+<ul>
+<li><p><code>propose()</code>方法位于GovernorBravoDelegate.sol中。发起投票有门槛，需要一定数量的COMP，目前是25000</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function propose(address[] memory targets, uint[] memory values, string[] memory signatures, bytes[] memory calldatas, string memory description) public returns (uint)</span><br></pre></td></tr></table></figure>
+<p>一旦提案通过，那么投票会被延迟13,140个区块，大约两天，然后才可以进行投票</p>
+</li>
+</ul>
+</li>
+<li><p>投票</p>
+<ul>
+<li><p>有用COMP的人才可以进行投票，可以将投票权委托给自己，也可也委托给别人。还有其他投票函数，原理也大致相同</p>
+</li>
+<li><p>需要传入提案的ID和选项（0代表反对，1代表支持，2代表弃权）</p>
+</li>
+<li><p>目前投票期持续19,710个区块（约3天），投票期结束后，就该对提案进行排队了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function castVote(uint proposalId, uint8 support) externalt</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>队列</p>
+<ul>
+<li>一旦收集到所有选票并且投票期结束，该提案要么“成功”，要么“失败”。如果提案成功，那么下一步就可以进行。</li>
+<li>提案成功必须满足：（1）赞成票大于反对票，（2）赞成票大于quorumVotes，目前quorumVotes=400，000</li>
+<li>一旦交易被排队到 Timelock 合约中，就会有 172,800 秒的延迟（2 天）。一旦延迟结束，交易就可以执行。</li>
+</ul>
+</li>
+<li><p>执行</p>
+<ul>
+<li>这只需从 GovernorBravoDelegate.sol 中调用<code>execute()</code>交易即可完成。该函数将从 Timelock.sol的上下文中执行提案。</li>
+</ul>
+</li>
+</ol>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/20/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/12.Climber/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-07-20 17:54:36
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/12-Compound/" title="12.Compound">
+                        <b>#</b> 12.Compound
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/20/12.Compound/02.Compound%20V2%20code/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Compound-V2-theory"><span class="toc-text">Compound V2 theory</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%90%8D%E8%AF%8D"><span class="toc-text">一些名词</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#compound%E6%9E%B6%E6%9E%84"><span class="toc-text">compound架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cToken"><span class="toc-text">cToken</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%8E%87"><span class="toc-text">利率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%85%E7%AE%97"><span class="toc-text">清算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%A8%E6%8A%BC"><span class="toc-text">质押</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A1%E8%AE%A1"><span class="toc-text">审计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%BB%E7%90%86"><span class="toc-text">治理</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01.Compound%20V2%20theory + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F20%2F12.Compound%2F01.Compound%2520V2%2520theory%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/20/12.Compound/01.Compound%20V2%20theory/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
