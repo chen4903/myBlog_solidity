@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      02.Compound V2 code 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">02.Compound V2 code</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-07-20 17:55:29
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/12-Compound/" title="12.Compound">
+                    <b>#</b> 12.Compound
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Compound-V2-code"><a href="#Compound-V2-code" class="headerlink" title="Compound V2 code"></a>Compound V2 code</h1><h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p>四大模块：</p>
+<ul>
+<li>核心合约：cToken合约是主要业务逻辑的合约，存款取款、借款还款等逻辑都在里面。CToken合约引入了 InterestRateModel 合约和 Comptroller 合约，因此先阅读改相关合约</li>
+<li>利率模型：利率模型的抽象合约，JInterestRateModel、umpRateModelV2、JumpRateModel、WhitePaperInterestRateModel 都是具体的利率模型实现。</li>
+<li>审计合约：审计两个字看起来很高大上，其实只是封装了一些业务检验功能，比如存款取款、借款还款前进行校验、开启抵押品等操作。</li>
+<li>治理合约：包含治理合约和治理代币Comp合约，Openzepplin也有相关实现。治理这个词也很高大上的样子，简单来说就是拥有一定量Comp代币的人可以发起提案，这些提案一般就是改改参数啥的，比如抵押因子、储备因子。</li>
+</ul>
+<p><img src="https://moe.photo/images/2023/07/22/image-20230720234058869.png" alt></p>
+<h2 id="核心合约"><a href="#核心合约" class="headerlink" title="核心合约"></a>核心合约</h2><ul>
+<li><p>CToken</p>
+<ul>
+<li><p>继承了CTokenInterface、ExponentialNoError、TokenErrorReporter，后两个用于处理定点十进制数和错误报告相关，和业务逻辑无关。而第一个定义了大量待实现的方法（管理、用户操作、管理员操作、货币市场等），并且又继承了CTokenStorage，CTokenStorage只定义了成员变量。这样实现了数据和逻辑的分离，从而保证CToken合约可以升级。当使用代理模式，用户对目标合约的所有调用都会通过Proxy合约，然后Proxy合约会delegate到逻辑合约.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abstract contract CToken is CTokenInterface, ExponentialNoError, TokenErrorReporter &#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>CToken</code> 是一个抽象的基础合约，没有构造函数，所以不能被部署，只能被别的合约继承，继承这个合约的正是 <code>CErc20</code> 和 <code>CEther</code>。</p>
+</li>
+</ul>
+</li>
+<li><p>CEther&amp;CErc20</p>
+<ul>
+<li><p><code>CEther</code> 用来作为cETH，它有构造函数，所以可以被部署在链上，正是用户交互的入口合约之一，而 <code>CErc20</code> 用来处理基于 ERC20 标准的其他代币（比如cDAI, cUSDT），但是这个合约没有提供构造函数，只有一个初始化函数，说明它是不可以被部署的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">contract CErc20 is CToken, CErc20Interface &#123;&#125;</span><br><span class="line"></span><br><span class="line">contract CEther is CToken &#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>CErc20Delegate&amp;CErc20Delegator</p>
+<ul>
+<li><p>那么如何部署 <code>CErc20</code> 合约呢，答案正是代理模式。</p>
+</li>
+<li><p>与 <code>CErc20</code> 相关的合约还有两个，分别是 <code>CErc20Delegate</code> 和 <code>CErc20Delegator</code>。<code>CErc20Delegator</code> 是Proxy Contract，而 <code>CErc20Delegate</code> 是 Logic Contract，这两个合约都是可以部署的，<code>CErc20Delegator</code> 也是用户交互的另一个入口合约</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">contract CErc20Delegate is CErc20, CDelegateInterface &#123;&#125;</span><br><span class="line"></span><br><span class="line">contract CErc20Delegator is CTokenInterface, CErc20Interface, CDelegatorInterface &#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="CToken-sol"><a href="#CToken-sol" class="headerlink" title="CToken.sol"></a>CToken.sol</h3><h4 id="存款"><a href="#存款" class="headerlink" title="存款"></a>存款</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//@notice Sender supplies assets into the market and receives cTokens in </span><br><span class="line">   function mintInternal(uint mintAmount) internal nonReentrant &#123;</span><br><span class="line">       accrueInterest(); // 计算新利润</span><br><span class="line">       mintFresh(msg.sender, mintAmount);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p><code>accrueInterest()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">  /**</span><br><span class="line">   * @notice Applies accrued interest to total borrows and reserves</span><br><span class="line">   * @dev This calculates interest accrued from the last checkpointed block</span><br><span class="line">   *   up to the current block and writes new checkpoint to storage.</span><br><span class="line">   */</span><br><span class="line">  function accrueInterest() virtual override public returns (uint) &#123;</span><br><span class="line">      // 获取当前区块 currentBlockNumber 和上一次计算的区块 accrualBlockNumberPrior</span><br><span class="line">      uint currentBlockNumber = getBlockNumber();</span><br><span class="line">      uint accrualBlockNumberPrior = accrualBlockNumber;</span><br><span class="line"></span><br><span class="line">      // 如果两个区块相等，则表示当前去看已经计算过利息，无需再计算，直接返回</span><br><span class="line">      if (accrualBlockNumberPrior == currentBlockNumber) &#123;</span><br><span class="line">          return NO_ERROR;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      uint cashPrior = getCashPrior(); // 资金池余额</span><br><span class="line">      uint borrowsPrior = totalBorrows; // 总借款</span><br><span class="line">      uint reservesPrior = totalReserves; // 总储备金</span><br><span class="line">      uint borrowIndexPrior = borrowIndex; // 借款指数</span><br><span class="line"></span><br><span class="line">      // 计算：获取当前的借款利率。</span><br><span class="line">      uint borrowRateMantissa = interestRateModel.getBorrowRate(cashPrior, borrowsPrior, reservesPrior);</span><br><span class="line">      // 当前借款利率不得超过最大利率，最大的借款利率当前设置为 0.0005e16，即每区块 0.0005%</span><br><span class="line">      require(borrowRateMantissa &lt;= borrowRateMaxMantissa, &quot;borrow rate is absurdly high&quot;);</span><br><span class="line"></span><br><span class="line">      // 计算从上次计算之后到当前经过的区块数量。该区块数量表示还未计算利息的区块区间。</span><br><span class="line">      uint blockDelta = currentBlockNumber - accrualBlockNumberPrior;</span><br><span class="line"></span><br><span class="line">// 然后下面是一系列计算</span><br><span class="line">// 1.计算区块数量时间应收的利息率（因子）：  利息因子   = 当前借款利率 * 累计未计算区块间隔。</span><br><span class="line">      //                            simpleInterestFactor  = borrowRate  * blockDelta </span><br><span class="line">      // 2.计算应计利息：应计利息  = 利息因子              *  当前借款总额。</span><br><span class="line">      //     interestAccumulated = simpleInterestFactor * totalBorrows</span><br><span class="line">      // 3.计算借款总额：借款总额 = 应计利息             +  当前借款总额</span><br><span class="line">      //        totalBorrowsNew = interestAccumulated + totalBorrows </span><br><span class="line">      // 4.计算储备金总额：储备金总额 =     储备因子         * 应计利息       + 当前的储备金总额。</span><br><span class="line">      //           totalReservesNew = interestAccumulated * reserveFactor + totalReserves</span><br><span class="line">      // 5.计算借款指数：借款指数 =        利息因子        * 当前借款指数  + 当前借款指数.</span><br><span class="line">      //         borrowIndexNew = simpleInterestFactor   * borrowIndex + borrowIndex</span><br><span class="line">      Exp memory simpleInterestFactor = mul_(Exp(&#123;mantissa: borrowRateMantissa&#125;), blockDelta);</span><br><span class="line">      uint interestAccumulated = mul_ScalarTruncate(simpleInterestFactor, borrowsPrior);</span><br><span class="line">      uint totalBorrowsNew = interestAccumulated + borrowsPrior;</span><br><span class="line">      uint totalReservesNew = mul_ScalarTruncateAddUInt(Exp(&#123;mantissa: reserveFactorMantissa&#125;), interestAccumulated, reservesPrior);</span><br><span class="line">      uint borrowIndexNew = mul_ScalarTruncateAddUInt(simpleInterestFactor, borrowIndexPrior, borrowIndexPrior);</span><br><span class="line"></span><br><span class="line">      // 更新当前区块高度、借款指数、借款总额、储备金总额。</span><br><span class="line">      accrualBlockNumber = currentBlockNumber;</span><br><span class="line">      borrowIndex = borrowIndexNew;</span><br><span class="line">      totalBorrows = totalBorrowsNew;</span><br><span class="line">      totalReserves = totalReservesNew;</span><br><span class="line"></span><br><span class="line">      emit AccrueInterest(cashPrior, interestAccumulated, borrowIndexNew, totalBorrowsNew);</span><br><span class="line"></span><br><span class="line">      return NO_ERROR;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p><code>mintFresh()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">  // @notice User supplies assets into the market and receives cTokens in </span><br><span class="line">  function mintFresh(address minter, uint mintAmount) internal &#123;</span><br><span class="line">      // 检查是否允许当前地址存入指定数量的 ETH。如果不允许，则抛出异常。</span><br><span class="line">      uint allowed = comptroller.mintAllowed(address(this), minter, mintAmount);</span><br><span class="line">      if (allowed != 0) &#123;</span><br><span class="line">          revert MintComptrollerRejection(allowed);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // 验证当前区块高度是否等于市场保存的区块高度。如果不一致则抛出异常。</span><br><span class="line">      if (accrualBlockNumber != getBlockNumber()) &#123;</span><br><span class="line">          revert MintFreshnessCheck();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">// 计算当前的汇率</span><br><span class="line">// exchangeRateStoredInternal 函数：首先检查当前总的供给量是否为0，</span><br><span class="line">// 如果是返回初始的兑换率，否则使用 (totalCash + totalBorrows - totalReserves) / totalSupply 计算新的的兑换率。</span><br><span class="line">      Exp memory exchangeRate = Exp(&#123;mantissa: exchangeRateStoredInternal()&#125;);</span><br><span class="line"></span><br><span class="line">       // 计算发起者实际转入到合约中的 Token 数量。</span><br><span class="line">      uint actualMintAmount = doTransferIn(minter, mintAmount);</span><br><span class="line"></span><br><span class="line">// 根据汇率计算获得的 cToken 数量</span><br><span class="line">// 铸造的 cToken 数量等于真实输入到合约中的 Token 数量除以兑换率，</span><br><span class="line">// 公式如下：mintTokens = actualMintAmount / exchangeRate。</span><br><span class="line">      uint mintTokens = div_(actualMintAmount, exchangeRate);</span><br><span class="line"></span><br><span class="line">      // 计算 cToken totalSupply；写入用户的余额</span><br><span class="line">      totalSupply = totalSupply + mintTokens;</span><br><span class="line">      accountTokens[minter] = accountTokens[minter] + mintTokens;</span><br><span class="line"></span><br><span class="line">      emit Mint(minter, actualMintAmount, mintTokens);</span><br><span class="line">      emit Transfer(address(this), minter, mintTokens);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>因此，存款操作的大概就是将抵押品转入合约，根据利率获取一定量的cToken。</p>
+<h4 id="取款"><a href="#取款" class="headerlink" title="取款"></a>取款</h4><p><code>redeemInternal()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function redeemInternal(uint redeemTokens) internal nonReentrant &#123;</span><br><span class="line">    accrueInterest(); // 计算利息</span><br><span class="line">    // redeemFresh emits redeem-specific logs on errors, so we don&#x27;t need to</span><br><span class="line">    redeemFresh(payable(msg.sender), redeemTokens, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>redeemFresh()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">// @notice User redeems cTokens in exchange for the underlying asset</span><br><span class="line">// uint redeemTokensIn 和 uint redeemAmountIn 参数，意思你可以给定抵押品量或者给定cToken量来进行取款。二者必须有一个是0</span><br><span class="line">   function redeemFresh(address payable redeemer, uint redeemTokensIn, uint redeemAmountIn) internal &#123;</span><br><span class="line">       require(redeemTokensIn == 0 || redeemAmountIn == 0, &quot;one of redeemTokensIn or redeemAmountIn must be zero&quot;);</span><br><span class="line"></span><br><span class="line">       // 计算当前的兑换率</span><br><span class="line">       Exp memory exchangeRate = Exp(&#123;mantissa: exchangeRateStoredInternal() &#125;);</span><br><span class="line"></span><br><span class="line">       uint redeemTokens;</span><br><span class="line">       uint redeemAmount;</span><br><span class="line">       // 如果是给定cToken量来计算</span><br><span class="line">       if (redeemTokensIn &gt; 0) &#123;</span><br><span class="line">           redeemTokens = redeemTokensIn;</span><br><span class="line">           redeemAmount = mul_ScalarTruncate(exchangeRate, redeemTokensIn);</span><br><span class="line">       &#125; else &#123; // 如果是给定抵押品量来计算</span><br><span class="line">           redeemTokens = div_(redeemAmountIn, exchangeRate);</span><br><span class="line">           redeemAmount = redeemAmountIn;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // 审计</span><br><span class="line">       uint allowed = comptroller.redeemAllowed(address(this), redeemer, redeemTokens);</span><br><span class="line">       if (allowed != 0) &#123;</span><br><span class="line">           revert RedeemComptrollerRejection(allowed);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       if (accrualBlockNumber != getBlockNumber()) &#123;</span><br><span class="line">           revert RedeemFreshnessCheck();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // 如果Compound没有足够的金额提现，则revert</span><br><span class="line">       if (getCashPrior() &lt; redeemAmount) &#123;</span><br><span class="line">           revert RedeemTransferOutNotPossible();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">	// 写入：修改信息</span><br><span class="line">       totalSupply = totalSupply - redeemTokens;</span><br><span class="line">       accountTokens[redeemer] = accountTokens[redeemer] - redeemTokens;</span><br><span class="line"></span><br><span class="line">	// 写入：从合约中转出指定数量的资产到用户地址。</span><br><span class="line">       doTransferOut(redeemer, redeemAmount);</span><br><span class="line"></span><br><span class="line">       emit Transfer(redeemer, address(this), redeemTokens);</span><br><span class="line">       emit Redeem(redeemer, redeemAmount, redeemTokens);</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="借款"><a href="#借款" class="headerlink" title="借款"></a>借款</h4><p><code>borrowInternal()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function borrowInternal(uint borrowAmount) internal nonReentrant &#123;</span><br><span class="line">    accrueInterest(); // 计算利息</span><br><span class="line">    // borrowFresh emits borrow-specific logs on errors, so we don&#x27;t need to</span><br><span class="line">    borrowFresh(payable(msg.sender), borrowAmount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>borrowFresh()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">  function borrowFresh(address payable borrower, uint borrowAmount) internal &#123;</span><br><span class="line">      // 审计</span><br><span class="line">      uint allowed = comptroller.borrowAllowed(address(this), borrower, borrowAmount);</span><br><span class="line">      if (allowed != 0) &#123;</span><br><span class="line">          revert BorrowComptrollerRejection(allowed);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">// 验证当前区块高度是否等于市场保存的区块高度。如果不一致则抛出异常。</span><br><span class="line">      if (accrualBlockNumber != getBlockNumber()) &#123;</span><br><span class="line">          revert BorrowFreshnessCheck();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // Compound不够钱借款了</span><br><span class="line">      if (getCashPrior() &lt; borrowAmount) &#123;</span><br><span class="line">          revert BorrowCashNotAvailable();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">// 计算：查看之前借款的金额，更新借款金额</span><br><span class="line">// 用户最新的借款金额 = 用户的借款金额 * 市场借款指数 / 用户的借款指数</span><br><span class="line">// accountBorrowsPrev：之前借款总数，包括利息。具体过程如下：</span><br><span class="line">//   1.获取包含账户借款余额和借款指数信息的借款快照。</span><br><span class="line">//     BorrowSnapshot storage borrowSnapshot = accountBorrows[account];</span><br><span class="line">//   2.如果用户已借款数量为0，则立即返回。</span><br><span class="line">//     if (borrowSnapshot.principal == 0) return (MathError.NO_ERROR, 0);</span><br><span class="line">//   3.计算用户最新的借款金额，并返回借款余额。</span><br><span class="line">//     mulUInt()、divUInt()、return (MathError.NO_ERROR, result);</span><br><span class="line">      uint accountBorrowsPrev = borrowBalanceStoredInternal(borrower);</span><br><span class="line">      uint accountBorrowsNew = accountBorrowsPrev + borrowAmount;</span><br><span class="line">      // 更新Compound的借款总数</span><br><span class="line">      uint totalBorrowsNew = totalBorrows + borrowAmount;</span><br><span class="line"></span><br><span class="line">// 写入：更新借款信息</span><br><span class="line">      accountBorrows[borrower].principal = accountBorrowsNew;</span><br><span class="line">      accountBorrows[borrower].interestIndex = borrowIndex;</span><br><span class="line">      totalBorrows = totalBorrowsNew;</span><br><span class="line"></span><br><span class="line">// 将Token从货币市场转入指定金额到用户地址。</span><br><span class="line">      doTransferOut(borrower, borrowAmount);</span><br><span class="line"></span><br><span class="line">      emit Borrow(borrower, borrowAmount, accountBorrowsNew, totalBorrowsNew);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="还款"><a href="#还款" class="headerlink" title="还款"></a>还款</h4><p><code>repayBorrowInternal()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function repayBorrowInternal(uint repayAmount) internal nonReentrant &#123;</span><br><span class="line">    accrueInterest(); // 计算利息</span><br><span class="line">    // repayBorrowFresh emits repay-borrow-specific logs on errors, so we don&#x27;t need to</span><br><span class="line">    repayBorrowFresh(msg.sender, msg.sender, repayAmount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>repayBorrowFresh()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">// @notice 还债：任何人都可以帮助你还债</span><br><span class="line">   // @param payer the account paying off the borrow</span><br><span class="line">   // @param borrower the account with the debt being payed off</span><br><span class="line">   // @param repayAmount the amount of underlying tokens being returned, or -1 for the full outstanding amount</span><br><span class="line">  function repayBorrowFresh(address payer, address borrower, uint repayAmount) internal returns (uint) &#123;</span><br><span class="line">      // 审计</span><br><span class="line">      uint allowed = comptroller.repayBorrowAllowed(address(this), payer, borrower, repayAmount);</span><br><span class="line">      if (allowed != 0) &#123;</span><br><span class="line">          revert RepayBorrowComptrollerRejection(allowed);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">// 验证当前区块高度是否等于市场保存的区块高度。如果不一致则抛出异常。</span><br><span class="line">      if (accrualBlockNumber != getBlockNumber()) &#123;</span><br><span class="line">          revert RepayBorrowFreshnessCheck();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // 计算：用户的借款总数，包括利息</span><br><span class="line">      uint accountBorrowsPrev = borrowBalanceStoredInternal(borrower);</span><br><span class="line"></span><br><span class="line">      // 如果还款参数为-1，即uint256的最大值，则代表我们要还完所有负债，否则偿还部分金额。</span><br><span class="line">      uint repayAmountFinal = repayAmount == type(uint).max ? accountBorrowsPrev : repayAmount;</span><br><span class="line"></span><br><span class="line">// 还钱：从还款地址中转入指定金额到货币市场。</span><br><span class="line">      uint actualRepayAmount = doTransferIn(payer, repayAmountFinal);</span><br><span class="line"></span><br><span class="line">// 计算：还款信息</span><br><span class="line">      uint accountBorrowsNew = accountBorrowsPrev - actualRepayAmount;</span><br><span class="line">      uint totalBorrowsNew = totalBorrows - actualRepayAmount;</span><br><span class="line"></span><br><span class="line">      // 写入：还款信息</span><br><span class="line">      accountBorrows[borrower].principal = accountBorrowsNew;</span><br><span class="line">      accountBorrows[borrower].interestIndex = borrowIndex;</span><br><span class="line">      // 更新Compound的总借款信息</span><br><span class="line">      totalBorrows = totalBorrowsNew;</span><br><span class="line"></span><br><span class="line">      emit RepayBorrow(payer, borrower, actualRepayAmount, accountBorrowsNew, totalBorrowsNew);</span><br><span class="line"></span><br><span class="line">      return actualRepayAmount;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>调用者帮借款人还款</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function repayBorrowBehalfInternal(address borrower, uint repayAmount) internal nonReentrant &#123;</span><br><span class="line">    accrueInterest(); // 计算利率</span><br><span class="line">    // repayBorrowFresh emits repay-borrow-specific logs on errors, so we don&#x27;t need to</span><br><span class="line">    repayBorrowFresh(msg.sender, borrower, repayAmount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总结：存款、取款、借款、还款的逻辑大致就是计算利率、审计检查、转入转出</p>
+<h3 id="CEther-sol"><a href="#CEther-sol" class="headerlink" title="CEther.sol"></a>CEther.sol</h3><h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// initialExchangeRateMantissa_ The initial exchange rate, scaled by 1e18</span><br><span class="line">   constructor(ComptrollerInterface comptroller_,</span><br><span class="line">               InterestRateModel interestRateModel_,</span><br><span class="line">               uint initialExchangeRateMantissa_,</span><br><span class="line">               string memory name_,</span><br><span class="line">               string memory symbol_,</span><br><span class="line">               uint8 decimals_,</span><br><span class="line">               address payable admin_) &#123;</span><br><span class="line">       // 管理员是msg.sender，初始化工作需要是admin才能做</span><br><span class="line">       admin = payable(msg.sender);</span><br><span class="line"></span><br><span class="line">	// 调用父合约的initialize()进行初始化</span><br><span class="line">       initialize(comptroller_, interestRateModel_, initialExchangeRateMantissa_, name_, symbol_, decimals_);</span><br><span class="line"></span><br><span class="line">       // 重新设置真正的admin</span><br><span class="line">       admin = admin_;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p><code>initialize()</code>又跑到了CToken.sol中去</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">// 初始化某个token市场</span><br><span class="line">   function initialize(ComptrollerInterface comptroller_,</span><br><span class="line">                       InterestRateModel interestRateModel_,</span><br><span class="line">                       uint initialExchangeRateMantissa_,</span><br><span class="line">                       string memory name_,</span><br><span class="line">                       string memory symbol_,</span><br><span class="line">                       uint8 decimals_) public &#123;</span><br><span class="line">       // 必须是admin才能初始化，因此在CEther.sol中我们先是将admin给了msg.sender</span><br><span class="line">       require(msg.sender == admin, &quot;only admin may initialize the market&quot;);</span><br><span class="line">       // 保证只初始化了一次</span><br><span class="line">       require(accrualBlockNumber == 0 &amp;&amp; borrowIndex == 0, &quot;market may only be initialized once&quot;);</span><br><span class="line"></span><br><span class="line">       // 设置exchange rate（汇率），并且不能为0</span><br><span class="line">       initialExchangeRateMantissa = initialExchangeRateMantissa_;</span><br><span class="line">       require(initialExchangeRateMantissa &gt; 0, &quot;initial exchange rate must be greater than zero.&quot;);</span><br><span class="line"></span><br><span class="line">       // Set the comptroller.用于审计</span><br><span class="line">       uint err = _setComptroller(comptroller_);</span><br><span class="line">       require(err == NO_ERROR, &quot;setting comptroller failed&quot;);</span><br><span class="line"></span><br><span class="line">       // 初始化计算利息的区块号和borrow index</span><br><span class="line">       accrualBlockNumber = getBlockNumber(); // 会获取当前区块号</span><br><span class="line">       borrowIndex = mantissaOne; // mantissaOne 为一个 1e18 常量。</span><br><span class="line"></span><br><span class="line">       // 设置利率模型</span><br><span class="line">       //    1. 函数首先检查调用者为管理员，应计息区块号和当前区块号相同（确保是在同一个区块内进行设置的）</span><br><span class="line">	//    2. 然后保存当前利率模型合约地址到一个临时变量中，并检查新的地址为利率模型合约</span><br><span class="line">	//    3. 然后保存新的利率模型合约到利率模型合约状态变量中</span><br><span class="line">	//    4. 最后发出 NewMarketInterestRateModel 事件。</span><br><span class="line">       err = _setInterestRateModelFresh(interestRateModel_);</span><br><span class="line">       require(err == NO_ERROR, &quot;setting interest rate model failed&quot;);</span><br><span class="line"></span><br><span class="line">	// 设置这个token的一系列常规信息</span><br><span class="line">       name = name_;</span><br><span class="line">       symbol = symbol_;</span><br><span class="line">       decimals = decimals_;</span><br><span class="line"></span><br><span class="line">       _notEntered = true; // 用于防止再次调用，重入之类</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="mint"><a href="#mint" class="headerlink" title="mint()"></a>mint()</h4><p>存款函数会新增 cToken 数量，即 totalSupply 增加了，就等于挖矿了 cToken。该操作会同时将用户的标的资产转入 cToken 合约中（数据会存储在代理合约中），并根据最新的兑换率将对应的 cToken 代币转到用户钱包地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function mint() external payable &#123; mintInternal(msg.value);&#125;</span><br></pre></td></tr></table></figure>
+<p>之后会进入到CToken.sol的<code>mintInternal()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//@notice Sender supplies assets into the market and receives cTokens in </span><br><span class="line">   function mintInternal(uint mintAmount) internal nonReentrant &#123;</span><br><span class="line">       accrueInterest(); // 计算新利息,出现错误会抛出异常</span><br><span class="line">       mintFresh(msg.sender, mintAmount);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>再进入CToken.sol存款函数的<code>accrueInterest()</code>：</p>
+<p>最后进入CToken.sol存款函数的<code>mintFresh()</code></p>
+<h4 id="redeem"><a href="#redeem" class="headerlink" title="redeem()"></a>redeem()</h4><p>然后进入CToken.sol取款函数的<code>mintInternal()</code>方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function mint() external payable &#123;mintInternal(msg.value);&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="borrow"><a href="#borrow" class="headerlink" title="borrow()"></a>borrow()</h4><p>然后进入CToken.sol借款的<code>borrow()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function borrow(uint borrowAmount) external returns (uint) &#123;</span><br><span class="line">    borrowInternal(borrowAmount);</span><br><span class="line">    return NO_ERROR;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="repayBorrow"><a href="#repayBorrow" class="headerlink" title="repayBorrow()"></a>repayBorrow()</h4><p>然后进入CToken.sol还款的<code>repayBorrowInternal()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function repayBorrow() external payable &#123;repayBorrowInternal(msg.value);&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="repayBorrowBehalf"><a href="#repayBorrowBehalf" class="headerlink" title="repayBorrowBehalf()"></a>repayBorrowBehalf()</h4><p>帮别人还钱，进入到CToken.sol还款的<code>repayBorrowBehalfInternal()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function repayBorrowBehalf(address borrower) external payable &#123;repayBorrowBehalfInternal(borrower, msg.value);&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="CErc20-sol"><a href="#CErc20-sol" class="headerlink" title="CErc20.sol"></a>CErc20.sol</h3><p>Coumpound 会为每个 ERC20 代币部署一个货币市场，同时会生成相应的 cToken，比如 DAI 对应的 cToken 就叫 cDAI。ERC20 货币市场采用的是代理模式，以此方便某个 ERC20 代币的升级</p>
+<h4 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function initialize(address underlying_,</span><br><span class="line">                    ComptrollerInterface comptroller_,</span><br><span class="line">                    InterestRateModel interestRateModel_,</span><br><span class="line">                    uint initialExchangeRateMantissa_,</span><br><span class="line">                    string memory name_,</span><br><span class="line">                    string memory symbol_,</span><br><span class="line">                    uint8 decimals_) public &#123;</span><br><span class="line">    // 调用父合约的初始化函数进行初始化设置</span><br><span class="line">    // 实例了这个底层代币</span><br><span class="line">    super.initialize(comptroller_, interestRateModel_, initialExchangeRateMantissa_, name_, symbol_, decimals_);</span><br><span class="line"></span><br><span class="line">    // 保存对应的底层基础代币</span><br><span class="line">    underlying = underlying_;</span><br><span class="line">    // 获取它的余额来检查底层代币是否OK</span><br><span class="line">    EIP20Interface(underlying).totalSupply();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="利率模型"><a href="#利率模型" class="headerlink" title="利率模型"></a>利率模型</h2><p>包括两个模型</p>
+<ul>
+<li>直线型利率模型：<code>WhitePaperInterestRateModel</code></li>
+<li>拐点型利率模型：<code>JumpRateModel</code>和<code>JumpRateModelV2</code>两个不同版本的实现，曾经使用 <code>JumpRateModel</code> 的都已经升级为 <code>JumpRateModelV2</code>。所以我就直接研究 <code>JumpRateModelV2</code> 。</li>
+</ul>
+<h3 id="InterestRateModel-sol"><a href="#InterestRateModel-sol" class="headerlink" title="InterestRateModel.sol"></a>InterestRateModel.sol</h3><p>非常简单，只定义了一个变量和两个方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">abstract contract InterestRateModel &#123;</span><br><span class="line"></span><br><span class="line">    bool public constant isInterestRateModel = true;</span><br><span class="line"></span><br><span class="line">	// 计算: 每个区块的当前借款利率</span><br><span class="line">    function getBorrowRate(uint cash, uint borrows, uint reserves) virtual external view returns (uint);</span><br><span class="line">    </span><br><span class="line">    // 计算: 每个区块的当前存储利率</span><br><span class="line">    function getSupplyRate(uint cash, uint borrows, uint reserves, uint reserveFactorMantissa) virtual external view returns (uint);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="WhitePaperInterestRateModel-sol"><a href="#WhitePaperInterestRateModel-sol" class="headerlink" title="WhitePaperInterestRateModel.sol"></a>WhitePaperInterestRateModel.sol</h3><h4 id="初始化-2"><a href="#初始化-2" class="headerlink" title="初始化"></a>初始化</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y = k*x + b</span><br><span class="line">其中，k 为斜率，b 是 x 为 0 时的起点值，x 是自变量，在这里表示资金利用率，y 是因变量，表示借款利率。</span><br></pre></td></tr></table></figure>
+<p>在构造时候要指定基础的年化利率和利率的增长速度</p>
+<ul>
+<li><code>baseRatePerYear</code> 表示基础的年化利率，对应的 <code>baseRatePerBlock</code> 表示区块级利率，对应公式中的截矩 <code>b</code>。</li>
+<li><code>multiplierPerYear</code> 表示利率的增长速度，对应的 <code>multiplierPerBlock</code> 表示利率的增长速度，也就是公式中的斜率 <code>k</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">constructor(uint baseRatePerYear, uint multiplierPerYear) public &#123;</span><br><span class="line">    baseRatePerBlock = baseRatePerYear / blocksPerYear;</span><br><span class="line">    multiplierPerBlock = multiplierPerYear / blocksPerYear;</span><br><span class="line"></span><br><span class="line">    emit NewInterestParams(baseRatePerBlock, multiplierPerBlock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="利用率"><a href="#利用率" class="headerlink" title="利用率"></a>利用率</h4><p>存储利率和贷款利率都要用到利用率。</p>
+<p>如果借款金额为0时，利用率为0，否则利用率就等于 <code>总借款 / (资金池余额 + 总借款 - 储备金)</code>，代码中 <code>mul(1e18)</code> 是为了保持结果的精度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function utilizationRate(uint cash, uint borrows, uint reserves) public pure returns (uint) &#123;</span><br><span class="line">    if (borrows == 0) return 0;</span><br><span class="line">    return borrows * BASE / (cash + borrows - reserves);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="借款利率"><a href="#借款利率" class="headerlink" title="借款利率"></a>借款利率</h4><p>首先求出利用率，然后根据直线公式 <code>区块级的利率增长速度 * 利用率 + 区块级的基础利率</code> 算出借款利率。</p>
+<p>这里 <code>/ BASE</code> 是因为利用率和区块级的利率增长速度本身都已经扩为高精度整数了，相乘之后精度变成 36 了，所以再除以 BASE 就可以把精度降回 18。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function getBorrowRate(uint cash, uint borrows, uint reserves) override public view returns (uint) &#123;</span><br><span class="line">    uint ur = utilizationRate(cash, borrows, reserves);</span><br><span class="line">    return (ur * multiplierPerBlock / BASE) + baseRatePerBlock;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="存款利率"><a href="#存款利率" class="headerlink" title="存款利率"></a>存款利率</h4><p>整理出来就是 <code>资金利用率 * 借款利率 * (1 - 储备金率)</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function getSupplyRate(uint cash, uint borrows, uint reserves, uint reserveFactorMantissa) override public view returns (uint) &#123;</span><br><span class="line">    uint oneMinusReserveFactor = BASE - reserveFactorMantissa;</span><br><span class="line">    uint borrowRate = getBorrowRate(cash, borrows, reserves);</span><br><span class="line">    uint rateToPool = borrowRate * oneMinusReserveFactor / BASE;</span><br><span class="line">    return utilizationRate(cash, borrows, reserves) * rateToPool / BASE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="BaseJumpRateModelV2-sol"><a href="#BaseJumpRateModelV2-sol" class="headerlink" title="BaseJumpRateModelV2.sol"></a>BaseJumpRateModelV2.sol</h3><h4 id="状态变量"><a href="#状态变量" class="headerlink" title="状态变量"></a>状态变量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">uint256 private constant BASE = 1e18; // 小数点位数，用于计算,因为solidity没有小数</span><br><span class="line"></span><br><span class="line">   address public owner; // Timelock 合约</span><br><span class="line"></span><br><span class="line">   uint public constant blocksPerYear = 2102400; // 一年大概的区块数，用于计算年利率</span><br><span class="line"></span><br><span class="line">   uint public multiplierPerBlock; // 公式 y = k * x 中的斜率 k 值</span><br><span class="line"></span><br><span class="line">   uint public baseRatePerBlock; // 利率初始值，一开始为0</span><br><span class="line"></span><br><span class="line">   uint public jumpMultiplierPerBlock; // 拐点后的斜率 k 值</span><br><span class="line"></span><br><span class="line">   uint public kink; // 拐点值，也就是资金利用率到了多少就拐点了，比如是80%。</span><br></pre></td></tr></table></figure>
+<h4 id="初始化-3"><a href="#初始化-3" class="headerlink" title="初始化"></a>初始化</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  constructor(uint baseRatePerYear, uint multiplierPerYear, uint jumpMultiplierPerYear, uint kink_, address owner_) internal &#123;</span><br><span class="line">      owner = owner_;</span><br><span class="line">// 使用父合约的构造函数</span><br><span class="line">      updateJumpRateModelInternal(baseRatePerYear,  multiplierPerYear, jumpMultiplierPerYear, kink_);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>然后调用了<code>updateJumpRateModelInternal()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function updateJumpRateModelInternal(uint baseRatePerYear, uint multiplierPerYear, uint jumpMultiplierPerYear, uint kink_) internal &#123;</span><br><span class="line">	// 拐点利用率之前，直线的截矩 b</span><br><span class="line">    baseRatePerBlock = baseRatePerYear / blocksPerYear;</span><br><span class="line">    // 拐点利用率之前，直线的斜率 k。</span><br><span class="line">    // 注意这里的 k，与直接型利率模型中的有一些细微的不同。</span><br><span class="line">    multiplierPerBlock = (multiplierPerYear * BASE) / (blocksPerYear * kink_);</span><br><span class="line">    // 拐点利用率之后，直线的斜率 k2</span><br><span class="line">    jumpMultiplierPerBlock = jumpMultiplierPerYear / blocksPerYear;</span><br><span class="line">    // 拐点时的资产利用率</span><br><span class="line">    kink = kink_;</span><br><span class="line"></span><br><span class="line">    emit NewInterestParams(baseRatePerBlock, multiplierPerBlock, jumpMultiplierPerBlock, kink);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="利用率-1"><a href="#利用率-1" class="headerlink" title="利用率"></a>利用率</h4><p>无论是直线利率模型，还是拐点型利率模型，在计算利用率时都是一样</p>
+<h4 id="借款利率-1"><a href="#借款利率-1" class="headerlink" title="借款利率"></a>借款利率</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// 计算区块的借款利息</span><br><span class="line">   function getBorrowRateInternal(uint cash, uint borrows, uint reserves) internal view returns (uint) &#123;</span><br><span class="line">   	// 计算：资产利用率</span><br><span class="line">       uint util = utilizationRate(cash, borrows, reserves);</span><br><span class="line"></span><br><span class="line">       if (util &lt;= kink) &#123; // 如果资金使用率没超过拐点</span><br><span class="line">           return ((util * multiplierPerBlock) / BASE) + baseRatePerBlock;</span><br><span class="line">       &#125; else &#123; </span><br><span class="line">       	// 如果超过拐点，利率公式为 y = k2 * ( x - p ) + ( p * k + b)，即将拐点前后两部分分别计算后相加即可。</span><br><span class="line">       	// b, k, k2, p 分别对应：baseRatePerBlock, multiplierPerBlock, jumpMultiplierPerBlock</span><br><span class="line">       	// 即 jumpMultiplierPerBlock * ( util - kink ) + ( kink * multiplierPerBlock + baseRatePerBlock)</span><br><span class="line">       	</span><br><span class="line">       	// ( p * k + b ) kink前一部分是直线型利率</span><br><span class="line">           uint normalRate = ((kink * multiplierPerBlock) / BASE) + baseRatePerBlock;</span><br><span class="line">           // 超额利用率</span><br><span class="line">           uint excessUtil = util - kink;</span><br><span class="line">           // 多出 kink 的后一部分使用拐点斜率，两者相加</span><br><span class="line">           // 超额利用率 * 拐点后斜率 + 正常利率</span><br><span class="line">           return ((excessUtil * jumpMultiplierPerBlock) / BASE) + normalRate;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>借款利率的计算很简单。首先使用 <code>utilizationRate</code> 计算资金利用率：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function utilizationRate(uint cash, uint borrows, uint reserves) public pure returns (uint) &#123;</span><br><span class="line">    if (borrows == 0) return 0;</span><br><span class="line">    return borrows * BASE / (cash + borrows - reserves);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是计算一天的区块的利率，一天中的区块利润是单利的，而一年中的365天是复利的。按照一年2628000个区块，一天7200个区块进行计算得出：3.5%</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(13385436439 / 1e18 * 7200 + 1) ** 365 - 1</span><br><span class="line">0.03580119839257878 </span><br></pre></td></tr></table></figure>
+<h4 id="存款利率-1"><a href="#存款利率-1" class="headerlink" title="存款利率"></a>存款利率</h4><p>存款利率是根据借款利率计算的，下面的代码翻译为：<code>存款利率 = 资金使用率 * 借款利率 *（1 - 储备金率）</code>。简单来说就是借款利息的一部分要分到储备金里进行储备。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function getSupplyRate(uint cash, uint borrows, uint reserves, uint reserveFactorMantissa) virtual override public view returns (uint) &#123;</span><br><span class="line">       uint oneMinusReserveFactor = BASE - reserveFactorMantissa;</span><br><span class="line">       uint borrowRate = getBorrowRateInternal(cash, borrows, reserves);</span><br><span class="line">       uint rateToPool = borrowRate * oneMinusReserveFactor / BASE;</span><br><span class="line">       return utilizationRate(cash, borrows, reserves) * rateToPool / BASE;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>计算增值的利息，见CToken.sol存款函数的<code>accrueInterest()</code></p>
+<p>计算汇率</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @notice Calculates the exchange rate from the underlying to the CToken</span><br><span class="line"> * @dev This function does not accrue interest before calculating the exchange rate</span><br><span class="line"> * @return calculated exchange rate scaled by 1e18</span><br><span class="line"> */</span><br><span class="line">function exchangeRateStoredInternal() virtual internal view returns (uint) &#123;</span><br><span class="line">    uint _totalSupply = totalSupply;</span><br><span class="line">    if (_totalSupply == 0) &#123; // 如果没有token被mint过</span><br><span class="line">        return initialExchangeRateMantissa;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        // exchangeRate = (totalCash + totalBorrows - totalReserves) / totalSupply</span><br><span class="line">        // 这里totalCash、totalBorrows都是以抵押品为单位的数量</span><br><span class="line">        // _totalSupply是以cToken为单位的数量</span><br><span class="line">        uint totalCash = getCashPrior();</span><br><span class="line">        uint cashPlusBorrowsMinusReserves = totalCash + totalBorrows - totalReserves;</span><br><span class="line">        uint exchangeRate = cashPlusBorrowsMinusReserves * expScale / _totalSupply;</span><br><span class="line"></span><br><span class="line">        return exchangeRate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>计算借款金额</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 计算借款金额</span><br><span class="line">   function borrowBalanceStoredInternal(address account) internal view returns (uint) </span><br><span class="line">       BorrowSnapshot storage borrowSnapshot = accountBorrows[account];</span><br><span class="line"></span><br><span class="line">        // 如果借款金额是0，那么borrowIndex就应该是0，</span><br><span class="line">        // 但是除0会异常，因此这里直接返回0了</span><br><span class="line">       if (borrowSnapshot.principal == 0) &#123;</span><br><span class="line">           return 0;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       // 计算新的借款金额</span><br><span class="line">       // recentBorrowBalance = borrower.borrowBalance * market.borrowIndex / borrower.borrowIndex</span><br><span class="line">       uint principalTimesIndex = borrowSnapshot.principal * borrowIndex;</span><br><span class="line">       return principalTimesIndex / borrowSnapshot.interestIndex;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="JumpRateModelV2"><a href="#JumpRateModelV2" class="headerlink" title="JumpRateModelV2"></a>JumpRateModelV2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">资金使用率没超过拐点值时，利率公式和直线型的一样：</span><br><span class="line">y = k*x + b</span><br><span class="line">而超过拐点之后，则利率公式将变成：</span><br><span class="line">y = k2*(x - p) + (k*p + b)</span><br></pre></td></tr></table></figure>
+<p><code>k2</code> 表示拐点后的直线的斜率，简称为拐点直线斜率，<code>p</code> 表示拐点的 x 轴的值，也即拐点利用率，<code>x - p</code> 表示超额利用率，<code>k*p + b</code> 表示拐点时 y 的高度，简称拐点y 值。</p>
+<p><code>JumpRateModelV2</code> 合约继承自 <code>BaseJumpRateModelV2</code> 合约，大部分操作由后者来完成。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/20/05.Damn%20Vulnerable%20DeFi%20v2%20CTF/12.Climber/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-07-20 17:55:29
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/12-Compound/" title="12.Compound">
+                        <b>#</b> 12.Compound
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/20/12.Compound/00.digest/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Compound-V2-code"><span class="toc-text">Compound V2 code</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84"><span class="toc-text">架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%90%88%E7%BA%A6"><span class="toc-text">核心合约</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CToken-sol"><span class="toc-text">CToken.sol</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E6%AC%BE"><span class="toc-text">存款</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%96%E6%AC%BE"><span class="toc-text">取款</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%80%9F%E6%AC%BE"><span class="toc-text">借款</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%98%E6%AC%BE"><span class="toc-text">还款</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CEther-sol"><span class="toc-text">CEther.sol</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mint"><span class="toc-text">mint()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#redeem"><span class="toc-text">redeem()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#borrow"><span class="toc-text">borrow()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#repayBorrow"><span class="toc-text">repayBorrow()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#repayBorrowBehalf"><span class="toc-text">repayBorrowBehalf()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CErc20-sol"><span class="toc-text">CErc20.sol</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-1"><span class="toc-text">初始化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%8E%87%E6%A8%A1%E5%9E%8B"><span class="toc-text">利率模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#InterestRateModel-sol"><span class="toc-text">InterestRateModel.sol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WhitePaperInterestRateModel-sol"><span class="toc-text">WhitePaperInterestRateModel.sol</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-2"><span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E7%8E%87"><span class="toc-text">利用率</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%80%9F%E6%AC%BE%E5%88%A9%E7%8E%87"><span class="toc-text">借款利率</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E6%AC%BE%E5%88%A9%E7%8E%87"><span class="toc-text">存款利率</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BaseJumpRateModelV2-sol"><span class="toc-text">BaseJumpRateModelV2.sol</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-text">状态变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-3"><span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E7%8E%87-1"><span class="toc-text">利用率</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%80%9F%E6%AC%BE%E5%88%A9%E7%8E%87-1"><span class="toc-text">借款利率</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E6%AC%BE%E5%88%A9%E7%8E%87-1"><span class="toc-text">存款利率</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JumpRateModelV2"><span class="toc-text">JumpRateModelV2</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 02.Compound%20V2%20code + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F20%2F12.Compound%2F02.Compound%2520V2%2520code%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/20/12.Compound/02.Compound%20V2%20code/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
