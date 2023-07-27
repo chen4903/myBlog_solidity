@@ -4,6 +4,215 @@
   
     
     <entry>
+      <title>10.puzzles_10</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/10.puzzles_10/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/10.puzzles_10/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-10"><a href="#puzzles-10" class="headerlink" title="puzzles_10"></a>puzzles_10</h1><p>CALLVALUE不得大于代码长度也就是1b。</p><p>CALLDATASIZE取模3要等于0，那么calldata可以是0x。</p><p>CALLVALUE加上0x0a要等于0x19，那么CALLVALUE=25-10=15=0x0f。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#############</span><br><span class="line"># Puzzle 10 #</span><br><span class="line">#############</span><br><span class="line"></span><br><span class="line">00      38          CODESIZE</span><br><span class="line">01      34          CALLVALUE</span><br><span class="line">02      90          SWAP1</span><br><span class="line">03      11          GT</span><br><span class="line">04      6008        PUSH1 08</span><br><span class="line">06      57          JUMPI</span><br><span class="line">07      FD          REVERT</span><br><span class="line">08      5B          JUMPDEST</span><br><span class="line">09      36          CALLDATASIZE</span><br><span class="line">0A      610003      PUSH2 0003</span><br><span class="line">0D      90          SWAP1</span><br><span class="line">0E      06          MOD</span><br><span class="line">0F      15          ISZERO</span><br><span class="line">10      34          CALLVALUE</span><br><span class="line">11      600A        PUSH1 0A</span><br><span class="line">13      01          ADD</span><br><span class="line">14      57          JUMPI</span><br><span class="line">15      FD          REVERT</span><br><span class="line">16      FD          REVERT</span><br><span class="line">17      FD          REVERT</span><br><span class="line">18      FD          REVERT</span><br><span class="line">19      5B          JUMPDEST</span><br><span class="line">1A      00          STOP</span><br><span class="line"></span><br><span class="line">? Enter the value to send: 15</span><br><span class="line">? Enter the calldata: 0x</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure><p>完结</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">? Do you want to play the next puzzle? Yes</span><br><span class="line"></span><br><span class="line">All puzzles are solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>09.puzzles_9</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/09.puzzles_9/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/09.puzzles_9/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-9"><a href="#puzzles-9" class="headerlink" title="puzzles_9"></a>puzzles_9</h1><p>输入的calldata需要大于3。calldata的长度和VALLVALUE相乘的结果要等于8。那我们设置calldata长度为4，为0x00000000，CALLVALUE=2</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">############</span><br><span class="line"># Puzzle 9 #</span><br><span class="line">############</span><br><span class="line"></span><br><span class="line">00      36        CALLDATASIZE</span><br><span class="line">01      6003      PUSH1 03</span><br><span class="line">03      10        LT</span><br><span class="line">04      6009      PUSH1 09</span><br><span class="line">06      57        JUMPI</span><br><span class="line">07      FD        REVERT</span><br><span class="line">08      FD        REVERT</span><br><span class="line">09      5B        JUMPDEST</span><br><span class="line">0A      34        CALLVALUE</span><br><span class="line">0B      36        CALLDATASIZE</span><br><span class="line">0C      02        MUL</span><br><span class="line">0D      6008      PUSH1 08</span><br><span class="line">0F      14        EQ</span><br><span class="line">10      6014      PUSH1 14</span><br><span class="line">12      57        JUMPI</span><br><span class="line">13      FD        REVERT</span><br><span class="line">14      5B        JUMPDEST</span><br><span class="line">15      00        STOP</span><br><span class="line"></span><br><span class="line">? Enter the value to send: 2</span><br><span class="line">? Enter the calldata: 0x00000000</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>08.puzzles_8</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/08.puzzles_8/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/08.puzzles_8/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-8"><a href="#puzzles-8" class="headerlink" title="puzzles_8"></a>puzzles_8</h1><p>分为三部分</p><ul><li>将calldata放到memory</li><li>从memory选取内容创建合约</li><li>调用合约的内容需要返回0，也就是执行失败报错</li></ul><p>其实就是要求我们输入一个initcode，然后该runtimecode会部署到合约地址上面，call调用它的时候需要失败报错。上一题puzzles_7我们写了一个initcode，它部署的runtimecode是ff，也就是sefldestruct，因为只有一个ff而没有提供地址，因此会执行失败报错，所以这个initcode也符合本题</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">############</span><br><span class="line"># Puzzle 8 #</span><br><span class="line">############</span><br><span class="line"></span><br><span class="line">00      36        CALLDATASIZE</span><br><span class="line">01      6000      PUSH1 00</span><br><span class="line">03      80        DUP1</span><br><span class="line">04      37        CALLDATACOPY</span><br><span class="line">05      36        CALLDATASIZE</span><br><span class="line">06      6000      PUSH1 00</span><br><span class="line">08      6000      PUSH1 00</span><br><span class="line">0A      F0        CREATE</span><br><span class="line">0B      6000      PUSH1 00</span><br><span class="line">0D      80        DUP1</span><br><span class="line">0E      80        DUP1</span><br><span class="line">0F      80        DUP1</span><br><span class="line">10      80        DUP1</span><br><span class="line">11      94        SWAP5</span><br><span class="line">12      5A        GAS</span><br><span class="line">13      F1        CALL</span><br><span class="line">14      6000      PUSH1 00</span><br><span class="line">16      14        EQ</span><br><span class="line">17      601B      PUSH1 1B</span><br><span class="line">19      57        JUMPI</span><br><span class="line">1A      FD        REVERT</span><br><span class="line">1B      5B        JUMPDEST</span><br><span class="line">1C      00        STOP</span><br><span class="line"></span><br><span class="line">? Enter the calldata: 0x60ff6000526001601ff3</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>07.puzzles_7</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/07.puzzles_7/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/07.puzzles_7/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-7"><a href="#puzzles-7" class="headerlink" title="puzzles_7"></a>puzzles_7</h1><p>几个考点</p><ul><li>RETURN：执行从内存中选取的代码作为initcode，然后执行完成之后，把代码部署到address中</li><li>本题需要我们创建的合约的代码长度为1，也就是说runtimecode长度为1</li></ul><p>那么我们写一个initcode来返回长度为1的runtimecode，思路如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">## 把ff放进栈，任意内容都可以，只要是一个字节即可</span><br><span class="line">PUSH1 ff       </span><br><span class="line">PUSH1 00   </span><br><span class="line">## 把ff放进memory </span><br><span class="line">MSTORE        </span><br><span class="line">## 将ff从内存返回作为runtimecode</span><br><span class="line">PUSH1 31</span><br><span class="line">PUSH1 1</span><br><span class="line">RETURN </span><br></pre></td></tr></table></figure><p>写成的initcode为：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">60 ff</span><br><span class="line">60 00</span><br><span class="line">52</span><br><span class="line">60 01</span><br><span class="line">60 1f</span><br><span class="line">f3</span><br><span class="line"></span><br><span class="line">60ff6000526001601ff3</span><br></pre></td></tr></table></figure><p>完成</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">############</span><br><span class="line"># Puzzle 7 #</span><br><span class="line">############</span><br><span class="line"></span><br><span class="line">00      36        CALLDATASIZE</span><br><span class="line">01      6000      PUSH1 00</span><br><span class="line">03      80        DUP1</span><br><span class="line">04      37        CALLDATACOPY</span><br><span class="line">05      36        CALLDATASIZE</span><br><span class="line">06      6000      PUSH1 00</span><br><span class="line">08      6000      PUSH1 00</span><br><span class="line">0A      F0        CREATE</span><br><span class="line">0B      3B        EXTCODESIZE</span><br><span class="line">0C      6001      PUSH1 01</span><br><span class="line">0E      14        EQ</span><br><span class="line">0F      6013      PUSH1 13</span><br><span class="line">11      57        JUMPI</span><br><span class="line">12      FD        REVERT</span><br><span class="line">13      5B        JUMPDEST</span><br><span class="line">14      00        STOP</span><br><span class="line"></span><br><span class="line">? Enter the calldata: 0x60ff6000526001601ff3</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>06.puzzles_6</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/06.puzzles_6/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/06.puzzles_6/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-6"><a href="#puzzles-6" class="headerlink" title="puzzles_6"></a>puzzles_6</h1><p>CALLDATALOAD获取从calldata位置0~32的内容，需要是0x0a才能成功跳转。</p><p>因此输入0x000000000000000000000000000000000000000000000000000000000000000a</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">############</span><br><span class="line"># Puzzle 6 #</span><br><span class="line">############</span><br><span class="line"></span><br><span class="line">00      6000      PUSH1 00</span><br><span class="line">02      35        CALLDATALOAD</span><br><span class="line">03      56        JUMP</span><br><span class="line">04      FD        REVERT</span><br><span class="line">05      FD        REVERT</span><br><span class="line">06      FD        REVERT</span><br><span class="line">07      FD        REVERT</span><br><span class="line">08      FD        REVERT</span><br><span class="line">09      FD        REVERT</span><br><span class="line">0A      5B        JUMPDEST</span><br><span class="line">0B      00        STOP</span><br><span class="line"></span><br><span class="line">? Enter the calldata: 0x000000000000000000000000000000000000000000000000000000000000000a</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>05.puzzles_5</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/05.puzzles_5/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/05.puzzles_5/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-5"><a href="#puzzles-5" class="headerlink" title="puzzles_5"></a>puzzles_5</h1><p>将CALLVALUE相乘，然后看看和0x100是否相等，如果相等就设置为1否则是0。然后JUMPI如果是1则跳转到JUMPDEST。那么我们输入CALLVALUE=16即可相乘得到0x100完成题目</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">############</span><br><span class="line"># Puzzle 5 #</span><br><span class="line">############</span><br><span class="line"></span><br><span class="line">00      34          CALLVALUE</span><br><span class="line">01      80          DUP1</span><br><span class="line">02      02          MUL</span><br><span class="line">03      610100      PUSH2 0100</span><br><span class="line">06      14          EQ</span><br><span class="line">07      600C        PUSH1 0C</span><br><span class="line">09      57          JUMPI</span><br><span class="line">0A      FD          REVERT</span><br><span class="line">0B      FD          REVERT</span><br><span class="line">0C      5B          JUMPDEST</span><br><span class="line">0D      00          STOP</span><br><span class="line">0E      FD          REVERT</span><br><span class="line">0F      FD          REVERT</span><br><span class="line"></span><br><span class="line">? Enter the value to send: 16</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>04.puzzles_4</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/04.puzzles_4/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/04.puzzles_4/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-4"><a href="#puzzles-4" class="headerlink" title="puzzles_4"></a>puzzles_4</h1><p>异或的结果为a然后可以跳转完成。固定的题目长度为0x0c，也就是1100，需要输入CALLVALUE=X，需要： 0x0c ^ X = a，也就是1100 ^ X = 1010，因此X=0110即6</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">############</span><br><span class="line"># Puzzle 4 #</span><br><span class="line">############</span><br><span class="line"></span><br><span class="line">00      34      CALLVALUE</span><br><span class="line">01      38      CODESIZE</span><br><span class="line">02      18      XOR</span><br><span class="line">03      56      JUMP</span><br><span class="line">04      FD      REVERT</span><br><span class="line">05      FD      REVERT</span><br><span class="line">06      FD      REVERT</span><br><span class="line">07      FD      REVERT</span><br><span class="line">08      FD      REVERT</span><br><span class="line">09      FD      REVERT</span><br><span class="line">0A      5B      JUMPDEST</span><br><span class="line">0B      00      STOP</span><br><span class="line"></span><br><span class="line">? Enter the value to send: 6</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>03.puzzles_3</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/03.puzzles_3/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/03.puzzles_3/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-3"><a href="#puzzles-3" class="headerlink" title="puzzles_3"></a>puzzles_3</h1><p>跳转，输入calldata长度，只能跳转到04，那么输入字节长度为4的任意内容即可，我输入0x00000000</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">############</span><br><span class="line"># Puzzle 3 #</span><br><span class="line">############</span><br><span class="line"></span><br><span class="line">00      36      CALLDATASIZE</span><br><span class="line">01      56      JUMP</span><br><span class="line">02      FD      REVERT</span><br><span class="line">03      FD      REVERT</span><br><span class="line">04      5B      JUMPDEST</span><br><span class="line">05      00      STOP</span><br><span class="line"></span><br><span class="line">? Enter the calldata: 0x00000000</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>02.puzzles_2</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/02.puzzles_2/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/02.puzzles_2/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-2"><a href="#puzzles-2" class="headerlink" title="puzzles_2"></a>puzzles_2</h1><p>CODESIZE获取bytecode的长度，我们的bytecode长度为10。然后会减去我们的CALLVALUE，得到一个值X，然后跳转到X的位置，X的位置要求是JUMPDEST，因此只能是6。所以，10 - X = 6，因此CALLVALUE=4</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">############</span><br><span class="line"># Puzzle 2 #</span><br><span class="line">############</span><br><span class="line"></span><br><span class="line">00      34      CALLVALUE</span><br><span class="line">01      38      CODESIZE</span><br><span class="line">02      03      SUB</span><br><span class="line">03      56      JUMP</span><br><span class="line">04      FD      REVERT</span><br><span class="line">05      FD      REVERT</span><br><span class="line">06      5B      JUMPDEST</span><br><span class="line">07      00      STOP</span><br><span class="line">08      FD      REVERT</span><br><span class="line">09      FD      REVERT</span><br><span class="line"></span><br><span class="line">? Enter the value to send: 4</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>01.puzzles_1</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/01.puzzles_1/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/01.puzzles_1/</url>
+      
+        <content type="html"><![CDATA[<h1 id="puzzles-1"><a href="#puzzles-1" class="headerlink" title="puzzles_1"></a>puzzles_1</h1><p>考察JUMP，JUMP读取栈顶的第一个元素的值，然后跳转该值的位置，并且该位置必须是JUMPDEST。因此我们设置CALLVALUE=8即可跳转，执行完成</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">############</span><br><span class="line"># Puzzle 1 #</span><br><span class="line">############</span><br><span class="line"></span><br><span class="line">00      34      CALLVALUE</span><br><span class="line">01      56      JUMP</span><br><span class="line">02      FD      REVERT</span><br><span class="line">03      FD      REVERT</span><br><span class="line">04      FD      REVERT</span><br><span class="line">05      FD      REVERT</span><br><span class="line">06      FD      REVERT</span><br><span class="line">07      FD      REVERT</span><br><span class="line">08      5B      JUMPDEST</span><br><span class="line">09      00      STOP</span><br><span class="line"></span><br><span class="line">? Enter the value to send: 8</span><br><span class="line"></span><br><span class="line">Puzzle solved!</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>00.digest</title>
+      <link href="/2023/07/27/15.EVM%20Puzzles/00.digest/"/>
+      <url>/2023/07/27/15.EVM%20Puzzles/00.digest/</url>
+      
+        <content type="html"><![CDATA[<h1 id="digest"><a href="#digest" class="headerlink" title="digest"></a>digest</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> 15.EVM Puzzles </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>07.Lockbox2</title>
       <link href="/2023/07/26/14.Paradigm%20CTF%202022/07.Lockbox2/"/>
       <url>/2023/07/26/14.Paradigm%20CTF%202022/07.Lockbox2/</url>
