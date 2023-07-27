@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      07.Lockbox2 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">07.Lockbox2</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-07-26 18:43:30
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/14-Paradigm-CTF-2022/" title="14.Paradigm CTF 2022">
+                    <b>#</b> 14.Paradigm CTF 2022
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="Lockbox2"><a href="#Lockbox2" class="headerlink" title="Lockbox2"></a>Lockbox2</h1><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="1-任务"><a href="#1-任务" class="headerlink" title="1.任务"></a>1.任务</h3><p>任务是让<code>lockbox2.locked()</code>值设置为false</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isSolved() external view returns (bool) &#123;</span><br><span class="line">       return !lockbox2.locked();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们看Lockbox2.sol合约可以知道，需要成功调用<code>solve()</code>，其实也就是通过5个stage的检验，调用方式为：外部进行call调用，输入：<code>solve()函数选择器 + msg.data</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function solve() external &#123;</span><br><span class="line">    bool[] memory successes = new bool[](5);</span><br><span class="line">    (successes[0],) = address(this).delegatecall(abi.encodePacked(this.stage1.selector, msg.data[4:]));</span><br><span class="line">    (successes[1],) = address(this).delegatecall(abi.encodePacked(this.stage2.selector, msg.data[4:]));</span><br><span class="line">    (successes[2],) = address(this).delegatecall(abi.encodePacked(this.stage3.selector, msg.data[4:]));</span><br><span class="line">    (successes[3],) = address(this).delegatecall(abi.encodePacked(this.stage4.selector, msg.data[4:]));</span><br><span class="line">    (successes[4],) = address(this).delegatecall(abi.encodePacked(this.stage5.selector, msg.data[4:]));</span><br><span class="line">    for (uint256 i = 0; i &lt; 5; ++i) require(successes[i]);</span><br><span class="line">    locked = false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-通过5个stage"><a href="#2-通过5个stage" class="headerlink" title="2.通过5个stage"></a>2.通过5个stage</h3><h4 id="2-1stage1"><a href="#2-1stage1" class="headerlink" title="2.1stage1"></a>2.1stage1</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function stage1() external &#123;</span><br><span class="line">    require(msg.data.length &lt; 500);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一个条件很容易满足，只需要我们的msg.data不要太长即可</p>
+<h4 id="2-2stage2"><a href="#2-2stage2" class="headerlink" title="2.2stage2"></a>2.2stage2</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function stage2(uint256[4] calldata arr) external &#123;</span><br><span class="line">    for (uint256 i = 0; i &lt; arr.length; ++i) &#123;</span><br><span class="line">        require(arr[i] &gt;= 1); </span><br><span class="line">        for (uint256 j = 2; j &lt; arr[i]; ++j) &#123; </span><br><span class="line">            require(arr[i] % j != 0);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看出，第二个条件是将我们的msg.data分成了uint256[4]，也就是说每32个字节一份。然后要求：</p>
+<ul>
+<li>数组的每个数值必须是大于或等于1的素数</li>
+<li>由于<code>for (uint256 j = 2; j &lt; arr[i]; ++j)</code>，因此我们的素数不能很大，不然会造成gas不足或者达到区块的gaslimit限制，我们无法知道某个素数花了多少gas，因此选择的素数越小越好</li>
+</ul>
+<h4 id="2-3stage3"><a href="#2-3stage3" class="headerlink" title="2.3stage3"></a>2.3stage3</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function stage3(uint256 a, uint256 b, uint256 c) external &#123;</span><br><span class="line">    assembly &#123; mstore(a, b) &#125;</span><br><span class="line">    (bool success, bytes memory data) = address(uint160(a + b)).staticcall(&quot;&quot;);</span><br><span class="line">    require(success &amp;&amp; data.length == c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>assembly &#123; mstore(a, b) &#125;</code>：将内存位置a之后的32字节的值设置为b，暂时没啥用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mstore(p,v): mem[p..(p+32)] := v</span><br><span class="line">| offset | value | ===&gt; </span><br><span class="line">memory[offset:offset+32] = value</span><br><span class="line">writes a (u)int256 to memory</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>(bool success, bytes memory data) = address(uint160(a + b)).staticcall(&quot;&quot;);</code></p>
+<ul>
+<li>将a和b的和作为地址，然后进行<code>staticcall()</code>，由于stage2的限制，a和b必须尽可能的小，因此a加b所得到的地址也会很小，那么就会得到一个包含很多0的地址。由于这样的地址用CREATE2几乎不可能做到，因此此地址包含的code一定是空的，返回来的值一定为：success=true，data=空。</li>
+</ul>
+</li>
+<li><p><code>require(success &amp;&amp; data.length == c);</code></p>
+<ul>
+<li><p>success一定为true，没问题。</p>
+</li>
+<li><p>因为data一定为空，因此data.length一定为0，此时c的值就只能为0。但是0不是素数，因此无法通过条件2，我们必须做些什么。</p>
+<ol>
+<li><p>注意到，stage3包含了内联汇编，并且有mstore可以操作内存中的数值，我们还得知道，solidity保留了 4 个 32 字节槽，其中一个32字节槽为<code>0x60 - 0x7f</code>，这个槽位用来定义程序的 “零” 是什么，也就是说程序如果返回 “零”值，那么回到这个槽来取值，默认情况下 ”零“的值为0。</p>
+</li>
+<li><p>知道了这些，我们可以这么操作：当<code>staticcall()</code>返回 “零“值的时候，回到内存<code>0x60 - 0x7f</code>的位置去取值，如果我们将<code>0x60 - 0x7f</code>的值修改为一个数X，c的值也设置为X，那么就可以通过检验了！同时因为c要尽可能的小，<code>0x60 - 0x7f</code>的值要尽可能小</p>
+</li>
+<li><p>让我们开始操作：输入的a、b、c必须是素数，a是存入内存的位置，并且操作的大小为32字节，那么能操作到 “零“值的a范围是：( 0x60-0x20, 0x7f   ]，也就是( 0x40,  0x7f ]，其中可用的素数为43,47,47,4f,53,59,61,65,67,6b,6d,71,7f。同时设置的值b是32字节的低位，如图，比如用操作内存0x61的位置，那么在0x80那一段就会多出来一部分，b从蓝色部分开始往前开始存储。从图里面可用看出，如果a太小，就会是覆盖方式1，这就会操作 “零”值特别大，也就是c要特别大，不行；如果a太大，就会是覆盖方式2，这样就需要b要特别大才能触碰到0x60~0x7f的位置修改 ”零“值。因此，a和b的值要选择好，不大也不小</p>
+<p><img src="https://moe.photo/images/2023/07/26/image-20230726202344974.png" alt></p>
+</li>
+<li><p>最终，我们选择了这样一个值：a=0x61，b=0x0101。此时内存中的结果为如下。这样，我们就做到了a为0x61, b为0x0101，c为0x01，都不大，都为素数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[0x60~0x7f]	0000000000000000000000000000000000000000000000000000000000000001 </span><br><span class="line">[0x80~0x9f]	0100000000000000000000000000000000000000000000000000000000000000</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p>因此，此时输入的<code>solve()函数选择器 + msg.data</code>暂时为如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">890d6908 // 函数选择器</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000061 // 00</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000101 // 20</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000001 // 40</span><br></pre></td></tr></table></figure>
+<h4 id="2-4stage4"><a href="#2-4stage4" class="headerlink" title="2.4stage4"></a>2.4stage4</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function stage4(bytes memory a, bytes memory b) external &#123;</span><br><span class="line">    address addr;</span><br><span class="line">    assembly &#123; addr := create(0, add(a, 0x20), mload(a)) &#125;</span><br><span class="line">    (bool success, ) = addr.staticcall(b);</span><br><span class="line">    require(tx.origin == address(uint160(uint256(addr.codehash))) &amp;&amp; success);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析代码<ul>
+<li><code>assembly &#123; addr := create(0, add(a, 0x20), mload(a)) &#125;</code>：输入a作为bytecode来创建一个合约</li>
+<li><code>(bool success, ) = addr.staticcall(b);</code>：将b输入到该合约，结合下一行代码可知必须执行成功</li>
+<li><code>require(tx.origin == address(uint160(uint256(addr.codehash))) &amp;&amp; success);</code>：输入该合约的bytecode经过哈希之后，要等于调用此方法的EOA账户。由此可知，我们部署的bytecode也就是a，必须是消息调用者的公钥，因为公钥经过hash之后才会等于tx.origin地址。但是由于上一步<code>staticcall()</code>，他会执行runtimecode，如果我们无法控制runtimecode，就会乱执行，很可能调用失败，所以对bytecode要一定要求。有一个很好的想法，我们可以选择00开头的runtimecode，因为00是STOP的操作码，执行了就成功执行并退出了，那么我们的bytecode（也就是initCode）的工作就是返回这个符合要求的runtimecode</li>
+<li>所以我们需要做的就是生成一个EOA账户，其公钥是00开头，一个合适的bytecode，然后用这个账户进行调用该方法</li>
+</ul>
+</li>
+</ul>
+<p>我们用下面的代码可以生成我们想要的EOA账户</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> isPrime</span><br><span class="line"><span class="keyword">from</span> ecdsa <span class="keyword">import</span> ecdsa</span><br><span class="line"></span><br><span class="line">g = ecdsa.generator_secp256k1</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    private_key = random.randint(<span class="number">0</span>, <span class="number">1</span> &lt;&lt; <span class="number">256</span> - <span class="number">1</span>)</span><br><span class="line">    public_key = private_key * g</span><br><span class="line">    x = <span class="built_in">str</span>(<span class="built_in">hex</span>(public_key.x())[<span class="number">2</span>:])</span><br><span class="line">    x = (<span class="string">&quot;00&quot;</span> * <span class="number">32</span> + x)[-<span class="number">32</span> * <span class="number">2</span>:]</span><br><span class="line">    y = <span class="built_in">str</span>(<span class="built_in">hex</span>(public_key.y())[<span class="number">2</span>:])</span><br><span class="line">    y = (<span class="string">&quot;00&quot;</span> * <span class="number">32</span> + y)[-<span class="number">32</span> * <span class="number">2</span>:]</span><br><span class="line">    public_key_hex = x + y</span><br><span class="line">    <span class="keyword">if</span> public_key_hex[:<span class="number">2</span>] == <span class="string">&quot;00&quot;</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;private_key&quot;</span>,private_key)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;public_key_hex&quot;</span>,public_key_hex)</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>然后我执行的结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">private_key 53696799650805905702178748833560284763518490362681353450771033938641345485772</span><br><span class="line">public_key_hex 00c71a98df7527e420247f8e4baa7a5e8c66108c63107c3d1c9a4cf49574cffc4f37e410c847198bafb557e5fe8ba61fa1b61a55724ebac021acf438a3961cf5</span><br></pre></td></tr></table></figure>
+<p>最后，我们就可以构造bytecode了，作用是将我们的公钥返回，思路大概如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PUSH1 0x40              6040</span><br><span class="line">DUP1                    80</span><br><span class="line">PUSH1 0x0b              600B</span><br><span class="line">PUSH1 0x0               6000</span><br><span class="line">CODECOPY                39</span><br><span class="line">PUSH1 0                 6000</span><br><span class="line">RETURN                  f3</span><br></pre></td></tr></table></figure>
+<p>得到<code>604080600B6000396000f3</code>，然后拼接我们的公钥，最终bytecode为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">604080600B6000396000f300c71a98df7527e420247f8e4baa7a5e8c66108c63107c3d1c9a4cf49574cffc4f37e410c847198bafb557e5fe8ba61fa1b61a55724ebac021acf438a3961cf5</span><br></pre></td></tr></table></figure>
+<p>让我们看回我们构造的msg.data，意思是会到内存61的位置选取32字节的内容作为数据长度，然后再获取这个长度的实际数据，由于这个位置也需要是一个合适的素数，因此我们将其[ // 60 ]设置为1，那么选取32字节的数据长度就是0x100，也就是256字节</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">890d6908 // 函数选择器</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000061 // 00</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000101 // 20</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000001 // 40</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000001 // 60</span><br><span class="line">00</span><br></pre></td></tr></table></figure>
+<p>然后拼接我们的bytecode，因为要256字节，所以后面补0即可。因此，此时输入的<code>solve()函数选择器 + msg.data</code>暂时为如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">890d6908 // 函数选择器</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000061 // 00</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000101 // 20</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000001 // 40</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000001 // 60</span><br><span class="line">00</span><br><span class="line">// bytecode</span><br><span class="line">604080600B6000396000f300c71a98df7527e420247f8e4baa7a5e8c66108c63107c3d1c9a4cf49574cffc4f37e410c847198bafb557e5fe8ba61fa1b61a55724ebac021acf438a3961cf5</span><br><span class="line">// 补0</span><br><span class="line">00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</span><br></pre></td></tr></table></figure>
+<h4 id="2-5stage5"><a href="#2-5stage5" class="headerlink" title="2.5stage5"></a>2.5stage5</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function stage5() external &#123;</span><br><span class="line">       if (msg.sender != address(this)) &#123;</span><br><span class="line">           (bool success,) = address(this).call(abi.encodePacked(this.solve.selector, msg.data[4:]));</span><br><span class="line">           require(!success);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>意思是会回调当前合约的solve函数，但要返回失败，即：第一遍成功，第二遍失败。由于只能在本合约中操作，无法通过我们自己的合约进行控制，那么我们只可以用gas限制这个土方法，那么需要寻找一个合适的gas。同时，我们的<code>solve()函数选择器 + msg.data</code>就已经确定下来了，就是stage4的那个，此stage5只是要找一个合适的gas，不会影响我们的calldata。</p>
+<p>我们可以在执行前后看看花了多少gas</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function test_isSolved() public&#123;</span><br><span class="line">    console.log(lockbox2.locked());</span><br><span class="line">    // 用私钥选择msg.sender</span><br><span class="line">    vm.startBroadcast(53696799650805905702178748833560284763518490362681353450771033938641345485772);</span><br><span class="line">    </span><br><span class="line">    console.log(gasleft());    </span><br><span class="line">    address(lockbox2).call(hex&quot;890d6908000000000000000000000000000000000000000000000000000000000000006100000000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100604080600B6000396000f300c71a98df7527e420247f8e4baa7a5e8c66108c63107c3d1c9a4cf49574cffc4f37e410c847198bafb557e5fe8ba61fa1b61a55724ebac021acf438a3961cf500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&quot;);</span><br><span class="line">    console.log(gasleft());  </span><br><span class="line">    console.log(lockbox2.locked());</span><br><span class="line">    vm.stopBroadcast();</span><br><span class="line">    assertEq(level.isSolved(),true);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>得到结果，相减得到差值，知道花了315585</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">9223372036854741483 - 9223372036854425898 = 315585</span><br></pre></td></tr></table></figure>
+<p>那么接下来爆破，我们操作这个最多花315585，并且选取一个gas否则我怕第一次调用<code>solve()</code>都不成功，200000试试看，当然更小可以，只是爆破时间更长：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function test_isSolved() public&#123;</span><br><span class="line">    console.log(lockbox2.locked());</span><br><span class="line">    // 用私钥选择msg.sender</span><br><span class="line">    vm.startBroadcast(53696799650805905702178748833560284763518490362681353450771033938641345485772);</span><br><span class="line">    for(uint i = 200000; i &lt;= 315585;i++)&#123;</span><br><span class="line">        address(lockbox2).call&#123;gas:i&#125;(hex&quot;890d6908000000000000000000000000000000000000000000000000000000000000006100000000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100604080600B6000396000f300c71a98df7527e420247f8e4baa7a5e8c66108c63107c3d1c9a4cf49574cffc4f37e410c847198bafb557e5fe8ba61fa1b61a55724ebac021acf438a3961cf500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&quot;);</span><br><span class="line"></span><br><span class="line">        if(lockbox2.locked()== false)&#123;</span><br><span class="line">            emit log_uint(i);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    console.log(lockbox2.locked());</span><br><span class="line">    vm.stopBroadcast();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>爆破出结果：289126</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function test_isSolved() public&#123;</span><br><span class="line">    console.log(lockbox2.locked());</span><br><span class="line">    // 用私钥选择msg.sender</span><br><span class="line">    vm.startBroadcast(53696799650805905702178748833560284763518490362681353450771033938641345485772);</span><br><span class="line">    </span><br><span class="line">    address(lockbox2).call&#123;gas:289126&#125;(hex&quot;890d6908000000000000000000000000000000000000000000000000000000000000006100000000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100604080600B6000396000f300c71a98df7527e420247f8e4baa7a5e8c66108c63107c3d1c9a4cf49574cffc4f37e410c847198bafb557e5fe8ba61fa1b61a55724ebac021acf438a3961cf500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&quot;);</span><br><span class="line">    console.log(lockbox2.locked());</span><br><span class="line">    vm.stopBroadcast();</span><br><span class="line">    assertEq(level.isSolved(),true);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完成</p>
+<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><p>calldata</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">890d6908000000000000000000000000000000000000000000000000000000000000006100000000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100604080600B6000396000f300c71a98df7527e420247f8e4baa7a5e8c66108c63107c3d1c9a4cf49574cffc4f37e410c847198bafb557e5fe8ba61fa1b61a55724ebac021acf438a3961cf500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</span><br></pre></td></tr></table></figure>
+<p>code</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity &gt;=0.5.0;</span><br><span class="line"></span><br><span class="line">import &quot;forge-std/Test.sol&quot;;</span><br><span class="line">import &quot;../src/Setup.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract lockbox2Test is Test&#123;</span><br><span class="line"></span><br><span class="line">    Setup level;</span><br><span class="line">    Lockbox2 lockbox2;</span><br><span class="line"></span><br><span class="line">    function setUp() public &#123;</span><br><span class="line">        level = new Setup();</span><br><span class="line">        lockbox2 = level.lockbox2();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // function test_isSolved() public&#123;</span><br><span class="line">    //     console.log(lockbox2.locked());</span><br><span class="line">    //     // 用私钥选择msg.sender</span><br><span class="line">    //     vm.startBroadcast(53696799650805905702178748833560284763518490362681353450771033938641345485772);</span><br><span class="line">    //     for(uint i = 200000; i &lt;= 315585;i++)&#123;</span><br><span class="line">    //         address(lockbox2).call&#123;gas:i&#125;(hex&quot;890d6908000000000000000000000000000000000000000000000000000000000000006100000000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100604080600B6000396000f300c71a98df7527e420247f8e4baa7a5e8c66108c63107c3d1c9a4cf49574cffc4f37e410c847198bafb557e5fe8ba61fa1b61a55724ebac021acf438a3961cf500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&quot;);</span><br><span class="line"></span><br><span class="line">    //         if(lockbox2.locked()== false)&#123;</span><br><span class="line">    //             emit log_uint(i);</span><br><span class="line">    //             break;</span><br><span class="line">    //         &#125;</span><br><span class="line"></span><br><span class="line">    //     &#125;</span><br><span class="line">    //     console.log(lockbox2.locked());</span><br><span class="line">    //     vm.stopBroadcast();</span><br><span class="line">    // &#125;</span><br><span class="line"></span><br><span class="line">    function test_isSolved() public&#123;</span><br><span class="line">        console.log(lockbox2.locked());</span><br><span class="line">        // 用私钥选择msg.sender</span><br><span class="line">        vm.startBroadcast(53696799650805905702178748833560284763518490362681353450771033938641345485772);</span><br><span class="line">        </span><br><span class="line">        address(lockbox2).call&#123;gas:289126&#125;(hex&quot;890d6908000000000000000000000000000000000000000000000000000000000000006100000000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100604080600B6000396000f300c71a98df7527e420247f8e4baa7a5e8c66108c63107c3d1c9a4cf49574cffc4f37e410c847198bafb557e5fe8ba61fa1b61a55724ebac021acf438a3961cf500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&quot;);</span><br><span class="line">        console.log(lockbox2.locked());</span><br><span class="line">        vm.stopBroadcast();</span><br><span class="line">        assertEq(level.isSolved(),true);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/25/14.Paradigm%20CTF%202022/06.sourcecode/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-07-26 18:43:30
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/14-Paradigm-CTF-2022/" title="14.Paradigm CTF 2022">
+                        <b>#</b> 14.Paradigm CTF 2022
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Lockbox2"><span class="toc-text">Lockbox2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%BB%E5%8A%A1"><span class="toc-text">1.任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%80%9A%E8%BF%875%E4%B8%AAstage"><span class="toc-text">2.通过5个stage</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1stage1"><span class="toc-text">2.1stage1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2stage2"><span class="toc-text">2.2stage2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3stage3"><span class="toc-text">2.3stage3</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4stage4"><span class="toc-text">2.4stage4</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5stage5"><span class="toc-text">2.5stage5</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 07.Lockbox2 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F26%2F14.Paradigm%2520CTF%25202022%2F07.Lockbox2%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/26/14.Paradigm%20CTF%202022/07.Lockbox2/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

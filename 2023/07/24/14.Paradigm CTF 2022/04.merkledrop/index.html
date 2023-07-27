@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      04.merkledrop 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">04.merkledrop</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-07-24 16:21:09
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/14-Paradigm-CTF-2022/" title="14.Paradigm CTF 2022">
+                    <b>#</b> 14.Paradigm CTF 2022
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="merkledrop"><a href="#merkledrop" class="headerlink" title="merkledrop"></a>merkledrop</h1><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="1-任务"><a href="#1-任务" class="headerlink" title="1.任务"></a>1.任务</h3><p>本题关于merkle树，题目将75000个代币空投到merkleDistributor中，然后完成题目的条件有两个：</p>
+<ul>
+<li>merkleDistributor的余额为0</li>
+<li>merkle树的64个节点中，至少有一个节点没有取过钱</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">contract Setup &#123;</span><br><span class="line"></span><br><span class="line">    Token public immutable token;</span><br><span class="line">    MerkleDistributor public immutable merkleDistributor;</span><br><span class="line"></span><br><span class="line">    constructor() payable &#123;</span><br><span class="line">        token = new Token();</span><br><span class="line">        uint256 airdropAmount = 75000 * 10 ** 18;</span><br><span class="line">        merkleDistributor = new MerkleDistributor(</span><br><span class="line">            address(token), </span><br><span class="line">            bytes32(0x5176d84267cd453dad23d8f698d704fc7b7ee6283b5131cb3de77e58eb9c3ec3)</span><br><span class="line">        );</span><br><span class="line">        token.transfer(address(merkleDistributor), airdropAmount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function isSolved() public view returns (bool) &#123;</span><br><span class="line">        bool condition1 = token.balanceOf(address(merkleDistributor)) == 0;</span><br><span class="line">        bool condition2 = false;</span><br><span class="line">        for (uint256 i = 0; i &lt; 64; ++i) &#123;</span><br><span class="line">            if (!merkleDistributor.isClaimed(i)) &#123;</span><br><span class="line">                condition2 = true;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return condition1 &amp;&amp; condition2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-全局观"><a href="#2-全局观" class="headerlink" title="2.全局观"></a>2.全局观</h3><p>题目提供了三个合约</p>
+<ul>
+<li>Setup.sol<ul>
+<li>初始化题目，没啥特别的</li>
+<li>有一个非常普通的ERC20代币</li>
+</ul>
+</li>
+<li>MerkleProof.sol<ul>
+<li>merkle树的verify函数，library来的</li>
+</ul>
+</li>
+<li>MerkleDistributor.sol<ul>
+<li>通过merkle树的校验而获取空投，64个叶子节点，64个空投</li>
+<li>证明有资格获得空投也很容易：<ul>
+<li>有一张带有您的地址和金额的叶子。</li>
+<li>提供从叶子到根哈希的路径。具体来说，您需要证明树的每一层上的每一对中的其他哈希值。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>前置知识：merkle验证自下而上，提供叶子节点、路径、根哈希</p>
+<h3 id="3-分析"><a href="#3-分析" class="headerlink" title="3.分析"></a>3.分析</h3><p>这么看来MerkleDistributor合约是最重要的，也是唯一的可操作的合约。此合约中有三个函数：<code>isClaimed()</code>, <code>_setClaimed()</code>, <code>claim()</code>，并且只有<code>claim()</code>可以调用，<code>isClaimed()</code>用于查询，<code>_setClaimed()</code>用于领取过空投之后就记录下来，一人领取一次。</p>
+<p>其实<code>isClaimed()</code>和<code>_setClaimed()</code>看不懂关系不大，前者一顿操作猛如虎，其实只是为了查询是否领取过空投，一般不会出问题，而后者是在领取空投的时候设置一次，也不会出问题。那么，我们就把视线移动到<code>claim()</code>方法。</p>
+<h4 id="3-1整理领取空投逻辑"><a href="#3-1整理领取空投逻辑" class="headerlink" title="3.1整理领取空投逻辑"></a>3.1整理领取空投逻辑</h4><p>题目给了一个<code>tree.json</code>文件，包括了64个叶子节点信息，这64个叶子，配上路径，这个叶子节点地址就可以领取到空投了，并且64个叶子节点领取完刚刚好是空投总额。这就很矛盾了，题目要求我们拿完空投，但是又不可以全部人都领取，所以我们不能通过正常途径完成题目，这一定有些啥bug。</p>
+<p>分析一波<code>claim()</code>，逻辑很清晰，是否领取过=&gt;计算和验证=&gt;记录已领取空投，没有任何问题。一切都很顺利正常，到底哪里出问题了呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function claim(uint256 index, address account, uint96 amount, bytes32[] memory merkleProof) external &#123;</span><br><span class="line">    require(!isClaimed(index), &#x27;MerkleDistributor: Drop already claimed.&#x27;);</span><br><span class="line"></span><br><span class="line">    // Verify the merkle proof.</span><br><span class="line">    bytes32 node = keccak256(abi.encodePacked(index, account, amount));</span><br><span class="line">    require(MerkleProof.verify(merkleProof, merkleRoot, node), &#x27;MerkleDistributor: Invalid proof.&#x27;);</span><br><span class="line"></span><br><span class="line">    // Mark it claimed and send the token.</span><br><span class="line">    _setClaimed(index);</span><br><span class="line">    require(ERC20Like(token).transfer(account, amount), &#x27;MerkleDistributor: Transfer failed.&#x27;);</span><br><span class="line"></span><br><span class="line">    emit Claimed(index, account, amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我觉得这只能凭借经验而谈了，形参amount的类型是uint96，而不是一般的uint256，漏洞也许就会出现在这种地方，并且通过和标准库比较也不同，标准库是uint256。</p>
+<p>然后进行哈希，从叶子节点开始，index是叶子节点的序号，account是接收空投的地址，amount是金额，三者加起来正好64字节。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bytes32 node = keccak256(abi.encodePacked(index, account, amount));</span><br></pre></td></tr></table></figure>
+<p>如果我们把每个叶子节点的按照上面的式子进行拼接然后去算哈希值，<code>abi.encodePacked()</code>的结果如下：</p>
+<p><img src="https://moe.photo/images/2023/07/24/paradigm-2022-merkledrop.png" alt></p>
+<p>并且验证的时候，是通过左子树和右子树的哈希结果进行左右拼接，然后merkle树向上继续做一样的操作，直到树根。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function verify(bytes32[] memory proof,bytes32 root,bytes32 leaf)internal pure returns (bool) &#123;</span><br><span class="line">  bytes32 computedHash = leaf;</span><br><span class="line"></span><br><span class="line">  for (uint256 i = 0; i &lt; proof.length; i++) &#123;</span><br><span class="line">    bytes32 proofElement = proof[i];</span><br><span class="line"></span><br><span class="line">    if (computedHash &lt; proofElement) &#123;</span><br><span class="line">      // Hash(current computed hash + current element of the proof)</span><br><span class="line">      computedHash = keccak256(abi.encodePacked(computedHash, proofElement));</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      // Hash(current element of the proof + current computed hash)</span><br><span class="line">      computedHash = keccak256(abi.encodePacked(proofElement, computedHash));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>我们有个发现：对于每一个拼接结果，（我们就拿第一个结果来看），我们左边32字节右边32字节分开来看，左边<code>0000000000000000000000000000000000000000000000000000000000000001</code>像是一个索引，用于确定这64个空投地址，而右边<code>00E21E550021Af51258060A0E18148e36607C9df00000009906894166afcc878</code>像是一个正常的哈希值。</p>
+<p>我们知道，就是这个东西会被记录为已经领取空投，那么如果我们拼接的结果不是这64个空投地址的拼接结果，但也能通过merkle树检验呢？想法很棒！因为对于merkle树，即使不从叶子节点出来，从中间出发网上，只要路径哈希是对的，一样可以验证。那么我们可以从中间出发然后通过验证，获取得到空投，并且题目中的64个空投地址不会被记录，而余额会被消耗。</p>
+<h4 id="3-2想法初探"><a href="#3-2想法初探" class="headerlink" title="3.2想法初探"></a>3.2想法初探</h4><p>带着这个想法，我们出发。想要从merkle树的中间开始验证，那么我们就要知道中间这个hash是多少。</p>
+<p>并且通过题目，我们有一个限制条件如下：我们发空投的金额不得超过<code>75000 * 10 ** 18</code>个代币，换算成16进制就是<code>fe1c215e8f838e00000</code>，那么在拼接结果中，amount的部分至少要小于这个值，那么至少包含前面5个连续的0。举个例子：第一个的拼接结果<code>00000009906894166afcc878</code>，这个数值不得大于fe1c215e8f838e00000，那么至少包含前面5个连续的0。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require(ERC20Like(token).transfer(account, amount), &#x27;MerkleDistributor: Transfer failed.&#x27;);</span><br></pre></td></tr></table></figure>
+<p>如果我们想要找到这么一个中间的哈希值，那么它一定也要满足这个条件，不然转账会报错！因此我们在tree.js文件中，<code>ctrl+F</code>搜索<code>00000</code>，还真的发现了这么一个中间值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0xd48451c19959e2d9bd4e620fbe88aa5f6f7ea72a00000f40f0c122ae08d2207b</span><br></pre></td></tr></table></figure>
+<p>他是节点37的路径中的其中一个值。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;0x8a85e6D0d2d6b8cBCb27E724F14A97AeB7cC1f5e&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;index&quot;</span><span class="punctuation">:</span> <span class="number">37</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;amount&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0x5dacf28c4e17721edb&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;proof&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;0xd48451c19959e2d9bd4e620fbe88aa5f6f7ea72a00000f40f0c122ae08d2207b&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0x8920c10a5317ecff2d0de2150d5d18f01cb53a377f4c29a9656785a22a680d1d&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0xc999b0a9763c737361256ccc81801b6f759e725e115e4a10aa07e63d27033fde&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0x842f0da95edb7b8dca299f71c33d4e4ecbb37c2301220f6e17eef76c5f386813&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0x0e3089bffdef8d325761bd4711d7c59b18553f14d84116aecb9098bba3c0a20c&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0x5271d2d8f9a3cc8d6fd02bfb11720e1c518a3bb08e7110d6bf7558764a8da1c5&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+<p>既然有中间的一个hash值满足这个条件，那么右边的32字节就是它了，然后我们找左边的32字节。我们分析可知，<code>0xd48451c19959e2d9bd4e620fbe88aa5f6f7ea72a00000f40f0c122ae08d2207b</code>是路径的第一个哈希，说明叶子节点拼接进行hash之后，就和它进行再次拼接hash，他是位于倒数第二层的。</p>
+<p>这么一来，左值就是37叶子节点拼接hash的结果，构造成一个新的hash值作为左值。这样我们就满足了我们想要做到的：</p>
+<ul>
+<li>左值作为索引不是64个节点的拼接结果之一，不会被记录到<code>isClaimed()</code></li>
+<li>右值满足<code>transfer()</code>的条件</li>
+</ul>
+<p>那么我们如下这么构造，就可以从倒数第二层开始往上验证，然后取到一笔钱。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">bytes32[] memory merkleProof1 = new bytes32[](5);</span><br><span class="line">merkleProof1[0] = bytes32(0x8920c10a5317ecff2d0de2150d5d18f01cb53a377f4c29a9656785a22a680d1d);</span><br><span class="line">merkleProof1[1] = bytes32(0xc999b0a9763c737361256ccc81801b6f759e725e115e4a10aa07e63d27033fde);</span><br><span class="line">merkleProof1[2] = bytes32(0x842f0da95edb7b8dca299f71c33d4e4ecbb37c2301220f6e17eef76c5f386813);</span><br><span class="line">merkleProof1[3] = bytes32(0x0e3089bffdef8d325761bd4711d7c59b18553f14d84116aecb9098bba3c0a20c);</span><br><span class="line">merkleProof1[4] = bytes32(0x5271d2d8f9a3cc8d6fd02bfb11720e1c518a3bb08e7110d6bf7558764a8da1c5);</span><br><span class="line">merkleDistributor.claim(</span><br><span class="line">        uint256(keccak256(abi.encodePacked(</span><br><span class="line">            uint256(37),</span><br><span class="line">            address(0x8a85e6D0d2d6b8cBCb27E724F14A97AeB7cC1f5e),</span><br><span class="line">            uint96(0x5dacf28c4e17721edb)</span><br><span class="line">        ))),</span><br><span class="line">        address(0xd48451c19959e2D9bD4E620fBE88aA5F6F7eA72A), </span><br><span class="line">        0x00000f40f0c122ae08d2207b, </span><br><span class="line">        merkleProof1</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>执行完这个之后，我们消耗了空投<code>0x00000f40f0c122ae08d2207b</code>这么多钱，那么还剩下多少需要消耗完呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   75000*10*18 - 0x00000f40f0c122ae08d2207b</span><br><span class="line">= 0xfe1c215e8f838e00000 - 0x00000f40f0c122ae08d2207b</span><br><span class="line">= a0d154c64a300ddf85</span><br></pre></td></tr></table></figure>
+<p>这样，我们再消耗<code>a0d154c64a300ddf85</code>多金额即可，如果题目正常，那么应该会有一个账户的空投金额是这个数，如果变态，那可能是多个账户的金额组合（这时我们就要用算法，从2个账户组合开始，两两余额相加然后作比较，然后3个账户，4个。。。）。我们继续<code>ctrl+f</code>在tree.js文件里面查找<code>a0d154c64a300ddf85</code>，很好，找到了：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;0x249934e4C5b838F920883a9f3ceC255C0aB3f827&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;index&quot;</span><span class="punctuation">:</span> <span class="number">8</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;amount&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xa0d154c64a300ddf85&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;proof&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;0xe10102068cab128ad732ed1a8f53922f78f0acdca6aa82a072e02a77d343be00&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0xd779d1890bba630ee282997e511c09575fae6af79d88ae89a7a850a3eb2876b3&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0x46b46a28fab615ab202ace89e215576e28ed0ee55f5f6b5e36d7ce9b0d1feda2&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0xabde46c0e277501c050793f072f0759904f6b2b8e94023efb7fc9112f366374a&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0x0e3089bffdef8d325761bd4711d7c59b18553f14d84116aecb9098bba3c0a20c&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;0x5271d2d8f9a3cc8d6fd02bfb11720e1c518a3bb08e7110d6bf7558764a8da1c5&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+<p>这样，我们用叶子节点8就可以消耗完全部金额了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bytes32[] memory merkleProof2 = new bytes32[](6);</span><br><span class="line">merkleProof2[0] = bytes32(0xe10102068cab128ad732ed1a8f53922f78f0acdca6aa82a072e02a77d343be00);</span><br><span class="line">merkleProof2[1] = bytes32(0xd779d1890bba630ee282997e511c09575fae6af79d88ae89a7a850a3eb2876b3);</span><br><span class="line">merkleProof2[2] = bytes32(0x46b46a28fab615ab202ace89e215576e28ed0ee55f5f6b5e36d7ce9b0d1feda2);</span><br><span class="line">merkleProof2[3] = bytes32(0xabde46c0e277501c050793f072f0759904f6b2b8e94023efb7fc9112f366374a);</span><br><span class="line">merkleProof2[4] = bytes32(0x0e3089bffdef8d325761bd4711d7c59b18553f14d84116aecb9098bba3c0a20c);</span><br><span class="line">merkleProof2[5] = bytes32(0x5271d2d8f9a3cc8d6fd02bfb11720e1c518a3bb08e7110d6bf7558764a8da1c5);</span><br><span class="line">merkleDistributor.claim(8, address(0x249934e4C5b838F920883a9f3ceC255C0aB3f827), 0xa0d154c64a300ddf85, merkleProof2);</span><br></pre></td></tr></table></figure>
+<p>由此，我们用两个账户，完成了题目的要求：消耗完空投，不得用完64个叶子节点</p>
+<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity 0.8.16;</span><br><span class="line"></span><br><span class="line">import &quot;../../src/04.merkledrop/Setup.sol&quot;;</span><br><span class="line">import &quot;forge-std/Test.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract merkledrop is Test&#123;</span><br><span class="line"></span><br><span class="line">    Setup setup;</span><br><span class="line">    MerkleDistributor merkleDistributor;</span><br><span class="line"></span><br><span class="line">    function setUp() public &#123;</span><br><span class="line">        setup = new Setup(); // 创建一个题目实例</span><br><span class="line">        merkleDistributor = setup.merkleDistributor(); </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function test_isSolved() public &#123;</span><br><span class="line"></span><br><span class="line">        // 因为已经跳过了叶子节点那一层，所以路径少了一个</span><br><span class="line">        bytes32[] memory merkleProof1 = new bytes32[](5);</span><br><span class="line">        merkleProof1[0] = bytes32(0x8920c10a5317ecff2d0de2150d5d18f01cb53a377f4c29a9656785a22a680d1d);</span><br><span class="line">        merkleProof1[1] = bytes32(0xc999b0a9763c737361256ccc81801b6f759e725e115e4a10aa07e63d27033fde);</span><br><span class="line">        merkleProof1[2] = bytes32(0x842f0da95edb7b8dca299f71c33d4e4ecbb37c2301220f6e17eef76c5f386813);</span><br><span class="line">        merkleProof1[3] = bytes32(0x0e3089bffdef8d325761bd4711d7c59b18553f14d84116aecb9098bba3c0a20c);</span><br><span class="line">        merkleProof1[4] = bytes32(0x5271d2d8f9a3cc8d6fd02bfb11720e1c518a3bb08e7110d6bf7558764a8da1c5);</span><br><span class="line">        merkleDistributor.claim(</span><br><span class="line">                // 从叶子节点计算出来的hash作为左值</span><br><span class="line">                uint256(keccak256(abi.encodePacked(</span><br><span class="line">                    uint256(37),</span><br><span class="line">                    address(0x8a85e6D0d2d6b8cBCb27E724F14A97AeB7cC1f5e),</span><br><span class="line">                    uint96(0x5dacf28c4e17721edb)</span><br><span class="line">                ))),</span><br><span class="line">                // 特殊的五个0作为右值</span><br><span class="line">                address(0xd48451c19959e2D9bD4E620fBE88aA5F6F7eA72A), </span><br><span class="line">                0x00000f40f0c122ae08d2207b, </span><br><span class="line">                // 配置路径</span><br><span class="line">                merkleProof1</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        bytes32[] memory merkleProof2 = new bytes32[](6);</span><br><span class="line">        merkleProof2[0] = bytes32(0xe10102068cab128ad732ed1a8f53922f78f0acdca6aa82a072e02a77d343be00);</span><br><span class="line">        merkleProof2[1] = bytes32(0xd779d1890bba630ee282997e511c09575fae6af79d88ae89a7a850a3eb2876b3);</span><br><span class="line">        merkleProof2[2] = bytes32(0x46b46a28fab615ab202ace89e215576e28ed0ee55f5f6b5e36d7ce9b0d1feda2);</span><br><span class="line">        merkleProof2[3] = bytes32(0xabde46c0e277501c050793f072f0759904f6b2b8e94023efb7fc9112f366374a);</span><br><span class="line">        merkleProof2[4] = bytes32(0x0e3089bffdef8d325761bd4711d7c59b18553f14d84116aecb9098bba3c0a20c);</span><br><span class="line">        merkleProof2[5] = bytes32(0x5271d2d8f9a3cc8d6fd02bfb11720e1c518a3bb08e7110d6bf7558764a8da1c5);</span><br><span class="line">        merkleDistributor.claim(8, address(0x249934e4C5b838F920883a9f3ceC255C0aB3f827), 0xa0d154c64a300ddf85, merkleProof2);</span><br><span class="line"></span><br><span class="line">        assertEq(setup.isSolved(),true); // 验证是否完成题目</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><ul>
+<li>第一个关键点：想到merkle树可以从中间网上开始验证一样可以通过</li>
+<li>第二个关键点：根据<code>transfer()</code>的转账条件限制至少5个连续0</li>
+<li>第三个关键点：记录不是64个节点之一即可，那么我们可以用其他账户进行领取空投，中间开始</li>
+<li>当题目给了很庞大的数据的时候，往往需要<code>ctrl+f</code>查找分析题目所得到的关键信息，这是突破口，不可能让我们一个一个看的</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/23/14.Paradigm%20CTF%202022/03.hint-finance/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-07-24 16:21:09
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/14-Paradigm-CTF-2022/" title="14.Paradigm CTF 2022">
+                        <b>#</b> 14.Paradigm CTF 2022
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/25/14.Paradigm%20CTF%202022/05.vanity/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#merkledrop"><span class="toc-text">merkledrop</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BB%BB%E5%8A%A1"><span class="toc-text">1.任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%85%A8%E5%B1%80%E8%A7%82"><span class="toc-text">2.全局观</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%86%E6%9E%90"><span class="toc-text">3.分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1%E6%95%B4%E7%90%86%E9%A2%86%E5%8F%96%E7%A9%BA%E6%8A%95%E9%80%BB%E8%BE%91"><span class="toc-text">3.1整理领取空投逻辑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2%E6%83%B3%E6%B3%95%E5%88%9D%E6%8E%A2"><span class="toc-text">3.2想法初探</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E6%80%9D"><span class="toc-text">反思</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 04.merkledrop + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F24%2F14.Paradigm%2520CTF%25202022%2F04.merkledrop%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/24/14.Paradigm%20CTF%202022/04.merkledrop/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
