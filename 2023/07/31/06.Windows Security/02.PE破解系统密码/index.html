@@ -175,7 +175,10 @@
 </ul>
 <p>本来的场景是：主机和U盘。我们这么攻击，就相当于U盘变成主机，主机变成U盘，U盘可以操作主机的内容</p>
 <h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><blockquote>
-<p>由于没有成功下载到PE工具，也没有成功用U深度、老毛桃等制作PE（不知道为啥制作不了），然后就放弃了。怕又下载到流氓软件导致主机报废（虽然我是用虚拟机操作，但仍然怕受到影响），我的U盘已经给安装报废了。。。</p>
+<p>由于我的U盘被我使用PE工具搞坏了，在VMWare添加新硬盘的时候检测不到U盘，因此无法实践，报废了一个U盘，淦。</p>
+<p>如果要做VMWare实验，推荐的做法：（1）首先将一个好的U盘通过VMWare添加硬盘，设置VMWare从u盘启动的功能。（2）然后通过WEPE工具来格式化U盘。（3）进入BIOS设置从U盘优先启动，方可进入PE</p>
+<p>真机就容易了：U盘装有PE软件，开机的时候按热键，然后设置U盘启动即可。</p>
+<p>视频可参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1cv411J7ZG/?spm_id_from=444.42.list.card_archive.click&amp;vd_source=0cc0401ee122346d6680e90658b0ed1a">B站</a>，<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Lf4y1t7Mc/?p=24&amp;spm_id_from=333.788.top_right_bar_window_history.content.click&amp;vd_source=0cc0401ee122346d6680e90658b0ed1a">B站</a></p>
 </blockquote>
 <p>1.插入U盘，U盘内装有安装好的PE软件。由于使用虚拟机，因此直接载入ISO文件</p>
 <p><img src="https://moe.photo/images/2023/07/31/image-20230731215028883.png" alt></p>
@@ -187,10 +190,10 @@
 <p><img src="https://moe.photo/images/2023/07/31/image-20230731215300739.png" alt></p>
 <p>5.进入桌面，这是一个只有56M大小的XP PE系统</p>
 <p><img src="https://moe.photo/images/2023/07/31/image-20230731215323402.png" alt></p>
-<p>6.点击桌面的破解WINDOWS登录密码</p>
+<p>6.点击桌面的破解WINDOWS登录密码，点击更改口令</p>
 <p><img src="https://moe.photo/images/2023/07/31/image-20230731215416852.png" alt></p>
-<p>点击更改口令</p>
-<p>7.重启之后<img src="https://moe.photo/images/2023/07/31/image-20230731215434323.png" alt>，进入BIOS选择磁盘优先获取直接拔掉优盘。然后就发现密码成功被修改</p>
+<p><img src="/2023/07/31/06.Windows%20Security/02.PE%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/image-20230731215434323-16908167301661.png" alt></p>
+<p>7.重启之后，进入BIOS选择磁盘优先。或者直接拔掉U盘。然后就发现密码成功被修改，进入到系统。</p>
 
       </div>
       
