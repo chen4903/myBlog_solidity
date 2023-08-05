@@ -232,6 +232,12 @@
 <li>借款人支付的利息按照每个放贷者的资产比例平均分配给所有的放贷者。</li>
 <li>借款人可以随时还款，还款时依据借款利率与时间，决定总的还款数量。同样，放贷人可以随时连本带利提出 DAI，但前提是智能合约中必须有足够的 DAI，由于备用金机制，几乎不可能有提不出资产的情况。</li>
 </ul>
+<h2 id="运行机制"><a href="#运行机制" class="headerlink" title="运行机制"></a>运行机制</h2><p>Compound市场，每一个币都有一个池子，并且这个池子只有这一种代币。Compound协议通过算法来决定这个池子里的币借贷利率是多少，这个算法会基于人们对这个币借贷的供需关系自动计算出利率，然后可以进行借款、还款、存款、取款</p>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>资金池</li>
+<li>基于供需法则，由算法生成利率，无需协商</li>
+<li>完全透明的代币余额信息，记录所有历史利率</li>
+</ul>
 <h2 id="cToken"><a href="#cToken" class="headerlink" title="cToken"></a>cToken</h2><ul>
 <li><p>cToken是我们在 Compound 上存入资产的凭证。取款时就可以用 cToken 换回标的资产</p>
 </li>
@@ -248,19 +254,15 @@
 <li><p>放贷人将标的资产存入货币市场时候，平台会按照平台实时兑换率 exchangeRate，将标的兑换为平台的 cToken，此过程称之为铸币（Mint Token）：</p>
 </li>
 <li><script type="math/tex; mode=display">
-exchangeRate = {\frac{getCash()+totalBorrows()-totalReserves()}{totalSupply()} }</script></li>
+exchangeRate = {\frac{getCash()+totalBorrows()-totalReserves()}{totalSupply()} }</script><ul>
+<li>getCash(): 放入智能合约中，但是还没有被借走的标的资产总量</li>
+<li>totalBorrows(): 所有借款人应该偿还的所有标的资产总量（包含本金和利息）</li>
+<li>totalReserves(): 储备金是每个<code>cToken</code>合约中的一个会计条目，代表作为现金留出的历史利息的一部分，可以通过协议的治理提取或转移。</li>
+<li>totalSupply()：所有放贷人（存款）获得的 cToken 总量</li>
 </ul>
-<pre><code>- getCash(): 放入智能合约中，但是还没有被借走的标的资产总量
-
-
-- totalBorrows(): 所有借款人应该偿还的所有标的资产总量（包含本金和利息）
-
-
-- totalReserves(): 储备金是每个`cToken`合约中的一个会计条目，代表作为现金留出的历史利息的一部分，可以通过协议的治理提取或转移。
-
-
-- totalSupply()：所有放贷人（存款）获得的 cToken 总量
-</code></pre><h2 id="利率"><a href="#利率" class="headerlink" title="利率"></a>利率</h2><ul>
+</li>
+</ul>
+<h2 id="利率"><a href="#利率" class="headerlink" title="利率"></a>利率</h2><ul>
 <li><p>只要借入资产与供应资产的比率发生变化，利率就会在每个区块上更新，也就是平均15秒出一个块，15秒更新一次。利率的数量取决于智能合约的具体实施。具体查看LegacyJumpRateModelV2.sol</p>
 </li>
 <li><p>Interest Rate Model：黑线代表市场的资金利用率（也就是借款需求），绿线代表存币市场的利率，紫线代表借币市场的利率。Compound对不同市场采用不同的利率定价模型</p>
@@ -336,11 +338,15 @@ exchangeRate = {\frac{getCash()+totalBorrows()-totalReserves()}{totalSupply()} }
 <ul>
 <li><p>一些概念</p>
 <ul>
-<li><p>治理代币COMP，拥有COMP的用户可以参与社区投票，拥有1%以上COMP的地址可以发起提案并开启投票。发行量为1000万，42.3%留给了Compound协议使用。所有参与存贷业务的用户都能够得到COMP激励。Distribution APY是当前市场存贷的挖矿收益率，存贷越多，COMP奖励越多，也就是常说的流动性挖矿</p>
+<li><p>治理代币COMP，拥有COMP的用户可以参与社区投票，拥有1%以上COMP的地址可以发起提案并开启投票。发行量为1000万，42.3%留给了Compound协议使用。所有参与存贷业务的用户都能够得到COMP激励。Distribution APY是当前市场存贷的挖矿收益率，存贷越多，COMP奖励越多，也就是常说的流动性挖矿。</p>
+</li>
+<li><p>每天在八个借贷市场上分发大概2880个COMP</p>
 </li>
 <li><p>Comproller采用可升级代理模式，实际的proxy合约叫做Unitroller。Unitroller拥有一些方法比如设置实现类、设置Admin等，一般的调用请求都会进入到fallback中然后进行delegate调用。因此这里存在一些安全问题，比如提出一个恶意提案，通过之后，该恶意提案将实现类合约升级为恶意合约。</p>
 </li>
 </ul>
+</li>
+<li><p>三个组件：COMP Token、Governor Alpha、 Timelock。通过治理模块，允许社区提出、投票和实时更提案，提案可以包括调整利率模型、增加对新资产的支持等。</p>
 </li>
 </ul>
 <p>下面给出发起提案、投票、执行的完整流程</p>
@@ -426,7 +432,7 @@ exchangeRate = {\frac{getCash()+totalBorrows()-totalReserves()}{totalSupply()} }
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Compound-V2-theory"><span class="toc-text">Compound V2 theory</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%90%8D%E8%AF%8D"><span class="toc-text">一些名词</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#compound%E6%9E%B6%E6%9E%84"><span class="toc-text">compound架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cToken"><span class="toc-text">cToken</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%8E%87"><span class="toc-text">利率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%85%E7%AE%97"><span class="toc-text">清算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%A8%E6%8A%BC"><span class="toc-text">质押</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A1%E8%AE%A1"><span class="toc-text">审计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%BB%E7%90%86"><span class="toc-text">治理</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Compound-V2-theory"><span class="toc-text">Compound V2 theory</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%90%8D%E8%AF%8D"><span class="toc-text">一些名词</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#compound%E6%9E%B6%E6%9E%84"><span class="toc-text">compound架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-text">运行机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cToken"><span class="toc-text">cToken</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%8E%87"><span class="toc-text">利率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%85%E7%AE%97"><span class="toc-text">清算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%A8%E6%8A%BC"><span class="toc-text">质押</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A1%E8%AE%A1"><span class="toc-text">审计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%BB%E7%90%86"><span class="toc-text">治理</span></a></li></ol></li></ol>
       
     </div>
   </div>

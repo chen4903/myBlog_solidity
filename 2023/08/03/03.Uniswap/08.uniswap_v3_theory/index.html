@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      08.uniswap_v3_theory 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">08.uniswap_v3_theory</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-08-03 13:24:10
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/03-Uniswap/" title="03.Uniswap">
+                    <b>#</b> 03.Uniswap
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="uniswap-v3-theory"><a href="#uniswap-v3-theory" class="headerlink" title="uniswap_v3_theory"></a>uniswap_v3_theory</h1><h2 id="V3的改进"><a href="#V3的改进" class="headerlink" title="V3的改进"></a>V3的改进</h2><ol>
+<li>提高资金利用率（集中流动性），增加LP深度</li>
+<li>增强价格预言机的方便性和准确性</li>
+<li>灵活的手续费收取机制（0.05%，0.3%，1%），比如：处理价格波动较大时无常损失很多，补偿LP；价格波动小的少收手续费</li>
+</ol>
+<h2 id="集中流动性"><a href="#集中流动性" class="headerlink" title="集中流动性"></a>集中流动性</h2><p>在V2版本，理论上池子中的token的价格区间是(0, ∞)，我无论投入多少钱（和流动性等比例添加流动性），都可以得到手续费分成：即使我投入1USDT和1ETH（假设价格是1：1），也能得到分成，但是平摊之后按照份额我得到的手续费分成微乎其微，因为我的1USDT和1ETH占总额极小。但我们一定可以分到钱。</p>
+<p>无论如何都可以分到钱，这听起来很美好，但我们忽略了一个问题：资金利用率。</p>
+<h3 id="问题所在"><a href="#问题所在" class="headerlink" title="问题所在"></a>问题所在</h3><ul>
+<li>在V2中，当一个用户来用我们的池子做交易时，其交易的量相比我们的流动性来说是很小的。<ul>
+<li>举个例子<ul>
+<li>假设现在池子内资产 X 和 Y 都有 8 个，价格 p 为 1。</li>
+<li>现在有一笔订单，用 1 个 X 来换取 1 个 Y，我们先不考虑滑点和手续费的影响，这一笔交易为我们带来的手续费收益是 <code>fee = 1 * 0.3%</code>，实际参与赚取手续费的流动性就是输出的 1 个 y，这相比于总流动性是很小的，在这一笔交易中，资金利用率是大约是 <code>1 / 8</code>。</li>
+<li>也就是说，我们只需要极少一部分流动性就能承载这一笔交易，而大部分流动性在交易过程中只是躺在那做收益的分母而已</li>
+</ul>
+</li>
+<li>图像表示<ul>
+<li>当用户用 X 换取 Y 的时候，价格会从低点涨到高点，红点从 <code>p_lower</code> 移动到 <code>p_upper</code> 的过程中（X 的价格），实际参与交易的流动性仅仅是橙色的矩形区域。（这里为了便于查看，夸大了价格的变动区间，实际交易过程中，价格变动不会这么大，所以橙色区域是极小的）</li>
+<li><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230804084404710.png" alt="image-20230804084404710"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>V3为了解决资金利用率低下的问题，引入了集中流动性的概念：因为实际的价格不可能在(0, ∞)，只会在一个小范围内，因此我们可以将曲线进行移动，因此实际的曲线我们设置成下图这样。并且我们做到了资金利用率是100%，因为橙色的区域就是K值，不存在绿色的区域。</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230804084900501.png" alt="image-20230804084900501"></p>
+<p>但是如果模型搞成这样，就不是反比例了，和V2的模型就不一样。为了V3和V2普通用户进行交易的时候体验相同，V3引入虚拟流动性的概念：将上图的曲线进行平移抬升，恢复到V2的模型，效果下图。注意：我们这样平移对价格没有影响，前提是价格没有超过限定的区间。</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230804085619950.png" alt="image-20230804085619950"></p>
+<ul>
+<li><p>特点</p>
+<ul>
+<li><p>在 Uniswap V3 中，允许用户在提供流动性时，可以自定义该流动性所支持的价格区间，仅当交易价格处于指定的交易区间内时，提供的头寸（position：集中到一个有限区间的流动性）才会被激活，V3 会注入虚拟流动性来保持公式的计算一致性，使曲线从橙色曲线拉抬成了青色曲线，用户才能够分得手续费。注意， <code>x_virtual</code>, <code>y_virtual</code> 并不会参与真实的交易</p>
+</li>
+<li><p>当流动池的价格来到用户设置的零界点时（例如图中的 a 点或者 b 点），用户实际提供的 x token 或者 y token 将为 0，x 或 y 将完全由虚拟 token 组成。为了保证虚拟 token 恒定不变，当价格进一步变动，移动到用户设定的价格区间之外时，流动池会移除这部分流动性，以保证虚拟的 x token 或 y token 数量不会减少，因此这部分虚拟的 token 只会在价格处于设定的区间内时参与价格的计算，而不会真的参与流动性提供（即虚拟 token 数为常数，并不会发生数量变化）。例如，当价格到达 a 点时，用户的所有资金转换为 x，此时Yreal=0, y=Yv，当价格继续降低时，流动池将移除这部分流动性。用户的资金状态将停留在 a 点，直至价格再次回到 a 点并进入 a,b 价格区间。</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/xyHTcRYY615111b570d8c.webp" alt="understanding04reserveschange.webp"></p>
+</li>
+</ul>
+</li>
+<li><p>市场</p>
+<ul>
+<li>如此一来，理想状态下，由于每个用户对币价的预期不同，大家都会选择自认为流动性较大的区间做市，提高了头寸的资金利用率，获得更多的手续费收益。当然，你设置的区间越小，在区间添加的流动性越多，得到的回报就更多，如何根据区间范围和流动性添加多少而进行分配手续费的规则很复杂，下面会另外说。可以类比炒股：只压其中一个股票=V3定义的区间很小，压很多钱到其中一个股票=V3流动性添加很多。</li>
+<li>V3 的改变，相当于是给用户提供了一种高风险高回报的收益模式。当然，如果用户对市场趋势判断的信心不足，愿意降低收益的同时降低风险（类似买基金，不买股票），也可以将提供头寸的流动性区间手动设置为 (0, ∞) ，如此一来，风险收益模型就和 V2 没有区别了。</li>
+</ul>
+</li>
+</ul>
+<h3 id="公式推导"><a href="#公式推导" class="headerlink" title="公式推导"></a>公式推导</h3><p>有了这个解决方案，我们就来考虑如何用数学来实现它。公式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(x + x_virtual) * (y + y_virtual) = L^2</span><br><span class="line"></span><br><span class="line">注：由于后面的相关交易公式推导涉及到了开根号，所以为了方便计算，V3 使用了 L^2 来替代 k ，实质上两者是一样的（L^2 = k）。</span><br></pre></td></tr></table></figure>
+<p>下图是公式的推导（1）和公式的例子（2）</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230804104001946.png" alt="image-20230804104001946"></p>
+<p>我们来研究一下：当价格大于、小于、位于范围区间时的Xreal与流动性的关系。</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230804114623873.png" alt="image-20230804114623873"></p>
+<h3 id="流动性聚合"><a href="#流动性聚合" class="headerlink" title="流动性聚合"></a>流动性聚合</h3><blockquote>
+<p>问题摘要：</p>
+<p>假如我设置流动性区间是100~200，有人设置区间110~200，此时价格为150，我们添加的流动性都可以获得手续费。<br>此时有人swap了1个ETH，那么我们可以来分这个手续费，它是怎么计算手续费分成给每个人的呢？<br>如果是以前V2，就很容易理解，个人份额占总份额。但是在V3，每个人在不同区间有份额，它怎么计算每个人应该分到多少呢？</p>
+</blockquote>
+<p>上面我们说了，通过引入虚拟 token 的概念，让用户可以在某一个价格区间内提供流动性。而每一个用户提供的流动性都可能设置不同的价格区间，这样一来一个交易对的池子中就包含了多个不同的流动性</p>
+<p>因此从单个交易池的视角来看：Uniswap v3 实际上扮演的角色是一个交易聚合器：当发生交易时，此交易会拆分成多个，通过池中多个不同的流动性区间来进行交易，最后将交易结果聚合，完成最终的交易过程。</p>
+<p>从交易聚合器的角度看：在交易发生前，池中每一个流动性区间中的 token price 是一致的（每一个区间是均匀分配流动性的）。那么我们需要让交易结束后，池中每一个流动性中的 token price 仍然是一致的（当然这里仅包含所有在区间内的流动性）。因此 v3 的交易过程会围绕价格来进行，这样可以保证所有流动性的价格一致。事实上这就和 AMM 交易聚合器的行为一致，因此我们可以把 Uniswap V3 理解成单个交易池中不同流动性的交易聚合器。</p>
+<p>在实际交易过程中，一个交易会通过多个流动性聚合完成。因此下面的公式会进行聚合完成，即使用当前价格上的流动性总和来进行计算，也就是说 <code>整体流动性 = 各个用户的流动性聚合的结果</code></p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230804104158880.png" alt="image-20230804104158880"></p>
+<p>同时，一个交易还可能跨越不同的流动性阶段（即可能超出或者进入某个流动性），因此合约需要维护每个用户提供流动性的价格边界，当价格到达边界时，需要在总流动性上增加或移除对应流动性大小，通过分段计算的方式完成交易结果的计算。</p>
+<blockquote>
+<p>在 V2 中代表用户提供了流动性的凭证是 ERC20 类型的 LP token （liquidity provider token），因为所有流动性都可以被认为是价格区间为 (0, ∞) 的流动性，因此可以用同质化代币流通。但 V3 中每个流动性可能价格区间都不同，因此需要用 ERC721 类型（NFT）的非同质化代币表示。</p>
+</blockquote>
+<p>注意：V3中是用ERC721来表示流动性的，而不是ERC20</p>
+<h3 id="流动性计算"><a href="#流动性计算" class="headerlink" title="流动性计算"></a>流动性计算</h3><p>假设用户提供的流动性范围：[Pa, Pb]</p>
+<ul>
+<li>如果池子价格Pc &lt; Pa</li>
+</ul>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805153249390.png" alt="image-20230805153249390"></p>
+<ul>
+<li>如果池子价格Pc &gt; Pa</li>
+</ul>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805153314354.png" alt="image-20230805153314354"></p>
+<ul>
+<li>如果池子价格Pc位于你设置的价格区间内</li>
+</ul>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805153336999.png" alt="image-20230805153336999"></p>
+<h2 id="池子"><a href="#池子" class="headerlink" title="池子"></a>池子</h2><p>下面有三个模型：</p>
+<ul>
+<li>第一个：V2中的流动性是平摊到(0, ∞)</li>
+<li>第二个：V3规定可以指定在某一个范围提供流动性，你注入的流动性在这个范围内均匀分布</li>
+<li>第三个：一个交易对池子的流动性注入区间的情况累加而成。注意：如图只是举个例子，真实情况不一定就是正态分布</li>
+</ul>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230804205012995.png" alt="image-20230804205012995"></p>
+<p>池子的交易过程如下图：假设我们的价格从低去往高处，于是就会从左向右穿过这些区间1、2、3，不断用一种资产换另外一种资产。如果价格区间的某种资产被消耗完了，就会进入下一个区间。在价格移动消耗池内资产数量的过程中，输入的资产数量也会不断减少，一旦在某个区间输入资产被耗尽，那么价格就会停留在该区间内。</p>
+<p>停留在该区间具体什么位置，V3有自己的公式进行计算，它引入了tick的概念，通过tick的计算来确定价格停留在哪个具体位置。</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805121118910.png" alt="image-20230805121118910"></p>
+<h2 id="tick"><a href="#tick" class="headerlink" title="tick"></a>tick</h2><ol>
+<li><p>我们将价格轴划分为有限个离散的点，交易价格的区间边界只能定义在这些点<code>i</code>上面，这里的 <code>i</code> 也就是价格的序号，我们称之为 <code>tick</code>，而由所有序号组成的集合称之为 <code>Ticks</code>。在合约代码中，主要是以 <code>tick</code> 来记录流动性的区间。</p>
+</li>
+<li><p>tick的位置如何呢？</p>
+<ul>
+<li><p>按照等差数列间隔：solidity不支持小数，我们对这些等差元素进行编号，比如 0.0001 是 1 号， 0.0002 是 2 号…但是，因为 solidity 最大的整数是 <code>2^256</code>，大约在 <code>1.158e73</code> 的价格就到头了。并且不具备灵活性，只能0.0001。不可行。</p>
+</li>
+<li><p>按照等比数列间隔：问题和等差的差不多，价格范围小，不具备灵活性</p>
+</li>
+<li><p>按照等幂数列间隔</p>
+<ul>
+<li><p>i越小，波动越小，点与点之间的间隔越小，价格差越小；i越大，波动越大，点与点之间的间隔大，价格差越大。这就非常适合稳定币和波动大的山寨币了</p>
+</li>
+<li><p>i的类型是int24。i=0的时候，价格是1，是价格的基点。可以是负数，那就是在0~1之间波动，正数则逐步变大。</p>
+</li>
+<li><p>在 V3 中的价格是从 <code>(√1.0001)^(int24).min</code> 到 <code>(√1.0001)^(int24).max</code> ，这是一个足够宽广的价格区间，且满足交易中的精度要求。</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805123814270.png" alt="image-20230805123814270"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="费率设计"><a href="#费率设计" class="headerlink" title="费率设计"></a>费率设计</h3><ul>
+<li>我们知道 <code>tick</code> 越多，价格可选的值越精细，但是合约在计算时候的价格区间就可能越多，那么 gas 消耗也会更加的多，因此我们需要让 <code>tick</code> 的数量保持在一个合理的范围内。Uniswap 针对不同类型的代币对推荐使用不同类型的费率，引入了 <code>tickSpacing</code> 的概念，即每个 <code>tick</code> 之间跳过 N 个 <code>tick</code>。<ul>
+<li>对于价格波动较小的交易池，我们希望 <code>tickSpacing</code> 更小，这样价格可选值更多，同时也希望费率更低。反之波动大的交易对，可以让 <code>tickSpacing</code> 更大，这样更节约 gas，但是我们希望它的费率更高。</li>
+<li>对于每一种交易对而言，都有三档可选费率等级，0.05%, 0.3%, 1%，并且以后通过社区治理，还有可能永久增加可选的挡位。每种交易费率等级都由给定的 <code>tickspacing</code>，比如稳定币交易对，就是 <code>tick</code> 之间需要间隔 10 个才是有效的可使用的 tick 。位于间隔内的 <code>tick</code> 虽然存在，但程序不会去初始化和使用，也就不会产生 gas 费用。因此，我们在等幂数列的基础上，进一步节省了计算消耗。</li>
+</ul>
+</li>
+</ul>
+<p>V3 设定的费率等级：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>费率</th>
+<th>tickspacing</th>
+<th>建议的使用范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.05%</td>
+<td>10</td>
+<td>稳定币交易对</td>
+</tr>
+<tr>
+<td>0.3%</td>
+<td>60</td>
+<td>适用大多数交易对</td>
+</tr>
+<tr>
+<td>1%</td>
+<td>200</td>
+<td>波动极大的交易对</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="liquidityNet和liquidityGross"><a href="#liquidityNet和liquidityGross" class="headerlink" title="liquidityNet和liquidityGross"></a>liquidityNet和liquidityGross</h3><ul>
+<li><p>定义</p>
+<ul>
+<li><p><code>liquidityGross</code>：如下图，当有流动性区间的边界设置为1、2、3点时，<code>liquidityGross</code> 都会增加。如果某个tick的<code>liquidityGross</code>为0，说明这个点没有激活，没有流动性</p>
+</li>
+<li><p><code>liquidityNet</code>：表示当价格穿过该 tick 时，处于激活的流动性需要变化的数量。如图，穿过1、2、3这些tick时，会根据这些tick上面的<code>liquidityNet</code>更新处于激活状态的流动性数量。在注入或移除数量为 <code>l</code> 的流动性时，具体规则如下：</p>
+<ul>
+<li>注入流动性，tick 是价格下限，<code>liquidityNet</code> 增加 <code>l</code></li>
+<li>注入流动性，tick 是价格上限，<code>liquidityNet</code> 减少 <code>l</code></li>
+<li>移除流动性，tick 是价格下限，<code>liquidityNet</code> 减少 <code>l</code></li>
+<li>移除流动性，tick 是价格上限，<code>liquidityNet</code> 增加 <code>l</code></li>
+</ul>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805124821938.png" alt="image-20230805124821938"></p>
+</li>
+</ul>
+</li>
+<li><p>例子</p>
+<ul>
+<li><p>liquidityGross</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805130121041.png" alt="image-20230805130121041"></p>
+</li>
+<li><p>liquidityNet</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805125636295.png" alt="image-20230805125636295"></p>
+<h3 id="手续费"><a href="#手续费" class="headerlink" title="手续费"></a>手续费</h3><ul>
+<li><p>分配手续费的标准：在任意区间内，根据出资比例和参与时长保证分配的公平性</p>
+</li>
+<li><p>方案1：直接累加手续费（淘汰）</p>
+<ul>
+<li>算法<ol>
+<li>一笔交易开始，根据之前交易部分的过程描述，交易会在已有流动性的 tick 之间，逐个进行</li>
+<li>当价格来到一个 tick (已有流动性的tick)，我们只要记录这个 tick 上的交易量，根据费率算出该区间的总手续费</li>
+<li>然后找出所有包含该 tick 流动性头寸 <code>position</code>，先将他们的数量汇总</li>
+<li>再根据出资比例逐个分配手续费，将数值累加到待每个头寸的待收取手续费的变量上</li>
+</ol>
+</li>
+<li>缺点：十分消耗gas。原因：一笔交易可能会横跨很多个 tick ，单就一个 tick 的计算，就有可能涉及到非常多的流动性头寸 <code>position</code>，这不但需要一个耗时的遍历查找的过程，更严重的问题是，每个流动性头寸的待收取手续费肯定是一个 storage 变量，当我们去逐个写入新的数值的时候，gas 费用就起飞了。</li>
+</ul>
+</li>
+<li><p>方案2：（pick）</p>
+<ul>
+<li><p>相同区间 position 之间的分配</p>
+<ul>
+<li><p>算法</p>
+<ol>
+<li><p>我们不去遍历，而是计算每单位流动性能够获取的手续费数量：<code>用户提供流动性的数量 * 每单位流动性的手续费 = 应得的手续费</code>。<code>每单位流动性的手续费 = 总手续费 / 总流动性</code>。</p>
+</li>
+<li><p>我们设置一个记录全局的每单位流动性赚取手续费的累计值 <code>feeGrowthGlobal</code> （注意有 growth，表示它是累计值）。</p>
+<ul>
+<li><p><code>feeGrowthGlobal</code>: 每当有交易发生，就会把每单位流动性赚取的手续费累加到该变量上，这是一个随时间推移单调递增的变量。（这个变量其实有两个，因为手续费的收取是两种资产分别收取的，所以累计的变量也对应了两个）</p>
+</li>
+<li><p><code>liquidity</code>: 池子当前处于激活状态的总流动性数量。</p>
+</li>
+</ul>
+</li>
+<li><p>再设置一个局部变量：<code>delta fee</code>: 交易过程中，每一步产生的手续费数量</p>
+</li>
+<li><p>我们只需要用 <code>delta fee</code> 除以 <code>liquidity</code> 就能得到 <code>feeGrowthGlobal</code> 每次需要增加的量。</p>
+</li>
+<li><p>只需要在流动性发生变化时，计算这段时间内 <code>feeGrowthGlobal</code> 的增量，再乘以该 <code>position</code> 的流动性数量，就可以知道这段时间内该 <code>position</code> 收取的手续费增量。</p>
+</li>
+<li><p>最后将 <code>position</code> 内手续费的增量累加起来就是它应得的数量。</p>
+</li>
+</ol>
+</li>
+<li><p>特点</p>
+<ul>
+<li>不需要遍历流动性数量算出流动性数量比例，而是去关注每单位收益的增量</li>
+<li>在 <code>position</code> 流动性数量发生变化之前，需要将之前这段时间的手续费增量计算出来，累加记录到相关变量中</li>
+<li>全局的 <code>feeGrowthGlobal</code> 是会随着交易进行实时更新的，而 <code>position</code> 中的手续费数量不会实时更新，只会在调用 mint 和 burn 这两个会改变流动性数量的函数时触发更新。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>不同区间之间的分配</p>
+<ul>
+<li><p>算法</p>
+<ol>
+<li><p>计算区间外的手续费数量，用总手续费减去区间外的手续费数量，间接知道区间内的手续费</p>
+<blockquote>
+<p>假如交易在一个 (a,b) 的价格区间内进行，手续费会在区间内不断累加，但是区间外是一直不变的，即 (0, a) 和 (b, ∞) 区间内的手续费并没有增加。想要计算 (a,b) 区间内的手续费，其实只要用池子内所有流动性赚取的总手续费数量减去区间两边外侧的手续费就行了</p>
+</blockquote>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805132058992.png" alt="image-20230805132058992"></p>
+</li>
+<li><p>公式：<code>feeGrowthInside = feeGrowthGlobal - feeGrowthOutsideBelow - feeGrowthOutsideAbove</code>。feeGrowthOutsideBelow 是红框的左侧，feeGrowthOutsideAbove是红框的右侧。</p>
+</li>
+<li><p>如果以某个 tick 作为中轴，价格点所在的一侧是内侧，而相对的另一侧是外侧。于是触发其更新的条件其实只有一个：当价格穿过该 tick 时（不论方向左右）。因为只有此时，tick 左右两侧会互换内侧和外侧的定义。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>总流程</p>
+<ol>
+<li>记录池子内全局的每单位流动性收取手续费的数量的累加变量 <code>feeGrowthGlobal</code></li>
+<li>在每个有流动性的 tick 上记录外侧的手续费数量 <code>feeGrowthOutside</code></li>
+<li>对于任意区间，利用公式计算出区间内的手续费总量 <code>feeGrowthInside</code></li>
+<li>该区间内会存在不同用户注入的不同流动性头寸 <code>position</code>，在 <code>position</code> 流动性数量发生变化时，累加距离上次变化到现在这段时间的手续费数量增量到 <code>tokensOwed</code> 变量（该 positioin 总共可回收的流动性数量）</li>
+<li>用户收取手续费，从 <code>tokensOwed</code> 中扣除，其他变量不受影响。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="辅助预言机的数据"><a href="#辅助预言机的数据" class="headerlink" title="辅助预言机的数据"></a>辅助预言机的数据</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Variable Name</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int128</td>
+<td>liquidityNet</td>
+<td>流动性数量净含量</td>
+</tr>
+<tr>
+<td>int128</td>
+<td>liquidityGross</td>
+<td>流动性数量总量</td>
+</tr>
+<tr>
+<td>int256</td>
+<td>feeGrowthOutside0X128</td>
+<td>以 token0 收取的 outside 的手续费总量</td>
+</tr>
+<tr>
+<td>int256</td>
+<td>feeGrowthOutside1X128</td>
+<td>以 token1 收取的 outside 的手续费总量</td>
+</tr>
+<tr>
+<td>int256</td>
+<td>secondsOutside</td>
+<td>价格在 outside 的总时间</td>
+</tr>
+<tr>
+<td>int256</td>
+<td>tickCumulativeOutside</td>
+<td>价格在 outside 的 tick 序号累加</td>
+</tr>
+<tr>
+<td>int256</td>
+<td>secondsPerLiquidityOutsideX128</td>
+<td>价格在 outside 的每单位流动性参与时长</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol>
+<li><code>secondsOutside</code>： 用池子创建以来的总时间减去价格区间两边 tick 上的该变量，就能得出该区间做市的总时长</li>
+<li><code>tickCumulativeOutside</code>： 用预言机的 <code>tickCumulative</code> 减去价格区间两边 tick 上的该变量，除以做市时长，就能得出该区间平均的做市价格（tick 序号）</li>
+<li><code>secondsPerLiquidityOutsideX128</code>： 用预言机的 <code>secondsPerLiquidityCumulative</code> 减去价格区间两边 tick 上的该变量，就是该区间内的每单位流动性的做市时长（使用该结果乘以你的流动性数量，得出你的流动性参与的做市时长，这个时长比上 1 的结果，就是你在该区间赚取的手续费比例）。</li>
+</ol>
+<h2 id="无常损失"><a href="#无常损失" class="headerlink" title="无常损失"></a>无常损失</h2><p>相同条件下，相同点，在V2和V3添加相同流动性的无常损失情况对比，可以看出，V3的无常损失比V2大</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230804120846705.png" alt="image-20230804120846705"></p>
+<p>V3无常损失移动的三种情况：移动到范围内、移动到大于范围、移动到小于范围，并且验证当范围无限大的时候是否变成V2：</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230804143436562.png" alt="image-20230804143436562"></p>
+<h2 id="限价单"><a href="#限价单" class="headerlink" title="限价单"></a>限价单</h2><p>当[a,b]区间足够小，即a,b足够接近时，可以在较短的时间内将X资产全部兑换为Y资产；通过做市的方式类似达到了限价单的功能，但是这个兑换只是暂时的，如果价格返回原点，Y资产会被兑换回X资产，所以需要流动性提供者在完成兑换后取出流动性。</p>
+<p>其实区间范围大了也是一个道理，反正原理就是：当从一个价格移动向另外一个价格的时候，一种资产全部转变为另外一种资产。举个例子，我在[5,6]价格区间注入了5USDT和0DAI的流动性，然后价格从4去到了8，那么我注入的5USDT就会全部转变为n个DAI。过程类似下图：</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/xyHTcRYY615111b570d8c-16912083763291.webp" alt="understanding04reserveschange.webp"></p>
+<h2 id="预言机"><a href="#预言机" class="headerlink" title="预言机"></a>预言机</h2><h3 id="新旧对比"><a href="#新旧对比" class="headerlink" title="新旧对比"></a>新旧对比</h3><ul>
+<li>V2 的预言机提供了 TWAP (time-weighted average price 时间加权平均价格)，更新时间是每个区块的第一笔交易的价格，其数值是上一次的数值加上当前价格乘以时间差。外部用户可以通过记录该数值的变化和时间点，获得在一段时间内受短期波动影响较小的时间加权价格。</li>
+<li>V2 的预言机在核心合约上只保留最新的一个值，所以如果外部用户想要使用这个预言机，需要自己搭建一套监控和记录的设施，增加了使用者成本。</li>
+</ul>
+<p>V3 相比于 V2 的预言机，有以下较大改动：</p>
+<ul>
+<li>相比 V2 累加的是价格的加权数值，V3 累加的是价格的 log 值，即 <code>log(price, 1.0001)</code></li>
+<li>在核心合约中增加了存储预言机数值的空间，最大 65536 个数值，至少 9 天的数值，建立监控和记录设施不再是必要条件</li>
+<li>增加关于流动性的预言机数值，记录周期和价格一致（每个区块的第一笔交易），其值是当前激活状态的流动性数量的倒数，即 <code>1/liquidity</code></li>
+</ul>
+<h3 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h3><ul>
+<li><p>V2 使用算术平均：记录价格的累加值，而使用时再除以时间间隔。而 V3使用几何平均： 累加<code>log(price, 1.0001)</code> ，也就是价格的幂，使用时再除以时间间隔</p>
+</li>
+<li><p>V3的公式</p>
+<p><img src="/2023/08/03/03.Uniswap/08.uniswap_v3_theory/image-20230805133520291.png" alt="image-20230805133520291"></p>
+<blockquote>
+<p>这里的 log 数值后面其实还有一个 <code>* 1s</code> 即以每秒作为时间间隔。然而实际情况中，合约中是以区块的时间戳作为标记时间的，所以合约中的代码跟公式不同。每个区块的头一笔交易时更新，此时距离上一次更新时间间隔肯定大于 1s，所以需要将更新值乘以两个区块的时间戳的差。<code>tickCumulative</code> 是 tick 序号的累计值，tick 的序号就是 <code>log(√price, 1.0001)</code>。</p>
+</blockquote>
+</li>
+<li><p>相比于 V2，任何时刻活跃的流动性就是池子内所有流动性数量总和（因为都是全价格区间），V3 有了不同价格区间，所以不同时刻，激活状态的流动性数量并不是池子内的总流动性数量。为了便于外部使用者更好的观测激活流动性的数量，V3 添加了预言机的 <code>secondsPerLiquidityCumulative</code> 变量。</p>
+</li>
+</ul>
+<h2 id="风险与收益"><a href="#风险与收益" class="headerlink" title="风险与收益"></a>风险与收益</h2><ul>
+<li>虽然V3的资产利用率更高，但V3的无常损失更大</li>
+<li>由于添加流动性是指定一个区间，如果指定的区间太小导致价格不位于区间内，那么你添加的流动性不会被激活，因此赚不到任何手续费；但是如果区间太大比如设置为无穷，那就和V2没区别，资金利用率太低，导致手续费平摊到你手上的钱极少</li>
+</ul>
+<p>参考</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://mirror.xyz/0xCf19c7444b775f4fede9b7B53b4d708338004aa4/vC-wd8t-Z2cXdpV3jKQsagoGHrRNMRAp-LDPISQ71CA">https://mirror.xyz/0xCf19c7444b775f4fede9b7B53b4d708338004aa4/vC-wd8t-Z2cXdpV3jKQsagoGHrRNMRAp-LDPISQ71CA</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1uq4y1N7o6/?vd_source=0cc0401ee122346d6680e90658b0ed1a">https://www.bilibili.com/video/BV1uq4y1N7o6/?vd_source=0cc0401ee122346d6680e90658b0ed1a</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.learnblockchain.cn/article/3055">https://www.learnblockchain.cn/article/3055</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://thomasxu-blockchain.github.io/uniswap-v3/#%E8%B5%84%E6%9C%AC%E6%95%88%E7%8E%87">https://thomasxu-blockchain.github.io/uniswap-v3/#%E8%B5%84%E6%9C%AC%E6%95%88%E7%8E%87</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://davidc.ai/2021/12/21/%E6%B5%85%E6%9E%90-Uniswap-V3/">https://davidc.ai/2021/12/21/%E6%B5%85%E6%9E%90-Uniswap-V3/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://mirror.xyz/adshao.eth/tgZjDXOtL999iuPjXWrolR7Ns1nTZDADA6NLJaJpJJM">https://mirror.xyz/adshao.eth/tgZjDXOtL999iuPjXWrolR7Ns1nTZDADA6NLJaJpJJM</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://paco0x.org/uniswap-v3-1/">https://paco0x.org/uniswap-v3-1/</a></p>
+</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/31/06.Windows%20Security/02.PE%E7%A0%B4%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-08-03 13:24:10
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/03-Uniswap/" title="03.Uniswap">
+                        <b>#</b> 03.Uniswap
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/08/04/03.Uniswap/09.uniswap_v3_code/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#uniswap-v3-theory"><span class="toc-text">uniswap_v3_theory</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#V3%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="toc-text">V3的改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E4%B8%AD%E6%B5%81%E5%8A%A8%E6%80%A7"><span class="toc-text">集中流动性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%89%80%E5%9C%A8"><span class="toc-text">问题所在</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="toc-text">解决问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC"><span class="toc-text">公式推导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E5%8A%A8%E6%80%A7%E8%81%9A%E5%90%88"><span class="toc-text">流动性聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E5%8A%A8%E6%80%A7%E8%AE%A1%E7%AE%97"><span class="toc-text">流动性计算</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%A0%E5%AD%90"><span class="toc-text">池子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tick"><span class="toc-text">tick</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%B9%E7%8E%87%E8%AE%BE%E8%AE%A1"><span class="toc-text">费率设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#liquidityNet%E5%92%8CliquidityGross"><span class="toc-text">liquidityNet和liquidityGross</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E7%BB%AD%E8%B4%B9"><span class="toc-text">手续费</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%85%E5%8A%A9%E9%A2%84%E8%A8%80%E6%9C%BA%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-text">辅助预言机的数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%B8%B8%E6%8D%9F%E5%A4%B1"><span class="toc-text">无常损失</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%90%E4%BB%B7%E5%8D%95"><span class="toc-text">限价单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E8%A8%80%E6%9C%BA"><span class="toc-text">预言机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E6%97%A7%E5%AF%B9%E6%AF%94"><span class="toc-text">新旧对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F"><span class="toc-text">公式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A3%8E%E9%99%A9%E4%B8%8E%E6%94%B6%E7%9B%8A"><span class="toc-text">风险与收益</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 08.uniswap_v3_theory + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F08%2F03%2F03.Uniswap%2F08.uniswap_v3_theory%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/08/03/03.Uniswap/08.uniswap_v3_theory/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
