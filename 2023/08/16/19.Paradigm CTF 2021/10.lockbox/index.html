@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      10.lockbox 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">10.lockbox</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-08-16 19:38:15
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/19-Paradigm-CTF-2021/" title="19.Paradigm CTF 2021">
+                    <b>#</b> 19.Paradigm CTF 2021
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="lockbox"><a href="#lockbox" class="headerlink" title="lockbox"></a>lockbox</h1><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="1-全局观"><a href="#1-全局观" class="headerlink" title="1.全局观"></a>1.全局观</h3><ul>
+<li>Lockbox.sol<ul>
+<li>Entrypoint：解题的入口方法</li>
+<li>其他的所有合约：每个合约是过关斩将的其中一关。他们是通过套娃的方式联系在一起的，不同一般的在一个合约中设置过关斩将。其通过每个关卡的<code>solve()</code>的modifier进行连接（内联汇编）</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-任务"><a href="#2-任务" class="headerlink" title="2.任务"></a>2.任务</h3><p>成功调用将solved设置为true</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function solve(bytes4 guess) public _ &#123;</span><br><span class="line">	require(guess == bytes4(blockhash(block.number - 1)), &quot;do you feel lucky?&quot;);</span><br><span class="line">	solved = true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-详细分析"><a href="#3-详细分析" class="headerlink" title="3.详细分析"></a>3.详细分析</h3><p>这种过关斩将的题目，我们应该从大限制开始做，然后再做小限制，顺序很重要，虽然一般情况是从1开始按顺序做。</p>
+<h4 id="stage5"><a href="#stage5" class="headerlink" title="stage5"></a>stage5</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function solve() public _ &#123;</span><br><span class="line">    require(msg.data.length &lt; 256, &quot;a little too long&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们的calldata数据长度必须小于256字节：如下是我们能够书写的calldata范围</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0xe0d20f73 // keccak256(&quot;solve(bytes4))</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x00</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x20</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x40</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x60</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x80</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xa0</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xc0</span><br><span class="line">000000000000000000000000000000000000000000000000000000           // 0xe0</span><br></pre></td></tr></table></figure>
+<h4 id="Entrypoint"><a href="#Entrypoint" class="headerlink" title="Entrypoint"></a>Entrypoint</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function solve(bytes4 guess) public _ &#123;</span><br><span class="line">    require(guess == bytes4(blockhash(block.number - 1)), &quot;do you feel lucky?&quot;);</span><br><span class="line">    solved = true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个很容易做到，只需要修改第一个参数即可，此时的calldata为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0xe0d20f73</span><br><span class="line">[ guess]00000000000000000000000000000000000000000000000000000000 // 0x00</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x20</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x40</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x60</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x80</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xa0</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xc0</span><br><span class="line">000000000000000000000000000000000000000000000000000000           // 0xe0</span><br></pre></td></tr></table></figure>
+<h4 id="stage1"><a href="#stage1" class="headerlink" title="stage1"></a>stage1</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require(ecrecover(keccak256(&quot;stage1&quot;), v, r, s) == 0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf, &quot;who are you?&quot;);</span><br></pre></td></tr></table></figure>
+<p>我们需要拿到0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf的私钥来对<code>stage1</code>来签名，并且不要加上以太坊签名消息前缀<code>\x19Ethereum Signed Message:\n32</code>。</p>
+<p>网络搜索0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf可以得到其私钥：0x0000000000000000000000000000000000000000000000000000000000000001</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> eth_account <span class="keyword">import</span> Account</span><br><span class="line"><span class="keyword">from</span> web3 <span class="keyword">import</span> Web3</span><br><span class="line"></span><br><span class="line">messagehash = Web3.keccak(text=<span class="string">&quot;stage1&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;message&#x27;s hash&quot;</span>,messagehash.<span class="built_in">hex</span>())</span><br><span class="line">privatekey =<span class="string">&quot;0x0000000000000000000000000000000000000000000000000000000000000001&quot;</span></span><br><span class="line">signMessage = Account.signHash(message_hash=messagehash, private_key=privatekey)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;r = &quot;</span>, Web3.to_hex(signMessage.r))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;s = &quot;</span>, Web3.to_hex(signMessage.s))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;v = &quot;</span>, Web3.to_hex(signMessage.v))</span><br></pre></td></tr></table></figure>
+<p>得到结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r =  0x370df20998cc15afb44c2879a3c162c92e703fc4194527fb6ccf30532ca1dd3b</span><br><span class="line">s =  0x35b3f2e2ff583fed98ff00813ddc7eb17a0ebfc282c011946e2ccbaa9cd3ee67</span><br><span class="line">v =  0x1b</span><br></pre></td></tr></table></figure>
+<p>此时calldata为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0xe0d20f73</span><br><span class="line">[ guess]0000000000000000000000000000000000000000000000000000001b // 0x00</span><br><span class="line">370df20998cc15afb44c2879a3c162c92e703fc4194527fb6ccf30532ca1dd3b // 0x20</span><br><span class="line">35b3f2e2ff583fed98ff00813ddc7eb17a0ebfc282c011946e2ccbaa9cd3ee67 // 0x40</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x60</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x80</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xa0</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xc0</span><br><span class="line">000000000000000000000000000000000000000000000000000000           // 0xe0</span><br></pre></td></tr></table></figure>
+<h4 id="stage2"><a href="#stage2" class="headerlink" title="stage2"></a>stage2</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function solve(uint16 a, uint16 b) public _ &#123;</span><br><span class="line">    require(a &gt; 0 &amp;&amp; b &gt; 0 &amp;&amp; a + b &lt; a, &quot;something doesn&#x27;t add up&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>两个uint16相加很容易溢出（版本0.4.24)，我们将低位修改为ff1b，满足结果：ff1b+dd3b=dc56</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0xe0d20f73</span><br><span class="line">[ guess]0000000000000000000000000000000000000000000000000000ff1b // 0x00</span><br><span class="line">370df20998cc15afb44c2879a3c162c92e703fc4194527fb6ccf30532ca1dd3b // 0x20</span><br><span class="line">35b3f2e2ff583fed98ff00813ddc7eb17a0ebfc282c011946e2ccbaa9cd3ee67 // 0x40</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x60</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x80</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xa0</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xc0</span><br><span class="line">000000000000000000000000000000000000000000000000000000           // 0xe0</span><br></pre></td></tr></table></figure>
+<h4 id="stage3"><a href="#stage3" class="headerlink" title="stage3"></a>stage3</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function solve(uint idx, uint[4] memory keys, uint[4] memory lock) public _ &#123;</span><br><span class="line">    require(keys[idx % 4] == lock[idx % 4], &quot;key did not fit lock&quot;);</span><br><span class="line">    </span><br><span class="line">    for (uint i = 0; i &lt; keys.length - 1; i++) &#123;</span><br><span class="line">        require(keys[i] &lt; keys[i + 1], &quot;out of order&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    for (uint j = 0; j &lt; keys.length; j++) &#123;</span><br><span class="line">        require((keys[j] - lock[j]) % 2 == 0, &quot;this is a bit odd&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>keys[idx % 4] == lock[idx % 4]</code>：我们的<code>idx%4</code>为1b%4=27%4=3，此时就需要keys[3] = lock[3]，然而由于stage5的限制，我们无法操作lock[3]的数据，它只能是在得到calldata之后补0。因此我们得到的v是不对的，不应该是1b，应该是1c，这样的话，1c%4=28%4=0，这时候只需要keys[0] = lock[0]，这是可以做到的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">0xe0d20f73</span><br><span class="line">[ guess]0000000000000000000000000000000000000000000000000000ff1b // 0x00</span><br><span class="line">370df20998cc15afb44c2879a3c162c92e703fc4194527fb6ccf30532ca1dd3b // 0x20  keys[0]</span><br><span class="line">35b3f2e2ff583fed98ff00813ddc7eb17a0ebfc282c011946e2ccbaa9cd3ee67 // 0x40  keys[1]</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x60  keys[2]</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0x80  keys[3]</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xa0  lock[0]</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000000 // 0xc0  lock[1]</span><br><span class="line">000000000000000000000000000000000000000000000000000000           // 0xe0  lock[2]</span><br><span class="line">                                                                          lock[3]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>keys[i] &lt; keys[i + 1]</code>：这个数组必须是递增的，目前我们构造的calldata不符合，因为keys[0]大于keys[1]。说明我们的vrs生成的不符合条件，我们知道，用相同的私钥对相同的消息进行签名，可以生成不同的签名，得到的一个符合条件的签名为：</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Message: stage1</span><br><span class="line">Message Hash: b6619a2d9d36a2acecba8e9d99c8444477624a46561077a675900f4af2c42c95</span><br><span class="line">Signature: &#123;</span><br><span class="line">  v: 28,</span><br><span class="line">  r: <span class="string">&#x27;10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de55468&#x27;</span>,</span><br><span class="line">  s: <span class="string">&#x27;53f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因此，我们得到了新的符合条件的calldata：满足<code>keys[idx % 4] == lock[idx % 4]</code>、<code>keys[i] &lt; keys[i + 1]</code>、<code>(keys[j] - lock[j]) % 2 == 0</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">0xe0d20f73</span><br><span class="line">[ guess]0000000000000000000000000000000000000000000000000000ff1c // 0x00</span><br><span class="line">10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de55468 // 0x20  keys[0]</span><br><span class="line">53f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769 // 0x40  keys[1]</span><br><span class="line">53f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e6276a // 0x60  keys[2]</span><br><span class="line">53f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e6276c // 0x80  keys[3]</span><br><span class="line">10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de55468 // 0xa0  lock[0]</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000001 // 0xc0  lock[1]</span><br><span class="line">000000000000000000000000000000000000000000000000000000           // 0xe0  lock[2]</span><br><span class="line">                                                                          lock[3]</span><br></pre></td></tr></table></figure>
+<h4 id="stage4"><a href="#stage4" class="headerlink" title="stage4"></a>stage4</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function solve(bytes32[6] choices, uint choice) public _ &#123;</span><br><span class="line">    require(choices[choice % 6] == keccak256(abi.encodePacked(&quot;choose&quot;)), &quot;wrong choice!&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>choose的哈希值为：0xe201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896。要求我们找出在choices中找出一个bytes32，让他等于choose的哈希值。因此，我们可以将这个哈希值放到choices中，然后<code>choice%6</code>的结果是选择到它。我们就把这个哈希值放到choice[3]的位置吧。之后<code>choice % 6</code>需要等于3，那么choice可以为3。这样就满足了一切条件了，构造出来的calldata如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">0xe0d20f73</span><br><span class="line">[ guess]0000000000000000000000000000000000000000000000000000ff1c // 0x00            choice[0]</span><br><span class="line">10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de55468 // 0x20  keys[0]   choice[1]</span><br><span class="line">53f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769 // 0x40  keys[1]   choice[2]</span><br><span class="line">e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896 // 0x60  keys[2]   choice[3]</span><br><span class="line">e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca898 // 0x80  keys[3]   choice[4]</span><br><span class="line">10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de55468 // 0xa0  lock[0]   choice[5]</span><br><span class="line">0000000000000000000000000000000000000000000000000000000000000003 // 0xc0  lock[1]</span><br><span class="line">000000000000000000000000000000000000000000000000000000           // 0xe0  lock[2]</span><br><span class="line">                                                                          lock[3]</span><br></pre></td></tr></table></figure>
+<h4 id="最终的"><a href="#最终的" class="headerlink" title="最终的"></a>最终的</h4><p>经过上面过关斩将，我们确定了最终的calldata：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">bytes4 guess = bytes4(blockhash(block.number - 1));</span><br><span class="line"></span><br><span class="line">bytes memory data = abi.encodePacked(</span><br><span class="line">	bytes4(0xe0d20f73), // keccak256(&quot;solve(bytes4))</span><br><span class="line">	guess, bytes28(0x0000000000000000000000000000000000000000000000000000ff1c),</span><br><span class="line">	bytes32(0x10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de55468),</span><br><span class="line">	bytes32(0x53f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769),</span><br><span class="line">	bytes32(0xe201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896),</span><br><span class="line">	bytes32(0xe201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca898),</span><br><span class="line">	bytes32(0x10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de55468),</span><br><span class="line">	bytes32(0x0000000000000000000000000000000000000000000000000000000000000003)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity 0.8.0;</span><br><span class="line"></span><br><span class="line">import &quot;forge-std/Test.sol&quot;;</span><br><span class="line">import &quot;./helper_setupBytecode.sol&quot;;</span><br><span class="line">import &quot;./interface.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract attackTest is Test &#123;</span><br><span class="line"></span><br><span class="line">    ISetup public level;</span><br><span class="line">    IEntrypoint public entrypoint;</span><br><span class="line"></span><br><span class="line">    function setUp() public &#123;</span><br><span class="line">        // 初始化题目</span><br><span class="line">        level = ISetup(deploySetup());</span><br><span class="line">        vm.label(address(level), &quot;level&quot;);</span><br><span class="line">        entrypoint = IEntrypoint(level.entrypoint());</span><br><span class="line">        vm.label(address(entrypoint), &quot;entrypoint&quot;);</span><br><span class="line"></span><br><span class="line">        // 在foundry中，每次测试的结果都是一样的，为了方便看trace，我们定下标签</span><br><span class="line">        vm.label(address(0x044AB9df2D2779933d10dfaF082540c0955B0307), &quot;stage5&quot;);</span><br><span class="line">        vm.label(address(0xcAF4fdfB21455c48cBf8586eb02E4c09B4CE9B37), &quot;stage4&quot;);</span><br><span class="line">        vm.label(address(0x2492Df72782081982f6344c92BDa4cB8e60eaA3E), &quot;stage3&quot;);</span><br><span class="line">        vm.label(address(0x7f0Fd12Ce1780616AAd60aeF535ad5F8353a49d1), &quot;stage2&quot;);</span><br><span class="line">        vm.label(address(0x41C3c259514f88211c4CA2fd805A93F8F9A57504), &quot;stage1&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function test_isComplete() public&#123;</span><br><span class="line">        bytes4 guess = bytes4(blockhash(block.number - 1));</span><br><span class="line"></span><br><span class="line">        bytes memory data = abi.encodePacked(</span><br><span class="line">        	bytes4(0xe0d20f73),</span><br><span class="line">            guess, bytes28(0x0000000000000000000000000000000000000000000000000000ff1c),</span><br><span class="line">            bytes32(0x10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de55468),</span><br><span class="line">            bytes32(0x53f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769),</span><br><span class="line">            bytes32(0xe201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896),</span><br><span class="line">            bytes32(0xe201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca898),</span><br><span class="line">            bytes32(0x10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de55468),</span><br><span class="line">            bytes32(0x0000000000000000000000000000000000000000000000000000000000000003)</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        // 不能直接调用solve(), 因为这样就没有后面的calldata了，我们要发送原始的calldata</span><br><span class="line">        // 可以用ethersjs来发送，也可以在solidity中用内联汇编</span><br><span class="line"></span><br><span class="line">        uint size = data.length;</span><br><span class="line">        address entry = address(entrypoint);</span><br><span class="line">        assembly&#123;</span><br><span class="line">            switch call(gas(), entry, 0, add(data,0x20), size, 0, 0)</span><br><span class="line">            case 0 &#123;</span><br><span class="line">                   returndatacopy(0x00,0x00,returndatasize())</span><br><span class="line">                   revert(0, returndatasize()) </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 查看是否完成题目</span><br><span class="line">        assertEq(level.isSolved(),true);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function deploySetup() public returns (address addr) &#123;</span><br><span class="line">        bytes memory bytecode = BYTECODE;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            addr := create(0, add(bytecode, 0x20), mload(bytecode))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过trace可以看出，程序是从stage1到stage5（因为Stage中modifier的逻辑），并且calldata在每次<code>solve()</code>中都复用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Traces:</span><br><span class="line">  [52925] attackTest::test_isComplete() </span><br><span class="line">    ├─ [39019] entrypoint::e0d20f73(290decd90000000000000000000000000000000000000000000000000000ff1c10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de5546853f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca89810d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de554680000000000000000000000000000000000000000000000000000000000000003) </span><br><span class="line">    │   ├─ [228] stage1::034899bc() </span><br><span class="line">    │   │   └─ ← 0xf4ab27cc00000000000000000000000000000000000000000000000000000000</span><br><span class="line">    │   ├─ [30357] stage1::f4ab27cc(290decd90000000000000000000000000000000000000000000000000000ff1c10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de5546853f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca89810d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de554680000000000000000000000000000000000000000000000000000000000000003) </span><br><span class="line">    │   │   ├─ [3000] PRECOMPILE::ecrecover(0xb6619a2d9d36a2acecba8e9d99c8444477624a46561077a675900f4af2c42c95, 28, 7607220488960343807138708896118077596332808739342783944889964628376182674536 [7.607e75], 37976160237878000092020130231526712820886658396819410882605408940802787649385 [3.797e76]) </span><br><span class="line">    │   │   │   └─ ← 0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf</span><br><span class="line">    │   │   ├─ [228] stage2::034899bc() </span><br><span class="line">    │   │   │   └─ ← 0x07e13e4d00000000000000000000000000000000000000000000000000000000</span><br><span class="line">    │   │   ├─ [21336] stage2::07e13e4d(290decd90000000000000000000000000000000000000000000000000000ff1c10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de5546853f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca89810d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de554680000000000000000000000000000000000000000000000000000000000000003)</span><br><span class="line">    │   │   │   ├─ [228] stage3::034899bc()</span><br><span class="line">    │   │   │   │   └─ ← 0x3f30497e00000000000000000000000000000000000000000000000000000000</span><br><span class="line">    │   │   │   ├─ [15756] stage3::3f30497e(290decd90000000000000000000000000000000000000000000000000000ff1c10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de5546853f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca89810d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de554680000000000000000000000000000000000000000000000000000000000000003)</span><br><span class="line">    │   │   │   │   ├─ [228] stage4::034899bc()</span><br><span class="line">    │   │   │   │   │   └─ ← 0x3b0a729200000000000000000000000000000000000000000000000000000000</span><br><span class="line">    │   │   │   │   ├─ [8374] stage4::3b0a7292(290decd90000000000000000000000000000000000000000000000000000ff1c10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de5546853f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca89810d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de554680000000000000000000000000000000000000000000000000000000000000003)</span><br><span class="line">    │   │   │   │   │   ├─ [228] stage5::034899bc()</span><br><span class="line">    │   │   │   │   │   │   └─ ← 0x890d690800000000000000000000000000000000000000000000000000000000</span><br><span class="line">    │   │   │   │   │   ├─ [2335] stage5::890d6908(290decd90000000000000000000000000000000000000000000000000000ff1c10d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de5546853f5beb75699a068c70adbf9d545de94ec2511fe56862363799f44a700e62769e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca896e201a979a73f6a2947c212ebbed36f5d85b35629db25dfd9441d562a1c6ca89810d188c245dadc6b749cc5dedc56093db37a555fb80cacbc386f899f0de554680000000000000000000000000000000000000000000000000000000000000003)</span><br><span class="line">    │   │   │   │   │   │   └─ ← ()</span><br><span class="line">    │   │   │   │   │   └─ ← ()</span><br><span class="line">    │   │   │   │   └─ ← ()</span><br><span class="line">    │   │   │   └─ ← ()</span><br><span class="line">    │   │   └─ ← ()</span><br><span class="line">    │   └─ ← ()</span><br><span class="line">    ├─ [3197] level::64d98f6e() [staticcall]</span><br><span class="line">    │   ├─ [436] entrypoint::799320bb()</span><br><span class="line">    │   │   └─ ← 0x0000000000000000000000000000000000000000000000000000000000000001</span><br><span class="line">    │   └─ ← 0x0000000000000000000000000000000000000000000000000000000000000001</span><br><span class="line">    └─ ← ()</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/08/15/19.Paradigm%20CTF%202021/09.market/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-08-16 19:38:15
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/19-Paradigm-CTF-2021/" title="19.Paradigm CTF 2021">
+                        <b>#</b> 19.Paradigm CTF 2021
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/08/16/17.signature/02.sign%20a%20message/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#lockbox"><span class="toc-text">lockbox</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%A8%E5%B1%80%E8%A7%82"><span class="toc-text">1.全局观</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%BB%E5%8A%A1"><span class="toc-text">2.任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90"><span class="toc-text">3.详细分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#stage5"><span class="toc-text">stage5</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Entrypoint"><span class="toc-text">Entrypoint</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stage1"><span class="toc-text">stage1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stage2"><span class="toc-text">stage2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stage3"><span class="toc-text">stage3</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stage4"><span class="toc-text">stage4</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E7%9A%84"><span class="toc-text">最终的</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 10.lockbox + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F08%2F16%2F19.Paradigm%2520CTF%25202021%2F10.lockbox%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/08/16/19.Paradigm%20CTF%202021/10.lockbox/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

