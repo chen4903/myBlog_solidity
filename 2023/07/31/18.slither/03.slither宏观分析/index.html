@@ -167,15 +167,18 @@
           
       </div>
       <div class="markdown-body">
-        <h1 id="slither宏观分析"><a href="#slither宏观分析" class="headerlink" title="slither宏观分析"></a>slither宏观分析</h1><h2 id="Slither运行流程"><a href="#Slither运行流程" class="headerlink" title="Slither运行流程"></a>Slither运行流程</h2><ol>
-<li>智能合约源码经过solc编译后得到Solidity抽象语法树（AST）作为Slither的输入。</li>
-<li>经过information recovery（数据整合），Slither生成合约的继承图，控制流图（CFG）以及合约中函数列表。</li>
-<li>经过SlithIR转换，Slither将合约代码转换为<a target="_blank" rel="noopener" href="https://github.com/crytic/slither/wiki/SlithIR">SlithIR</a>，一种内部表示语言，目的是通过简单的API实现高精度分析，支持污点和值的跟踪，从而支持检测复杂的模型。</li>
-<li>在代码分析阶段，Slither运行一组预定义的分析，包括合约中变量、函数的依赖关系；变量的读写和函数的权限控制。</li>
-<li>经过Slither的核心处理之后，就可以提供漏洞检测、代码优化检测和代码理解输出等。</li>
-</ol>
-<p><img src="https://moe.photo/images/2023/07/31/image-20230731151331493.png" alt></p>
-
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="cfdff47207081223f295baeaf5d9541bd8543e88a7bdb4ece427b25c8bd4b087">5cd6d88a1d91bc4117b062d0086622af5896445cb0373ec30e23514ead5564133ec42b9e983eb1cd08c26a6f1c64d2c72b0211aef5a486a1c7be0094c36bdc5e10bc8c879fb7c8886cd0a87b60ed0022ecdf46ecca32172c5e15903ae078d32f8ad66206cb27f436d7a99d11de9fb978e7f4f82344cfd02f73d15d4c8fdc0f1e3b8219253474070b3b3deba39263aa68fc04a82addffcd4b11c327ca710d919fac634554504be9826cb48abcc80f061ccb4697ad41feb0945e699e590dff234da104c130ee172166bb3b5ca5b88fadeee2fe104f5a30abdbe90f8c0f065e0432fceaa9df207fa5579ad9238b71c2bcfb4967a1b392c7d6a35fc3091864ee06d194b3d9af7f8f23d83ac0fd840a975bb66fce424deb0c91355af5a2d70c95ec471194e3931476e16ddd9e9252f15b0b103e990e527b8170d775b6d70542d9db8e02d3abd577a8fb1757d09cbaf9502af2db69adf23a89c8f602d7b4771bc667a4660cba77c8f3bc0a9fd7dbd541186038b4cad6ff8974bd07f27a7d3748a100111f1faa641dcc43ea7fb45b75c3526b627ab1dd3c24b69266c75ddb2746de0b046b6c364b2a314f854d74f704bc89da929e4afb29ef139e96b83609665776fbc8d255581f60f58ad61700b7e9e2e3651e6995785bc22533003fdf884c93f68e79bbe198ff118cefac2ad76dd820fbaf2bb4dd2c45db28a70f22de3b48f23ee95e3cbd8cd20c0339c9bbf563a744dc1870f77c787671864e3f513abc99821dc8e24873e0c39fcb5493ee6c28acbfd805e3353104caefadd953a08d0839ef95f65c56eee6ea5006a7e0b9a9c27f69933d62344c4dc93c08faa50ad58ea4f9a54d94c1005bfd29f423e17282f1020de2a12ddba7ebbd08a257a21afabb896aaafafd048a7a45e7902f4966be83c112e7564e72c2e58a89c3e0b96a3a29655209e8d95dd5c2a76a5e51e551815edf678f759a1afe49d41e0f6ccefd110571b5c8218f9b9ba57dd42fd64eabec7300b3ca7d472b07db315f139997ced308777afc77a2b48192a31d702dd71c26420c2ed7bc74fac328f6ca1a9451394f8a582aa099929105e97f81179d0c3e793631b49fdd5d5d6ef6a0c22a1a6cda656af44b36e9b420502babe339f6ab96321dda9a070f7beb69b7cd8f3d9c505db5de40175befda1175354affc3f92fb8901dd2ab1dbe71402f00b7d3429eeac36622c4b5eb5504e9120209bed938c3f2ec19bc0250a4a4f9983c122e86ad3f9c6a5ee8e95a4d24dc241764223498da64bfef1a86ff00c085d8c1b7727ed6d886d89f6ce248bde5b0e311cdf67eae9ba6a2d7d9411ff583df873cfb91cd0480dc5d58c3644bd2c2b7753e6bd9d210197a4bce77b88f5059ef171175d5f804aafa02ce73ef5f9993ae44377e62a1f86ac3482e42b4526a42b070201ce311d1e8f7f47b9acedd7a0a1b9e88a6906384cf3c82dcabd553c7462349e1f138c1d48db7b2cc342130b6fa37f428789eceac955f72fbd143725f2d937bb242f3cfae0c2aaf751125c92edecaec1701861b7139f0a5db41d2b5d7fe82fe3cbd0651ab0b985acce895cc20f32b9d5d751e96c45b887230bbf2f076d3feb00f3d87ce4c2b64b3718355f86759fe9a6e07807aa2acf0085a3149433b2fa773eea783de9c7e779df016f26fe9a233e1c4b5d2351b800eacad30f7ae35e445528f5b4af6c3d6250007e31cf9feb4</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
       </div>
       
         <div class="prev-or-next">
