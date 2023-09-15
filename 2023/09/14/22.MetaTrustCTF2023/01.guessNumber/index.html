@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      01.guessNumber 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">01.guessNumber</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-09-14 13:43:08
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/22-MetaTrustCTF2023/" title="22.MetaTrustCTF2023">
+                    <b>#</b> 22.MetaTrustCTF2023
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="guessNumber"><a href="#guessNumber" class="headerlink" title="guessNumber"></a>guessNumber</h1><p>有幸参与本次出题，本题题解如下</p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><ul>
+<li>考点难度：中等偏高</li>
+<li>考点方向：内联汇编，CREATE2，假地址，预编译合约</li>
+<li>知识点<ul>
+<li>CREATE2：常规</li>
+<li>内联汇编：零值槽位：内存0x60~0x80；immutable变量的初始化赋值方式，本题是，内存0x80~0xa0、内存0xa0~0xc0和内存0xc0~0xe0</li>
+<li>假地址：土狗合约常用来欺骗用户，看似mytoken变量是合约A，但不是new出来的，传入的是合约B</li>
+<li>预编译合约：0x0000000000000000000000000000000000000002每个节点都预编译了它，任何值传进去都是做sha2-256返回bytes32</li>
+</ul>
+</li>
+<li><p>题目场景描述：这是一个有趣的猜数游戏，如果你成功猜测到4个正确的值，那么你可以得到我们100 token的奖励</p>
+</li>
+<li><p>题目部署方式</p>
+<ol>
+<li>部署合约B（注意B合约不要给出来）</li>
+<li>合约B地址作为参数，部署合约GuessGame</li>
+<li>调用<code>captureTheFalg()</code>返回true即为成功</li>
+</ol>
+</li>
+</ul>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">// 将这个代码给玩家</span><br><span class="line">pragma solidity 0.8.21;</span><br><span class="line"></span><br><span class="line">import &quot;@openzeppelin/contracts/token/ERC20/ERC20.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract A&#123;</span><br><span class="line">    function number() pure external returns(uint256)&#123;</span><br><span class="line">        return 10;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract MyToken is ERC20 &#123;</span><br><span class="line">    constructor() ERC20(&quot;MyToken&quot;, &quot;MTK&quot;) &#123;</span><br><span class="line">        _mint(msg.sender,100);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract GuessGame &#123;</span><br><span class="line">    uint256 private immutable random01;</span><br><span class="line">    uint256 private immutable random02;</span><br><span class="line">    uint256 private immutable random03;</span><br><span class="line">    A private  immutable random04;</span><br><span class="line">    MyToken private immutable mytoken;</span><br><span class="line"></span><br><span class="line">    constructor(A _a) public &#123;</span><br><span class="line">        mytoken = new MyToken();</span><br><span class="line"></span><br><span class="line">        random01 = uint160(msg.sender);</span><br><span class="line">        random02 = uint256(keccak256(address(new A()).code));</span><br><span class="line">        random03 = block.timestamp;</span><br><span class="line">        random04 = _a; </span><br><span class="line">        pureFunc();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function pureFunc() pure internal &#123;</span><br><span class="line">        assembly&#123;</span><br><span class="line">            mstore(0x80,1)</span><br><span class="line">            mstore(0xa0,2)</span><br><span class="line">            mstore(0xc0,32)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function guess(uint256 _random01, uint256 _random02, uint256 _random03, uint256 _random04) external payable returns(bool)&#123;</span><br><span class="line">    </span><br><span class="line">        if(msg.value &gt; 100 ether)&#123;</span><br><span class="line">            // 100 eth! you are VIP!</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            uint256[] memory arr;</span><br><span class="line">            uint256 money = msg.value;</span><br><span class="line">            assembly&#123;</span><br><span class="line">                mstore(_random01, money)</span><br><span class="line">            &#125;</span><br><span class="line">            require(random01 == arr.length,&quot;wrong number01&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        uint256 y = ( uint160(address(msg.sender)) + random01 + random02 + random03 + _random02) &amp; 0xff;</span><br><span class="line">        require(random02 == y,&quot;wrong number02&quot;);</span><br><span class="line"></span><br><span class="line">        require(uint160(_random03) &lt; uint160(0x0000000000fFff8545DcFcb03fCB875F56bedDc4));</span><br><span class="line">        (,bytes memory data) = address(uint160(_random03)).staticcall(&quot;Fallbacker()&quot;);</span><br><span class="line">        require(random03 == data.length,&quot;wrong number03&quot;);</span><br><span class="line"></span><br><span class="line">        require(random04.number() == _random04, &quot;wrong number04&quot;);</span><br><span class="line"></span><br><span class="line">        mytoken.transfer(msg.sender,100);</span><br><span class="line">        payable(msg.sender).transfer(address(this).balance);</span><br><span class="line"></span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function captureTheFalg() external view returns(bool)&#123;</span><br><span class="line">        return mytoken.balanceOf(address(this)) == 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 这个合约代码不要给玩家！！！</span><br><span class="line">pragma solidity 0.8.21;</span><br><span class="line"></span><br><span class="line">contract B&#123;</span><br><span class="line">    uint256 public number = 11;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>假设我们用0x5B38Da6a701c568545dCfcB03FcB875f56beddC4用户进行解题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity 0.8.21;</span><br><span class="line"></span><br><span class="line">import &quot;@openzeppelin/contracts/token/ERC20/ERC20.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract A&#123;</span><br><span class="line">    function number() pure external returns(uint256)&#123;</span><br><span class="line">        return 10;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract MyToken is ERC20 &#123;</span><br><span class="line">    constructor() ERC20(&quot;MyToken&quot;, &quot;MTK&quot;) &#123;</span><br><span class="line">        _mint(msg.sender,100);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract GuessGame &#123;</span><br><span class="line">    uint256 private immutable random01;</span><br><span class="line">    uint256 private immutable random02;</span><br><span class="line">    uint256 private immutable random03;</span><br><span class="line">    A private  immutable random04;</span><br><span class="line">    MyToken private immutable mytoken;</span><br><span class="line"></span><br><span class="line">    constructor(A _a) public &#123;</span><br><span class="line">        mytoken = new MyToken();</span><br><span class="line"></span><br><span class="line">        random01 = uint160(msg.sender);</span><br><span class="line">        random02 = uint256(keccak256(address(new A()).code));</span><br><span class="line">        random03 = block.timestamp;</span><br><span class="line">        random04 = _a; // 不要输入A的合约的地址，输入B合约的地址</span><br><span class="line">        pureFunc();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function pureFunc() pure internal &#123;</span><br><span class="line">        assembly&#123;</span><br><span class="line">        	// 1，2，32才是实际的random01、random02、random03的值</span><br><span class="line">            mstore(0x80,1)</span><br><span class="line">            mstore(0xa0,2)</span><br><span class="line">            mstore(0xc0,32)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function guess(uint256 _random01, uint256 _random02, uint256 _random03, uint256 _random04) external payable returns(bool)&#123;</span><br><span class="line">        if(msg.value &gt; 100 ether)&#123;</span><br><span class="line">            // 100 eth! you are VIP!</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            // 零槽位</span><br><span class="line">            // _random01 = 0x60 = 96  &amp;&amp;  msg.value = 1 wei</span><br><span class="line">            uint256[] memory arr;</span><br><span class="line">            uint256 money = msg.value;</span><br><span class="line">            assembly&#123;</span><br><span class="line">                mstore(_random01, money)</span><br><span class="line">            &#125;</span><br><span class="line">            require(random01 == arr.length,&quot;wrong number01&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // CREATE2</span><br><span class="line">        // C4 + 1 + 2 + 32 + ? = 2</span><br><span class="line">        // msg.sender = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span><br><span class="line">        // 231 + ? = 2    ==&gt;   0xE7(231) + ? = 0x02(2)  ==&gt; ?=27</span><br><span class="line">        // ==&gt; _random02=27</span><br><span class="line">        // 玩家需要自行计算自己的_random02，27是举个例子</span><br><span class="line">        uint256 y = ( uint160(address(msg.sender)) + random01 + random02 + random03 + _random02) &amp; 0xff;</span><br><span class="line">        require(random02 == y,&quot;wrong number02&quot;);</span><br><span class="line"></span><br><span class="line">        // 似乎想用CREATE2爆破？这难度非常高，爆破要非常久</span><br><span class="line">        // 不不不，这里的考点不是CREATE2而是precompile contract</span><br><span class="line">        // _random03 = 0x0000000000000000000000000000000000000002   sha2-256        input: any      output: bytes32</span><br><span class="line">        require(uint160(_random03) &lt; uint160(0x0000000000fFff8545DcFcb03fCB875F56bedDc4));</span><br><span class="line">        (,bytes memory data) = address(uint160(_random03)).staticcall(&quot;Fallbacker()&quot;);</span><br><span class="line">        require(random03 == data.length,&quot;wrong number03&quot;);</span><br><span class="line"></span><br><span class="line">        // random 并不是new 出来的。B合约不verify，反编译可以得到number()为11，或者直接获取number()</span><br><span class="line">        // _random04 = 11</span><br><span class="line">        require(random04.number() == _random04, &quot;wrong number04&quot;);</span><br><span class="line"></span><br><span class="line">        mytoken.transfer(msg.sender,100);</span><br><span class="line">        payable(msg.sender).transfer(address(this).balance);</span><br><span class="line"></span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function captureTheFalg() external view returns(bool)&#123;</span><br><span class="line">        return mytoken.balanceOf(address(this)) == 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 11才是真正的random04的值</span><br><span class="line">pragma solidity 0.8.21;</span><br><span class="line"></span><br><span class="line">contract B&#123;</span><br><span class="line">    uint256 public number = 11;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/09/14/22.MetaTrustCTF2023/00.digest/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-09-14 13:43:08
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/22-MetaTrustCTF2023/" title="22.MetaTrustCTF2023">
+                        <b>#</b> 22.MetaTrustCTF2023
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/09/15/22.MetaTrustCTF2023/02.Bytedance/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#guessNumber"><span class="toc-text">guessNumber</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0"><span class="toc-text">描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3"><span class="toc-text">题解</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01.guessNumber + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F09%2F14%2F22.MetaTrustCTF2023%2F01.guessNumber%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/09/14/22.MetaTrustCTF2023/01.guessNumber/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
