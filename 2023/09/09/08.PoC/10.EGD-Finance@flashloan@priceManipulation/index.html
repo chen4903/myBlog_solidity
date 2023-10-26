@@ -186,7 +186,7 @@
 <p><img src="/2023/09/09/08.PoC/10.EGD-Finance@flashloan@priceManipulation/image-20230909132206729.png" alt="image-20230909132206729"></p>
 <p>发起攻击：2022-08-07 23:15:46 (UTC)</p>
 <p><img src="/2023/09/09/08.PoC/10.EGD-Finance@flashloan@priceManipulation/image-20230909133848822.png" alt="image-20230909133848822"></p>
-<h2 id="攻击详细分析"><a href="#攻击详细分析" class="headerlink" title="攻击详细分析"></a>攻击详细分析</h2><p>从攻击过程可以知道：先是stack一笔钱，然后通过两次闪电贷借出池子中的<code>BSC-USD</code>，然后调用<code>claimAllReward()</code>获取质押的奖励。那么核心问题就是通过闪电贷完成了价格操纵，因此我们来查看一下获得价格的代码：</p>
+<h2 id="攻击详细分析"><a href="#攻击详细分析" class="headerlink" title="攻击详细分析"></a>攻击详细分析</h2><p>从攻击过程可以知道：先是stake一笔钱，然后通过两次闪电贷借出池子中的<code>BSC-USD</code>，然后调用<code>claimAllReward()</code>获取质押的奖励。那么核心问题就是通过闪电贷完成了价格操纵，因此我们来查看一下获得价格的代码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function getEGDPrice() public view returns (uint)&#123;</span><br><span class="line">    uint balance1 = EGD.balanceOf(pair);</span><br><span class="line">    uint balance2 = U.balanceOf(pair);</span><br><span class="line">    return (balance2 * 1e18 / balance1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们可以发现，EGD的价格只是简单的通过除法计算：<code>池子中的BSC-USD数量 / 池子中的EGD的数量</code>。如果通过闪电贷在池子中借走大量的BSC-USD，就会使得EGD的价格急剧下降，反之急剧上升，从而操纵价格。</p>
 <p>既然存在价格操纵的漏洞，那么就可以找一下哪里可以利用此漏洞从而获利。黑客找到了这个质押然后获取利润的<code>claimAllReward()</code>函数，从这个方法可以看出，利润是给EGD代币，并且利润的计算是用<code>利润因子/EGD价格</code>，并且限制比较少（比如质押一定的时间，不能太短时间内就取款，等等）。</p>
